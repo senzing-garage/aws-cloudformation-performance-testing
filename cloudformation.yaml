@@ -225,24 +225,24 @@ Mappings:
       Name: G2
       Username: senzing
     Images:
-      ApiServer: public.ecr.aws/senzing/senzing-poc-server:3.2.2
+      ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       InitDataEncryption: public.ecr.aws/senzing/data-encryption-aes256cbc-sample:1.0.2
-      InitPostgresql: public.ecr.aws/senzing/init-postgresql:1.0.3
-      Redoer: public.ecr.aws/senzing/redoer:2.1.0
-      SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:3.2.0
-      Sshd: public.ecr.aws/senzing/sshd:1.4.0
-      StreamLoader: public.ecr.aws/senzing/stream-loader:2.1.0
+      InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
+      Redoer: public.ecr.aws/senzing/redoer:staging
+      SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:staging
+      Sshd: public.ecr.aws/senzing/sshd:staging
+      StreamLoader: public.ecr.aws/senzing/stream-loader:staging
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.7.3
       Swagger: public.ecr.aws/senzing/swagger-ui:v4.13.2
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.1
-      Xterm: public.ecr.aws/senzing/xterm:1.4.1
+      Xterm: public.ecr.aws/senzing/xterm:staging
     Run:
       ApiServer: Yes
       Redoer: Yes
       Sshd: Yes
       SshdMax: No
       StreamLoader: Yes
-      Swagger: Yes
+      Swagger: No
       WebApp: Yes
       Xterm: Yes
     Stack:
