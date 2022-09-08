@@ -1,0 +1,1211 @@
+
+
+    CloudWatch
+
+CloudWatch Logs
+Log groups
+mjd-16-log-group
+
+    advanced-cluster/loader/d6d6e14149d840f6aa6e83265a5f41b5
+
+Switch to the original interface.
+2020-11-04T00:50:02.994-05:00 (LOCAL)
+Log events
+View as text
+Message
+No older events at this moment.
+Retry
+2020-11-04 04:58:10,646 senzing-50010297I Enter
+{
+    "config_path": "/etc/opt/senzing",
+    "configuration_check_frequency_in_seconds": 60,
+    "data_source": "TEST",
+    "debug": false,
+    "delay_in_seconds": 0,
+    "delay_randomized": false,
+    "engine_configuration_json": "{\n  \"PIPELINE\": {\n    \"CONFIGPATH\": \"/etc/opt/senzing\",\n    \"RESOURCEPATH\": \"/opt/senzing/g2/resources\",\n    \"SUPPORTPATH\": \"/opt/senzing/data\"\n  },\n  \"SQL\": {\n    \"BACKEND\": \"HYBRID\",\n    \"CONNECTION\": \"postgresql://senzing:password@mjd-16-aurora-cluster.cluster-cn3qi42a3jus.us-east-1.rds.amazonaws.com:5432:G2\"\n  },\n  \"C1\": {\n    \"CLUSTER_SIZE\": \"1\",\n    \"DB_1\": \"postgresql://senzing:password@mjd-16-aurora-cluster-res.cluster-cn3qi42a3jus.us-east-1.rds.amazonaws.com:5432:G2_RES\"\n  },\n  \"C2\": {\n    \"CLUSTER_SIZE\": \"1\",\n    \"DB_1\": \"postgresql://senzing:password@mjd-16-aurora-cluster-libfeat.cluster-cn3qi42a3jus.us-east-1.rds.amazonaws.com:5432:G2_LIBFEAT\"\n  },\n  \"HYBRID\": {\n    \"RES_FEAT\": \"C1\",\n    \"RES_FEAT_EKEY\": \"C1\",\n    \"RES_FEAT_LKEY\": \"C1\",\n    \"RES_FEAT_STAT\": \"C1\",\n    \"LIB_FEAT\": \"C2\",\n    \"LIB_FEAT_HKEY\": \"C2\"\n  }\n}",
+    "entity_type": "GENERIC",
+    "exit_on_empty_queue": true,
+    "exit_sleep_time_in_seconds": 600,
+    "expiration_warning_in_days": 30,
+    "input_url": null,
+    "kafka_bootstrap_server": "localhost:9092",
+    "kafka_failure_bootstrap_server": null,
+    "kafka_failure_topic": "senzing-kafka-failure-topic",
+    "kafka_group": "senzing-kafka-group",
+    "kafka_info_bootstrap_server": null,
+    "kafka_info_topic": "senzing-kafka-info-topic",
+    "kafka_topic": "senzing-kafka-topic",
+    "ld_library_path": "/opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib",
+    "log_level_parameter": "info",
+    "log_license_period_in_seconds": 86400,
+    "monitoring_period_in_seconds": 600,
+    "prime_engine": true,
+    "program_updated": "2020-10-07",
+    "program_version": "1.6.4",
+    "pstack_pid": "1",
+    "python_path": "/opt/senzing/g2/python",
+    "queue_maxsize": 10,
+    "rabbitmq_exchange": "senzing-rabbitmq-exchange",
+    "rabbitmq_failure_exchange": null,
+    "rabbitmq_failure_host": null,
+    "rabbitmq_failure_port": null,
+    "rabbitmq_failure_queue": "senzing-rabbitmq-failure-queue",
+    "rabbitmq_failure_routing_key": "senzing.failure",
+    "rabbitmq_failure_username": null,
+    "rabbitmq_heartbeat_in_seconds": 60,
+    "rabbitmq_host": "localhost:5672",
+    "rabbitmq_info_exchange": null,
+    "rabbitmq_info_host": null,
+    "rabbitmq_info_port": null,
+    "rabbitmq_info_queue": "senzing-rabbitmq-info-queue",
+    "rabbitmq_info_routing_key": "senzing.info",
+    "rabbitmq_info_username": null,
+    "rabbitmq_port": "5672",
+    "rabbitmq_prefetch_count": 50,
+    "rabbitmq_queue": "senzing-rabbitmq-queue",
+    "rabbitmq_use_existing_entities": true,
+    "rabbitmq_username": "user",
+    "resource_path": "/opt/senzing/g2/resources",
+    "run_as_gid": 0,
+    "run_as_uid": 1001,
+    "skip_database_performance_test": true,
+    "sleep_time_in_seconds": 0,
+    "sqs_dead_letter_queue_enabled": false,
+    "sqs_failure_queue_url": null,
+    "sqs_info_queue_url": null,
+    "sqs_queue_url": "https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue",
+    "sqs_wait_time_seconds": 20,
+    "start_time": 1604465890.6461608,
+    "subcommand": "sqs",
+    "support_path": "/opt/senzing/data",
+    "threads_per_process": 8
+}
+2020-11-04 04:59:41,416 senzing-50010160I -------------------- LICENSE --------------------
+2020-11-04 04:59:41,416 senzing-50010161I           Version: 2.3.0 (2020-11-01)
+2020-11-04 04:59:41,416 senzing-50010162I          Customer: Senzing Internal
+2020-11-04 04:59:41,416 senzing-50010163I              Type: EVAL
+2020-11-04 04:59:41,417 senzing-50010164I   Expiration date: 2021-03-15
+2020-11-04 04:59:41,421 senzing-50010165I   Expiration time: 130 days until expiration
+2020-11-04 04:59:41,421 senzing-50010166I           Records: 100000000
+2020-11-04 04:59:41,421 senzing-50010167I          Contract: Senzing Internal - 100M
+2020-11-04 04:59:41,421 senzing-50010299I -------------------------------------------------
+2020-11-04 04:59:41,432 senzing-50010123I Total     memory:     16025341952 bytes
+2020-11-04 04:59:41,432 senzing-50010124I Available memory:     15442006016 bytes
+2020-11-04 05:50:02,994 Found credentials in environment variables.
+2020-11-04 05:50:03,034 senzing-50010129I ReadSqsWriteG2Thread-0-thread-0 is running.
+2020-11-04 05:50:03,037 senzing-50010129I ReadSqsWriteG2Thread-0-thread-1 is running.
+2020-11-04 05:50:03,040 senzing-50010129I ReadSqsWriteG2Thread-0-thread-2 is running.
+2020-11-04 05:50:03,042 senzing-50010129I ReadSqsWriteG2Thread-0-thread-3 is running.
+2020-11-04 05:50:03,046 senzing-50010129I ReadSqsWriteG2Thread-0-thread-4 is running.
+2020-11-04 05:50:03,048 senzing-50010129I ReadSqsWriteG2Thread-0-thread-5 is running.
+2020-11-04 05:50:03,060 senzing-50010129I ReadSqsWriteG2Thread-0-thread-6 is running.
+2020-11-04 05:50:03,062 senzing-50010129I ReadSqsWriteG2Thread-0-thread-7 is running.
+2020-11-04 05:50:03,092 senzing-50010127I Monitor:
+{
+    "processed_records_interval": 0,
+    "processed_records_total": 0,
+    "queued_records_interval": 0,
+    "queued_records_total": 0,
+    "rate_processed_interval": 0,
+    "rate_processed_total": 0,
+    "rate_queued_interval": 0,
+    "rate_queued_total": 0,
+    "uptime": 3112,
+    "workers_active": 8,
+    "workers_total": 8
+}
+2020-11-04 05:50:03,098 senzing-50010125I G2 engine statistics:
+{
+    "workload": {
+        "abortedUnresolve": 0,
+        "actualAmbiguousTest": 0,
+        "busyWait": 0,
+        "cacheHit": [],
+        "cacheMiss": [],
+        "cachedAmbiguousTest": 0,
+        "candidateBuilders": [],
+        "candidates": 0,
+        "delete records": 0,
+        "duration": 0,
+        "expressedFeatureCalls": [],
+        "expressedFeaturesCreated": [],
+        "genericDetect": [],
+        "gnrScorersUsed": 1,
+        "grouperKeyMatch": 0,
+        "highContentionFeat": [],
+        "highContentionResEnt": [],
+        "latchContention": [],
+        "loadedRecords": -1,
+        "longBusyWait": 0,
+        "records": 0,
+        "redoTriggers": [],
+        "reducedScoredFeatureType": [],
+        "reevaluations": 0,
+        "repairedEntities": 0,
+        "reresolveTriggers": {
+            "abortRetry": 0,
+            "multipleResolvableCandidates": 0,
+            "newFeatureFTypes": [],
+            "resolveNewFeatures": 0,
+            "unresolveMovement": 0
+        },
+        "retries": 0,
+        "scoredPairs": [],
+        "suppressedCandidateBuilders": [],
+        "suppressedScoredFeatureType": [],
+        "unresolveTest": 0,
+        "unresolveTriggers": {
+            "ambiguousMultiResolve": 0,
+            "ambiguousNoResolve": 0,
+            "extensiveResolve": 0,
+            "normalResolve": 0,
+            "prune": 0,
+            "relLink": 0,
+            "update": 0
+        }
+    }
+}
+2020-11-04 05:50:22.049 [sql:139796389283584:[43:C2:DB_1:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:50:22.049 [sql:139796389283584:[43:C2:DB_1:LOADER:]] ERR: Statement: Statement: query = select lib_feat_id,feat_hash,ftype_id,anonymized from LIB_FEAT where(feat_hash=$1 and ftype_id=$2)OR(feat_hash=$3 and ftype_id=$4)OR(feat_hash=$5 and ftype_id=$6)OR(feat_hash=$7 and ftype_id=$8)OR(feat_hash=$9 and ftype_id=$10)OR(feat_hash=$11 and ftype_id=$12)OR(feat_hash=$13 and ftype_id=$14)OR(feat_hash=$15 and ftype_id=$16)OR(feat_hash=$17 and ftype_id=$18)OR(feat_hash=$19 and ftype_id=$20)OR(feat_hash=$21 and ftype_id=$22)OR(feat_hash=$23 and ftype_id=$24)OR(feat_hash=$25 and ftype_id=$26)OR(feat_hash=$27 and ftype_id=$28)OR(feat_hash=$29 and ftype_id=$30)OR(feat_hash=$31 and ftype_id=$32)OR(feat_hash=$33 and ftype_id=$34)
+2020-11-04 05:50:22.049 [sql:139796389283584:[43:C2:DB_1:LOADER:]] ERR: Bind Values: '6F20242087F4BFD0D523CF2A2B8F7746A018EA8B',1,'C2D029E7C6915750A09AF16CFDD7065B7B2BA1D3',4,'EA0C732A557AED2711C9B1BC89729A52205538A2',5,'B53FC42B4112079BF747F6C5DCDC9B21A864E244',6,'494173AB24F8CCA8C02ADB889716B57B00529C55',7,'BC4FB1E85EF753D688CC689141E8B1DFA741DCFC',9,'7ACFE4BE65CC7FCBBB112674840D5B57406994DA',10,'3330F7721A3B25ADC8DC8B8BD9EBE46D8E660FAC',18,'6CF068689E5EEA4A51CA6CA17F134C9F34AC222C',18,'7FAB555C9749FF5C1DDB7C10B99C763F8512F934',18,'EB8CFCC523118A94213C3C42BB0C00BF612705CA',18,'F4444FE6C7FF6ECCD07BA5B78DF48B0C3BD8DACF',18,'6E6318B1BDE021F27C1708462C3706EA4E1DC7C8',19,'C94E42E817DE149FB7E3322C6F35ADE23AC1CA45',19,'7BF1364E4BD0BA19B4E146CAED4367769132AEFE',20,'B7B5CF8A91F1C6B0F251272DDD15F1225BDF8EBD',20,'E58185E4FDE3139DC52F721FEAB4EAEEAFC46F6B',20
+WARNING:  there is no transaction in progress
+2020-11-04 05:50:23.114 [sql:139796213106432:[36:C2:DB_1:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:50:23.114 [sql:139796213106432:[36:C2:DB_1:LOADER:]] ERR: Statement: Statement: query = select lib_feat_id,feat_hash,ftype_id,anonymized from LIB_FEAT where(feat_hash=$1 and ftype_id=$2)OR(feat_hash=$3 and ftype_id=$4)OR(feat_hash=$5 and ftype_id=$6)OR(feat_hash=$7 and ftype_id=$8)OR(feat_hash=$9 and ftype_id=$10)OR(feat_hash=$11 and ftype_id=$12)OR(feat_hash=$13 and ftype_id=$14)OR(feat_hash=$15 and ftype_id=$16)OR(feat_hash=$17 and ftype_id=$18)OR(feat_hash=$19 and ftype_id=$20)OR(feat_hash=$21 and ftype_id=$22)OR(feat_hash=$23 and ftype_id=$24)OR(feat_hash=$25 and ftype_id=$26)OR(feat_hash=$27 and ftype_id=$28)OR(feat_hash=$29 and ftype_id=$30)OR(feat_hash=$31 and ftype_id=$32)OR(feat_hash=$33 and ftype_id=$34)OR(feat_hash=$35 and ftype_id=$36)OR(feat_hash=$37 and ftype_id=$38)OR(feat_hash=$39 and ftype_id=$40)
+2020-11-04 05:50:23.114 [sql:139796213106432:[36:C2:DB_1:LOADER:]] ERR: Bind Values: '35A6F5958D903B8DD0D443BAB495D4639A241722',1,'8AD61D36E90E07312E0FBAEE9894479B68137E37',2,'E3157854DD84554210B44523EBABC08A5A8F158D',4,'1CD84ACF668A58979DF3CB69F1C0BBD213210885',5,'EDE6FD2B83141425B31FEA7881F8B0D9292DD309',6,'8F467FEBFCE36A972EA2955669ED64E8DB232AC3',7,'6CB5AFCCEEEC210C6B64B5CA86A0CA0E4A0C5F79',16,'15665A5F77F934061122E42D3ADB77B562BD613A',18,'3E3662E66E66E60ADBE1D1DAE11D364CE8FFA2CC',18,'457C6DD5035D0FB95DA92298D0E6516247E759AD',18,'538EB73BFB0AA6AA975883CE39C33B5B88C18DF1',18,'862346FD24FD37EAB26F6AA3DCB9384653B174DD',18,'A4FDA1463C6B1727E364CF4D83D55A1990E00F66',18,'B69310551C030F5A50A3ADBF8B5B17A5A2AA8A3A',18,'E18A197017F6CAFAF572861B7AA06435592A88BB',18,'35AAA4157D59295D987FC24521A5D8F1AFA91D8D',19,'EDAADC090E7171F70433F2EF99395F913D0058E2',19,'6CFACDE5F13D689966B24D255489EA9014E2378E',20,'6F848E90D14EF1635DCC08A9E79C2A74B843D02B',20,'FD7AAD0FA7B3F916434BF8D35D24331F007E57A0',21
+2020-11-04 05:50:23.115 [sql:139796286535424:[64:C2:DB_1:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:50:23.115 [sql:139796286535424:[64:C2:DB_1:LOADER:]] ERR: Statement: Statement: query = select lib_feat_id,feat_hash,ftype_id,anonymized from LIB_FEAT where(feat_hash=$1 and ftype_id=$2)OR(feat_hash=$3 and ftype_id=$4)OR(feat_hash=$5 and ftype_id=$6)OR(feat_hash=$7 and ftype_id=$8)OR(feat_hash=$9 and ftype_id=$10)OR(feat_hash=$11 and ftype_id=$12)OR(feat_hash=$13 and ftype_id=$14)OR(feat_hash=$15 and ftype_id=$16)OR(feat_hash=$17 and ftype_id=$18)OR(feat_hash=$19 and ftype_id=$20)OR(feat_hash=$21 and ftype_id=$22)OR(feat_hash=$23 and ftype_id=$24)OR(feat_hash=$25 and ftype_id=$26)OR(feat_hash=$27 and ftype_id=$28)OR(feat_hash=$29 and ftype_id=$30)OR(feat_hash=$31 and ftype_id=$32)OR(feat_hash=$33 and ftype_id=$34)OR(feat_hash=$35 and ftype_id=$36)OR(feat_hash=$37 and ftype_id=$38)
+2020-11-04 05:50:23.115 [sql:139796286535424:[64:C2:DB_1:LOADER:]] ERR: Bind Values: 'DF81BDAEC476B5EEA68D12E1D97AE95F71F6B05E',1,'A4A2591251800D05451C78D0ABEBE1D8396CFA3F',2,'C2D029E7C6915750A09AF16CFDD7065B7B2BA1D3',4,'E37950466230D4EE7CDD8880A1FCE7FF2C0EDDA5',5,'7F57B39BB122FCBE7BB0C39B4AC7A58332E869D7',6,'EEB65EA8787D244B07D17B1812E930C754A253FB',13,'850B07554FD06E461568A208E52F969EBB69407D',16,'06BBDB8B41681815F0BFEBA7F19931524FB2B57F',18,'32D912DE682A29EC0DA4074946683D4DDDBB3D11',18,'5116ECC491DBB2C87CB47F535849D69C7D1078E4',18,'7DB6A1DD7718A34F6427039F2FBF96BACF264221',18,'7F207A816CA37C96B9D8BF7ECB00C38692640502',18,'A3CEA661C9C38E1FD34FEFDDD494A0C066EDFE15',18,'CED3EF63F36CA8A20C4597D6750F5CC004085067',18,'B3FAA69C61CA028AB0046BA41EC8675E27710831',19,'E0B32D830EF88E6E3672F290A158000A28F7BB29',19,'D376AB58A9C5444C0FBB34E7D05EF9778AC8BCEA',20,'A7993E0FC6339621173C196F12BDD40E0C7A4DED',21,'A0F1F3FADE5C762C4D48709DF35DC2660DE45AA4',22
+WARNING:  there is no transaction in progress
+WARNING:  there is no transaction in progress
+2020-11-04 05:50:37.350 [sql:139796129187584:[57:C2:DB_1:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:50:37.350 [sql:139796129187584:[57:C2:DB_1:LOADER:]] ERR: Statement: Statement: query = select lib_feat_id,feat_hash,ftype_id,anonymized from LIB_FEAT where(feat_hash=$1 and ftype_id=$2)OR(feat_hash=$3 and ftype_id=$4)OR(feat_hash=$5 and ftype_id=$6)OR(feat_hash=$7 and ftype_id=$8)OR(feat_hash=$9 and ftype_id=$10)OR(feat_hash=$11 and ftype_id=$12)OR(feat_hash=$13 and ftype_id=$14)OR(feat_hash=$15 and ftype_id=$16)OR(feat_hash=$17 and ftype_id=$18)OR(feat_hash=$19 and ftype_id=$20)OR(feat_hash=$21 and ftype_id=$22)OR(feat_hash=$23 and ftype_id=$24)OR(feat_hash=$25 and ftype_id=$26)OR(feat_hash=$27 and ftype_id=$28)OR(feat_hash=$29 and ftype_id=$30)
+2020-11-04 05:50:37.350 [sql:139796129187584:[57:C2:DB_1:LOADER:]] ERR: Bind Values: '5738DADB0E7825942447573A85D9A5418913918D',1,'C2D029E7C6915750A09AF16CFDD7065B7B2BA1D3',4,'0ABF9FF57189F6709C5C5C90CDC19EB96355454E',5,'5F0413D89CFA2731EB48F1AFC39F13E58AC5B6A1',6,'53DF53FB9C734E428E3FA1068261CF3BA50072BB',9,'629F04D5DE8EDA4E1ED6ECCED862101C2FDFAB38',16,'1AD21031C76143A1D22796A585ED44E911CD4C6A',18,'5D649D73DE563257627661C3DD1F9902B9CC1B67',18,'7ED47615D020B4A8712D7A9123A46C7623DD57F4',18,'A0A4CE4F03454463A58BBD3294FD431B03150295',18,'7A0C9DDDC4559BC5DBB604B81771E18D0D7130BD',19,'8E14583907084CC8B9A19516B88BE294E0475FAC',19,'36566E3F722E32BABCBD4788846A2301D765416D',20,'8F1BA7D70E8C3D1A0474BE05763751E78DD04044',20,'830D730E26CE0AA784F80812D3D88BE7D3960D9D',21
+WARNING:  there is no transaction in progress
+2020-11-04 05:50:49.623 [sql:139796192126720:[50:C2:DB_1:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:50:49.623 [sql:139796192126720:[50:C2:DB_1:LOADER:]] ERR: Statement: Statement: query = select lib_feat_id,feat_hash,ftype_id,anonymized from LIB_FEAT where(feat_hash=$1 and ftype_id=$2)OR(feat_hash=$3 and ftype_id=$4)OR(feat_hash=$5 and ftype_id=$6)OR(feat_hash=$7 and ftype_id=$8)OR(feat_hash=$9 and ftype_id=$10)OR(feat_hash=$11 and ftype_id=$12)OR(feat_hash=$13 and ftype_id=$14)OR(feat_hash=$15 and ftype_id=$16)OR(feat_hash=$17 and ftype_id=$18)OR(feat_hash=$19 and ftype_id=$20)OR(feat_hash=$21 and ftype_id=$22)OR(feat_hash=$23 and ftype_id=$24)OR(feat_hash=$25 and ftype_id=$26)OR(feat_hash=$27 and ftype_id=$28)OR(feat_hash=$29 and ftype_id=$30)OR(feat_hash=$31 and ftype_id=$32)OR(feat_hash=$33 and ftype_id=$34)OR(feat_hash=$35 and ftype_id=$36)OR(feat_hash=$37 and ftype_id=$38)OR(feat_hash=$39 and ftype_id=$40)OR(feat_hash=$41 and ftype_id=$42)OR(feat_hash=$43 and ftype_id=$44)
+2020-11-04 05:50:49.623 [sql:139796192126720:[50:C2:DB_1:LOADER:]] ERR: Bind Values: 'FDA56B852F94A8F80158A51BB159239E9BF178EF',1,'2C400DD4C8E5B709E716D9F80ACBBE6C6A9FB2D7',2,'0F6C8828F55727FA36C431609BBDC111BDEE6168',4,'88949F8CE0A503EADCB529B57EC46DD6878DF58A',5,'CD2B7733BD6A721566CE9589CC5B72FD0AFB186A',6,'4E34A3DCAD46554243ECE6A9414F525697B107A8',7,'F5D003E578E9D0136C5C2641B12B49BB7AB6EB95',9,'2A3A8AE694A4305A5B4DAAF07C9B588361478225',13,'2AE6670B0CED3E8CB6BB1B87A4B05A2F9C8EB118',18,'7C4FDAAEE35BD8D6FC979F29E61A67BBEA7665D1',18,'99268860238481332C188D5D22EA9D63F7A98996',18,'C6E7BAF57979C23361522B95A1DF4600BF6FBA10',18,'DED692AD3057626B87A59F9A8B11030BE487E7AB',18,'E1E192117CE5174B9CCE93CF19C8DEB6AE6F91AE',18,'E3CF4172C4F1157ACB42AE95A4C485D8E4666B4E',18,'F7055312556C4F9EACEE8EDDF0E41E22ED1EDA86',18,'2E1239EE932C15BD4A2EEAE3123E6130C21E5668',19,'E6C6C81416D1AB1196151CFC2E8C1F02D5348FA8',19,'33EC4C89AEF3009B9D88CC6685E91B77B0313E7E',20,'BCDBA183902F09A92C1AECCF6E7F3EC4A54155F4',20,'072CAF96C6469CE69092B2C9800E959FA7A59FEB',21,'95B51D6C144E44C1BCADEB3A5D6F05223B254D20',22
+WARNING:  there is no transaction in progress
+2020-11-04 05:50:49.648 [sql:139796255065856:[78:C2:DB_1:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:50:49.648 [sql:139796255065856:[78:C2:DB_1:LOADER:]] ERR: Statement: Statement: query = select lib_feat_id,feat_hash,ftype_id,anonymized from LIB_FEAT where(feat_hash=$1 and ftype_id=$2)OR(feat_hash=$3 and ftype_id=$4)OR(feat_hash=$5 and ftype_id=$6)OR(feat_hash=$7 and ftype_id=$8)OR(feat_hash=$9 and ftype_id=$10)OR(feat_hash=$11 and ftype_id=$12)OR(feat_hash=$13 and ftype_id=$14)OR(feat_hash=$15 and ftype_id=$16)OR(feat_hash=$17 and ftype_id=$18)OR(feat_hash=$19 and ftype_id=$20)OR(feat_hash=$21 and ftype_id=$22)OR(feat_hash=$23 and ftype_id=$24)OR(feat_hash=$25 and ftype_id=$26)
+2020-11-04 05:50:49.648 [sql:139796255065856:[78:C2:DB_1:LOADER:]] ERR: Bind Values: '9191A199D6514DF0AAF57763DD609098633CAB5F',1,'E3157854DD84554210B44523EBABC08A5A8F158D',4,'61C11B68C1D9E7EC8A081B370AA7822A21B2D5BD',5,'1E1EADBF213BF932115C10CD53FA47112DC36E51',16,'2663EDC03ED33D699C1AFEBE827BCCFF39A5AB93',18,'2E9F753A7EBF2ED978716CD18F56883B9AD1935A',18,'9D49AD9ED1E876143F398A336D8BA560BD9F6EFA',18,'ABB0AB91827302AC46F60596138D50BEAC9AFDCF',18,'C21A481998365EDC7F458F9ADCDE5E1E1719743F',18,'EB6534600B51C5019FBB43393A745BD2CBA04302',18,'424ACFBAF1B87E3B5BF2B7A20E5014B28AB1ABAD',19,'DBC28A891A3787D844B93B3389391BB174C4BCC9',19,'93A88109FF119FEF659BB98863BB84F0018E342F',20
+WARNING:  there is no transaction in progress
+2020-11-04 05:50:49.651 [sql:139796160657152:[71:C2:DB_1:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:50:49.651 [sql:139796160657152:[71:C2:DB_1:LOADER:]] ERR: Statement: Statement: query = select lib_feat_id,feat_hash,ftype_id,anonymized from LIB_FEAT where(feat_hash=$1 and ftype_id=$2)OR(feat_hash=$3 and ftype_id=$4)OR(feat_hash=$5 and ftype_id=$6)OR(feat_hash=$7 and ftype_id=$8)OR(feat_hash=$9 and ftype_id=$10)OR(feat_hash=$11 and ftype_id=$12)OR(feat_hash=$13 and ftype_id=$14)OR(feat_hash=$15 and ftype_id=$16)OR(feat_hash=$17 and ftype_id=$18)OR(feat_hash=$19 and ftype_id=$20)OR(feat_hash=$21 and ftype_id=$22)OR(feat_hash=$23 and ftype_id=$24)OR(feat_hash=$25 and ftype_id=$26)OR(feat_hash=$27 and ftype_id=$28)OR(feat_hash=$29 and ftype_id=$30)OR(feat_hash=$31 and ftype_id=$32)OR(feat_hash=$33 and ftype_id=$34)OR(feat_hash=$35 and ftype_id=$36)OR(feat_hash=$37 and ftype_id=$38)OR(feat_hash=$39 and ftype_id=$40)
+2020-11-04 05:50:49.651 [sql:139796160657152:[71:C2:DB_1:LOADER:]] ERR: Bind Values: 'D2B906B3AD2EA0A53B9E7FDB4A9FEB14C6495DDD',1,'E8DC17597F0587AE7CE5B9DCE1A9E42F53F18A73',2,'E3157854DD84554210B44523EBABC08A5A8F158D',4,'50714D3DA754D04626ACEC5DD9A87FDE94621CD9',5,'5E8A142E1B4678F27D0FAE1D3B2C0AB22A987164',6,'E40C9C407FACA0F06587CEB2B533D57E7376A0D9',7,'D1935BD35277D08CA1ADF94137921C92697F097B',16,'13A4E4FB5458EF83DBEFB4562415593F549D21BA',18,'5D14798493EA4938FA97DF64FC74FE11F5B8566E',18,'6C4EE6685D6FEDA34F7CE27EEFB8EEF249FA10B3',18,'6E91F6974410574F29846788434383C5AC4B0810',18,'C2400A634892B2558BEFA6FAD8B57CCE368CA4C9',18,'C3094957A9EDFC53CEC1ED6A193841916A7450A6',18,'E11278C18E872316A76E544BBA1A11CE980B377F',18,'F008C78C844EE761172D9ACED66A51E420D4FF56',18,'3A175A2C8F1686CAD681C3F4C14F40DC1B139FE9',19,'E1FF4D77F887E07B68FBDB3E5929B0B565D2B924',19,'34419551262A89FD5F27FD64FA6EC54A9A023B7A',20,'8343160C4AD7364B6E92370D6F9B639C96238E76',20,'4AA16E964D3D6431D36CCE7F7FAC45AB4DE99488',21
+WARNING:  there is no transaction in progress
+2020-11-04 05:51:39.630 [sql:139796859045632:[78::MASTER:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:51:39.630 [sql:139796859045632:[78::MASTER:LOADER:]] ERR: Statement: Statement: query = INSERT INTO OBS_FEAT_EKEY(OBS_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,USED_FROM_DT,USED_THRU_DT,SYS_LSTUPD_DT) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING
+2020-11-04 05:51:39.630 [sql:139796859045632:[78::MASTER:LOADER:]] ERR: Bind Values: 9005004,1354895,1,,NULL,NULL,2020-11-04 05:51:20.571
+2020-11-04 05:51:39.634 [sql:139797251069696:[43::MASTER:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:51:39.634 [sql:139797251069696:[43::MASTER:LOADER:]] ERR: Statement: Statement: query = INSERT INTO OBS_FEAT_EKEY(OBS_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,USED_FROM_DT,USED_THRU_DT,SYS_LSTUPD_DT) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING
+2020-11-04 05:51:39.634 [sql:139797251069696:[43::MASTER:LOADER:]] ERR: Bind Values: 8970005,10729830,1,,NULL,NULL,2020-11-04 05:51:20.526
+2020-11-04 05:51:39.645 [sql:139796890515200:[50::MASTER:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:51:39.645 [sql:139796890515200:[50::MASTER:LOADER:]] ERR: Statement: Statement: query = INSERT INTO OBS_FEAT_EKEY(OBS_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,USED_FROM_DT,USED_THRU_DT,SYS_LSTUPD_DT) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING
+2020-11-04 05:51:39.645 [sql:139796890515200:[50::MASTER:LOADER:]] ERR: Bind Values: 9003003,6981977,1,,NULL,NULL,2020-11-04 05:51:19.647
+WARNING:  there is no transaction in progress
+WARNING:  there is no transaction in progress
+2020-11-04 05:51:39.654 [sql:139796848555776:[71::MASTER:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:51:39.654 [sql:139796848555776:[71::MASTER:LOADER:]] ERR: Statement: Statement: query = INSERT INTO OBS_FEAT_EKEY(OBS_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,USED_FROM_DT,USED_THRU_DT,SYS_LSTUPD_DT) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING
+2020-11-04 05:51:39.654 [sql:139796848555776:[71::MASTER:LOADER:]] ERR: Bind Values: 9004004,6095881,1,,NULL,NULL,2020-11-04 05:51:20.310
+2020-11-04 05:51:39.668 [sql:139796880025344:[64::MASTER:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:51:39.668 [sql:139796880025344:[64::MASTER:LOADER:]] ERR: Statement: Statement: query = INSERT INTO OBS_FEAT_EKEY(OBS_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,USED_FROM_DT,USED_THRU_DT,SYS_LSTUPD_DT) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING
+2020-11-04 05:51:39.668 [sql:139796880025344:[64::MASTER:LOADER:]] ERR: Bind Values: 8973004,783120,1,,NULL,NULL,2020-11-04 05:51:20.449
+WARNING:  there is no transaction in progress
+WARNING:  there is no transaction in progress
+2020-11-04 05:51:39.715 [sql:139796869535488:[57::MASTER:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:51:39.715 [sql:139796869535488:[57::MASTER:LOADER:]] ERR: Statement: Statement: query = INSERT INTO OBS_FEAT_EKEY(OBS_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,USED_FROM_DT,USED_THRU_DT,SYS_LSTUPD_DT) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING
+2020-11-04 05:51:39.715 [sql:139796869535488:[57::MASTER:LOADER:]] ERR: Bind Values: 8993004,124360008,1,,NULL,NULL,2020-11-04 05:51:22.524
+2020-11-04 05:51:39.750 [sql:139797261559552:[36::MASTER:LOADER:]] ERR: Exception: 57P01FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly  57P01 FATAL:  terminating connection due to serverless scale event timeout SSL connection has been closed unexpectedly
+2020-11-04 05:51:39.750 [sql:139797261559552:[36::MASTER:LOADER:]] ERR: Statement: Statement: query = INSERT INTO OBS_FEAT_EKEY(OBS_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,USED_FROM_DT,USED_THRU_DT,SYS_LSTUPD_DT) VALUES ($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING
+2020-11-04 05:51:39.750 [sql:139797261559552:[36::MASTER:LOADER:]] ERR: Bind Values: 8974006,168114,1,,NULL,NULL,2020-11-04 05:51:20.515
+WARNING:  there is no transaction in progress
+WARNING:  there is no transaction in progress
+WARNING:  there is no transaction in progress
+2020-11-04 06:00:03,174 senzing-50010127I Monitor:
+{
+    "processed_records_interval": 1711,
+    "processed_records_total": 1711,
+    "queued_records_interval": 1719,
+    "queued_records_total": 1719,
+    "rate_processed_interval": 2,
+    "rate_processed_total": 0,
+    "rate_queued_interval": 2,
+    "rate_queued_total": 0,
+    "uptime": 3712,
+    "workers_active": 8,
+    "workers_total": 8
+}
+2020-11-04 06:00:03,174 senzing-50010125I G2 engine statistics:
+{
+    "workload": {
+        "abortedUnresolve": 15,
+        "actualAmbiguousTest": 6,
+        "busyWait": 0,
+        "cacheHit": [
+            {
+                "ADDRESS": 1825
+            },
+            {
+                "DOB": 475
+            },
+            {
+                "DRLIC": 721
+            },
+            {
+                "NAME": 2031
+            },
+            {
+                "PASSPORT": 295
+            },
+            {
+                "PHONE": 967
+            }
+        ],
+        "cacheMiss": [
+            {
+                "ADDRESS": 5124
+            },
+            {
+                "DOB": 1431
+            },
+            {
+                "DRLIC": 1798
+            },
+            {
+                "NAME": 3989
+            },
+            {
+                "PASSPORT": 815
+            },
+            {
+                "PHONE": 2933
+            }
+        ],
+        "cachedAmbiguousTest": 0,
+        "candidateBuilders": [
+            {
+                "ACCT_NUM": 1473
+            },
+            {
+                "ADDR_KEY": 2279
+            },
+            {
+                "DRLIC": 1475
+            },
+            {
+                "ID_KEY": 2255
+            },
+            {
+                "LOGIN_ID": 1132
+            },
+            {
+                "NAME_KEY": 2304
+            },
+            {
+                "PASSPORT": 1018
+            },
+            {
+                "PHONE": 1882
+            },
+            {
+                "PHONE_KEY": 1454
+            },
+            {
+                "SEARCH_KEY": 1146
+            },
+            {
+                "SSN": 1717
+            }
+        ],
+        "candidates": 5232,
+        "delete records": 0,
+        "duration": 4752630,
+        "expressedFeatureCalls": [
+            {
+                "EFCALL_ID": 1,
+                "EFUNC_CODE": "PHONE_HASHER",
+                "numCalls": 1023
+            },
+            {
+                "EFCALL_ID": 2,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 1020
+            },
+            {
+                "EFCALL_ID": 3,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 694
+            },
+            {
+                "EFCALL_ID": 5,
+                "EFUNC_CODE": "EXPRESS_BOM",
+                "numCalls": 659
+            },
+            {
+                "EFCALL_ID": 7,
+                "EFUNC_CODE": "NAME_HASHER",
+                "numCalls": 1712
+            },
+            {
+                "EFCALL_ID": 9,
+                "EFUNC_CODE": "ADDR_HASHER",
+                "numCalls": 1712
+            },
+            {
+                "EFCALL_ID": 14,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 1007
+            },
+            {
+                "EFCALL_ID": 16,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 1220
+            }
+        ],
+        "expressedFeaturesCreated": [
+            {
+                "ADDR_KEY": 3111
+            },
+            {
+                "ID_KEY": 3941
+            },
+            {
+                "NAME_KEY": 12366
+            },
+            {
+                "PHONE_KEY": 1023
+            },
+            {
+                "SEARCH_KEY": 659
+            }
+        ],
+        "genericDetect": [
+            {
+                "DOB": 1
+            },
+            {
+                "DRLIC": 4
+            },
+            {
+                "ID_KEY": 2
+            },
+            {
+                "LOGIN_ID": 5
+            },
+            {
+                "NAME_KEY": 31
+            }
+        ],
+        "gnrScorersUsed": 2,
+        "grouperKeyMatch": 0,
+        "highContentionFeat": [],
+        "highContentionResEnt": [],
+        "latchContention": [],
+        "loadedRecords": 7934952,
+        "longBusyWait": 0,
+        "records": 1711,
+        "redoTriggers": [
+            {
+                "DOB": 5
+            },
+            {
+                "DRLIC": 20
+            },
+            {
+                "ID_KEY": 10
+            },
+            {
+                "LOGIN_ID": 25
+            }
+        ],
+        "reducedScoredFeatureType": [],
+        "reevaluations": 0,
+        "repairedEntities": 0,
+        "reresolveTriggers": {
+            "abortRetry": 0,
+            "multipleResolvableCandidates": 0,
+            "newFeatureFTypes": [
+                {
+                    "ADDRESS": 171
+                },
+                {
+                    "ADDR_KEY": 14
+                },
+                {
+                    "DOB": 33
+                },
+                {
+                    "DRLIC": 78
+                },
+                {
+                    "GENDER": 52
+                },
+                {
+                    "ID_KEY": 5
+                },
+                {
+                    "LOGIN_ID": 18
+                },
+                {
+                    "NAME": 120
+                },
+                {
+                    "NAME_KEY": 88
+                },
+                {
+                    "PASSPORT": 50
+                },
+                {
+                    "PHONE": 88
+                },
+                {
+                    "SEARCH_KEY": 18
+                },
+                {
+                    "SSN": 64
+                }
+            ],
+            "resolveNewFeatures": 180,
+            "unresolveMovement": 0
+        },
+        "retries": 14,
+        "scoredPairs": [
+            {
+                "ACCT_NUM": 2275
+            },
+            {
+                "ADDRESS": 6949
+            },
+            {
+                "DOB": 1906
+            },
+            {
+                "DRLIC": 2519
+            },
+            {
+                "GENDER": 5514
+            },
+            {
+                "LOGIN_ID": 2096
+            },
+            {
+                "NAME": 6020
+            },
+            {
+                "PASSPORT": 1110
+            },
+            {
+                "PHONE": 3900
+            },
+            {
+                "SSN": 3150
+            }
+        ],
+        "suppressedCandidateBuilders": [],
+        "suppressedScoredFeatureType": [],
+        "unresolveTest": 121,
+        "unresolveTriggers": {
+            "ambiguousMultiResolve": 0,
+            "ambiguousNoResolve": 121,
+            "extensiveResolve": 0,
+            "normalResolve": 0,
+            "prune": 0,
+            "relLink": 0,
+            "update": 0
+        }
+    }
+}
+2020-11-04 06:10:03,257 senzing-50010127I Monitor:
+{
+    "processed_records_interval": 3057,
+    "processed_records_total": 4768,
+    "queued_records_interval": 3057,
+    "queued_records_total": 4776,
+    "rate_processed_interval": 5,
+    "rate_processed_total": 1,
+    "rate_queued_interval": 5,
+    "rate_queued_total": 1,
+    "uptime": 4312,
+    "workers_active": 8,
+    "workers_total": 8
+}
+2020-11-04 06:10:03,258 senzing-50010125I G2 engine statistics:
+{
+    "workload": {
+        "abortedUnresolve": 2,
+        "actualAmbiguousTest": 15,
+        "busyWait": 0,
+        "cacheHit": [
+            {
+                "ADDRESS": 3849
+            },
+            {
+                "DOB": 974
+            },
+            {
+                "DRLIC": 1206
+            },
+            {
+                "NAME": 4028
+            },
+            {
+                "PASSPORT": 558
+            },
+            {
+                "PHONE": 2111
+            }
+        ],
+        "cacheMiss": [
+            {
+                "ADDRESS": 9492
+            },
+            {
+                "DOB": 2495
+            },
+            {
+                "DRLIC": 3135
+            },
+            {
+                "NAME": 7571
+            },
+            {
+                "PASSPORT": 1414
+            },
+            {
+                "PHONE": 5578
+            }
+        ],
+        "cachedAmbiguousTest": 0,
+        "candidateBuilders": [
+            {
+                "ACCT_NUM": 2882
+            },
+            {
+                "ADDR_KEY": 4340
+            },
+            {
+                "DOB": 2
+            },
+            {
+                "DRLIC": 2678
+            },
+            {
+                "ID_KEY": 4283
+            },
+            {
+                "LOGIN_ID": 2257
+            },
+            {
+                "NAME_KEY": 4395
+            },
+            {
+                "PASSPORT": 1987
+            },
+            {
+                "PHONE": 3649
+            },
+            {
+                "PHONE_KEY": 2844
+            },
+            {
+                "SEARCH_KEY": 2289
+            },
+            {
+                "SSN": 3315
+            }
+        ],
+        "candidates": 9872,
+        "delete records": 0,
+        "duration": 4746771,
+        "expressedFeatureCalls": [
+            {
+                "EFCALL_ID": 1,
+                "EFUNC_CODE": "PHONE_HASHER",
+                "numCalls": 1855
+            },
+            {
+                "EFCALL_ID": 2,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 1771
+            },
+            {
+                "EFCALL_ID": 3,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 1233
+            },
+            {
+                "EFCALL_ID": 5,
+                "EFUNC_CODE": "EXPRESS_BOM",
+                "numCalls": 1216
+            },
+            {
+                "EFCALL_ID": 7,
+                "EFUNC_CODE": "NAME_HASHER",
+                "numCalls": 3057
+            },
+            {
+                "EFCALL_ID": 9,
+                "EFUNC_CODE": "ADDR_HASHER",
+                "numCalls": 3057
+            },
+            {
+                "EFCALL_ID": 14,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 1853
+            },
+            {
+                "EFCALL_ID": 16,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 2168
+            }
+        ],
+        "expressedFeaturesCreated": [
+            {
+                "ADDR_KEY": 5547
+            },
+            {
+                "ID_KEY": 7025
+            },
+            {
+                "NAME_KEY": 21839
+            },
+            {
+                "PHONE_KEY": 1855
+            },
+            {
+                "SEARCH_KEY": 1216
+            }
+        ],
+        "genericDetect": [
+            {
+                "ADDR_KEY": 1
+            },
+            {
+                "DOB": 1
+            },
+            {
+                "DRLIC": 4
+            },
+            {
+                "LOGIN_ID": 11
+            },
+            {
+                "NAME_KEY": 54
+            }
+        ],
+        "gnrScorersUsed": 2,
+        "grouperKeyMatch": 0,
+        "highContentionFeat": [],
+        "highContentionResEnt": [],
+        "latchContention": [],
+        "loadedRecords": 7938007,
+        "longBusyWait": 0,
+        "records": 3057,
+        "redoTriggers": [
+            {
+                "ADDR_KEY": 10
+            },
+            {
+                "DOB": 5
+            },
+            {
+                "DRLIC": 20
+            },
+            {
+                "LOGIN_ID": 55
+            }
+        ],
+        "reducedScoredFeatureType": [],
+        "reevaluations": 0,
+        "repairedEntities": 0,
+        "reresolveTriggers": {
+            "abortRetry": 0,
+            "multipleResolvableCandidates": 0,
+            "newFeatureFTypes": [
+                {
+                    "ACCT_NUM": 1
+                },
+                {
+                    "ADDRESS": 326
+                },
+                {
+                    "ADDR_KEY": 19
+                },
+                {
+                    "DOB": 78
+                },
+                {
+                    "DRLIC": 164
+                },
+                {
+                    "GENDER": 100
+                },
+                {
+                    "ID_KEY": 12
+                },
+                {
+                    "LOGIN_ID": 51
+                },
+                {
+                    "NAME": 251
+                },
+                {
+                    "NAME_KEY": 157
+                },
+                {
+                    "PASSPORT": 89
+                },
+                {
+                    "PHONE": 140
+                },
+                {
+                    "PHONE_KEY": 2
+                },
+                {
+                    "SEARCH_KEY": 51
+                },
+                {
+                    "SSN": 143
+                }
+            ],
+            "resolveNewFeatures": 343,
+            "unresolveMovement": 0
+        },
+        "retries": 0,
+        "scoredPairs": [
+            {
+                "ACCT_NUM": 4209
+            },
+            {
+                "ADDRESS": 13341
+            },
+            {
+                "DOB": 3469
+            },
+            {
+                "DRLIC": 4341
+            },
+            {
+                "GENDER": 10347
+            },
+            {
+                "LOGIN_ID": 3959
+            },
+            {
+                "NAME": 11599
+            },
+            {
+                "PASSPORT": 1972
+            },
+            {
+                "PHONE": 7689
+            },
+            {
+                "SSN": 5931
+            }
+        ],
+        "suppressedCandidateBuilders": [],
+        "suppressedScoredFeatureType": [],
+        "unresolveTest": 248,
+        "unresolveTriggers": {
+            "ambiguousMultiResolve": 0,
+            "ambiguousNoResolve": 248,
+            "extensiveResolve": 0,
+            "normalResolve": 0,
+            "prune": 0,
+            "relLink": 0,
+            "update": 0
+        }
+    }
+}
+2020-11-04 06:20:03,357 senzing-50010127I Monitor:
+{
+    "processed_records_interval": 7648,
+    "processed_records_total": 12416,
+    "queued_records_interval": 7648,
+    "queued_records_total": 12424,
+    "rate_processed_interval": 12,
+    "rate_processed_total": 2,
+    "rate_queued_interval": 12,
+    "rate_queued_total": 2,
+    "uptime": 4912,
+    "workers_active": 8,
+    "workers_total": 8
+}
+2020-11-04 06:20:03,358 senzing-50010125I G2 engine statistics:
+{
+    "workload": {
+        "abortedUnresolve": 6,
+        "actualAmbiguousTest": 52,
+        "busyWait": 0,
+        "cacheHit": [
+            {
+                "ADDRESS": 12090
+            },
+            {
+                "DOB": 2834
+            },
+            {
+                "DRLIC": 3975
+            },
+            {
+                "NAME": 12181
+            },
+            {
+                "PASSPORT": 1702
+            },
+            {
+                "PHONE": 7288
+            }
+        ],
+        "cacheMiss": [
+            {
+                "ADDRESS": 25928
+            },
+            {
+                "DOB": 7207
+            },
+            {
+                "DRLIC": 8900
+            },
+            {
+                "NAME": 20328
+            },
+            {
+                "PASSPORT": 3851
+            },
+            {
+                "PHONE": 15369
+            }
+        ],
+        "cachedAmbiguousTest": 0,
+        "candidateBuilders": [
+            {
+                "ACCT_NUM": 7675
+            },
+            {
+                "ADDR_KEY": 11637
+            },
+            {
+                "DOB": 1
+            },
+            {
+                "DRLIC": 7378
+            },
+            {
+                "ID_KEY": 11538
+            },
+            {
+                "LOGIN_ID": 6307
+            },
+            {
+                "NAME_KEY": 11806
+            },
+            {
+                "PASSPORT": 5367
+            },
+            {
+                "PHONE": 9942
+            },
+            {
+                "PHONE_KEY": 7710
+            },
+            {
+                "SEARCH_KEY": 6466
+            },
+            {
+                "SSN": 8926
+            }
+        ],
+        "candidates": 27579,
+        "delete records": 0,
+        "duration": 4630987,
+        "expressedFeatureCalls": [
+            {
+                "EFCALL_ID": 1,
+                "EFUNC_CODE": "PHONE_HASHER",
+                "numCalls": 4579
+            },
+            {
+                "EFCALL_ID": 2,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 4570
+            },
+            {
+                "EFCALL_ID": 3,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 3053
+            },
+            {
+                "EFCALL_ID": 5,
+                "EFUNC_CODE": "EXPRESS_BOM",
+                "numCalls": 3030
+            },
+            {
+                "EFCALL_ID": 7,
+                "EFUNC_CODE": "NAME_HASHER",
+                "numCalls": 7648
+            },
+            {
+                "EFCALL_ID": 9,
+                "EFUNC_CODE": "ADDR_HASHER",
+                "numCalls": 7648
+            },
+            {
+                "EFCALL_ID": 14,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 4532
+            },
+            {
+                "EFCALL_ID": 16,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 5423
+            }
+        ],
+        "expressedFeaturesCreated": [
+            {
+                "ADDR_KEY": 13849
+            },
+            {
+                "ID_KEY": 17578
+            },
+            {
+                "NAME_KEY": 54284
+            },
+            {
+                "PHONE_KEY": 4579
+            },
+            {
+                "SEARCH_KEY": 3030
+            }
+        ],
+        "genericDetect": [
+            {
+                "ADDR_KEY": 4
+            },
+            {
+                "DOB": 2
+            },
+            {
+                "DRLIC": 5
+            },
+            {
+                "ID_KEY": 9
+            },
+            {
+                "LOGIN_ID": 32
+            },
+            {
+                "NAME_KEY": 118
+            }
+        ],
+        "gnrScorersUsed": 3,
+        "grouperKeyMatch": 0,
+        "highContentionFeat": [],
+        "highContentionResEnt": [],
+        "latchContention": [],
+        "loadedRecords": 7945655,
+        "longBusyWait": 0,
+        "records": 7648,
+        "redoTriggers": [
+            {
+                "ADDR_KEY": 40
+            },
+            {
+                "DOB": 10
+            },
+            {
+                "DRLIC": 25
+            },
+            {
+                "ID_KEY": 45
+            },
+            {
+                "LOGIN_ID": 160
+            }
+        ],
+        "reducedScoredFeatureType": [],
+        "reevaluations": 0,
+        "repairedEntities": 0,
+        "reresolveTriggers": {
+            "abortRetry": 0,
+            "multipleResolvableCandidates": 1,
+            "newFeatureFTypes": [
+                {
+                    "ACCT_NUM": 11
+                },
+                {
+                    "ADDRESS": 906
+                },
+                {
+                    "ADDR_KEY": 79
+                },
+                {
+                    "DOB": 179
+                },
+                {
+                    "DRLIC": 458
+                },
+                {
+                    "GENDER": 283
+                },
+                {
+                    "ID_KEY": 47
+                },
+                {
+                    "LOGIN_ID": 150
+                },
+                {
+                    "NAME": 652
+                },
+                {
+                    "NAME_KEY": 430
+                },
+                {
+                    "PASSPORT": 282
+                },
+                {
+                    "PHONE": 453
+                },
+                {
+                    "PHONE_KEY": 7
+                },
+                {
+                    "SEARCH_KEY": 150
+                },
+                {
+                    "SSN": 353
+                }
+            ],
+            "resolveNewFeatures": 947,
+            "unresolveMovement": 3
+        },
+        "retries": 0,
+        "scoredPairs": [
+            {
+                "ACCT_NUM": 12101
+            },
+            {
+                "ADDRESS": 38018
+            },
+            {
+                "DOB": 10041
+            },
+            {
+                "DRLIC": 12875
+            },
+            {
+                "GENDER": 29260
+            },
+            {
+                "LOGIN_ID": 11854
+            },
+            {
+                "NAME": 32509
+            },
+            {
+                "PASSPORT": 5553
+            },
+            {
+                "PHONE": 22657
+            },
+            {
+                "SSN": 16744
+            }
+        ],
+        "suppressedCandidateBuilders": [],
+        "suppressedScoredFeatureType": [],
+        "unresolveTest": 791,
+        "unresolveTriggers": {
+            "ambiguousMultiResolve": 0,
+            "ambiguousNoResolve": 790,
+            "extensiveResolve": 0,
+            "normalResolve": 1,
+            "prune": 0,
+            "relLink": 0,
+            "update": 0
+        }
+    }
+}
+2020-11-04 06:23:34,731 senzing-50010191I Thread: ReadSqsWriteG2Thread-0-thread-3 Exiting. No messages from https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue.
+2020-11-04 06:23:34,755 senzing-50010191I Thread: ReadSqsWriteG2Thread-0-thread-6 Exiting. No messages from https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue.
+2020-11-04 06:23:34,792 senzing-50010191I Thread: ReadSqsWriteG2Thread-0-thread-7 Exiting. No messages from https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue.
+2020-11-04 06:23:34,858 senzing-50010191I Thread: ReadSqsWriteG2Thread-0-thread-4 Exiting. No messages from https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue.
+2020-11-04 06:23:34,860 senzing-50010191I Thread: ReadSqsWriteG2Thread-0-thread-5 Exiting. No messages from https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue.
+2020-11-04 06:23:34,958 senzing-50010191I Thread: ReadSqsWriteG2Thread-0-thread-1 Exiting. No messages from https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue.
+2020-11-04 06:23:34,969 senzing-50010191I Thread: ReadSqsWriteG2Thread-0-thread-2 Exiting. No messages from https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue.
+2020-11-04 06:23:35,062 senzing-50010191I Thread: ReadSqsWriteG2Thread-0-thread-0 Exiting. No messages from https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue.
+2020-11-04 06:30:03,537 senzing-50010154I Sleeping for a requested 600 seconds before exiting.
+2020-11-04 06:40:03,585 senzing-50010298I Exit
+{
+    "config_path": "/etc/opt/senzing",
+    "configuration_check_frequency_in_seconds": 60,
+    "data_source": "TEST",
+    "debug": false,
+    "delay_in_seconds": 0,
+    "delay_randomized": false,
+    "elapsed_time": 6112.939405441284,
+    "engine_configuration_json": "{\n  \"PIPELINE\": {\n    \"CONFIGPATH\": \"/etc/opt/senzing\",\n    \"RESOURCEPATH\": \"/opt/senzing/g2/resources\",\n    \"SUPPORTPATH\": \"/opt/senzing/data\"\n  },\n  \"SQL\": {\n    \"BACKEND\": \"HYBRID\",\n    \"CONNECTION\": \"postgresql://senzing:password@mjd-16-aurora-cluster.cluster-cn3qi42a3jus.us-east-1.rds.amazonaws.com:5432:G2\"\n  },\n  \"C1\": {\n    \"CLUSTER_SIZE\": \"1\",\n    \"DB_1\": \"postgresql://senzing:password@mjd-16-aurora-cluster-res.cluster-cn3qi42a3jus.us-east-1.rds.amazonaws.com:5432:G2_RES\"\n  },\n  \"C2\": {\n    \"CLUSTER_SIZE\": \"1\",\n    \"DB_1\": \"postgresql://senzing:password@mjd-16-aurora-cluster-libfeat.cluster-cn3qi42a3jus.us-east-1.rds.amazonaws.com:5432:G2_LIBFEAT\"\n  },\n  \"HYBRID\": {\n    \"RES_FEAT\": \"C1\",\n    \"RES_FEAT_EKEY\": \"C1\",\n    \"RES_FEAT_LKEY\": \"C1\",\n    \"RES_FEAT_STAT\": \"C1\",\n    \"LIB_FEAT\": \"C2\",\n    \"LIB_FEAT_HKEY\": \"C2\"\n  }\n}",
+    "entity_type": "GENERIC",
+    "exit_on_empty_queue": true,
+    "exit_sleep_time_in_seconds": 600,
+    "expiration_warning_in_days": 30,
+    "input_url": null,
+    "kafka_bootstrap_server": "localhost:9092",
+    "kafka_failure_bootstrap_server": null,
+    "kafka_failure_topic": "senzing-kafka-failure-topic",
+    "kafka_group": "senzing-kafka-group",
+    "kafka_info_bootstrap_server": null,
+    "kafka_info_topic": "senzing-kafka-info-topic",
+    "kafka_topic": "senzing-kafka-topic",
+    "last_configuration_check": 1604470990.4037879,
+    "ld_library_path": "/opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib",
+    "log_level_parameter": "info",
+    "log_license_period_in_seconds": 86400,
+    "monitoring_period_in_seconds": 600,
+    "prime_engine": true,
+    "program_updated": "2020-10-07",
+    "program_version": "1.6.4",
+    "pstack_pid": "1",
+    "python_path": "/opt/senzing/g2/python",
+    "queue_maxsize": 10,
+    "rabbitmq_exchange": "senzing-rabbitmq-exchange",
+    "rabbitmq_failure_exchange": null,
+    "rabbitmq_failure_host": null,
+    "rabbitmq_failure_port": null,
+    "rabbitmq_failure_queue": "senzing-rabbitmq-failure-queue",
+    "rabbitmq_failure_routing_key": "senzing.failure",
+    "rabbitmq_failure_username": null,
+    "rabbitmq_heartbeat_in_seconds": 60,
+    "rabbitmq_host": "localhost:5672",
+    "rabbitmq_info_exchange": null,
+    "rabbitmq_info_host": null,
+    "rabbitmq_info_port": null,
+    "rabbitmq_info_queue": "senzing-rabbitmq-info-queue",
+    "rabbitmq_info_routing_key": "senzing.info",
+    "rabbitmq_info_username": null,
+    "rabbitmq_port": "5672",
+    "rabbitmq_prefetch_count": 50,
+    "rabbitmq_queue": "senzing-rabbitmq-queue",
+    "rabbitmq_use_existing_entities": true,
+    "rabbitmq_username": "user",
+    "resource_path": "/opt/senzing/g2/resources",
+    "run_as_gid": 0,
+    "run_as_uid": 1001,
+    "skip_database_performance_test": true,
+    "sleep_time_in_seconds": 0,
+    "sqs_dead_letter_queue_enabled": false,
+    "sqs_failure_queue_url": null,
+    "sqs_info_queue_url": null,
+    "sqs_queue_url": "https://sqs.us-east-1.amazonaws.com/488776654093/mjd-16-sqs-queue",
+    "sqs_wait_time_seconds": 20,
+    "start_time": 1604465890.6461608,
+    "stop_time": 1604472003.5855663,
+    "subcommand": "sqs",
+    "support_path": "/opt/senzing/data",
+    "threads_per_process": 8
+}
+No newer events at this moment. Auto retry paused.
+Resume
+

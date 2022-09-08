@@ -1,0 +1,40 @@
+timestamp,message
+1602253206320,"2020-10-09 14:20:06,320 senzing-50100180I User-supplied Governor loaded from /opt/senzing/g2/python/senzing_governor.py."
+1602253206325,"2020-10-09 14:20:06,325 senzing-50100297I Enter {""config_path"": ""/etc/opt/senzing"", ""debug"": false, ""delay_in_seconds"": 0, ""engine_configuration_json"": null, ""exit_on_thread_termination"": true, ""expiration_warning_in_days"": 30, ""kafka_bootstrap_server"": ""localhost:9092"", ""kafka_failure_bootstrap_server"": null, ""kafka_failure_topic"": ""senzing-kafka-failure-topic"", ""kafka_info_bootstrap_server"": null, ""kafka_info_topic"": ""senzing-kafka-info-topic"", ""kafka_redo_bootstrap_server"": null, ""kafka_redo_group"": ""senzing-kafka-redo-group"", ""kafka_redo_topic"": ""senzing-kafka-redo-topic"", ""log_level_parameter"": ""info"", ""log_license_period_in_seconds"": 86400, ""monitoring_period_in_seconds"": 600, ""processed_redo_records"": 0, ""program_updated"": ""2020-09-25"", ""program_version"": ""1.3.3"", ""pstack_pid"": ""1"", ""queue_maxsize"": 10, ""rabbitmq_delivery_mode"": 1, ""rabbitmq_exchange"": ""senzing-rabbitmq-exchange"", ""rabbitmq_failure_exchange"": null, ""rabbitmq_failure_host"": null, ""rabbitmq_failure_password"": null, ""rabbitmq_failure_queue"": ""senzing-rabbitmq-failure-queue"", ""rabbitmq_failure_routing_key"": ""senzing.failure"", ""rabbitmq_failure_username"": null, ""rabbitmq_host"": ""localhost:5672"", ""rabbitmq_info_exchange"": null, ""rabbitmq_info_host"": null, ""rabbitmq_info_password"": null, ""rabbitmq_info_queue"": ""senzing-rabbitmq-info-queue"", ""rabbitmq_info_routing_key"": ""senzing.info"", ""rabbitmq_info_username"": null, ""rabbitmq_password"": ""bitnami"", ""rabbitmq_prefetch_count"": 50, ""rabbitmq_redo_exchange"": null, ""rabbitmq_redo_host"": null, ""rabbitmq_redo_password"": null, ""rabbitmq_redo_queue"": ""senzing-rabbitmq-redo-queue"", ""rabbitmq_redo_routing_key"": ""senzing.redo"", ""rabbitmq_redo_username"": null, ""rabbitmq_use_existing_entities"": true, ""rabbitmq_username"": ""user"", ""received_from_redo_queue"": 0, ""redo_records_from_senzing_engine"": 0, ""redo_sleep_time_in_seconds"": 600, ""resource_path"": ""/opt/senzing/g2/resources"", ""run_as_gid"": 0, ""run_as_uid"": 1001, ""sent_to_failure_queue"": 0, ""sent_to_info_queue"": 0, ""sent_to_redo_queue"": 0, ""sleep_time_in_seconds"": 0, ""sqs_failure_queue_url"": null, ""sqs_info_queue_url"": null, ""sqs_redo_queue_url"": null, ""start_time"": 1602253206.3255997, ""subcommand"": ""redo"", ""support_path"": ""/opt/senzing/data"", ""threads_per_process"": 4}"
+1602253239857,"2020-10-09 14:20:39,857 senzing-50100160I -------------------- LICENSE --------------------"
+1602253239857,"2020-10-09 14:20:39,857 senzing-50100161I           Version: 2.2.1 (2020-09-30)"
+1602253239857,"2020-10-09 14:20:39,857 senzing-50100162I          Customer: Senzing Internal"
+1602253239857,"2020-10-09 14:20:39,857 senzing-50100163I              Type: EVAL"
+1602253239857,"2020-10-09 14:20:39,857 senzing-50100164I   Expiration date: 2021-03-15"
+1602253239863,"2020-10-09 14:20:39,863 senzing-50100165I   Expiration time: 156 days until expiration"
+1602253239863,"2020-10-09 14:20:39,863 senzing-50100166I           Records: 100000000"
+1602253239863,"2020-10-09 14:20:39,863 senzing-50100167I          Contract: Senzing Internal - 100M"
+1602253239863,"2020-10-09 14:20:39,863 senzing-50100299I -------------------------------------------------"
+1602253333114,"2020-10-09 14:22:13,114 senzing-50170001I Using governor-postgresql-transaction-id Governor. Version: 1.0.2 Updated: 2020-10-05"
+1602253333114,"2020-10-09 14:22:13,114 senzing-50170002I SENZING_GOVERNOR_POSTGRESQL_HIGH_WATERMARK: 1000000000; SENZING_GOVERNOR_INTERVAL: 100000; SENZING_GOVERNOR_POSTGRESQL_LOW_WATERMARK 90000000; SENZING_GOVERNOR_WAIT: 60; SENZING_GOVERNOR_HINT: redoer"
+1602253333115,"2020-10-09 14:22:13,114 senzing-50170003I Governor monitoring postgresql://senzing:xxxxxxxx@mjd-05-aurora-cluster.cluster-cn3qi42a3jus.us-east-1.rds.amazonaws.com:5432/G2"
+1602253333131,"2020-10-09 14:22:13,131 senzing-50100129I Process-0-QueueRedoRecordsInternalThread-0 is running."
+1602253333132,"2020-10-09 14:22:13,131 senzing-50100129I Process-0-ProcessRedoThread-0 is running."
+1602253333132,"2020-10-09 14:22:13,132 senzing-50100129I Process-0-ProcessRedoThread-1 is running."
+1602253333133,"2020-10-09 14:22:13,132 senzing-50100129I Process-0-ProcessRedoThread-2 is running."
+1602253333133,"2020-10-09 14:22:13,133 senzing-50100129I Process-0-ProcessRedoThread-3 is running."
+1602253333133,"2020-10-09 14:22:13,133 senzing-50100129I Process-0-MonitorThread-0 is running."
+1602253726292,2020-10-09 14:28:46.292 [sql:140444549768960:[13::MASTER:ER:631063]] ERR: Exception: SSL connection has been closed unexpectedly   SSL connection has been closed unexpectedly  
+1602253726292,"2020-10-09 14:28:46.292 [sql:140444549768960:[13::MASTER:ER:631063]] ERR: Statement: Statement: query = SELECT LIB_FEAT_ID,FELEM_VALUES,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION FROM LIB_FEAT WHERE LIB_FEAT_ID IN ($1)"
+1602253726292,2020-10-09 14:28:46.292 [sql:140444549768960:[13::MASTER:ER:631063]] ERR: Bind Values: 5256261
+1602253726349,2020-10-09 14:28:46.349 [sql:140444541376256:[15::MASTER:ER:]] ERR: Exception: SSL connection has been closed unexpectedly   SSL connection has been closed unexpectedly  
+1602253726349,"2020-10-09 14:28:46.349 [sql:140444541376256:[15::MASTER:ER:]] ERR: Statement: Statement: query = SELECT NUM_RES_ENT,NUM_RES_ENT_OOM,CANDIDATE_CAP_REACHED,SCORING_CAP_REACHED FROM RES_FEAT_STAT WHERE LIB_FEAT_ID=$1 AND LENS_ID=$2 AND ECLASS_ID=$3"
+1602253726349,"2020-10-09 14:28:46.349 [sql:140444541376256:[15::MASTER:ER:]] ERR: Bind Values: 101763,1,1"
+1602253726417,2020-10-09 14:28:46.417 [sql:140444558161664:[11::MASTER:ER:626070]] ERR: Exception: SSL connection has been closed unexpectedly   SSL connection has been closed unexpectedly  
+1602253726417,2020-10-09 14:28:46.417 [sql:140444558161664:[11::MASTER:ER:626070]] ERR: Statement: Statement: query = SELECT RES_REL_ID FROM RES_REL_EKEY WHERE RES_ENT_ID IN ($1) AND LENS_ID=$2
+1602253726417,"2020-10-09 14:28:46.417 [sql:140444558161664:[11::MASTER:ER:626070]] ERR: Bind Values: 39704,1"
+1602253726429,2020-10-09 14:28:46.429 [sql:140444637841152:[9::MASTER:ER:625069]] ERR: Exception: SSL connection has been closed unexpectedly   SSL connection has been closed unexpectedly  
+1602253726429,"2020-10-09 14:28:46.429 [sql:140444637841152:[9::MASTER:ER:625069]] ERR: Statement: Statement: query = select lib_feat_id,ftype_id from OBS_FEAT_EKEY where obs_ent_id=$1 and ftype_id in ($2,$3)"
+1602253726429,"2020-10-09 14:28:46.429 [sql:140444637841152:[9::MASTER:ER:625069]] ERR: Bind Values: 19907,89,90"
+1602253726935,"2020-10-09 14:28:46.935 [sql:140444646233856:[7::MASTER::]] ERR: Exception: 26000ERROR:  prepared statement ""3005111711"" does not exist  26000 ERROR:  prepared statement ""3005111711"" does not exist  "
+1602253726935,"2020-10-09 14:28:46.935 [sql:140444646233856:[7::MASTER::]] ERR: Statement: Statement: query = SELECT MSG_ID,LENS_CODE,ETYPE_CODE,DSRC_CODE,ENT_SRC_KEY,MSG FROM SYS_EVAL_QUEUE WHERE MSG_ID>$1 LIMIT 100"
+1602253726935,2020-10-09 14:28:46.935 [sql:140444646233856:[7::MASTER::]] ERR: Bind Values: 1113
+1602253726935,"2020-10-09 14:28:46,935 senzing-50100703E G2Engine.getRedoRecord() err: 1007E|Database Connection Lost '(7:26000ERROR:  prepared statement ""3005111711"" does not exist  26000 ERROR:  prepared statement ""3005111711"" does not exist  )'"
+1602253726935,"2020-10-09 14:28:46,935 senzing-50100698E Program terminated with error."
+1602253933137,"2020-10-09 14:32:13,137 senzing-50100723E Detected inactive thread. Total threads: 4  Active threads: 5"
+1602253933137,"2020-10-09 14:32:13,137 senzing-50100698E Program terminated with error."
