@@ -1,20 +1,20 @@
 
 
 20M perf test run:
-=====================================================================================================
-Build:                          |  3.2.0-22201   |  3.2.0-22201   |  3.2.0-22201   |  3.2.0-22229   |
-Peak:                           |  2872          |  2994          |  2771          |  3235          |
-Warm-up:                        |     0.9  hours |     0.55 hours |     0.7  hours |     0.48 hours |
-Average after warm-up:          |  2468          |  2611          |  2265          |  2745          |
-Average over entire run:        |  1873          |  2165          |  1883          |  2331          |
-Time to load 20M:               |     2.95 hours |     2.55 hours |     2.93 hours |     2.37 hours |
-Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
-StreamLoader withinfo->ouputQ:  |    NO          |    NO          |    NO          |    NO          |
-Total Billed read IOPS:         |   20,346,195   |    5,419,094   |   41,585,961   |    8,075,496   |
-Total Billed write IOPS:        |   93,738,844   |  119,066,657   |  134,027,300   |  116,664,154   |
-Notes:                          |                | stream loader  | stream/redoer  | embedded       |
-                                |                | config changes | loader changes | senzing        |
-=====================================================================================================
+======================================================================================================================
+Build:                          |  3.2.0-22201   |  3.2.0-22201   |  3.2.0-22201   |  3.2.0-22229   |  3.3.0.22245   |
+Peak:                           |  2872          |  2994          |  2771          |  3235          |  3128          |
+Warm-up:                        |     0.9  hours |     0.55 hours |     0.7  hours |     0.48 hours |     0.58 hours |
+Average after warm-up:          |  2468          |  2611          |  2265          |  2745          |  2586          |
+Average over entire run:        |  1873          |  2165          |  1883          |  2331          |  2151          |
+Time to load 20M:               |     2.95 hours |     2.55 hours |     2.93 hours |     2.37 hours |     2.57 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+StreamLoader withinfo->ouputQ:  |    NO          |    NO          |    NO          |    NO          |    NO          |
+Total Billed read IOPS:         |   20,346,195   |    5,419,094   |   41,585,961   |    8,075,496   |   20,911,476   |
+Total Billed write IOPS:        |   93,738,844   |  119,066,657   |  134,027,300   |  116,664,154   |   64,107,655   |
+Notes:                          |                | stream loader  | stream/redoer  | embedded       | embedded       |
+                                |                | config changes | loader changes | senzing        | senzing        |
+======================================================================================================================
 
 =====================================================================================================================
 Build:                          |  2.8.2-21243  |  2.8.8-22088   |  3.0.0-22119   |  3.1.0-22152   |  3.2.0-22201   |
