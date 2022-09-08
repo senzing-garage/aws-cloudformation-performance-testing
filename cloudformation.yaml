@@ -56,8 +56,8 @@ Metadata:
         default: "Required: Number of records to insert."
       RunStreamProducer:
         default: "Optional: Would you like to have an initial set of data imported?"
-      RunDataEncryption:
-        default: "Optional: Would you like to run with data encryption enabled?"
+      # RunDataEncryption:
+      #   default: "Optional: Would you like to run with data encryption enabled?"
       SecurityResponsibility:
         default: >-
           Required: A default deployment of this template is for demonstration only.
@@ -110,7 +110,7 @@ Parameters:
       - "50M"
       - "75M"
       - "100M"
-    Default: "10M"
+    Default: "20M"
     Description: "Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#recordmax"
     Type: String
 
@@ -319,10 +319,6 @@ Conditions:
     - !Condition IfRunApiServer
     - !Condition IfRunSwagger
     - !Condition IfRunWebApp
-
-  IfUsingRedoQueues: !Or
-    - !Condition IfRunRedoer
-    - !Condition IfRunRedoer
 
   IfUsingSshd: !Or
     - !Condition IfRunSshd
@@ -741,26 +737,6 @@ Resources:
         - !Ref IamRoleStreamLoader
     Type: AWS::IAM::Policy
 
-  IamPolicySqsConsumerRedo:
-    Condition: IfUsingRedoQueues
-    Properties:
-      PolicyName: !Sub "${AWS::StackName}-iam-policy-sqs-consumer-redo"
-      PolicyDocument:
-        Statement:
-          - Action:
-              - sqs:DeleteMessage
-              - sqs:GetQueueAttributes
-              - sqs:ReceiveMessage
-            Effect: Allow
-            Resource:
-              - !GetAtt SqsRedoerDeadLetter.Arn
-              - !GetAtt SqsRedoerInput.Arn
-              - !GetAtt SqsRedoerOutput.Arn
-        Version: "2012-10-17"
-      Roles:
-        - !Ref IamRoleRedoer
-    Type: AWS::IAM::Policy
-
   IamPolicySqsProducer:
     Condition: IfUsingQueues
     Properties:
@@ -780,25 +756,6 @@ Resources:
         - !Ref IamRoleStreamLoader
         - !Ref IamRoleStreamProducer
         - !Ref IamRoleApiServer
-    Type: AWS::IAM::Policy
-
-  IamPolicySqsProducerRedo:
-    Condition: IfUsingRedoQueues
-    Properties:
-      PolicyName: !Sub "${AWS::StackName}-iam-policy-sqs-producer-redo"
-      PolicyDocument:
-        Statement:
-          - Action:
-              - sqs:SendMessage
-              - sqs:GetQueueAttributes
-            Effect: Allow
-            Resource:
-              - !GetAtt SqsRedoerDeadLetter.Arn
-              - !GetAtt SqsRedoerInput.Arn
-              - !GetAtt SqsRedoerOutput.Arn
-        Version: "2012-10-17"
-      Roles:
-        - !Ref IamRoleRedoer
     Type: AWS::IAM::Policy
 
   IamPolicyTaskRunner:
@@ -1654,57 +1611,6 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-sqs-output"
-      VisibilityTimeout: 300
-    Type: AWS::SQS::Queue
-
-  SqsRedoerDeadLetter:
-    Condition: IfUsingRedoQueues
-    Properties:
-      DelaySeconds: 0
-      KmsMasterKeyId: alias/aws/sqs
-      MaximumMessageSize: 262144
-      MessageRetentionPeriod: 1209600
-      QueueName: !Sub "${AWS::StackName}-sqs-redoer-dead-letter"
-      ReceiveMessageWaitTimeSeconds: 0
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-sqs-redoer-queue-dead"
-      VisibilityTimeout: 30
-    Type: AWS::SQS::Queue
-
-  SqsRedoerInput:
-    Condition: IfUsingRedoQueues
-    Properties:
-      DelaySeconds: 0
-      KmsMasterKeyId: alias/aws/sqs
-      MaximumMessageSize: 262144
-      MessageRetentionPeriod: 1209600
-      QueueName: !Sub "${AWS::StackName}-sqs-redoer-input"
-      ReceiveMessageWaitTimeSeconds: 0
-      RedrivePolicy:
-        deadLetterTargetArn:
-          Fn::GetAtt:
-            - SqsRedoerDeadLetter
-            - Arn
-        maxReceiveCount: 100
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-sqs-redoer-input"
-      VisibilityTimeout: 14400
-    Type: AWS::SQS::Queue
-
-  SqsRedoerOutput:
-    Condition: IfUsingRedoQueues
-    Properties:
-      DelaySeconds: 0
-      KmsMasterKeyId: alias/aws/sqs
-      MaximumMessageSize: 262144
-      MessageRetentionPeriod: 1209600
-      QueueName: !Sub "${AWS::StackName}-sqs-redoer-output"
-      ReceiveMessageWaitTimeSeconds: 0
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-sqs-redoer-output"
       VisibilityTimeout: 300
     Type: AWS::SQS::Queue
 
@@ -3342,7 +3248,7 @@ Resources:
           Value: !Sub "${AWS::StackName}-ecs-task-definition-init-postgres-configuration"
     Type: AWS::ECS::TaskDefinition
 
-  EcsTaskDefinitionRedoerLoader:
+  EcsTaskDefinitionRedoer:
     Condition: IfRunRedoer
     Properties:
       ContainerDefinitions:
@@ -3359,14 +3265,8 @@ Resources:
               Value: "600"
             - Name: SENZING_REDO_SLEEP_TIME_IN_SECONDS
               Value: "10"
-            - Name: SENZING_SQS_FAILURE_QUEUE_URL
-              Value: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsRedoerDeadLetter.QueueName}"
-            - Name: SENZING_SQS_INFO_QUEUE_URL
-              Value: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsRedoerOutput.QueueName}"
-            - Name: SENZING_SQS_REDO_QUEUE_URL
-              Value: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsRedoerInput.QueueName}"
             - Name: SENZING_SUBCOMMAND
-              Value: read-from-sqs
+              Value: redo
             - Name: SENZING_THREADS_PER_PROCESS
               Value: "20"
           Essential: true
@@ -3377,68 +3277,19 @@ Resources:
               awslogs-group: !Ref LogsLogGroupMain
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: service
-          Name: redoer-loader
+          Name: redoer
           Privileged: false
           ReadonlyRootFilesystem: false
       Cpu: "4096"
       ExecutionRoleArn: !GetAtt IamRoleRedoer.Arn
-      Family: !Sub "${AWS::StackName}-task-definition-redoer-loader"
+      Family: !Sub "${AWS::StackName}-task-definition-redoer"
       Memory: "30720"
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
       Tags:
         - Key: Name
-          Value: !Sub "${AWS::StackName}-ecs-task-definition-redoer-loader"
-      TaskRoleArn: !GetAtt IamRoleRedoer.Arn
-    Type: AWS::ECS::TaskDefinition
-
-  EcsTaskDefinitionRedoerProducer:
-    Condition: IfRunRedoer
-    Properties:
-      ContainerDefinitions:
-        - Environment:
-            - Name: SENZING_ENGINE_CONFIGURATION_JSON
-              Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
-            - Name: SENZING_EXIT_ON_THREAD_TERMINATION
-              Value: "true"
-            - Name: SENZING_GOVERNOR_CHECK_TIME_INTERVAL_IN_SECONDS
-              Value: "600"
-            - Name: SENZING_LOG_LEVEL
-              Value: info
-            - Name: SENZING_MONITORING_PERIOD_IN_SECONDS
-              Value: "600"
-            - Name: SENZING_QUEUE_MAX_SIZE
-              Value: "100"
-            - Name: SENZING_REDO_SLEEP_TIME_IN_SECONDS
-              Value: "10"
-            - Name: SENZING_SQS_REDO_QUEUE_URL
-              Value: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsRedoerInput.QueueName}"
-            - Name: SENZING_SUBCOMMAND
-              Value: write-to-sqs
-            - Name: SENZING_THREADS_PER_PROCESS
-              Value: "12"
-          Essential: true
-          Image: !FindInMap [Constants, Images, Redoer]
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-group: !Ref LogsLogGroupMain
-              awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: service
-          Name: redoer-producer
-          Privileged: false
-          ReadonlyRootFilesystem: false
-      Cpu: "4096"
-      ExecutionRoleArn: !GetAtt IamRoleRedoer.Arn
-      Family: !Sub "${AWS::StackName}-task-definition-redoer-producer"
-      Memory: "16384"
-      NetworkMode: awsvpc
-      RequiresCompatibilities:
-        - FARGATE
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ecs-task-definition-redoer-producer"
+          Value: !Sub "${AWS::StackName}-ecs-task-definition-redoer"
       TaskRoleArn: !GetAtt IamRoleRedoer.Arn
     Type: AWS::ECS::TaskDefinition
 
@@ -3698,10 +3549,10 @@ Resources:
               Protocol: tcp
           Privileged: false
           ReadonlyRootFilesystem: false
-      Cpu: "1024"
+      Cpu: "2048"
       ExecutionRoleArn: !GetAtt IamRoleWebApp.Arn
       Family: !Sub "${AWS::StackName}-task-definition-webapp"
-      Memory: "8192"
+      Memory: "16384"
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
@@ -3795,7 +3646,7 @@ Resources:
       TaskDefinition: !Ref EcsTaskDefinitionApiServer
     Type: AWS::ECS::Service
 
-  EcsServiceRedoerLoader:
+  EcsServiceRedoer:
     Condition: IfRunRedoer
     Properties:
       Cluster: !Ref EcsCluster
@@ -3812,35 +3663,11 @@ Resources:
             - !Ref Ec2SubnetPrivate2
       PlatformVersion: 1.4.0
       PropagateTags: TASK_DEFINITION
-      ServiceName: redoer-loader
+      ServiceName: redoer
       Tags:
         - Key: Name
-          Value: !Sub "${AWS::StackName}-ecs-service-redoer-loader"
-      TaskDefinition: !Ref EcsTaskDefinitionRedoerLoader
-    Type: AWS::ECS::Service
-
-  EcsServiceRedoerProducer:
-    Condition: IfRunRedoer
-    Properties:
-      Cluster: !Ref EcsCluster
-      DesiredCount: 1
-      EnableECSManagedTags: true
-      LaunchType: FARGATE
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          AssignPublicIp: DISABLED
-          SecurityGroups:
-            - !Ref Ec2SecurityGroupInternal
-          Subnets:
-            - !Ref Ec2SubnetPrivate1
-            - !Ref Ec2SubnetPrivate2
-      PlatformVersion: 1.4.0
-      PropagateTags: TASK_DEFINITION
-      ServiceName: redoer-producer
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ecs-service-redoer-producer"
-      TaskDefinition: !Ref EcsTaskDefinitionRedoerProducer
+          Value: !Sub "${AWS::StackName}-ecs-service-redoer"
+      TaskDefinition: !Ref EcsTaskDefinitionRedoer
     Type: AWS::ECS::Service
 
   EcsServiceSshd:
@@ -4032,12 +3859,12 @@ Resources:
         ScheduledScalingSuspended: false
     Type: AWS::ApplicationAutoScaling::ScalableTarget
 
-  ApplicationAutoScalingScalableTargetRedoerLoader:
+  ApplicationAutoScalingScalableTargetRedoer:
     Condition: IfRunRedoer
     Properties:
       MaxCapacity: 200
       MinCapacity: 1
-      ResourceId: !Sub "service/${EcsCluster}/${EcsServiceRedoerLoader.Name}"
+      ResourceId: !Sub "service/${EcsCluster}/${EcsServiceRedoer.Name}"
       RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
       ScalableDimension: ecs:service:DesiredCount
       ServiceNamespace: ecs
@@ -4094,12 +3921,12 @@ Resources:
         TargetValue: 30
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
 
-  ApplicationAutoScalingScalingPolicyRedoerLoader:
+  ApplicationAutoScalingScalingPolicyRedoer:
     Condition: IfRunRedoer
     Properties:
-      PolicyName: !Sub "${AWS::StackName}-scaling-policy-redoer-loader"
+      PolicyName: !Sub "${AWS::StackName}-scaling-policy-redoer"
       PolicyType: TargetTrackingScaling
-      ScalingTargetId: !Ref ApplicationAutoScalingScalableTargetRedoerLoader
+      ScalingTargetId: !Ref ApplicationAutoScalingScalableTargetRedoer
       TargetTrackingScalingPolicyConfiguration:
         PredefinedMetricSpecification:
           PredefinedMetricType: ECSServiceAverageCPUUtilization
@@ -4309,27 +4136,6 @@ Outputs:
     Export:
       Name: !Sub "${AWS::StackName}-sqs-output"
     Value: !Ref SqsOutput
-
-  QueueRedoerDeadLetter:
-    Condition: IfUsingRedoQueues
-    Description: "URL of the redoer dead-letter queue. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#queueredoerdeadletter"
-    Export:
-      Name: !Sub "${AWS::StackName}-sqs-redoer-deadletter"
-    Value: !Ref SqsRedoerDeadLetter
-
-  QueueRedoerInput:
-    Condition: IfUsingRedoQueues
-    Description: "URL of the queue holding redo records to be processed. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#queueredoerinput"
-    Export:
-      Name: !Sub "${AWS::StackName}-sqs-redoer-input"
-    Value: !Ref SqsRedoerInput
-
-  QueueRedoerOutput:
-    Condition: IfUsingRedoQueues
-    Description: "URL of the queue with redoer info records. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#queueredoeroutput"
-    Export:
-      Name: !Sub "${AWS::StackName}-sqs-redoer-output"
-    Value: !Ref SqsRedoerOutput
 
   SshPassword:
     Condition: IfUsingSshd
