@@ -33,7 +33,7 @@ Metadata:
         Parameters:
           - CognitoAdminEmail
           - CidrInbound
-          - RunDataEncryption
+          # - RunDataEncryption
       - Label:
           default: "Optional: Initial data load"
         Parameters:
@@ -122,13 +122,13 @@ Parameters:
     Description: "Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#runstreamproducer"
     Type: String
 
-  RunDataEncryption:
-    AllowedValues:
-      - "No"
-      - "Yes"
-    Default: "No"
-    Description: "Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#rundataencryption"
-    Type: String
+  # RunDataEncryption:
+  #   AllowedValues:
+  #     - "No"
+  #     - "Yes"
+  #   Default: "No"
+  #   Description: "Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#rundataencryption"
+  #   Type: String
 
   SecurityResponsibility:
     AllowedPattern: ".+|^I AGREE$"
@@ -191,16 +191,16 @@ Rules:
 # -----------------------------------------------------------------------------
 
 Mappings:
-  DataEncryptionMap:
-    "Yes":
-      value: '
-        "DATA_ENCRYPTION": {
-        "ENCRYPTION_PLUGIN_NAME": "g2EncryptDataAES256CBC",
-        "ENCRYPTION_KEY": "68402346802394406802620602396369",
-        "ENCRYPTION_INITIALIZATION_VECTOR": "6432072349624624"
-        },'
-    "No":
-      value: ""
+  # DataEncryptionMap:
+  #   "Yes":
+  #     value: '
+  #       "DATA_ENCRYPTION": {
+  #       "ENCRYPTION_PLUGIN_NAME": "g2EncryptDataAES256CBC",
+  #       "ENCRYPTION_KEY": "68402346802394406802620602396369",
+  #       "ENCRYPTION_INITIALIZATION_VECTOR": "6432072349624624"
+  #       },'
+  #   "No":
+  #     value: ""
 
   RecordMaxMap:
     "1M":
@@ -277,9 +277,9 @@ Conditions:
     - !FindInMap [Constants, Run, ApiServer]
     - Yes
 
-  IfRunDataEncryption: !Equals
-    - !Ref RunDataEncryption
-    - "Yes"
+  # IfRunDataEncryption: !Equals
+  #   - !Ref RunDataEncryption
+  #   - "Yes"
 
   IfRunRedoer: !Equals
     - !FindInMap [Constants, Run, Redoer]
@@ -2460,7 +2460,7 @@ Resources:
       DatabasePortLibfeat: !GetAtt RdsDbClusterLibfeat.Endpoint.Port
       DatabasePortRes: !GetAtt RdsDbClusterRes.Endpoint.Port
       DatabaseUsername: !FindInMap [Constants, Database, Username]
-      DataEncryption: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
+      # DataEncryption: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
       SenzingLicenseAsBase64: !Ref SenzingLicenseAsBase64
       ServiceToken: !GetAtt LambdaFunctionSenzingEngineConfigurationJson.Arn
       Tags:
@@ -4045,12 +4045,12 @@ Outputs:
       Name: !Sub "${AWS::StackName}-database-username"
     Value: !FindInMap [Constants, Database, Username]
 
-  DataEncryption:
-    Condition: IfRunDataEncryption
-    Description: "test data encryption parameter"
-    Export:
-      Name: "DataEncryption"
-    Value: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
+  # DataEncryption:
+  #   Condition: IfRunDataEncryption
+  #   Description: "test data encryption parameter"
+  #   Export:
+  #     Name: "DataEncryption"
+  #   Value: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
 
   Ec2InternetGateway:
     Description: "Internet Gateway. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#ec2internetgateway"
