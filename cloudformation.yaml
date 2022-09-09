@@ -237,14 +237,14 @@ Mappings:
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.1
       Xterm: public.ecr.aws/senzing/xterm:staging
     Run:
-      ApiServer: Yes
+      ApiServer: No
       Redoer: Yes
       Sshd: Yes
       SshdMax: No
       StreamLoader: Yes
       Swagger: No
-      WebApp: Yes
-      Xterm: Yes
+      WebApp: No
+      Xterm: No
     Stack:
       Name: staging-simple-100M
     StreamProducer:
@@ -3650,7 +3650,7 @@ Resources:
     Condition: IfRunRedoer
     Properties:
       Cluster: !Ref EcsCluster
-      DesiredCount: 2
+      DesiredCount: 1
       EnableECSManagedTags: true
       LaunchType: FARGATE
       NetworkConfiguration:
