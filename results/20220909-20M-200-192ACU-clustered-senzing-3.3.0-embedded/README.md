@@ -1,4 +1,4 @@
-# senzing-test-results-20220908-20M-200-192ACU-clustered-senzing-3.3.0-embedded
+# senzing-test-results-20220909-20M-200-192ACU-clustered-senzing-3.3.0-embedded
 
 ## Contents
 
@@ -15,7 +15,7 @@
 
 ## Overview
 
-1. Performed: Sep 08, 2022
+1. Performed: Sep 09, 2022
 2. Senzing version: 3.3.0.22245
 3. Instructions:
    [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
@@ -26,7 +26,7 @@
     1. `SENZING_THREADS_PER_PROCESS` = 20
     1. `Memory` = 30720
     1. Autoscaling target = 30%
-4. Redoer loader:
+4. Redoer:
     1. `SENZING_THREADS_PER_PROCESS` = 20
     1. `Memory` = 30720
     1. Autoscaling target = 30%
@@ -42,20 +42,20 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 3128/second
-    1. Warm-up: 0.58 hours
-    1. Average after warm-up: 2586/second
-    1. Average over entire run: 2151/second
-    1. Time to load 20M: 2.57 hours
+    1. Peak: 3165/second
+    1. Warm-up: 0.5 hours
+    1. Average after warm-up: 2614/second
+    1. Average over entire run: 2222/second
+    1. Time to load 20M: 2.48 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:  20,911,476
-    1. Total Billed write IOPS: 64,107,655
+    1. Total Billed read IOPS:  19,287,696
+    1. Total Billed write IOPS: 94,608,757
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 49
-- Max Redoer-loader tasks: 11
+- Max Stream-loader tasks: 51
+- Max Redoer tasks: 10
 
 ### Final metrics
 
@@ -71,24 +71,6 @@ N/A.  Ran without `withinfo` enabled.
 
 ![SQS output metrics](images/sqs-output-metrics.png "SQS output metrics")
 
-##### SQS Metrics redoer input queue
-
-![SQS redoer input metrics](images/sqs-redoer-input-metrics.png "SQS redoer input metrics")
-
-##### SQS Metrics redoer output queue
-
-N/A.  Ran without `withinfo` enabled.
-
-![SQS redoer output metrics](images/sqs-redoer-output-metrics.png "SQS redoer output metrics")
-
-#### EFS
-
-##### EFS Metrics
-
-N/A. EFS has been removed
-
-![EFS metrics](images/efs-metrics.png "EFS metrics")
-
 #### ECS
 
 ##### Stream-loader CPU Utilization
@@ -99,21 +81,13 @@ N/A. EFS has been removed
 
 ![Stream Loader Memory Utilization](images/stream-loader-Memory-Utilization.png "Stream-loader Memory Utilization")
 
-##### Redoer-producer CPU Utilization
+##### Redoer CPU Utilization
 
-![Redoer-producer CPU Utilization](images/redoer-producer-CPU-Utilization.png "Redoer-producer CPU Utilization")
+![Redoer CPU Utilization](images/redoer-CPU-Utilization.png "Redoer CPU Utilization")
 
-##### Redoer-producer Memory Utilization
+##### Redoer Memory Utilization
 
-![Redoer-producer Memory Utilization](images/redoer-producer-Memory-Utilization.png "Redoer-producer Memory Utilization")
-
-##### Redoer-loader CPU Utilization
-
-![Redoer-loader CPU Utilization](images/redoer-loader-CPU-Utilization.png "Redoer-loader CPU Utilization")
-
-##### Redoer-loader Memory Utilization
-
-![Redoer-loader Memory Utilization](images/redoer-loader-Memory-Utilization.png "Redoer-loader Memory Utilization")
+![Redoer Memory Utilization](images/redoer-Memory-Utilization.png "Redoer Memory Utilization")
 
 #### RDS
 
@@ -137,45 +111,45 @@ N/A. EFS has been removed
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-              now              |  count
--------------------------------+----------
- 2022-09-08 14:59:06.904625+00 | 20000000
+             now              |  count
+------------------------------+----------
+ 2022-09-09 15:09:42.64118+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2022-09-08 14:59:13.388373+00 |     0
+ 2022-09-09 15:12:45.613217+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2022-09-08 14:59:17.032043+00 | 19999959
+ 2022-09-09 15:12:56.918157+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2022-09-08 14:59:23.277444+00 | 17478735
+ 2022-09-09 15:13:18.068385+00 | 17478767
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2022-09-08 14:59:28.854341+00 | 19999959
+ 2022-09-09 15:13:24.590207+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+---------
- 2022-09-08 14:59:33.197361+00 | 9124605
+ 2022-09-09 15:13:29.429513+00 | 9121567
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration from dsrc_record;
-       load_start        |       erpm       |  total   |  duration
--------------------------+------------------+----------+-------------
- 2022-09-08 12:23:00.971 | 129133.898939811 | 20000000 | 02:34:52.68
+       load_start        |       erpm       |  total   |   duration
+-------------------------+------------------+----------+--------------
+ 2022-09-09 12:26:27.985 | 134317.522593886 | 20000000 | 02:28:54.054
 (1 row)
 
 ```
