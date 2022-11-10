@@ -226,15 +226,15 @@ Mappings:
       Username: senzing
     Images:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
-      InitDataEncryption: public.ecr.aws/senzing/data-encryption-aes256cbc-sample:1.0.2
+      InitDataEncryption: public.ecr.aws/senzing/data-encryption-aes256cbc-sample:1.0.5
       InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       Redoer: public.ecr.aws/senzing/redoer:staging
       SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:staging
       Sshd: public.ecr.aws/senzing/sshd:staging
       StreamLoader: public.ecr.aws/senzing/stream-loader:staging
-      StreamProducer: public.ecr.aws/senzing/stream-producer:1.7.3
+      StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.3
       Swagger: public.ecr.aws/senzing/swagger-ui:v4.13.2
-      WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.1
+      WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.3
       Xterm: public.ecr.aws/senzing/xterm:staging
     Run:
       ApiServer: No
@@ -3136,8 +3136,8 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Command:
-            - '/bin/bash'
-            - '-c'
+            - "/bin/bash"
+            - "-c"
             - 'echo "${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc'
           Environment:
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
