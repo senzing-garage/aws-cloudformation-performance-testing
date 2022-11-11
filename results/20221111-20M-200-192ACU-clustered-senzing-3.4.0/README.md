@@ -1,4 +1,4 @@
-# senzing-test-results-20221110-20M-200-192ACU-clustered-senzing-3.4.0-embedded
+# senzing-test-results-20221111-20M-200-192ACU-clustered-senzing-3.4.0
 
 ## Contents
 
@@ -15,7 +15,7 @@
 
 ## Overview
 
-1. Performed: Nov 10, 2022
+1. Performed: Nov 11, 2022
 2. Senzing version: 3.4.0.22313
 3. Instructions:
    [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
@@ -42,14 +42,14 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2187/second
-    1. Warm-up: 0.5 hours
+    1. Peak: 2231/second
+    1. Warm-up: 0.63 hours
     1. Average after warm-up: 1717/second
-    1. Average over entire run: 1557/second
-    1. Time to load 20M: 3.5 hours
+    1. Average over entire run: 1529/second
+    1. Time to load 20M: 3.62 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:   79,000,422
-    1. Total Billed write IOPS: 128,413,952
+    1. Total Billed read IOPS:   84,586,541
+    1. Total Billed write IOPS: 129,055,447
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
@@ -113,43 +113,43 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2022-11-10 19:24:28.664298+00 | 20000000
+ 2022-11-11 18:49:34.044891+00 | 20000000
 (1 row)
 
-G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
-              now              | count
--------------------------------+-------
- 2022-11-10 19:24:58.924978+00 |     0
+G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
+              now              |  count
+-------------------------------+----------
+ 2022-11-11 18:49:55.512813+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
-              now              |  count
--------------------------------+----------
- 2022-11-10 19:25:25.858612+00 | 17478372
+             now              |  count
+------------------------------+----------
+ 2022-11-11 18:50:32.53414+00 | 17478392
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2022-11-10 19:25:32.651677+00 | 19999959
+ 2022-11-11 18:50:40.596104+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
-             now              | count
-------------------------------+-------
- 2022-11-10 19:25:38.30164+00 |     0
+              now              | count
+-------------------------------+-------
+ 2022-11-11 18:50:46.138027+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+---------
- 2022-11-10 19:25:44.503186+00 | 9125455
+ 2022-11-11 18:50:50.653952+00 | 9125165
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration from dsrc_record;
        load_start        |       erpm       |  total   |   duration
 -------------------------+------------------+----------+--------------
- 2022-11-10 15:29:55.616 | 93901.2984671552 | 20000000 | 03:32:59.376
+ 2022-11-11 14:47:56.713 | 92168.0435420271 | 20000000 | 03:36:59.697
 (1 row)
 
 ```
