@@ -2,15 +2,15 @@
 
 20M perf test run:
 ======================================================================================================================
-Build:                          |  3.2.0-22229   |  3.3.0.22245   |  3.4.0.22313   |  3.4.0.22313   |  3.4.0.22322   |
-Peak:                           |  3235          |  3165          |  2187          |  2214          |  2949          |
-Warm-up:                        |     0.48 hours |     0.5  hours |     0.5  hours |     0.42 hours |     0.45 hours |
-Average after warm-up:          |  2745          |  2614          |  1717          |  1907          |  2488          |
-Average over entire run:        |  2331          |  2222          |  1557          |  1764          |  2179          |
-Time to load 20M:               |     2.37 hours |     2.48 hours |     3.5  hours |     3.13 hours |     2.53 hours |
+Build:                          |  3.2.0-22229   |  3.3.0.22245   |  3.4.0.22313   |  3.4.0.22322   |  3.4.0.22333   |
+Peak:                           |  3235          |  3165          |  2214          |  2949          |  2980          |
+Warm-up:                        |     0.48 hours |     0.5  hours |     0.42 hours |     0.45 hours |     0.48 hours |
+Average after warm-up:          |  2745          |  2614          |  1907          |  2488          |  2660          |
+Average over entire run:        |  2331          |  2222          |  1764          |  2179          |  2331          |
+Time to load 20M:               |     2.37 hours |     2.48 hours |     3.13 hours |     2.53 hours |     2.37 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |    8,075,496   |   19,287,696   |   79,000,422   |       20,653   |   30,837,939   |
-Total Billed write IOPS:        |  116,664,154   |   94,608,757   |  128,413,952   |  126,704,322   |   99,432,993   |
+Total Billed read IOPS:         |    8,075,496   |   19,287,696   |       20,653   |   30,837,939   |        6,491   |
+Total Billed write IOPS:        |  116,664,154   |   94,608,757   |  126,704,322   |   99,432,993   |   78,340,242   |
 Notes:                          | embedded       | embedded       | embedded       | embedded       | embedded       |
                                 | senzing        | senzing        | senzing        | senzing        | senzing        |
 ======================================================================================================================
