@@ -1458,7 +1458,7 @@ Resources:
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
-        MinCapacity: 192
+        MinCapacity: 2
         #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
         #       SecondsBeforeTimeout: 60
         SecondsUntilAutoPause: 3600
@@ -1500,7 +1500,7 @@ Resources:
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
-        MinCapacity: 192
+        MinCapacity: 2
         #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
         #       SecondsBeforeTimeout: 60
         SecondsUntilAutoPause: 3600
@@ -1542,7 +1542,7 @@ Resources:
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
-        MinCapacity: 192
+        MinCapacity: 2
         #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
         #       SecondsBeforeTimeout: 60
         SecondsUntilAutoPause: 3600
