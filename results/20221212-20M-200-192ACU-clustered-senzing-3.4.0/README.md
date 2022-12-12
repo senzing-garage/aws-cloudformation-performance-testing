@@ -47,7 +47,7 @@
     1. Average after warm-up: 2450/second
     1. Average over entire run: 2096/second
     1. Time to load 20M: 2.63 hours
-    1. Records in dead-letter queue: 0
+    1. Records in dead-letter queue: 1
     1. Total Billed read IOPS:   27,556,292
     1. Total Billed write IOPS:  57,402,959
     1. See [dsrc_record.csv](data/dsrc_record.csv)
