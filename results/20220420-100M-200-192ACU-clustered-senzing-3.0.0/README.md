@@ -36,7 +36,7 @@
     1. Warm-up: 55 mins
     1. Average after warm-up: 1797/second
     1. Average over entire run: 1727/second
-    1. Time to load 20M: 16.07 hours
+    1. Time to load 100M: 16.07 hours
     2. Records in dead-letter queue: 0
     3. See [dsrc_record.csv](data/dsrc_record.csv)
 
