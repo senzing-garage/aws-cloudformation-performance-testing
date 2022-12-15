@@ -1422,8 +1422,9 @@ Resources:
       Description: !Sub "${AWS::StackName}-rds-db-cluster-parameter-group-description"
       Family: aurora-postgresql11
       Parameters:
-        "synchronous_commit": "off"
         autovacuum_max_workers: 5
+        enable_seqscan: "off"
+        synchronous_commit: "off"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-cluster-parameter-group"
@@ -2177,6 +2178,7 @@ Resources:
                                 '    },'
                                 '    "SQL": {'
                                 '        "BACKEND": "SQL",'
+                                '        "XXXDEBUGLEVEL": "2",'
                                 f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
                                 '    },'
                                 f'    {data_encryption}'
@@ -2192,6 +2194,7 @@ Resources:
                                 '    },'
                                 '    "SQL": {'
                                 '        "BACKEND": "HYBRID",'
+                                '        "XXXDEBUGLEVEL": "2",'
                                 f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
                                 '    },'
                                 f'    {data_encryption}'
@@ -3253,6 +3256,8 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Environment:
+            - Name: SENZING_DEBUG
+              Value: False
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
             - Name: SENZING_EXIT_ON_THREAD_TERMINATION
@@ -3376,6 +3381,8 @@ Resources:
         - Environment:
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
+            - Name: SENZING_DEBUG
+              Value: False
             - Name: SENZING_DELAY_IN_SECONDS
               Value: "900"
             - Name: SENZING_DELAY_RANDOMIZED
