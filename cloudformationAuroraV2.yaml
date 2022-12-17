@@ -1420,7 +1420,7 @@ Resources:
   RdsDbClusterParameterGroup:
     Properties:
       Description: !Sub "${AWS::StackName}-rds-db-cluster-parameter-group-description"
-      Family: aurora-postgresql11
+      Family: aurora-postgresql14
       Parameters:
         autovacuum_max_workers: 5
         enable_seqscan: "off"
@@ -1429,6 +1429,18 @@ Resources:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-cluster-parameter-group"
     Type: AWS::RDS::DBClusterParameterGroup
+
+  # RdsDbParameterGroup:
+  #   Properties:
+  #     Description: !Sub "${AWS::StackName}-rds-db-parameter-group-description"
+  #     Family: aurora-postgresql14
+  #     # Parameters:
+  #     # "synchronous_commit": "off"
+  #     # autovacuum_max_workers: 5
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Sub "${AWS::StackName}-rds-db-parameter-group"
+  #   Type: AWS::RDS::DBParameterGroup
 
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html
   # AWS Console: https://console.aws.amazon.com/rds/home?#databases: > Search for {stack}
@@ -1452,21 +1464,13 @@ Resources:
       DeletionProtection: false
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
-      EngineMode: serverless
-      EngineVersion: "11.13"
+      # EngineMode: serverless
+      EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
-      ScalingConfiguration:
-        AutoPause: true
-        MaxCapacity: 192
+      ServerlessV2ScalingConfiguration:
+        MaxCapacity: 128
         MinCapacity: 2
-        #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
-        #       SecondsBeforeTimeout: 60
-        SecondsUntilAutoPause: 3600
-      #       FIXME:  Uncomment once 'TimeoutAction' is supported.
-      #       https://github.com/aws-cloudformation/aws-cloudformation-coverage-roadmap/issues/298
-      #       https://console.aws.amazon.com/support/home#/case/?displayId=7705681311&language=en
-      #       TimeoutAction: ForceApplyCapacityChange
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1494,21 +1498,13 @@ Resources:
       DeletionProtection: false
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
-      EngineMode: serverless
-      EngineVersion: "11.13"
+      # EngineMode: serverless
+      EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
-      ScalingConfiguration:
-        AutoPause: true
-        MaxCapacity: 192
+      ServerlessV2ScalingConfiguration:
+        MaxCapacity: 128
         MinCapacity: 2
-        #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
-        #       SecondsBeforeTimeout: 60
-        SecondsUntilAutoPause: 3600
-      #       FIXME:  Uncomment once 'TimeoutAction' is supported.
-      #       https://github.com/aws-cloudformation/aws-cloudformation-coverage-roadmap/issues/298
-      #       https://console.aws.amazon.com/support/home#/case/?displayId=7705681311&language=en
-      #       TimeoutAction: ForceApplyCapacityChange
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1536,21 +1532,13 @@ Resources:
       DeletionProtection: false
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
-      EngineMode: serverless
-      EngineVersion: "11.13"
+      # EngineMode: serverless
+      EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
-      ScalingConfiguration:
-        AutoPause: true
-        MaxCapacity: 192
+      ServerlessV2ScalingConfiguration:
+        MaxCapacity: 128
         MinCapacity: 2
-        #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
-        #       SecondsBeforeTimeout: 60
-        SecondsUntilAutoPause: 3600
-      #       FIXME:  Uncomment once 'TimeoutAction' is supported.
-      #       https://github.com/aws-cloudformation/aws-cloudformation-coverage-roadmap/issues/298
-      #       https://console.aws.amazon.com/support/home#/case/?displayId=7705681311&language=en
-      #       TimeoutAction: ForceApplyCapacityChange
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1558,6 +1546,96 @@ Resources:
       VpcSecurityGroupIds:
         - !Ref Ec2SecurityGroupInternal
     Type: AWS::RDS::DBCluster
+
+  RdsDbInstanceCore1:
+    Properties:
+      DBSubnetGroupName: !Sub
+        - "${StackNameAsLower}-db-subnet"
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      # DBParameterGroupName:
+      #   Ref: RdsDbParameterGroup
+      Engine: aurora-postgresql
+      DBClusterIdentifier:
+        Ref: RdsDbClusterCore
+      PubliclyAccessible: "true"
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
+      DBInstanceClass: db.serverless
+    Type: AWS::RDS::DBInstance
+
+  RdsDbInstanceCore2:
+    Properties:
+      DBSubnetGroupName: !Sub
+        - "${StackNameAsLower}-db-subnet"
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      # DBParameterGroupName:
+      #   Ref: RdsDbParameterGroup
+      Engine: aurora-postgresql
+      DBClusterIdentifier:
+        Ref: RdsDbClusterCore
+      PubliclyAccessible: "true"
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      DBInstanceClass: db.serverless
+    Type: AWS::RDS::DBInstance
+
+  RdsDbInstanceLibfeat1:
+    Properties:
+      DBSubnetGroupName: !Sub
+        - "${StackNameAsLower}-db-subnet"
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      # DBParameterGroupName:
+      #   Ref: RdsDbParameterGroup
+      Engine: aurora-postgresql
+      DBClusterIdentifier:
+        Ref: RdsDbClusterLibfeat
+      PubliclyAccessible: "true"
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
+      DBInstanceClass: db.serverless
+    Type: AWS::RDS::DBInstance
+
+  RdsDbInstanceLibfeat2:
+    Properties:
+      DBSubnetGroupName: !Sub
+        - "${StackNameAsLower}-db-subnet"
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      # DBParameterGroupName:
+      #   Ref: RdsDbParameterGroup
+      Engine: aurora-postgresql
+      DBClusterIdentifier:
+        Ref: RdsDbClusterLibfeat
+      PubliclyAccessible: "true"
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      DBInstanceClass: db.serverless
+    Type: AWS::RDS::DBInstance
+
+  RdsDbInstanceRes1:
+    Properties:
+      DBSubnetGroupName: !Sub
+        - "${StackNameAsLower}-db-subnet"
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      # DBParameterGroupName:
+      #   Ref: RdsDbParameterGroup
+      Engine: aurora-postgresql
+      DBClusterIdentifier:
+        Ref: RdsDbClusterRes
+      PubliclyAccessible: "true"
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
+      DBInstanceClass: db.serverless
+    Type: AWS::RDS::DBInstance
+
+  RdsDbInstanceRes2:
+    Properties:
+      DBSubnetGroupName: !Sub
+        - "${StackNameAsLower}-db-subnet"
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      # DBParameterGroupName:
+      #   Ref: RdsDbParameterGroup
+      Engine: aurora-postgresql
+      DBClusterIdentifier:
+        Ref: RdsDbClusterRes
+      PubliclyAccessible: "true"
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      DBInstanceClass: db.serverless
+    Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------
 
@@ -2178,7 +2256,6 @@ Resources:
                                 '    },'
                                 '    "SQL": {'
                                 '        "BACKEND": "SQL",'
-                                '        "XXXDEBUGLEVEL": "2",'
                                 f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
                                 '    },'
                                 f'    {data_encryption}'
@@ -2194,7 +2271,6 @@ Resources:
                                 '    },'
                                 '    "SQL": {'
                                 '        "BACKEND": "HYBRID",'
-                                '        "XXXDEBUGLEVEL": "2",'
                                 f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
                                 '    },'
                                 f'    {data_encryption}'
@@ -2230,58 +2306,6 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-lambda-senzing-engine-configuration-json"
-    Type: AWS::Lambda::Function
-
-  LambdaFunctionSetRdbTimeoutAction:
-    Properties:
-      Code:
-        ZipFile: |
-          #!/usr/bin/env python3
-          import boto3
-          import cfnresponse
-          import json
-          import logging
-          import traceback
-          logger = logging.getLogger()
-          logger.setLevel(logging.INFO)
-          def handler(event, context):
-              result = cfnresponse.SUCCESS
-              response_data = {}
-              try:
-                  logger.info("Event: {0}".format(json.dumps(event)))
-                  if event['RequestType'] in ['Create', 'Update']:
-                      properties = event.get('ResourceProperties', {})
-                      region = properties.get('Region')
-                      cluster_id = properties.get('DBClusterIdentifier')
-                      if cluster_id and region:
-                          client = boto3.client('rds', region_name=region)
-                          response_data = client.modify_db_cluster(
-                              DBClusterIdentifier = cluster_id,
-                              ScalingConfiguration = {
-                                  'SecondsBeforeTimeout': 60,
-                                  'TimeoutAction': 'ForceApplyCapacityChange',
-                                  'SecondsBeforeTimeout': 60
-                              },
-                          )
-                      else:
-                          logger.error("Properties not provided in ResourceProperties")
-              except Exception as e:
-                  logger.error(e)
-                  traceback.print_exc()
-                  result = cfnresponse.FAILED
-              finally:
-                  cfnresponse.send(event, context, result, {})
-                  logger.info(response_data)
-
-      Description: Update database ScalingConfiguration with options not available in CFTs.
-      FunctionName: !Sub "${AWS::StackName}-lambda-set-rdb-timeout-action"
-      Handler: index.handler
-      Role: !GetAtt IamRoleLambda.Arn
-      Runtime: python3.8
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-lambda-set-rdb-timeout-action"
-      Timeout: 30
     Type: AWS::Lambda::Function
 
   LambdaFunctionStringToLower:
@@ -2423,6 +2447,12 @@ Resources:
 
   LambdaRunnerInitPostgresConfiguration:
     DependsOn:
+      - RdsDbInstanceCore1
+      - RdsDbInstanceCore2
+      - RdsDbInstanceLibfeat1
+      - RdsDbInstanceLibfeat2
+      - RdsDbInstanceRes1
+      - RdsDbInstanceRes2
       - DbClusterCoreReady
       - DbClusterLibfeatReady
       - DbClusterResReady
@@ -2470,36 +2500,6 @@ Resources:
         - Key: Name
           Value: !Sub "${AWS::StackName}-lambda-runner-senzing-engine-configuration-json"
     Type: Custom::LambdaRunnerSenzingEngineConfigurationJson
-
-  LambdaRunnerSetPostgresCoreTimeoutAction:
-    Properties:
-      DBClusterIdentifier: !Ref RdsDbClusterCore
-      Region: !Ref AWS::Region
-      ServiceToken: !GetAtt LambdaFunctionSetRdbTimeoutAction.Arn
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-lambda-runner-set-postgres-core-timeout-action"
-    Type: Custom::LambdaRunnerSetPostgresCoreTimeoutAction
-
-  LambdaRunnerSetPostgresLibfeatTimeoutAction:
-    Properties:
-      DBClusterIdentifier: !Ref RdsDbClusterLibfeat
-      Region: !Ref AWS::Region
-      ServiceToken: !GetAtt LambdaFunctionSetRdbTimeoutAction.Arn
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-lambda-runner-set-postgres-libfeat-timeout-action"
-    Type: Custom::LambdaRunnerSetPostgresLibfeatTimeoutAction
-
-  LambdaRunnerSetPostgresResTimeoutAction:
-    Properties:
-      DBClusterIdentifier: !Ref RdsDbClusterRes
-      Region: !Ref AWS::Region
-      ServiceToken: !GetAtt LambdaFunctionSetRdbTimeoutAction.Arn
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-lambda-runner-set-postgres-res-timeout-action"
-    Type: Custom::LambdaRunnerSetPostgresResTimeoutAction
 
   LambdaRunnerSshPassword:
     Condition: IfUsingSshd
@@ -3256,8 +3256,6 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Environment:
-            - Name: SENZING_DEBUG
-              Value: False
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
             - Name: SENZING_EXIT_ON_THREAD_TERMINATION
@@ -3381,8 +3379,6 @@ Resources:
         - Environment:
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
-            - Name: SENZING_DEBUG
-              Value: False
             - Name: SENZING_DELAY_IN_SECONDS
               Value: "900"
             - Name: SENZING_DELAY_RANDOMIZED
