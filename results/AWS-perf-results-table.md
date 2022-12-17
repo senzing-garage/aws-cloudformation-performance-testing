@@ -51,15 +51,17 @@ Total Billed write IOPS         |               |                |  148,886,718 
 
 
 100M perf test run:
-====================================================================================
-Build:                          |  2.8.8-22088   |  3.0.0-22102   |  3.0.0-22110   |
-Peak:                           |  2665          |  2745          |  2858          |
-Warm-up:                        |     1.13 hours |     1.45 hours |    55 mins     |
-Average after warm-up:          |  1548          |  1665          |  1797          |
-Average over entire run:        |  1497          |  1575          |  1727          |
-Time to load 100M:              |    23.12 hours |    17.67 hours |    16.07 hours |
-Records in dead-letter queue:   |     0          |     0          |     0          |
-StreamLoader withinfo->ouputQ:  |    NO          |    NO          |    NO          |
-Redoer withinfo->ouputQ:        |   YES          |   YES          |    NO          |
-====================================================================================
+=====================================================================================================
+Build:                          |  2.8.8-22088   |  3.0.0-22102   |  3.0.0-22110   |  3.4.0-22350   |
+Peak:                           |  2665          |  2745          |  2858          |  3017          |
+Warm-up:                        |     1.13 hours |     1.45 hours |    0.92 hours  |    0.47 hours  |
+Average after warm-up:          |  1548          |  1665          |  1797          |  1630          |
+Average over entire run:        |  1497          |  1575          |  1727          |  1606          |
+Time to load 100M:              |    23.12 hours |    17.67 hours |    16.07 hours |    17.28 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+StreamLoader withinfo->ouputQ:  |    NO          |    NO          |    NO          |    NO          |
+Redoer withinfo->ouputQ:        |   YES          |   YES          |    NO          |    NO          |
+Total Billed read IOPS          |                |                |                |  768,870,955   |
+Total Billed write IOPS         |                |                |                |  656,884,630   |
+=====================================================================================================
 
