@@ -1468,6 +1468,7 @@ Resources:
       EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      Port: 5432
       ServerlessV2ScalingConfiguration:
         MaxCapacity: 128
         MinCapacity: 2
@@ -1502,6 +1503,7 @@ Resources:
       EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      Port: 5432
       ServerlessV2ScalingConfiguration:
         MaxCapacity: 128
         MinCapacity: 2
@@ -1536,6 +1538,7 @@ Resources:
       EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      Port: 5432
       ServerlessV2ScalingConfiguration:
         MaxCapacity: 128
         MinCapacity: 2
@@ -1737,6 +1740,36 @@ Resources:
   DbClusterResReady:
     Metadata:
       DbClusterResReady: !GetAtt RdsDbClusterRes.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceCore1Ready:
+    Metadata:
+      DbInstanceCore1Ready: !GetAtt RdsDbInstanceCore1.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceCore2Ready:
+    Metadata:
+      DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceLibfeat1Ready:
+    Metadata:
+      DbInstanceLibfeat1Ready: !GetAtt RdsDbInstanceLibfeat1.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceLibfeat2Ready:
+    Metadata:
+      DbInstanceLibfeat2Ready: !GetAtt RdsDbInstanceLibfeat2.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceRes1Ready:
+    Metadata:
+      DbInstanceRes1Ready: !GetAtt RdsDbInstanceRes1.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceRes2Ready:
+    Metadata:
+      DbInstanceRes2Ready: !GetAtt RdsDbInstanceRes2.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
   # -- LambdaFunction -----------------------------------------------------------
@@ -2447,12 +2480,12 @@ Resources:
 
   LambdaRunnerInitPostgresConfiguration:
     DependsOn:
-      - RdsDbInstanceCore1
-      - RdsDbInstanceCore2
-      - RdsDbInstanceLibfeat1
-      - RdsDbInstanceLibfeat2
-      - RdsDbInstanceRes1
-      - RdsDbInstanceRes2
+      - DbInstanceCore1Ready
+      - DbInstanceCore2Ready
+      - DbInstanceLibfeat1Ready
+      - DbInstanceLibfeat2Ready
+      - DbInstanceRes1Ready
+      - DbInstanceRes2Ready
       - DbClusterCoreReady
       - DbClusterLibfeatReady
       - DbClusterResReady
@@ -2483,6 +2516,16 @@ Resources:
     Type: Custom::LambdaRunnerInitPostgresConfiguration
 
   LambdaRunnerSenzingEngineConfigurationJson:
+    DependsOn:
+      - DbInstanceCore1Ready
+      - DbInstanceCore2Ready
+      - DbInstanceLibfeat1Ready
+      - DbInstanceLibfeat2Ready
+      - DbInstanceRes1Ready
+      - DbInstanceRes2Ready
+      - DbClusterCoreReady
+      - DbClusterLibfeatReady
+      - DbClusterResReady
     Properties:
       DatabaseHostCore: !GetAtt RdsDbClusterCore.Endpoint.Address
       DatabaseHostLibfeat: !GetAtt RdsDbClusterLibfeat.Endpoint.Address
