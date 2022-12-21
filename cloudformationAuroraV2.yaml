@@ -1423,24 +1423,25 @@ Resources:
       Family: aurora-postgresql14
       Parameters:
         autovacuum_max_workers: 5
-        enable_seqscan: "off"
+        enable_seqscan: 0
+        pglogical.synchronous_commit: 0
         synchronous_commit: "off"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-cluster-parameter-group"
     Type: AWS::RDS::DBClusterParameterGroup
 
-  # RdsDbParameterGroup:
-  #   Properties:
-  #     Description: !Sub "${AWS::StackName}-rds-db-parameter-group-description"
-  #     Family: aurora-postgresql14
-  #     # Parameters:
-  #     # "synchronous_commit": "off"
-  #     # autovacuum_max_workers: 5
-  #     Tags:
-  #       - Key: Name
-  #         Value: !Sub "${AWS::StackName}-rds-db-parameter-group"
-  #   Type: AWS::RDS::DBParameterGroup
+  RdsDbParameterGroup:
+    Properties:
+      Description: !Sub "${AWS::StackName}-rds-db-parameter-group-description"
+      Family: aurora-postgresql14
+      Parameters:
+        enable_seqscan: 0
+        pglogical.synchronous_commit: 0
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-rds-db-parameter-group"
+    Type: AWS::RDS::DBParameterGroup
 
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html
   # AWS Console: https://console.aws.amazon.com/rds/home?#databases: > Search for {stack}
@@ -1555,8 +1556,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
@@ -1570,8 +1571,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
@@ -1585,8 +1586,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterLibfeat
@@ -1600,8 +1601,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterLibfeat
@@ -1615,8 +1616,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterRes
@@ -1630,8 +1631,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterRes
