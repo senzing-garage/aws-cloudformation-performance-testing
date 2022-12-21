@@ -1472,7 +1472,7 @@ Resources:
       Port: 5432
       ServerlessV2ScalingConfiguration:
         MaxCapacity: 128
-        MinCapacity: 2
+        MinCapacity: 128
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1507,7 +1507,7 @@ Resources:
       Port: 5432
       ServerlessV2ScalingConfiguration:
         MaxCapacity: 128
-        MinCapacity: 2
+        MinCapacity: 128
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1542,7 +1542,7 @@ Resources:
       Port: 5432
       ServerlessV2ScalingConfiguration:
         MaxCapacity: 128
-        MinCapacity: 2
+        MinCapacity: 128
       StorageEncrypted: true
       Tags:
         - Key: Name

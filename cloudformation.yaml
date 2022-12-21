@@ -1423,7 +1423,8 @@ Resources:
       Family: aurora-postgresql11
       Parameters:
         autovacuum_max_workers: 5
-        enable_seqscan: "off"
+        enable_seqscan: 0
+        pglogical.synchronous_commit: 0
         synchronous_commit: "off"
       Tags:
         - Key: Name
@@ -1459,7 +1460,7 @@ Resources:
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
-        MinCapacity: 2
+        MinCapacity: 192
         #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
         #       SecondsBeforeTimeout: 60
         SecondsUntilAutoPause: 3600
@@ -1501,7 +1502,7 @@ Resources:
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
-        MinCapacity: 2
+        MinCapacity: 192
         #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
         #       SecondsBeforeTimeout: 60
         SecondsUntilAutoPause: 3600
@@ -1543,7 +1544,7 @@ Resources:
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
-        MinCapacity: 2
+        MinCapacity: 192
         #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
         #       SecondsBeforeTimeout: 60
         SecondsUntilAutoPause: 3600
