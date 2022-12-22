@@ -1,4 +1,4 @@
-# senzing-test-results-20221221-20M-v1-192ACU-clustered-senzing-3.4.0
+# senzing-test-results-20221221-20M-v1-64ACU-clustered-senzing-3.4.0
 
 ## Contents
 
@@ -20,32 +20,34 @@
 3. Instructions:
    [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
     1. [Cloudformation.yaml]()
+4. Notable updates for this run:
+    1. Due to restricted ACU, warm-up has been redefined to when we hit 70k/min
 
 ## System
 
 1. Database
     1. Aurora PosgreSQL Serverless
-    1. ACU range: 192 - 192
+    1. ACU range: 64 - 64
 
 ## Results
 
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2915/second
-    1. Warm-up: 0.45 hours
-    1. Average after warm-up: 2691/second
-    1. Average over entire run: 2364/second
-    1. Time to load 20M: 2.33 hours
+    1. Peak: 1405/second
+    1. Warm-up: 0.37 hours
+    1. Average after warm-up: 1203/second
+    1. Average over entire run: 1170/second
+    1. Time to load 20M: 4.73 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:        20,641
-    1. Total Billed write IOPS:  105,543,679
+    1. Total Billed read IOPS:     4,326,489
+    1. Total Billed write IOPS:  146,430,085
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 45
-- Max Redoer tasks: 9
+- Max Stream-loader tasks: 19
+- Max Redoer tasks: 4
 
 ### Final metrics
 
@@ -103,43 +105,43 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2022-12-21 16:42:30.579448+00 | 20000000
+ 2022-12-21 23:05:42.838876+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2022-12-21 16:45:15.862946+00 | 19999959
+ 2022-12-21 23:06:19.509473+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2022-12-21 16:46:20.876533+00 | 17478430
+ 2022-12-21 23:06:29.001641+00 | 17478431
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2022-12-21 16:46:45.526416+00 | 19999959
+ 2022-12-21 23:06:35.167797+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2022-12-21 16:46:51.401693+00 |     0
+ 2022-12-21 23:06:41.659157+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+---------
- 2022-12-21 16:46:55.945359+00 | 9123139
+ 2022-12-21 23:06:45.436612+00 | 9122428
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration from dsrc_record;
-       load_start        |       erpm       |  total   |   duration
--------------------------+------------------+----------+--------------
- 2022-12-21 14:01:41.443 | 143060.186135608 | 20000000 | 02:19:48.078
+       load_start        |      erpm      |  total   |   duration
+-------------------------+----------------+----------+--------------
+ 2022-12-21 18:08:35.435 | 70489.64101858 | 20000000 | 04:43:43.778
 (1 row)
 
 ```

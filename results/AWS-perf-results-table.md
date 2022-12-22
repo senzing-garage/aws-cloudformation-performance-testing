@@ -43,6 +43,21 @@ Notes:                          | serverless v1  | serverless v2  |
                                 | postgres 11.23 | postgres 14.5  |
 ===================================================================
 
+20M serverless v1 vs v2 at 64 ACU each:
+===================================================================
+Build:                          |  3.4.0.22352   |  3.4.0.22352   |
+Peak:                           |  1405          |  1216          |
+Warm-up:                        |   0.37 hours   |  0.37 hours    |
+Average after warm-up:          |  1203          |  1059          |
+Average over entire run:        |  1170          |  1042          |
+Time to load 20M:               |     4.73 hours |     5.32 hours |
+Records in dead-letter queue:   |     0          |     0          |
+Total Billed read IOPS:         |     4,326,489  |    2,789,287   | <- (none recorded for v2 core)
+Total Billed write IOPS:        |   146,430,085  |   99,698,417   | <- (none recorded for v2 core)
+Notes:                          | serverless v1  | serverless v2  |
+                                | postgres 11.23 | postgres 14.5  |
+===================================================================
+
 
 
 =======================================================================================================================================================

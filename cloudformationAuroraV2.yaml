@@ -1471,8 +1471,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 128
-        MinCapacity: 128
+        MaxCapacity: 64
+        MinCapacity: 64
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1506,8 +1506,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 128
-        MinCapacity: 128
+        MaxCapacity: 64
+        MinCapacity: 64
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1541,8 +1541,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 128
-        MinCapacity: 128
+        MaxCapacity: 64
+        MinCapacity: 64
       StorageEncrypted: true
       Tags:
         - Key: Name
