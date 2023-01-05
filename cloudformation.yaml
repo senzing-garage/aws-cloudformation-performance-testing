@@ -3395,8 +3395,8 @@ Resources:
               Value: info
             - Name: SENZING_MONITORING_PERIOD_IN_SECONDS
               Value: "600"
-            - Name: SENZING_PREFETCH
-              Value: "20"
+            # - Name: SENZING_PREFETCH
+            #   Value: "20"
             - Name: SENZING_PRIME_ENGINE
               Value: "true"
             - Name: SENZING_SKIP_DATABASE_PERFORMANCE_TEST
@@ -3408,7 +3408,7 @@ Resources:
             - Name: SENZING_SUBCOMMAND
               Value: sqs
             - Name: SENZING_THREADS_PER_PROCESS
-              Value: "20"
+              Value: "40"
           Essential: true
           Image: !FindInMap [Constants, Images, StreamLoader]
           LogConfiguration:
