@@ -1,4 +1,4 @@
-# senzing-test-results-20230103-100M-200-192ACU-clustered-senzing-3.4.0
+# senzing-test-results-20230104-20M-200-192ACU-clustered-senzing-3.4.0
 
 ## Contents
 
@@ -15,13 +15,13 @@
 
 ## Overview
 
-1. Performed: Jan 03, 2023
+1. Performed: Jan 04, 2023
 2. Senzing version: 3.4.0.23002
 3. Instructions:
    [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
     1. [Cloudformation.yaml]()
 4. Changes:
-    1.
+    1. using SQS Consumer: https://github.com/brianmacy/sz_sqs_consumer
 
 
 ## System
@@ -35,20 +35,20 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2967/second
-    1. Warm-up: 0.47 hours
-    1. Average after warm-up: 1439/second
-    1. Average over entire run: 1421/second
-    1. Time to load 100M: 19.53 hours
+    1. Peak: 2870/second
+    1. Warm-up: 0.58 hours
+    1. Average after warm-up: 2378/second
+    1. Average over entire run: 2070/second
+    1. Time to load 20M: 2.67 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:   1,199,978,286
-    1. Total Billed write IOPS:    672,190,198
+    1. Total Billed read IOPS:    34,812,188
+    1. Total Billed write IOPS:  113,205,429
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 59
-- Max Redoer tasks: 24
+- Max Stream-loader tasks: 48
+- Max Redoer tasks: 10
 
 ### Final metrics
 

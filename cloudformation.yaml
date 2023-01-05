@@ -231,7 +231,8 @@ Mappings:
       Redoer: public.ecr.aws/senzing/redoer:staging
       SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:staging
       Sshd: public.ecr.aws/senzing/sshd:staging
-      StreamLoader: public.ecr.aws/senzing/stream-loader:staging
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer:staging
+      # StreamLoader: public.ecr.aws/senzing/stream-loader:staging
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.3
       Swagger: public.ecr.aws/senzing/swagger-ui:v4.13.2
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.3
@@ -3394,6 +3395,8 @@ Resources:
               Value: info
             - Name: SENZING_MONITORING_PERIOD_IN_SECONDS
               Value: "600"
+            - Name: SENZING_PREFETCH
+              Value: "20"
             - Name: SENZING_PRIME_ENGINE
               Value: "true"
             - Name: SENZING_SKIP_DATABASE_PERFORMANCE_TEST
