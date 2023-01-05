@@ -1,4 +1,4 @@
-# senzing-test-results-20230105-20M-200-192ACU-clustered-senzing-3.4.0
+# senzing-test-results-20230105-20M-200-192ACU-clustered-senzing-3.4.0-40-threads
 
 ## Contents
 
@@ -23,6 +23,7 @@
 4. Changes:
     1. using SQS Consumer: https://github.com/brianmacy/sz_sqs_consumer
     1. Consumer updated, SENZING_PREFETCH = SENZING_THREADS_PER_PROCESS
+    1. Updated consumer to 40 threads
 
 ## System
 
@@ -35,20 +36,20 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2992/second
-    1. Warm-up: 0.37 hours
-    1. Average after warm-up: 2513/second
-    1. Average over entire run: 2278/second
-    1. Time to load 20M: 2.43 hours
+    1. Peak: 2922/second
+    1. Warm-up: 0.3 hours
+    1. Average after warm-up: 2276/second
+    1. Average over entire run: 2089/second
+    1. Time to load 20M: 2.39 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:   33,650,705
-    1. Total Billed write IOPS:  89,414,998
+    1. Total Billed read IOPS:   36,419,618
+    1. Total Billed write IOPS:  74,157,822
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 55
-- Max Redoer tasks: 10
+- Max Stream-loader tasks: 50
+- Max Redoer tasks: 13
 
 ### Final metrics
 
@@ -104,46 +105,46 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-              now              |  count
--------------------------------+----------
- 2023-01-05 17:08:21.415828+00 | 20000000
+             now              |  count
+------------------------------+----------
+ 2023-01-05 20:49:10.63745+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-01-05 17:10:04.893192+00 | 19999959
+ 2023-01-05 20:49:21.477067+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-01-05 17:11:31.515624+00 | 17478381
+ 2023-01-05 20:50:17.065519+00 | 17478388
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-01-05 17:12:23.154484+00 | 19999959
+ 2023-01-05 20:50:35.928156+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-01-05 17:13:33.144709+00 |     0
+ 2023-01-05 20:51:57.754304+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+---------
- 2023-01-05 17:13:38.010875+00 | 9121765
+ 2023-01-05 20:52:40.710297+00 | 9123288
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start       |       erpm       |  total   |   duration   |     avg_erps
-------------------------+------------------+----------+--------------+------------------
- 2023-01-05 14:29:20.99 | 136685.951155959 | 20000000 | 02:26:19.249 | 2278.09918593265
-
+       load_start        |       erpm       |  total   |   duration   |     avg_erps
+-------------------------+------------------+----------+--------------+------------------
+ 2023-01-05 17:39:00.615 | 125342.105609498 | 20000000 | 02:39:33.798 | 2089.03509349163
+(1 row)
 ```
 
 ## Methods
