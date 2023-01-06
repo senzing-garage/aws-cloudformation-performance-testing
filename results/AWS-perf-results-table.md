@@ -15,19 +15,21 @@ Notes:                          |               |                |              
                                 |               |                |                | senzing        | senzing        | senzing        | senzing        |
 =======================================================================================================================================================
 
-====================================================================================
-Build:                          |  3.4.0.23002   |  3.4.0.23002   |  3.4.0.23005   |
-Peak:                           |  2944          |  2992          |  3609          |
-Warm-up:                        |     0.43 hours |     0.37 hours |     0.38 hours |
-Average after warm-up:          |  2529          |  2513          |  3056          |
-Average over entire run:        |  2208          |  2278          |  2653          |
-Time to load 20M:               |     2.5  hours |     2.43 hours |     2.08 hours |
-Records in dead-letter queue:   |     0          |     0          |     0          |
-Total Billed read IOPS:         |   7,456,800    |   33,650,705   |   24,320,628   |
-Total Billed write IOPS:        |  64,280,349    |   89,414,998   |   64,445,602   |
-Notes:                          | embedded       | sz_sqs_consumer| sz_sqs_consumer|
-                                | senzing        |prefetch=threads|   2-384 ACU    |
-====================================================================================
+=====================================================================================================
+Build:                          |  3.4.0.23002   |  3.4.0.23002   |  3.4.0.23005   |  3.4.0.23005   |
+Peak:                           |  2944          |  2992          |  3609          |  3579          |
+Warm-up:                        |     0.43 hours |     0.37 hours |     0.38 hours |     0.38 hours |
+Average after warm-up:          |  2529          |  2513          |  3056          |  3128          |
+Average over entire run:        |  2208          |  2278          |  2653          |  2729          |
+Time to load 20M:               |     2.5  hours |     2.43 hours |     2.08 hours |     2.03 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |   7,456,800    |   33,650,705   |   24,320,628   |    8,524,304   |
+Total Billed write IOPS:        |  64,280,349    |   89,414,998   |   64,445,602   |   65,619,220   |
+Max loader tasks:               |                |                |    68          |    63          |
+Max redoer tasks:               |                |                |     8          |    12          |
+Notes:                          | embedded       | sz_sqs_consumer| sz_sqs_consumer|sz_simple_redoer|
+                                | senzing        |prefetch=threads|   2-384 ACU    |                |
+=====================================================================================================
 
 
 ======================================================================================================================

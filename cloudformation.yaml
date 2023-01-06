@@ -239,7 +239,8 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       InitDataEncryption: public.ecr.aws/senzing/data-encryption-aes256cbc-sample:1.0.5
       InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
-      Redoer: public.ecr.aws/senzing/redoer:staging
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer:staging
+      # Redoer: public.ecr.aws/senzing/redoer:staging
       SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:staging
       Sshd: public.ecr.aws/senzing/sshd:staging
       StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer:staging
@@ -1531,7 +1532,7 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       ScalingConfiguration:
         AutoPause: true
-        MaxCapacity: 384
+        MaxCapacity: 192
         MinCapacity: 2
         #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
         #       SecondsBeforeTimeout: 60
@@ -1574,7 +1575,7 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       ScalingConfiguration:
         AutoPause: true
-        MaxCapacity: 384
+        MaxCapacity: 192
         MinCapacity: 2
         #       FIXME:  Uncomment once 'SecondsBeforeTimeout' is supported.
         #       SecondsBeforeTimeout: 60
