@@ -26,6 +26,7 @@ Metadata:
           default: Senzing installation
         Parameters:
           - AcceptEula
+          - MultipleDatabases
           - RecordMax
           - SenzingLicenseAsBase64
       - Label:
@@ -52,6 +53,8 @@ Metadata:
         default: "Optional: Provide the permitted IP address block allowed to connect using CIDR notation."
       CognitoAdminEmail:
         default: "Required: Provide the email address for the administrative user."
+      MultipleDatabases:
+        default: "Optional: Would you like to install into a single or multiple databases?"
       RecordMax:
         default: "Required: Number of records to insert."
       RunStreamProducer:
@@ -112,6 +115,14 @@ Parameters:
       - "100M"
     Default: "20M"
     Description: "Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#recordmax"
+    Type: String
+
+  MultipleDatabases:
+    AllowedValues:
+      - "Single"
+      - "Multiple"
+    Default: "Multiple"
+    Description: "Help: https://hub.senzing.com/aws-cloudformation-database-cluster/#multipledatabases"
     Type: String
 
   RunStreamProducer:
@@ -247,7 +258,7 @@ Mappings:
       WebApp: No
       Xterm: No
     Stack:
-      Name: staging-simple-100M
+      Name: performance-test
     StreamProducer:
       DataSource: TEST
       EntityType: GENERIC
@@ -274,6 +285,13 @@ Mappings:
 # -----------------------------------------------------------------------------
 
 Conditions:
+  IfMultipleDatabases: !Equals
+    - !Ref MultipleDatabases
+    - "Multiple"
+
+  IfSingleDatabase: !Not
+    - !Equals [!Ref MultipleDatabases, "Multiple"]
+
   IfRunApiServer: !Equals
     - !FindInMap [Constants, Run, ApiServer]
     - Yes
@@ -788,7 +806,16 @@ Resources:
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-loggroup.html
   # AWS Console: https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups > Search for {stack}
 
+  LogsLogGroupDbCluster:
+    Condition: IfSingleDatabase
+    Properties:
+      LogGroupName: !Sub
+        - "/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-cluster/postgresql"
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+    Type: AWS::Logs::LogGroup
+
   LogsLogGroupDbClusterCore:
+    Condition: IfMultipleDatabases
     Properties:
       LogGroupName: !Sub
         - "/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-core-cluster/postgresql"
@@ -796,6 +823,7 @@ Resources:
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupDbClusterLibfeat:
+    Condition: IfMultipleDatabases
     Properties:
       LogGroupName: !Sub
         - "/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-libfeat-cluster/postgresql"
@@ -803,6 +831,7 @@ Resources:
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupDbClusterRes:
+    Condition: IfMultipleDatabases
     Properties:
       LogGroupName: !Sub
         - "/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-res-cluster/postgresql"
@@ -1435,7 +1464,49 @@ Resources:
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html
   # AWS Console: https://console.aws.amazon.com/rds/home?#databases: > Search for {stack}
 
+  RdsDbCluster:
+    Condition: IfSingleDatabase
+    DependsOn:
+      - LogsLogGroupDbCluster
+      - RdsDbSubnetGroup
+    Properties:
+      AvailabilityZones:
+        - !GetAtt Ec2SubnetPrivate1.AvailabilityZone
+        - !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      DatabaseName: G2
+      DBClusterIdentifier: !Sub "${AWS::StackName}-aurora-senzing-cluster"
+      DBClusterParameterGroupName:
+        Ref: RdsDbClusterParameterGroup
+      # FIXME: Tricky code.  See https://console.aws.amazon.com/support/home#/case/?displayId=7725760511
+      DBSubnetGroupName: !Sub
+        - "${StackNameAsLower}-db-subnet"
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      DeletionProtection: false
+      EnableHttpEndpoint: true
+      Engine: aurora-postgresql
+      EngineMode: serverless
+      EngineVersion: "11.13"
+      MasterUsername: !FindInMap [Constants, Database, Username]
+      MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 384
+        MinCapacity: 2
+        SecondsUntilAutoPause: 3600
+      #       FIXME:  Uncomment once 'TimeoutAction' is supported.
+      #       https://github.com/aws-cloudformation/aws-cloudformation-coverage-roadmap/issues/298
+      #       https://console.aws.amazon.com/support/home#/case/?displayId=7705681311&language=en
+      #       TimeoutAction: ForceApplyCapacityChange
+      StorageEncrypted: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-rds-db-cluster"
+      VpcSecurityGroupIds:
+        - !Ref Ec2SecurityGroupInternal
+    Type: AWS::RDS::DBCluster
+
   RdsDbClusterCore:
+    Condition: IfMultipleDatabases
     DependsOn:
       - LogsLogGroupDbClusterCore
       - RdsDbSubnetGroup
@@ -1478,6 +1549,7 @@ Resources:
     Type: AWS::RDS::DBCluster
 
   RdsDbClusterLibfeat:
+    Condition: IfMultipleDatabases
     DependsOn:
       - LogsLogGroupDbClusterLibfeat
       - RdsDbSubnetGroup
@@ -1520,6 +1592,7 @@ Resources:
     Type: AWS::RDS::DBCluster
 
   RdsDbClusterRes:
+    Condition: IfMultipleDatabases
     DependsOn:
       - LogsLogGroupDbClusterRes
       - RdsDbSubnetGroup
@@ -1650,17 +1723,26 @@ Resources:
 
   DbClusterCoreReady:
     Metadata:
-      DBClusterCoreReady: !GetAtt RdsDbClusterCore.Endpoint.Address
+      DBClusterCoreReady: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Address
+        - !GetAtt RdsDbClusterCore.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
   DbClusterLibfeatReady:
     Metadata:
-      DbClusterLibfeatReady: !GetAtt RdsDbClusterLibfeat.Endpoint.Address
+      DBClusterCoreReady: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Address
+        - !GetAtt RdsDbClusterLibfeat.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
   DbClusterResReady:
     Metadata:
-      DbClusterResReady: !GetAtt RdsDbClusterRes.Endpoint.Address
+      DBClusterCoreReady: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Address
+        - !GetAtt RdsDbClusterRes.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
   # -- LambdaFunction -----------------------------------------------------------
@@ -2180,10 +2262,8 @@ Resources:
                                 '    },'
                                 '    "SQL": {'
                                 '        "BACKEND": "SQL",'
-                                '        "XXXDEBUGLEVEL": "2",'
                                 f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
-                                '    },'
-                                f'    {data_encryption}'
+                                '    }'
                                 '}')
                       else:
                           response_data["ConfigJSON"] = (
@@ -2260,7 +2340,6 @@ Resources:
                           response_data = client.modify_db_cluster(
                               DBClusterIdentifier = cluster_id,
                               ScalingConfiguration = {
-                                  'SecondsBeforeTimeout': 60,
                                   'TimeoutAction': 'ForceApplyCapacityChange',
                                   'SecondsBeforeTimeout': 60
                               },
@@ -2456,14 +2535,32 @@ Resources:
 
   LambdaRunnerSenzingEngineConfigurationJson:
     Properties:
-      DatabaseHostCore: !GetAtt RdsDbClusterCore.Endpoint.Address
-      DatabaseHostLibfeat: !GetAtt RdsDbClusterLibfeat.Endpoint.Address
-      DatabaseHostRes: !GetAtt RdsDbClusterRes.Endpoint.Address
+      DatabaseHostCore: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Address
+        - !GetAtt RdsDbClusterCore.Endpoint.Address
+      DatabaseHostLibfeat: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Address
+        - !GetAtt RdsDbClusterLibfeat.Endpoint.Address
+      DatabaseHostRes: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Address
+        - !GetAtt RdsDbClusterRes.Endpoint.Address
       DatabaseName: !FindInMap [Constants, Database, Name]
       DatabasePassword: !GetAtt LambdaRunnerDbPassword.RandomString
-      DatabasePortCore: !GetAtt RdsDbClusterCore.Endpoint.Port
-      DatabasePortLibfeat: !GetAtt RdsDbClusterLibfeat.Endpoint.Port
-      DatabasePortRes: !GetAtt RdsDbClusterRes.Endpoint.Port
+      DatabasePortCore: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Port
+        - !GetAtt RdsDbClusterCore.Endpoint.Port
+      DatabasePortLibfeat: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Port
+        - !GetAtt RdsDbClusterLibfeat.Endpoint.Port
+      DatabasePortRes: !If
+        - IfSingleDatabase
+        - !GetAtt RdsDbCluster.Endpoint.Port
+        - !GetAtt RdsDbClusterRes.Endpoint.Port
       DatabaseUsername: !FindInMap [Constants, Database, Username]
       # DataEncryption: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
       SenzingLicenseAsBase64: !Ref SenzingLicenseAsBase64
@@ -2473,7 +2570,19 @@ Resources:
           Value: !Sub "${AWS::StackName}-lambda-runner-senzing-engine-configuration-json"
     Type: Custom::LambdaRunnerSenzingEngineConfigurationJson
 
+  LambdaRunnerSetPostgresTimeoutAction:
+    Condition: IfSingleDatabase
+    Properties:
+      DBClusterIdentifier: !Ref RdsDbCluster
+      Region: !Ref AWS::Region
+      ServiceToken: !GetAtt LambdaFunctionSetRdbTimeoutAction.Arn
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-lambda-runner-set-postgres-timeout-action"
+    Type: Custom::LambdaRunnerSetPostgresTimeoutAction
+
   LambdaRunnerSetPostgresCoreTimeoutAction:
+    Condition: IfMultipleDatabases
     Properties:
       DBClusterIdentifier: !Ref RdsDbClusterCore
       Region: !Ref AWS::Region
@@ -2484,6 +2593,7 @@ Resources:
     Type: Custom::LambdaRunnerSetPostgresCoreTimeoutAction
 
   LambdaRunnerSetPostgresLibfeatTimeoutAction:
+    Condition: IfMultipleDatabases
     Properties:
       DBClusterIdentifier: !Ref RdsDbClusterLibfeat
       Region: !Ref AWS::Region
@@ -2494,6 +2604,7 @@ Resources:
     Type: Custom::LambdaRunnerSetPostgresLibfeatTimeoutAction
 
   LambdaRunnerSetPostgresResTimeoutAction:
+    Condition: IfMultipleDatabases
     Properties:
       DBClusterIdentifier: !Ref RdsDbClusterRes
       Region: !Ref AWS::Region
@@ -3408,7 +3519,7 @@ Resources:
             - Name: SENZING_SUBCOMMAND
               Value: sqs
             - Name: SENZING_THREADS_PER_PROCESS
-              Value: "40"
+              Value: "20"
           Essential: true
           Image: !FindInMap [Constants, Images, StreamLoader]
           LogConfiguration:
@@ -4006,19 +4117,28 @@ Outputs:
     Description: "The connection endpoint for the DB cluster. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databasehostcore"
     Export:
       Name: !Sub "${AWS::StackName}-database-host-core"
-    Value: !GetAtt RdsDbClusterCore.Endpoint.Address
+    Value: !If
+      - IfSingleDatabase
+      - !GetAtt RdsDbCluster.Endpoint.Address
+      - !GetAtt RdsDbClusterCore.Endpoint.Address
 
   DatabaseHostLibfeat:
     Description: "The connection endpoint for the DB cluster. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databasehostlibfeat"
     Export:
       Name: !Sub "${AWS::StackName}-database-host-libfeat"
-    Value: !GetAtt RdsDbClusterLibfeat.Endpoint.Address
+    Value: !If
+      - IfSingleDatabase
+      - !GetAtt RdsDbCluster.Endpoint.Address
+      - !GetAtt RdsDbClusterLibfeat.Endpoint.Address
 
   DatabaseHostRes:
     Description: "The connection endpoint for the DB cluster. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databasehostres"
     Export:
       Name: !Sub "${AWS::StackName}-database-host-res"
-    Value: !GetAtt RdsDbClusterRes.Endpoint.Address
+    Value: !If
+      - IfSingleDatabase
+      - !GetAtt RdsDbCluster.Endpoint.Address
+      - !GetAtt RdsDbClusterRes.Endpoint.Address
 
   DatabaseName:
     Description: "The name of the database. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databasename"
@@ -4036,19 +4156,28 @@ Outputs:
     Description: "The port number that will accept connections on this DB cluster. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databaseportcore"
     Export:
       Name: !Sub "${AWS::StackName}-database-port-core"
-    Value: !GetAtt RdsDbClusterCore.Endpoint.Port
+    Value: !If
+      - IfSingleDatabase
+      - !GetAtt RdsDbCluster.Endpoint.Port
+      - !GetAtt RdsDbClusterCore.Endpoint.Port
 
   DatabasePortLibfeat:
     Description: "The port number that will accept connections on this DB cluster. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databaseportlibfeat"
     Export:
       Name: !Sub "${AWS::StackName}-database-port-libfeat"
-    Value: !GetAtt RdsDbClusterLibfeat.Endpoint.Port
+    Value: !If
+      - IfSingleDatabase
+      - !GetAtt RdsDbCluster.Endpoint.Port
+      - !GetAtt RdsDbClusterLibfeat.Endpoint.Port
 
   DatabasePortRes:
     Description: "The port number that will accept connections on this DB cluster. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databaseportres"
     Export:
       Name: !Sub "${AWS::StackName}-database-port-res"
-    Value: !GetAtt RdsDbClusterRes.Endpoint.Port
+    Value: !If
+      - IfSingleDatabase
+      - !GetAtt RdsDbCluster.Endpoint.Port
+      - !GetAtt RdsDbClusterRes.Endpoint.Port
 
   DatabaseUsername:
     Description: "The administrative user name. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databaseusername"
