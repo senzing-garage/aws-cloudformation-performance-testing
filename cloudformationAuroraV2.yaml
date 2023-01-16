@@ -1423,24 +1423,25 @@ Resources:
       Family: aurora-postgresql14
       Parameters:
         autovacuum_max_workers: 5
-        enable_seqscan: "off"
+        enable_seqscan: 0
+        pglogical.synchronous_commit: 0
         synchronous_commit: "off"
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-cluster-parameter-group"
     Type: AWS::RDS::DBClusterParameterGroup
 
-  # RdsDbParameterGroup:
-  #   Properties:
-  #     Description: !Sub "${AWS::StackName}-rds-db-parameter-group-description"
-  #     Family: aurora-postgresql14
-  #     # Parameters:
-  #     # "synchronous_commit": "off"
-  #     # autovacuum_max_workers: 5
-  #     Tags:
-  #       - Key: Name
-  #         Value: !Sub "${AWS::StackName}-rds-db-parameter-group"
-  #   Type: AWS::RDS::DBParameterGroup
+  RdsDbParameterGroup:
+    Properties:
+      Description: !Sub "${AWS::StackName}-rds-db-parameter-group-description"
+      Family: aurora-postgresql14
+      Parameters:
+        enable_seqscan: 0
+        pglogical.synchronous_commit: 0
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-rds-db-parameter-group"
+    Type: AWS::RDS::DBParameterGroup
 
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html
   # AWS Console: https://console.aws.amazon.com/rds/home?#databases: > Search for {stack}
@@ -1468,9 +1469,10 @@ Resources:
       EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 128
-        MinCapacity: 2
+        MaxCapacity: 64
+        MinCapacity: 64
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1502,9 +1504,10 @@ Resources:
       EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 128
-        MinCapacity: 2
+        MaxCapacity: 64
+        MinCapacity: 64
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1536,9 +1539,10 @@ Resources:
       EngineVersion: "14.5"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 128
-        MinCapacity: 2
+        MaxCapacity: 64
+        MinCapacity: 64
       StorageEncrypted: true
       Tags:
         - Key: Name
@@ -1552,8 +1556,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
@@ -1567,8 +1571,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
@@ -1582,8 +1586,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterLibfeat
@@ -1597,8 +1601,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterLibfeat
@@ -1612,8 +1616,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterRes
@@ -1627,8 +1631,8 @@ Resources:
       DBSubnetGroupName: !Sub
         - "${StackNameAsLower}-db-subnet"
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      # DBParameterGroupName:
-      #   Ref: RdsDbParameterGroup
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterRes
@@ -1737,6 +1741,36 @@ Resources:
   DbClusterResReady:
     Metadata:
       DbClusterResReady: !GetAtt RdsDbClusterRes.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceCore1Ready:
+    Metadata:
+      DbInstanceCore1Ready: !GetAtt RdsDbInstanceCore1.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceCore2Ready:
+    Metadata:
+      DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceLibfeat1Ready:
+    Metadata:
+      DbInstanceLibfeat1Ready: !GetAtt RdsDbInstanceLibfeat1.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceLibfeat2Ready:
+    Metadata:
+      DbInstanceLibfeat2Ready: !GetAtt RdsDbInstanceLibfeat2.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceRes1Ready:
+    Metadata:
+      DbInstanceRes1Ready: !GetAtt RdsDbInstanceRes1.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
+
+  DbInstanceRes2Ready:
+    Metadata:
+      DbInstanceRes2Ready: !GetAtt RdsDbInstanceRes2.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
   # -- LambdaFunction -----------------------------------------------------------
@@ -2447,12 +2481,12 @@ Resources:
 
   LambdaRunnerInitPostgresConfiguration:
     DependsOn:
-      - RdsDbInstanceCore1
-      - RdsDbInstanceCore2
-      - RdsDbInstanceLibfeat1
-      - RdsDbInstanceLibfeat2
-      - RdsDbInstanceRes1
-      - RdsDbInstanceRes2
+      - DbInstanceCore1Ready
+      - DbInstanceCore2Ready
+      - DbInstanceLibfeat1Ready
+      - DbInstanceLibfeat2Ready
+      - DbInstanceRes1Ready
+      - DbInstanceRes2Ready
       - DbClusterCoreReady
       - DbClusterLibfeatReady
       - DbClusterResReady
@@ -2483,6 +2517,16 @@ Resources:
     Type: Custom::LambdaRunnerInitPostgresConfiguration
 
   LambdaRunnerSenzingEngineConfigurationJson:
+    DependsOn:
+      - DbInstanceCore1Ready
+      - DbInstanceCore2Ready
+      - DbInstanceLibfeat1Ready
+      - DbInstanceLibfeat2Ready
+      - DbInstanceRes1Ready
+      - DbInstanceRes2Ready
+      - DbClusterCoreReady
+      - DbClusterLibfeatReady
+      - DbClusterResReady
     Properties:
       DatabaseHostCore: !GetAtt RdsDbClusterCore.Endpoint.Address
       DatabaseHostLibfeat: !GetAtt RdsDbClusterLibfeat.Endpoint.Address
