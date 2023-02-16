@@ -27,8 +27,8 @@ Total Billed read IOPS:         |   7,456,800    |   33,650,705   |   24,320,628
 Total Billed write IOPS:        |  64,280,349    |   89,414,998   |   64,445,602   |   65,619,220   |   69,134,272   |
 Max loader tasks:               |                |                |    68          |    63          |    65          |
 Max redoer tasks:               |                |                |     8          |    12          |    11          |
-Notes:                          | embedded       | sz_sqs_consumer| sz_sqs_consumer|sz_simple_redoer|                |
-                                | senzing        |prefetch=threads|   2-384 ACU    |                |                |
+Notes:                          | embedded       | sz_sqs_consumer| sz_sqs_consumer|sz_simple_redoer| sz_sqs_consumer|
+                                | senzing        |prefetch=threads|   2-384 ACU    |                |sz_simple_redoer|
 ======================================================================================================================
 
 
