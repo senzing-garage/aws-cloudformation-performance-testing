@@ -245,9 +245,9 @@ Mappings:
       Sshd: public.ecr.aws/senzing/sshd:staging
       StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer:staging
       # StreamLoader: public.ecr.aws/senzing/stream-loader:staging
-      StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.3
-      Swagger: public.ecr.aws/senzing/swagger-ui:v4.13.2
-      WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.3
+      StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.4
+      Swagger: public.ecr.aws/senzing/swagger-ui:v4.15.5
+      WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
       Xterm: public.ecr.aws/senzing/xterm:staging
     Run:
       ApiServer: No
