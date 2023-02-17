@@ -1,4 +1,4 @@
-# senzing-test-results-20230216-20M-200-384ACU-clustered-senzing-3.5.0
+# senzing-test-results-20230217-100M-200-192ACU-clustered-senzing-3.5.0
 
 ## Contents
 
@@ -15,7 +15,7 @@
 
 ## Overview
 
-1. Performed: Feb 16, 2023
+1. Performed: Jan 17, 2023
 2. Senzing version: 3.5.0.23044
 3. Instructions:
    [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
@@ -32,27 +32,27 @@
 
 1. Database
     1. Aurora PosgreSQL Serverless
-    1. ACU range: 2 - 384
+    1. ACU range: 2 - 192
 
 ## Results
 
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 3430/second
-    1. Warm-up: 0.45 hours
-    1. Average after warm-up: 2741/second
-    1. Average over entire run: 2415/second
-    1. Time to load 20M: 2.33 hours
+    1. Peak: 3400/second
+    1. Warm-up: 0.32 hours
+    1. Average after warm-up: 1259/second
+    1. Average over entire run: 1254/second
+    1. Time to load 100M: 22.13 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:   21,704,226
-    1. Total Billed write IOPS:  69,134,272
+    1. Total Billed read IOPS:   799,229,585
+    1. Total Billed write IOPS:  471,872,715
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 65
-- Max Redoer tasks: 11
+- Max Stream-loader tasks: 66
+- Max Redoer tasks: 18
 
 ### Final metrics
 
@@ -70,13 +70,13 @@ N/A.  Ran without `withinfo` enabled.
 
 #### ECS
 
-##### Sz SQS Consumer CPU Utilization
+##### Stream-loader CPU Utilization
 
-![Sz SQS Consumer CPU Utilization](images/stream-loader-CPU-Utilization.png "Sz SQS Consumer CPU Utilization")
+![Stream Loader CPU Utilization](images/stream-loader-CPU-Utilization.png "Stream-loader CPU Utilization")
 
-##### Sz SQS Consumer Memory Utilization
+##### Stream-loader Memory Utilization
 
-![Sz SQS Consumer Memory Utilization](images/stream-loader-Memory-Utilization.png "Sz SQS Consumer Memory Utilization")
+![Stream Loader Memory Utilization](images/stream-loader-Memory-Utilization.png "Stream-loader Memory Utilization")
 
 ##### Redoer CPU Utilization
 
@@ -108,46 +108,47 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-              now              |  count
--------------------------------+----------
- 2023-02-16 20:06:38.722624+00 | 20000000
+              now              |   count
+-------------------------------+-----------
+ 2023-02-17 19:53:04.993339+00 | 100000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
-            now             |  count
-----------------------------+----------
- 2023-02-16 20:19:24.514+00 | 19999959
+              now              |  count
+-------------------------------+----------
+ 2023-02-17 20:16:24.908303+00 | 99998927
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-02-16 20:20:39.257226+00 | 17472030
+ 2023-02-17 20:40:02.286632+00 | 61434007
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-02-16 20:21:17.006747+00 | 19999959
+ 2023-02-17 20:46:09.241107+00 | 99998926
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-02-16 20:21:47.932093+00 |     0
+ 2023-02-17 20:47:55.777263+00 |   119
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
-              now              |  count
--------------------------------+----------
- 2023-02-16 20:21:50.977699+00 | 11492448
+             now              |  count
+------------------------------+----------
+ 2023-02-17 20:48:01.77817+00 | 54006809
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |       erpm       |  total   |   duration   |     avg_erps
--------------------------+------------------+----------+--------------+------------------
- 2023-02-16 17:26:57.988 | 143529.990950434 | 20000000 | 02:19:20.622 | 2392.16651584057
+       load_start        |       erpm       |   total   |   duration   |     avg_erps
+-------------------------+------------------+-----------+--------------+------------------
+ 2023-02-16 21:21:01.436 | 75257.9824825004 | 100000000 | 22:08:45.762 | 1254.29970804167
 (1 row)
+
 ```
 
 ## Methods
