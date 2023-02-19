@@ -39,14 +39,14 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 3400/second
-    1. Warm-up: 0.32 hours
-    1. Average after warm-up: 1259/second
-    1. Average over entire run: 1254/second
-    1. Time to load 100M: 22.13 hours
+    1. Peak: 3426/second
+    1. Warm-up: 0.33 hours
+    1. Average after warm-up: 1238/second
+    1. Average over entire run: 1232/second
+    1. Time to load 100M: 22.53 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:   799,229,585
-    1. Total Billed write IOPS:  471,872,715
+    1. Total Billed read IOPS:   882,035,913
+    1. Total Billed write IOPS:  455,594,372
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
