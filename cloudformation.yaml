@@ -744,6 +744,7 @@ Resources:
       PolicyDocument:
         Statement:
           - Action:
+              - sqs:ChangeMessageVisibility
               - sqs:DeleteMessage
               - sqs:GetQueueAttributes
               - sqs:ReceiveMessage
@@ -2342,7 +2343,7 @@ Resources:
                               DBClusterIdentifier = cluster_id,
                               ScalingConfiguration = {
                                   'TimeoutAction': 'ForceApplyCapacityChange',
-                                  'SecondsBeforeTimeout': 60
+                                  'SecondsBeforeTimeout': 45
                               },
                           )
                       else:
