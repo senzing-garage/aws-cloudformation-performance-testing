@@ -1,0 +1,122 @@
+2/18/2023, 5:27:24 PM	service stream-loader has reached a steady state.	d80e42ea-ff14-40e4-835d-e41b221cc8eb
+2/18/2023, 5:27:15 PM	service stream-loader has stopped 2 running tasks: task baa8fcb28ea945cc824ab3e3bcb79f1a task 4841ff2db56744009373806d7e77de15.	193ba8f9-f051-4bda-af5d-e9bca1f82a7b
+2/18/2023, 5:27:02 PM	Message: Successfully set desired count to 38. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	9191a9e6-0637-44d3-a576-35fa2659fb7d
+2/18/2023, 2:51:18 PM	service stream-loader has reached a steady state.	416d26f4-a0bb-4529-be55-d43e43e4e044
+2/18/2023, 2:49:53 PM	service stream-loader has started 1 tasks: task 9b1deb1cbee5452fab6cccbe0d077350.	cf2e427b-62bf-4aab-b4f4-773a079d85a0
+2/18/2023, 2:41:38 PM	service stream-loader has reached a steady state.	43f6186d-a9af-42b8-adb9-5dd9734fed48
+2/18/2023, 2:40:13 PM	service stream-loader has started 1 tasks: task 0a57257edc58406685acff7694d36221.	9cbd866b-345d-4d6e-9998-7e10fe7e5ec2
+2/18/2023, 1:13:08 PM	service stream-loader has reached a steady state.	f1975f38-6954-45f7-a05a-3044c03cc8d7
+2/18/2023, 1:11:42 PM	service stream-loader has started 1 tasks: task 3b8a553819294d6d879aa75423c865fb.	a7ad68f1-231a-4c4c-ae9f-1ad38e2b1aa6
+2/18/2023, 11:30:21 AM	service stream-loader has reached a steady state.	e8bb61d9-ff93-4783-a912-e62486138c9d
+2/18/2023, 11:30:11 AM	service stream-loader has stopped 2 running tasks: task 86d97ab957324edf99f2656e540bac53 task a5b245a90af243549e665794ea83dc98.	9312a63f-d44d-425d-b2da-1dc58b87a933
+2/18/2023, 11:30:01 AM	Message: Successfully set desired count to 40. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	82960646-79d2-41d6-8583-bb78c4539743
+2/18/2023, 10:58:26 AM	service stream-loader has reached a steady state.	eb44461a-582a-4728-9412-46c78c0bd626
+2/18/2023, 10:56:32 AM	service stream-loader has started 1 tasks: task 646cde61f4af4ebcacc468cff6de9116.	e9b53362-a0c2-439c-b8e0-67dc64fd2388
+2/18/2023, 9:47:20 AM	service stream-loader has reached a steady state.	2c33a04a-ca8a-4fd5-8209-ab125c872a38
+2/18/2023, 9:47:11 AM	service stream-loader has stopped 2 running tasks: task ee758fbd92ad42c28da646d0872699a2 task 0a4cec2f12334c269899c7763922813c.	f0abe0e0-fbc5-4797-8a9a-57b2903b7613
+2/18/2023, 9:47:01 AM	Message: Successfully set desired count to 42. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	a84f29e0-6dac-4e00-907c-945bda307c02
+2/18/2023, 9:31:49 AM	service stream-loader has reached a steady state.	d6a9e507-79c2-48c2-a2cc-bf8872e316d1
+2/18/2023, 9:30:05 AM	service stream-loader has started 1 tasks: task a5b245a90af243549e665794ea83dc98.	1763ae50-2bc0-451e-b241-0b6143b3488e
+2/18/2023, 9:29:58 AM	Message: Successfully set desired count to 44. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	5001236b-f8d5-4fc7-a3bf-e124634c12dd
+2/18/2023, 9:29:38 AM	service stream-loader has started 1 tasks: task bad43fb012b2481c90cac520dc7a50b1.	aeb16073-3d1d-4d96-a823-1efbd6016161
+2/18/2023, 9:29:18 AM	service stream-loader has started 1 tasks: task d66e0dd8a9f9445787464f76ff995f82.	b95329c9-ddb2-4038-adbd-530665c27979
+2/18/2023, 9:28:49 AM	service stream-loader has started 1 tasks: task 0a4cec2f12334c269899c7763922813c.	69651147-5306-4604-845c-695b2a1a495f
+2/18/2023, 9:28:31 AM	service stream-loader has started 1 tasks: task ab7a57574cf14134b2229f834353edb2.	06715d57-e71c-4d4b-9b4d-d7f8402ad275
+2/18/2023, 9:28:22 AM	service stream-loader has started 8 tasks: task 8f586be8c60040829d8f9c1b5daba384 task bd8bd32bc9e04b97aa69464e96b83b93 task 8713757e7a3344d4b7e07bfc9f31aa1a task c61143ce5db74c66817dd2a6e7619957 task f9c35b14ed1c4ceba3dc8566bd031537 task c3e51e6d83a14f94965a5b7976860d4b task 724d842141e44e8dbbbb38050458af7a task d4b1b19d98ae417eb280036200ac556f.	59feab06-1a76-4c5c-9765-aa8ea58373ee
+2/18/2023, 9:26:41 AM	service stream-loader has started 2 tasks: task 6d2d82a15b644a56936dca0a2999330e task 4841ff2db56744009373806d7e77de15.	c2d9eaf2-1258-4ce4-946a-3b0a35a57056
+2/18/2023, 9:26:31 AM	service stream-loader has started 2 tasks: task c3ca8199486e4986bfcdcb29c5099ae7 task 28e0c62fde45465b959cfa24bffe360b.	f5c1d337-7231-42c2-ba11-7290b00cc0c9
+2/18/2023, 9:25:52 AM	service stream-loader has started 1 tasks: task ee758fbd92ad42c28da646d0872699a2.	f36f3a23-7eef-4090-b434-288fbdfd19a0
+2/18/2023, 9:25:43 AM	service stream-loader has started 1 tasks: task cb07679b4e4948b4932a60231166675d.	f1019bd8-ecc4-4408-97de-8e15a494314c
+2/18/2023, 9:25:33 AM	service stream-loader has started 1 tasks: task b31397d230314b39928fb1d32dd1995f.	43f7391c-fd38-4593-9d56-2eeb72c04549
+2/18/2023, 9:25:23 AM	service stream-loader has started 1 tasks: task 744fefbe69db4f0da94229f142efc5a0.	4ead3009-53a9-40a7-84bc-268e940e8540
+2/18/2023, 9:25:14 AM	service stream-loader has started 2 tasks: task 9a4fff59a8b44b5e8e28368522fcc30c task 4860d3fe96b448179712f6ca2ac6015f.	62ba3c99-cab7-4b64-9f8d-7ad847abad8e
+2/18/2023, 9:25:04 AM	service stream-loader has started 2 tasks: task 6dceeb1d80d748ea927dedcc36a9c3c4 task 2431d94b079745c6904399334feec23e.	7496acef-2631-47c9-a339-7d615b3fe9e6
+2/18/2023, 9:24:44 AM	service stream-loader has started 1 tasks: task 24713653565c4a7a9acd9f312608f608.	77169b10-ce22-4771-a7dc-4b4bad2d9f52
+2/18/2023, 9:24:25 AM	service stream-loader has started 1 tasks: task 86d97ab957324edf99f2656e540bac53.	61b625b6-a489-4737-a716-f01d4e575ae9
+2/18/2023, 9:24:06 AM	service stream-loader has started 1 tasks: task 202f836081fe4148aef9a58673098c3b.	a210c08c-0096-45df-8b35-20a1f09dcdb5
+2/18/2023, 9:23:47 AM	service stream-loader has started 2 tasks: task 3b7f5d83a4014200acc091b325cd6007 task 0bdf90a8ada949e0a0cdf0b1012db02a.	f78e446b-b60e-4714-a2ed-467350af2931
+2/18/2023, 9:23:28 AM	service stream-loader has started 3 tasks: task ee3550f6300e412e92775c1bb0973e29 task ad3882562a18426cb98d46b1d9a8b496 task 97934b9f627e4b0489434eafe456e16a.	7071202b-28b4-4153-9e64-2c1d1cfbf452
+2/18/2023, 9:22:40 AM	service stream-loader has started 2 tasks: task 772549af3ce645bea03ed8bf54c337e6 task fb79862e9ca049e5ba7ee07f5f13d65f.	8dbf61e0-5572-49aa-9013-415f9157796a
+2/18/2023, 9:22:01 AM	service stream-loader has started 1 tasks: task 78975c9e10334068ab48600b69152c2f.	5513eeed-b792-4c46-b91b-0012dcb8c300
+2/18/2023, 9:21:51 AM	service stream-loader has started 2 tasks: task 6ef20bf038114e76aae64b256ed4ff51 task f8034985a5764ddabc6c8585fe290b98.	cec7543d-8e07-4668-b1e6-ca0854460684
+2/18/2023, 9:21:42 AM	service stream-loader has started 1 tasks: task f898689811e042a5affe4d8d78f600cd.	bc3512d0-6188-4dc5-ab7b-bcc39a585237
+2/18/2023, 9:21:12 AM	service stream-loader has started 5 tasks: task baa8fcb28ea945cc824ab3e3bcb79f1a task e7ab2732fc97453dbe5d347391c6614a task d65cd22b8f1e4b879fcba9016748c513 task 9a78cc9fd9464918a94a2f54d5bdb9c3 task 01e5a13eb4b24a6b9694caf6a371e937.	242f3470-a661-4c3f-beaa-77bc07fa2210
+2/18/2023, 8:43:40 AM	service stream-loader has reached a steady state.	651ea978-8299-4aa6-8fb8-b79d597f0854
+2/18/2023, 8:42:14 AM	service stream-loader has started 1 tasks: task 836351bb75a547bda930b34cf0b3be9f.	51c180ad-bfee-4a11-a1cf-9e43cd6e3740
+2/18/2023, 8:29:49 AM	service stream-loader has reached a steady state.	887c1526-4fda-4196-84c2-48ed5a0c78cc
+2/18/2023, 8:28:24 AM	service stream-loader has started 1 tasks: task 76a4ca1ecf6f4892802a1a86bdf7aae1.	add82a41-b7bd-40d2-9356-3bbbba5b8404
+2/18/2023, 7:53:27 AM	service stream-loader has reached a steady state.	e7c627d5-e91d-44d7-9c73-22b5895e6bcb
+2/18/2023, 7:53:17 AM	service stream-loader has stopped 2 running tasks: task 4e36d88c649343fcb2686b25a485d0fe task ca92f2cb8b414df3ad7a302477de0655.	893052c8-c734-453b-b894-a8ed18d68ed7
+2/18/2023, 7:53:02 AM	Message: Successfully set desired count to 43. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	9ed3e9a0-ad55-43d7-879e-63f1fd82121e
+2/18/2023, 7:40:45 AM	service stream-loader has reached a steady state.	5319c9e9-66b1-4a05-8b5e-e01fff96154f
+2/18/2023, 7:38:50 AM	service stream-loader has started 1 tasks: task 238dc26b6139438bbb5e78c923f9008e.	9c7e12dd-48c0-46b3-ab8d-56459664647b
+2/18/2023, 7:34:43 AM	service stream-loader has reached a steady state.	da261d41-eb13-4650-a0f6-6234484a86db
+2/18/2023, 7:33:16 AM	service stream-loader has started 1 tasks: task cdad94a3ea2043508775504928769fd8.	6518585d-9e42-49c3-b1c7-f054a21812d4
+2/18/2023, 5:20:14 AM	service stream-loader has reached a steady state.	40664f95-3ebe-4744-918c-90f8216079e8
+2/18/2023, 5:18:50 AM	service stream-loader has started 1 tasks: task 7342253cbb454fbbb1bedaf0e6a44bc7.	b3345f5b-1e47-44e0-a7ab-fcf85a770a42
+2/18/2023, 4:43:17 AM	service stream-loader has reached a steady state.	9b7266b2-3401-4194-9e97-afa5b8dd9b90
+2/18/2023, 4:43:07 AM	service stream-loader has stopped 2 running tasks: task c678b114a7e64b4794d2e51c697e243f task ff8ee8a7dc1d461f987971619545c907.	636878e3-37f1-45b7-8ec4-8357dff13fe6
+2/18/2023, 4:43:01 AM	Message: Successfully set desired count to 45. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	d75d809d-f184-4f8a-a4b1-6e07490a1cdf
+2/18/2023, 4:12:27 AM	service stream-loader has reached a steady state.	96d2d1c5-2e56-43a5-975c-e21dc4a2c698
+2/18/2023, 4:12:17 AM	service stream-loader has stopped 2 running tasks: task e5c0ee21cd07400a83a0c194e96ac756 task 962bfd058007402dae1761286c2c72bb.	20fc6e43-c7de-4ca8-ae28-0234d10bfb65
+2/18/2023, 4:12:01 AM	Message: Successfully set desired count to 47. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	2c716462-9f09-4ba8-93c5-2f23b2941357
+2/18/2023, 3:20:34 AM	service stream-loader has reached a steady state.	12c74acb-250f-408b-a0d9-c73ec1181b8c
+2/18/2023, 3:20:24 AM	service stream-loader has stopped 1 running tasks: task 513c864739ba43609e74c7686b64b803.	1770a5fc-dbda-4558-a1fa-5976dd1b2566
+2/18/2023, 3:20:15 AM	service stream-loader has stopped 1 running tasks: task 0733332c6f964d9da619e6d41ee9b47c.	a96f531c-a08d-438f-bb21-5cb0a755d4ff
+2/18/2023, 3:20:03 AM	Message: Successfully set desired count to 49. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	8796294f-ef04-4c8a-983f-8732fa68b2a9
+2/18/2023, 3:19:46 AM	service stream-loader has reached a steady state.	844d7e95-1519-4e48-87eb-5e8df76fd2a9
+2/18/2023, 3:18:01 AM	service stream-loader has started 1 tasks: task d158864334614f55abb6a70ef6da7c64.	69171d1f-b03b-436c-8a27-91ef200006f3
+2/18/2023, 1:33:19 AM	service stream-loader has reached a steady state.	3f038dea-b5f4-41b7-b890-059658033814
+2/18/2023, 1:33:10 AM	service stream-loader has stopped 2 running tasks: task ee4fe856b70f404a8f1f8781ed18ecc0 task 359e433df2244fd4ba2ab5f5252fa41b.	0dfb856c-5871-45d6-9be7-55665a1b3aa2
+2/18/2023, 1:33:02 AM	Message: Successfully set desired count to 51. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	f41e6109-8b81-48a2-b57e-d128a2f6fa29
+2/18/2023, 1:27:34 AM	service stream-loader has reached a steady state.	1d0f0448-e6b4-4859-b243-39572e89b4ed
+2/18/2023, 1:25:48 AM	service stream-loader has started 3 tasks: task e52dc69687de49e692427b2c3f814f76 task 247a516ac2ce4fb687c4a5da45839a32 task 4e36d88c649343fcb2686b25a485d0fe.	dee21658-d6ea-47d6-b0a2-69427a986141
+2/18/2023, 1:07:29 AM	service stream-loader has reached a steady state.	6dc73eb3-1c53-4006-9128-7bbc065b4450
+2/18/2023, 1:07:19 AM	service stream-loader has stopped 2 running tasks: task d233a3fccc6342878722f4f6c0d8fb38 task 1bc0a5a4925547c68af5f3b3966a283e.	d0918017-5fa0-45f1-ba82-32af02469f95
+2/18/2023, 1:07:01 AM	Message: Successfully set desired count to 53. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	e68c8a99-ff6a-4148-96ba-a8007cb27019
+2/18/2023, 12:20:39 AM	service stream-loader has reached a steady state.	c9f5a9ce-f2e5-430e-8c1c-397cb370773c
+2/18/2023, 12:20:30 AM	service stream-loader has stopped 2 running tasks: task f37662e907824535a311d4d9c9f819fa task e803eb7caf9646f9b9cdcd2e36b4a260.	77c09ecb-e092-44b8-b97a-cb720119e8e3
+2/18/2023, 12:20:02 AM	Message: Successfully set desired count to 55. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	02c8c323-1069-4251-8480-3329c6d88d51
+2/18/2023, 12:11:19 AM	service stream-loader has reached a steady state.	cb8f04a2-c193-434c-962d-a75b6e8e2100
+2/18/2023, 12:09:33 AM	service stream-loader has started 3 tasks: task 4c1a709a50584bddbddd14371f2b5a2d task 3487ad324f224d878adf72994ed5cb4f task bb03ccd5424745e295bbce91ec088e59.	1f3991a5-a9dc-4e24-99e6-44c74aec2ab1
+2/17/2023, 11:41:25 PM	service stream-loader has reached a steady state.	032f8b0a-f93f-426f-8206-abfea11f5941
+2/17/2023, 11:41:15 PM	service stream-loader has stopped 2 running tasks: task 22fd95148d224e4d913b72f4ada969a2 task c2aad00ba9f54244bf310bc9d68ff21b.	2016c034-7361-41d4-a56a-821236897993
+2/17/2023, 11:41:01 PM	Message: Successfully set desired count to 57. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	14e7d23a-f11d-4adc-ade2-cf735a70597f
+2/17/2023, 11:02:04 PM	service stream-loader has reached a steady state.	9e5ce983-b45a-4129-a264-9d075f3a9a94
+2/17/2023, 11:00:18 PM	service stream-loader has started 2 tasks: task 74fac65fbbe34d059c1b64216d0f62ae task c2aad00ba9f54244bf310bc9d68ff21b.	7a8625a5-a649-4801-819f-edc80c253f25
+2/17/2023, 10:59:58 PM	Message: Successfully set desired count to 59. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	86f8866e-ceb6-4bae-8783-111d91c4da33
+2/17/2023, 10:45:33 PM	service stream-loader has reached a steady state.	49f95bd5-537e-4619-9a34-96cd52f83532
+2/17/2023, 10:45:24 PM	service stream-loader has stopped 3 running tasks: task 3fd0c10e10ba425e87328ecfedcf3a2f task 2d1ccf3db5b64336a352c407ae6f9adf task 040fdc5302204f63a0f1ebb91d6c78fb.	dd6e3ffc-007d-4172-8262-b5550e3f1f2f
+2/17/2023, 10:45:02 PM	Message: Successfully set desired count to 57. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmLow-9b1d7444-26d8-4b2c-a52c-5fbbebaef690 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	4eb230db-d09f-4e23-b345-ec2e32deb96b
+2/17/2023, 8:12:46 PM	service stream-loader has reached a steady state.	9013704b-a8e1-4c74-b4a5-b4abd59b9837
+2/17/2023, 8:11:02 PM	service stream-loader has started 2 tasks: task fbd9143051964e3c8984a756db920de7 task ff8ee8a7dc1d461f987971619545c907.	107a3e87-a3f2-40aa-b486-36aaf86a862f
+2/17/2023, 8:10:58 PM	Message: Successfully set desired count to 60. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	2bc3be80-27f6-4555-a009-d23b69f2c3f8
+2/17/2023, 7:54:05 PM	service stream-loader has reached a steady state.	97e98bcc-e54a-4724-9a75-28f1197d2e58
+2/17/2023, 7:52:20 PM	service stream-loader has started 3 tasks: task 2d1ccf3db5b64336a352c407ae6f9adf task 040fdc5302204f63a0f1ebb91d6c78fb task 0e7f2b79205047aebb52c43c4b49b24e.	36680041-f635-4223-8489-a6dc96201292
+2/17/2023, 7:51:58 PM	Message: Successfully set desired count to 58. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	7f0cd955-641d-4810-824e-8963f8dd45e2
+2/17/2023, 7:44:17 PM	service stream-loader has reached a steady state.	3c8ab847-2516-486a-bdfb-5d6e333a46d6
+2/17/2023, 7:39:59 PM	service stream-loader has started 1 tasks: task d75c8edab2074028a0e33a68459dc8aa.	9e422b36-97aa-4f2d-a0bc-82c4522b936f
+2/17/2023, 7:39:58 PM	Message: Successfully set desired count to 55. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	a73bf1a7-9569-4c3f-b230-e44c1a2a4e9d
+2/17/2023, 7:38:06 PM	service stream-loader has started 2 tasks: task ec5c71075d9c44d7b395616fab59351e task cc5b5d66cf3a42aa8cc9e6d617866d17.	83fd13a2-90fd-4206-b31a-064ad8e4b887
+2/17/2023, 7:37:58 PM	Message: Successfully set desired count to 54. Found it was later changed to 55. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	2f8a1a7d-7a6b-4f45-bdf0-bf415a4530ea
+2/17/2023, 7:26:48 PM	service stream-loader has reached a steady state.	c54ac9a8-d1eb-4d36-9ada-c703eb8bb7a9
+2/17/2023, 7:25:05 PM	service stream-loader has started 14 tasks: task 34eaa612c47842b0956d8df5fe6beb69 task 2ac02502966543d4a2ce590f00c14e8d task 1bc0a5a4925547c68af5f3b3966a283e task cb9a1970a32e469981f89b5e43cddfc7 task 0733332c6f964d9da619e6d41ee9b47c task 8a730d62fdbb44c697c54001851a0662 task aaff56253f5d464088fa7107085fb15e task d233a3fccc6342878722f4f6c0d8fb38 task c04fe4514b6247c8bb7e7b7fde703702 task c678b114a7e64b4794d2e51c697e243f task bbee74abc1864c19aec5e5fb64ba1cf9 task b5ea6b0e531545148dbc6549b3483606 task 492ff987684846369c2c559de4b63db2 task f6a287c6d95b4cd1a58515b441258379.	6a0a0217-7156-4c86-8ec6-073e563ae019
+2/17/2023, 7:24:58 PM	Message: Successfully set desired count to 52. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	35ed77d3-84d4-479f-a041-bd7fadb1990f
+2/17/2023, 7:18:55 PM	service stream-loader has reached a steady state.	78b554f9-c2b9-481a-b4e7-dfcf3e2fdfab
+2/17/2023, 7:17:02 PM	service stream-loader has started 14 tasks: task 9af51c0b372b4e54b80b89c74891cec1 task 4e08452c12e743e7885072249016faeb task 162bd5b769d74505aa4af3024920d4b7 task 1b936788b1a742449a52f1c3b1a14e40 task 359e433df2244fd4ba2ab5f5252fa41b task 63985d190b2d410e912294e5614838ea task 7d06e1a2e34c412682eeb875b62871ab task 3fd0c10e10ba425e87328ecfedcf3a2f task ee4fe856b70f404a8f1f8781ed18ecc0 task e58e8463245c4254be91f56f08932121 task 24d2870dc17e4d1bb5d1b56512a442c7 task 04c569f5aad14499ad170fd2018a8a2a task b6034f1ade74411ba8c4420a4d04fc2c task 0a5224bbfb8b4e7f8aa38a1e714b7806.	92260b3b-f6ad-454c-be59-2aff34a3ef78
+2/17/2023, 7:16:58 PM	Message: Successfully set desired count to 38. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	c3b845ba-279c-4cc7-895c-f713e2c8c16d
+2/17/2023, 7:10:51 PM	service stream-loader has reached a steady state.	fbd33a17-bcae-4053-8793-0ad4878065c4
+2/17/2023, 7:09:05 PM	service stream-loader has started 2 tasks: task f37662e907824535a311d4d9c9f819fa task 861114ed38df42c7a41a080c9578762f.	7fbaa9ff-efa2-4e7d-8a2a-453c542e6fe0
+2/17/2023, 7:08:58 PM	Message: Successfully set desired count to 24. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	fa8bd546-9aae-4f26-a468-95e188543fdb
+2/17/2023, 7:08:27 PM	service stream-loader has started 8 tasks: task 215becc1f1ba44b5b37ab1d20c4dd4ce task 6ce52546d76c43aa9bad863c4ffb0c4a task c99904cd039d494b96e3ab0e85a47f8e task 5016d4269e6a4dada5a04fa8a3ddaa42 task 4f6226d399604a4bbd4336a8d8c8f3ad task ba5a3eb76d2b4d06aee9daf1c3615642 task a0ade6011cd34dce96e962b5d440e107 task 020e2ca802834d6798fce8ce5c4315df.	e7fade16-673f-447e-bac0-bfdb208c38dd
+2/17/2023, 7:07:58 PM	Message: Successfully set desired count to 22. Found it was later changed to 24. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	04df6bf1-a449-43be-8944-8c59b0e8435d
+2/17/2023, 7:01:48 PM	service stream-loader has reached a steady state.	88cfbdba-0705-44a9-b438-a2f052d2a43c
+2/17/2023, 7:00:04 PM	service stream-loader has started 3 tasks: task 22fd95148d224e4d913b72f4ada969a2 task 962bfd058007402dae1761286c2c72bb task 7d64328456c745a980e4020940de3f94.	937b1326-6b00-4d0e-9c28-6cac1ed608a4
+2/17/2023, 6:59:58 PM	Message: Successfully set desired count to 14. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	5e906137-4851-4a98-8c57-ac81d1460b94
+2/17/2023, 6:59:21 PM	service stream-loader has started 3 tasks: task 513c864739ba43609e74c7686b64b803 task ca92f2cb8b414df3ad7a302477de0655 task e5c0ee21cd07400a83a0c194e96ac756.	250ca89a-1f41-4b48-8a42-e7b40b652650
+2/17/2023, 6:58:58 PM	Message: Successfully set desired count to 11. Found it was later changed to 14. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/stream-loader-AlarmHigh-c059c576-7b79-4632-a634-9da79cf258b7 in state ALARM triggered policy Ron-perf-35-scaling-policy-stream-loader	5f404ab1-80c4-4416-a047-bc8fe91aa799
+2/17/2023, 6:53:48 PM	service stream-loader has reached a steady state.	d19d4874-dd0e-4876-9b7f-d07bac3bae9b
+2/17/2023, 6:52:22 PM	service stream-loader has started 1 tasks: task fbdab15c1b9545c7a8c695f37674efcb.	4f71c113-1a68-45e8-800b-34c21fc12ee6
+2/17/2023, 6:43:43 PM	service stream-loader has reached a steady state.	9e95d6ce-de1b-4530-bc79-a62c4e646af3
+2/17/2023, 6:43:43 PM	service stream-loader deployment ecs-svc/9318690978973308067 deployment completed.	11078567-6620-443a-b65f-59fc4f9746ae
+2/17/2023, 6:41:58 PM	service stream-loader has started 8 tasks: task 2584a01f289b42ccbb731baa916d3c36 task 7e147a57994b410fa9040904aa0e0a01 task 8028e0908d754dfb89006d9e0f6531ea task e9208bba820048c892c1da88b1642745 task 7f9940046f9a47a2ac8a9a096114d73c task 7e2895b06c374196aeb6c640cf2fb468 task b2d112d3d5f24007976cc59af959f538 task e803eb7caf9646f9b9cdcd2e36b4a260.	aa9cb7b7-1011-4a44-8e92-42d4efa5e107

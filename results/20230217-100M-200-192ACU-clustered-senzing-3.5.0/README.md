@@ -70,21 +70,21 @@ N/A.  Ran without `withinfo` enabled.
 
 #### ECS
 
-##### Stream-loader CPU Utilization
+##### Sz SQS Consumer CPU Utilization
 
-![Stream Loader CPU Utilization](images/stream-loader-CPU-Utilization.png "Stream-loader CPU Utilization")
+![Sz SQS Consumer CPU Utilization](images/stream-loader-CPU-Utilization.png "Sz SQS Consumer CPU Utilization")
 
-##### Stream-loader Memory Utilization
+##### Sz SQS Consumer Memory Utilization
 
-![Stream Loader Memory Utilization](images/stream-loader-Memory-Utilization.png "Stream-loader Memory Utilization")
+![Sz SQS Consumer Memory Utilization](images/stream-loader-Memory-Utilization.png "Sz SQS Consumer Memory Utilization")
 
-##### Redoer CPU Utilization
+##### Sz Simple Redoer CPU Utilization
 
-![Redoer CPU Utilization](images/redoer-CPU-Utilization.png "Redoer CPU Utilization")
+![Sz Simple Redoer CPU Utilization](images/redoer-CPU-Utilization.png "Sz Simple Redoer CPU Utilization")
 
-##### Redoer Memory Utilization
+##### Sz Simple Redoer Memory Utilization
 
-![Redoer Memory Utilization](images/redoer-Memory-Utilization.png "Redoer Memory Utilization")
+![Sz Simple Redoer Memory Utilization](images/redoer-Memory-Utilization.png "Sz Simple Redoer Memory Utilization")
 
 #### RDS
 

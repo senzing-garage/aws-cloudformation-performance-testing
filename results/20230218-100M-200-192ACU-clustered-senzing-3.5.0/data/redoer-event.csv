@@ -1,0 +1,114 @@
+2/18/2023, 5:34:46 PM	Message: Successfully set desired count to 9. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	d0d8a3d2-bd14-48d9-87d6-626eb97a62c9
+2/18/2023, 3:22:02 PM	service redoer has reached a steady state.	4f4a94bb-9650-4200-a909-337dc0da3d24
+2/18/2023, 3:21:52 PM	service redoer has stopped 1 running tasks: task 329fa13b17754e1697dafb57bb45e55f.	b960e140-936d-4cad-b415-80c3bc215340
+2/18/2023, 3:21:46 PM	Message: Successfully set desired count to 10. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	914dddf4-01ab-4b20-8bc7-fc61387507e9
+2/18/2023, 1:10:08 PM	service redoer has reached a steady state.	cff865f9-a400-4430-bd19-76e5e1f9524c
+2/18/2023, 1:09:58 PM	service redoer has stopped 1 running tasks: task 3971921c6dde4996bc22110f758db1e7.	9d125d4a-f6e7-4c41-8acd-db669bdcbd4f
+2/18/2023, 1:09:46 PM	Message: Successfully set desired count to 11. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	0bc303bd-401b-4106-9852-1d79ad26840b
+2/18/2023, 11:52:06 AM	service redoer has reached a steady state.	c868ed6b-da50-46bf-bccc-9f38c4ce674e
+2/18/2023, 11:51:56 AM	service redoer has stopped 1 running tasks: task 07e94d7f44474d16bf51b40425af9e7a.	d313c447-7798-4700-823d-393b2de7a2df
+2/18/2023, 11:51:46 AM	Message: Successfully set desired count to 12. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	035be6ef-14b8-4e70-bd0a-28dc56b71aff
+2/18/2023, 11:15:58 AM	service redoer has reached a steady state.	2c7d1fab-9046-436f-9db0-5305c9e6aa81
+2/18/2023, 11:15:48 AM	service redoer has stopped 1 running tasks: task ddcec6ad392a4098aff6d3fa59bf5a31.	d890cbeb-6924-4309-ba77-3a347e60ec03
+2/18/2023, 11:15:46 AM	Message: Successfully set desired count to 13. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	1eac1f14-f8e5-495d-8c08-1c035340551c
+2/18/2023, 11:13:17 AM	service redoer has reached a steady state.	f48961ab-62f2-4e72-a9db-eaa3b30a0649
+2/18/2023, 11:11:49 AM	service redoer has started 1 tasks: task 0ac80e61e36b4571ac17b99e2706a68d.	4aab5b76-7cf9-4086-afed-e8038e4abc5f
+2/18/2023, 9:55:04 AM	service redoer has reached a steady state.	cbb4aec7-e09f-45ac-b115-c7cbe5698547
+2/18/2023, 9:54:55 AM	service redoer has stopped 1 running tasks: task 022d2189d13e43b4b6e5fc6f4c550970.	487a1b21-23cb-49ce-9166-16d66cbfe707
+2/18/2023, 9:54:46 AM	Message: Successfully set desired count to 14. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	0e7d9c21-5d8a-4fa8-9dde-febbbb6b4213
+2/18/2023, 9:33:06 AM	service redoer has reached a steady state.	02c913ff-8269-457a-9956-7b77f2ac080f
+2/18/2023, 9:31:20 AM	service redoer has started 2 tasks: task f5edbd3f554e450ba789a5a336ce0b68 task 348b87a8a05b4d0db69d3366f7ac8694.	ce759ccb-28f3-4dae-802f-05e33b683d6a
+2/18/2023, 9:31:18 AM	Message: Successfully set desired count to 15. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	56ba909f-123e-48aa-bd8f-d333593daed7
+2/18/2023, 9:30:22 AM	service redoer has started 1 tasks: task 692a34de2bc54b3da7eebcd70adcb345.	8db721cf-ae92-4221-9fe7-b68a7339b7a9
+2/18/2023, 9:30:18 AM	Message: Successfully set desired count to 13. Found it was later changed to 15. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	1d9958ed-8e98-4aa8-ae71-3412a4b2513f
+2/18/2023, 9:29:35 AM	service redoer has started 2 tasks: task 7f5259a44fbb48b0975b5196a736942e task 8fdef260932a4d43a60541ef030b6f17.	6623865e-76e4-444d-8604-0b14a45308ca
+2/18/2023, 9:29:18 AM	Message: Successfully set desired count to 12. Found it was later changed to 13. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	590b6391-bcca-496a-9bfe-d26973001e74
+2/18/2023, 9:27:32 AM	service redoer has reached a steady state.	5c2116db-0122-41b7-9a0b-347ca9fd4d9e
+2/18/2023, 9:25:48 AM	service redoer has started 2 tasks: task 329fa13b17754e1697dafb57bb45e55f task ddcec6ad392a4098aff6d3fa59bf5a31.	8fa96b2f-e755-4067-b3ee-b6b62210d337
+2/18/2023, 9:25:19 AM	service redoer has started 1 tasks: task c2685c1ca4204eb582e0f500ed19836b.	6ed35c6d-6d4a-4936-a1a1-aa69e032b010
+2/18/2023, 9:24:40 AM	service redoer has started 3 tasks: task 4b11b1592b5349e98f71ee01ab14ada8 task bd6e7fe716144b0b9f526986f84a125a task 022d2189d13e43b4b6e5fc6f4c550970.	7f5620d3-ddfc-4432-9153-03d6aaa2e4cc
+2/18/2023, 9:23:46 AM	Message: Successfully set desired count to 10. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	6b43770a-b772-4733-b59f-352d3f22f67c
+2/18/2023, 9:23:35 AM	service redoer has started 1 tasks: task 07e94d7f44474d16bf51b40425af9e7a.	c759aeaa-5fda-4c38-9ae3-c7d52fcf4fe8
+2/18/2023, 9:22:56 AM	service redoer has started 1 tasks: task 14ef8d3fd16b4631923e29ee1dc539e0.	c3c5d172-1658-4c58-afc6-9587661aa938
+2/18/2023, 9:22:47 AM	service redoer has started 1 tasks: task 7ec9f3d0998e49808b0a29df35367519.	4c20656e-a7b5-4951-8a4d-860c93f44517
+2/18/2023, 9:21:58 AM	service redoer has started 1 tasks: task 3971921c6dde4996bc22110f758db1e7.	46b902a9-a869-4393-a487-49f9e2a43e3d
+2/18/2023, 8:37:05 AM	service redoer has reached a steady state.	d8345bf9-3301-4941-b467-e2fc0e071b75
+2/18/2023, 8:36:56 AM	service redoer has stopped 1 running tasks: task ed0c36e4594d499fbe4536a4bb3222b7.	89a5a49c-af54-4ff0-ad05-a8da0e44a365
+2/18/2023, 8:36:46 AM	Message: Successfully set desired count to 14. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	f6afbc5c-baaf-43a9-b98e-a935ce69e0b1
+2/18/2023, 8:06:05 AM	service redoer has reached a steady state.	6cede64c-0c0e-45bc-8fe3-f1049bd85f31
+2/18/2023, 8:05:55 AM	service redoer has stopped 1 running tasks: task c5be5a35c81841ff9ed7a7d3ae72b0e5.	726bdbb1-bbec-4c66-90dc-0b07e19e332b
+2/18/2023, 8:05:46 AM	Message: Successfully set desired count to 15. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	4087b5ad-4d4e-468b-892f-41a0852cf0df
+2/18/2023, 7:14:06 AM	service redoer has reached a steady state.	ec7bf9e3-092e-4969-8715-bca368f79fdd
+2/18/2023, 7:13:57 AM	service redoer has stopped 1 running tasks: task 608e4c55cd3f4042b0ffcb9cd706b696.	c86ee056-c5bf-4452-8c2f-6e1e2a3ff3b7
+2/18/2023, 7:13:46 AM	Message: Successfully set desired count to 16. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	fbbc8913-915c-4f27-aae5-7789f0c8fbee
+2/18/2023, 6:53:09 AM	service redoer has reached a steady state.	10a903e6-b30a-4207-a3b7-489d85dbffbb
+2/18/2023, 6:53:00 AM	service redoer has stopped 1 running tasks: task fe308a392fdf4057b872200349504494.	d43b1855-bbbc-4797-900c-2ea062f9c51f
+2/18/2023, 6:52:46 AM	Message: Successfully set desired count to 17. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	5111825a-5f02-4588-8e5e-218a82a3472b
+2/18/2023, 5:58:07 AM	service redoer has reached a steady state.	f640e4b8-f5df-4138-9ea9-22be8e5aee6a
+2/18/2023, 5:57:58 AM	service redoer has stopped 1 running tasks: task c906542d883d4c40998e43c56b151452.	5c20ae0f-7a97-4f61-aa35-0c6ce7b5809c
+2/18/2023, 5:57:46 AM	Message: Successfully set desired count to 18. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	8d56e3dd-3148-44ec-bef9-f9ec8d34701e
+2/18/2023, 5:42:40 AM	service redoer has reached a steady state.	780dba0a-b352-46f4-8ff7-6d68d33ccc9a
+2/18/2023, 5:40:28 AM	service redoer has started 3 tasks: task bb9584ae49c345a1b321d62d45477db4 task ed0c36e4594d499fbe4536a4bb3222b7 task fe308a392fdf4057b872200349504494.	779caa0f-9a08-4e1f-a678-b02daff7ba6a
+2/18/2023, 5:40:18 AM	Message: Successfully set desired count to 19. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	9ef67b4f-f5c8-4c34-952a-400fa1da78c4
+2/18/2023, 4:59:05 AM	service redoer has reached a steady state.	18a399b8-42fa-442b-a290-ea29c6191ceb
+2/18/2023, 4:58:55 AM	service redoer has stopped 1 running tasks: task d44c04cc75a54962881721731b76b3ed.	ae1f9605-90db-4f16-b63e-9787d7504f0f
+2/18/2023, 4:58:46 AM	Message: Successfully set desired count to 16. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	5389dcdb-cfac-45c7-b375-746894340cfc
+2/18/2023, 3:40:59 AM	service redoer has reached a steady state.	ac910ade-e7b8-4c3b-96a0-f09a044c7cd3
+2/18/2023, 3:40:50 AM	service redoer has stopped 1 running tasks: task d833a1189d054daea95e022cad974b64.	02b80b85-bc7f-4efa-87ba-8797e87f21d0
+2/18/2023, 3:40:46 AM	Message: Successfully set desired count to 17. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	a767b4ea-b870-4694-82fe-6ce5fcb16926
+2/18/2023, 1:19:05 AM	service redoer has reached a steady state.	c4aefc14-7c70-4a88-bcfc-5f0f8f51e0b3
+2/18/2023, 1:18:55 AM	service redoer has stopped 1 running tasks: task ef916f3c25874541842728db95d2eaad.	87b3d646-a86c-4bdc-bc28-435998e2a8b9
+2/18/2023, 1:18:46 AM	Message: Successfully set desired count to 18. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	0e994f79-4850-475b-aff9-a4471653bf43
+2/18/2023, 12:48:48 AM	service redoer has reached a steady state.	69c24c56-2c13-4011-a408-7f79e449e0ff
+2/18/2023, 12:47:32 AM	service redoer has started 1 tasks: task 3da0f6c9a504459f9eab5680ff9acca4.	c437cb3a-e6b2-446e-9257-ed9d40e5ae93
+2/18/2023, 12:47:18 AM	Message: Successfully set desired count to 19. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	d5442438-4a87-46f8-b83d-76e773019003
+2/18/2023, 12:47:03 AM	service redoer has reached a steady state.	58885831-5649-4fe6-b1de-ce83466d48cd
+2/18/2023, 12:45:38 AM	service redoer has started 1 tasks: task ef916f3c25874541842728db95d2eaad.	f36df334-c0c7-43e0-8215-fd777fa669c5
+2/18/2023, 12:45:18 AM	Message: Successfully set desired count to 18. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	b4ee6ed3-82f3-4ed0-b49e-a6b9b338f5d2
+2/18/2023, 12:17:04 AM	service redoer has reached a steady state.	76c7d2c1-1b25-4d10-9886-5be87763a2f4
+2/18/2023, 12:16:54 AM	service redoer has stopped 1 running tasks: task 6ed6c339fb384aaf8517df0b2ab27c3e.	8d4d1f3d-89b4-48ab-8507-ee6c8de2ada9
+2/18/2023, 12:16:46 AM	Message: Successfully set desired count to 17. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	65936bc8-7bda-4ecb-8843-9033adcc43b6
+2/17/2023, 11:00:32 PM	service redoer has reached a steady state.	c4fff336-bcd4-4116-9caa-a4d57c13a320
+2/17/2023, 10:58:47 PM	service redoer has started 1 tasks: task 2c6d53d599b5431ebeca0d9cf335c0b1.	2ac50ab9-0203-4b13-b410-f88e3a31cd1e
+2/17/2023, 10:58:18 PM	Message: Successfully set desired count to 18. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	083dcaba-ad44-4ded-b013-d1744c3bab02
+2/17/2023, 9:42:59 PM	service redoer has reached a steady state.	42a1d212-2c1e-4fb4-b617-35bb8ade405a
+2/17/2023, 9:41:42 PM	service redoer has started 1 tasks: task 4af61d6de8af4c0ab90e87641ff3d86f.	9436f81d-4575-4e56-8f51-4ccc875cb543
+2/17/2023, 9:41:18 PM	Message: Successfully set desired count to 17. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	069f59c1-d351-473a-881d-f3ae33c1c456
+2/17/2023, 9:29:10 PM	service redoer has reached a steady state.	97cc11d4-b2c5-419e-8c0f-f3f42d7e83a5
+2/17/2023, 9:27:24 PM	service redoer has started 3 tasks: task 9db2044871e2410592505c22d1349f9f task d833a1189d054daea95e022cad974b64 task 608e4c55cd3f4042b0ffcb9cd706b696.	00d81ed1-4f2d-491f-99ef-2456d0f18fd4
+2/17/2023, 9:27:18 PM	Message: Successfully set desired count to 16. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	3c43b802-896f-4f12-a203-4436b7888e84
+2/17/2023, 9:14:40 PM	service redoer has reached a steady state.	2dfb958a-33ad-43f8-834d-527106f4a74a
+2/17/2023, 9:12:55 PM	service redoer has started 1 tasks: task e43db1609ca54c0d9fbbc377597b328e.	1ffb6032-5fa7-4491-aa6f-aa7cf2e253a6
+2/17/2023, 9:06:53 PM	service redoer has reached a steady state.	e9b3c09d-d56a-43dc-91a9-7d0ea8510df2
+2/17/2023, 9:05:27 PM	service redoer has started 1 tasks: task d44c04cc75a54962881721731b76b3ed.	826784ec-69de-4e66-af43-0c316dd3b277
+2/17/2023, 9:05:18 PM	Message: Successfully set desired count to 13. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	e9763a71-e497-4ad9-bc9a-3fc9d5a17be0
+2/17/2023, 9:04:07 PM	service redoer has reached a steady state.	a31c9d71-02bb-463f-adaa-244994b096ff
+2/17/2023, 9:02:20 PM	service redoer has started 1 tasks: task b1a40bc48d7143658e74df0f2ad8b6f8.	6f95a492-b982-4724-902c-9cc5a5da168c
+2/17/2023, 9:02:18 PM	Message: Successfully set desired count to 12. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	cd28a92b-4883-48e1-b487-390d4cf61cbb
+2/17/2023, 8:55:15 PM	service redoer has reached a steady state.	65273fde-a993-403d-8fdf-e505c945e83f
+2/17/2023, 8:53:30 PM	service redoer has started 2 tasks: task 7a498ef4e2344c66a89293a099707bdf task 86c5ef5af82847dcab4b25e85b781d32.	827bf347-4532-4ea3-a7a2-c0dc3bb24a6f
+2/17/2023, 8:53:18 PM	Message: Successfully set desired count to 11. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	cfa16f8f-9807-43ed-941b-249bd3829cb9
+2/17/2023, 8:31:36 PM	service redoer has reached a steady state.	170dfe35-62ca-4b08-8144-fbe863ed8723
+2/17/2023, 8:29:23 PM	service redoer has started 3 tasks: task 822019ee1ec1404c9bc4d9137110e577 task 91e3f5103589488fb2386bbb92726023 task 6ed6c339fb384aaf8517df0b2ab27c3e.	3f5c518a-1822-4a46-98d8-01dd33abed17
+2/17/2023, 8:29:18 PM	Message: Successfully set desired count to 9. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	0cce895b-47b1-4297-b8a0-0038164c8156
+2/17/2023, 8:23:14 PM	service redoer has reached a steady state.	1a71c8cc-1886-4690-af1a-3494385ca069
+2/17/2023, 8:21:29 PM	service redoer has started 1 tasks: task d80c7af356f544d48cf30fabbfb1dcfd.	fd07a1d7-4a26-4cf1-b7aa-e6511976464f
+2/17/2023, 8:21:18 PM	Message: Successfully set desired count to 6. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	a30079db-ca7e-4ada-8580-6ce9b896a2ca
+2/17/2023, 8:13:44 PM	service redoer has reached a steady state.	edd7c077-dc27-4139-8885-f3b9a38839d6
+2/17/2023, 8:12:26 PM	service redoer has started 1 tasks: task fef28704727e4420a5688d8bdfba30f7.	1efe17ca-05f5-4112-aef5-2f6ecb892382
+2/17/2023, 8:12:18 PM	Message: Successfully set desired count to 5. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	a85f6b06-5a6b-4dd3-9f26-6735258d4e45
+2/17/2023, 8:02:19 PM	service redoer has reached a steady state.	1ca09bc5-72c0-47b0-b352-e98fb4206bd5
+2/17/2023, 8:00:33 PM	service redoer has started 2 tasks: task 31ef23be6ed646fd9f7207dca67ed801 task 60381ebfd57344eaa3167ae99d47911c.	8956e901-f1f6-4a24-810e-74f386304b2d
+2/17/2023, 8:00:18 PM	Message: Successfully set desired count to 4. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	c577fe28-8ada-4c1a-86ff-d6389f812356
+2/17/2023, 7:54:00 PM	service redoer has reached a steady state.	02c23b46-6a0d-4e77-ba90-9d9675cce575
+2/17/2023, 7:52:23 PM	service redoer has started 1 tasks: task c906542d883d4c40998e43c56b151452.	503fd7bd-d91d-4043-a263-28fc24908a6b
+2/17/2023, 7:52:18 PM	Message: Successfully set desired count to 2. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	bb624909-6f9a-43e4-b5e4-8df983ead5ea
+2/17/2023, 7:19:02 PM	service redoer has reached a steady state.	9cdbdf3f-91c1-4e36-8d77-998b3e9891b3
+2/17/2023, 7:18:53 PM	service redoer has stopped 1 running tasks: task 0a19b91c56304016bafd1b038dc90ad0.	8a79dff6-7711-45e4-836d-a352ff46dd2c
+2/17/2023, 7:18:46 PM	Message: Successfully set desired count to 1. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmLow-46bc3646-da89-445e-b00b-5342f952a3a5 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	0e7cbf2b-7464-48bf-9891-81cad3bd7188
+2/17/2023, 7:02:08 PM	service redoer has reached a steady state.	cb97f3f0-3aa8-4b9b-914f-9426ec10a281
+2/17/2023, 7:00:22 PM	service redoer has started 1 tasks: task 0a19b91c56304016bafd1b038dc90ad0.	88aa3f8b-31d3-45af-a501-83f14400aacd
+2/17/2023, 7:00:18 PM	Message: Successfully set desired count to 2. Change successfully fulfilled by ecs. Cause: monitor alarm TargetTracking-service/Ron-perf-35-cluster/redoer-AlarmHigh-3c6799f4-6896-415f-b530-20ba4f8cad82 in state ALARM triggered policy Ron-perf-35-scaling-policy-redoer	bdbfab3b-f4d0-44a5-9433-5807dfffdc3c
+2/17/2023, 6:43:29 PM	service redoer has reached a steady state.	2934b94f-bd65-4d59-acc4-1c3cd583272e
+2/17/2023, 6:43:29 PM	service redoer deployment ecs-svc/2202368720721598170 deployment completed.	3ca6d560-ac37-4204-9f8b-419a6b02ecbd
+2/17/2023, 6:42:03 PM	service redoer has started 1 tasks: task c5be5a35c81841ff9ed7a7d3ae72b0e5.	447ccf08-c296-49a5-908f-2bce131e6da0
