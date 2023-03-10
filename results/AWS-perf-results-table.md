@@ -15,21 +15,21 @@ Notes:                          |               |                |              
                                 |               |                |                | senzing        | senzing        | senzing        | senzing        |
 =======================================================================================================================================================
 
-======================================================================================================================
-Build:                          |  3.4.0.23002   |  3.4.0.23002   |  3.4.0.23005   |  3.4.0.23005   |  3.5.0.23044   |
-Peak:                           |  2944          |  2992          |  3609          |  3579          |  3430          |
-Warm-up:                        |     0.43 hours |     0.37 hours |     0.38 hours |     0.38 hours |     0.45 hours |
-Average after warm-up:          |  2529          |  2513          |  3056          |  3128          |  2741          |
-Average over entire run:        |  2208          |  2278          |  2653          |  2729          |  2415          |
-Time to load 20M:               |     2.5  hours |     2.43 hours |     2.08 hours |     2.03 hours |     2.33 hours |
-Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |   7,456,800    |   33,650,705   |   24,320,628   |    8,524,304   |   21,704,226   |
-Total Billed write IOPS:        |  64,280,349    |   89,414,998   |   64,445,602   |   65,619,220   |   69,134,272   |
-Max loader tasks:               |                |                |    68          |    63          |    65          |
-Max redoer tasks:               |                |                |     8          |    12          |    11          |
-Notes:                          | embedded       | sz_sqs_consumer| sz_sqs_consumer|sz_simple_redoer| sz_sqs_consumer|
-                                | senzing        |prefetch=threads|   2-384 ACU    |                |sz_simple_redoer|
-======================================================================================================================
+=======================================================================================================================================
+Build:                          |  3.4.0.23002   |  3.4.0.23002   |  3.4.0.23005   |  3.4.0.23005   |  3.5.0.23044   |  3.4.0.23005   |
+Peak:                           |  2944          |  2992          |  3609          |  3579          |  3430          |  4278          |
+Warm-up:                        |     0.43 hours |     0.37 hours |     0.38 hours |     0.38 hours |     0.45 hours |     0.02 hours |
+Average after warm-up:          |  2529          |  2513          |  3056          |  3128          |  2741          |  3113          |
+Average over entire run:        |  2208          |  2278          |  2653          |  2729          |  2415          |  3086          |
+Time to load 20M:               |     2.5  hours |     2.43 hours |     2.08 hours |     2.03 hours |     2.33 hours |     1.92 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |   7,456,800    |   33,650,705   |   24,320,628   |    8,524,304   |   21,704,226   |  not recorded  |
+Total Billed write IOPS:        |  64,280,349    |   89,414,998   |   64,445,602   |   65,619,220   |   69,134,272   |  not recorded  |
+Max loader tasks:               |                |                |    68          |    63          |    65          |    58          |
+Max redoer tasks:               |                |                |     8          |    12          |    11          |    10          |
+Notes:                          | embedded       | sz_sqs_consumer| sz_sqs_consumer|sz_simple_redoer| sz_sqs_consumer| sz_sqs_consumer|
+                                | senzing        |prefetch=threads|   2-384 ACU    |                |sz_simple_redoer|sz_simple_redoer|
+=======================================================================================================================================
 
 
 ======================================================================================================================
