@@ -2343,7 +2343,7 @@ Resources:
                               DBClusterIdentifier = cluster_id,
                               ScalingConfiguration = {
                                   'TimeoutAction': 'ForceApplyCapacityChange',
-                                  'SecondsBeforeTimeout': 45
+                                  'SecondsBeforeTimeout': 60
                               },
                           )
                       else:
