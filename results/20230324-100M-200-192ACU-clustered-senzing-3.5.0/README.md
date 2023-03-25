@@ -51,9 +51,16 @@
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 60
-- Max Redoer tasks: 19
+- Max Stream-loader tasks: 54
+- Max Redoer tasks: 17
 
+### Infinite loop bug
+
+- 3 instances found in the log
+- 2 for loader, 1 for redoer
+- [loader 1](data/loop-loader-2687788d42ad4c8fb4c204871dd0d59a.csv)
+- [loader 2](data/loop-loader-f20a7df9a7394d8898b76a9f7a524874.csv)
+- [redoer](data/loop-redoer-e1877ccfc8374b69a0b290b6103e03c2.csv)
 ### Final metrics
 
 #### SQS
@@ -108,45 +115,45 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-              now              |   count
--------------------------------+-----------
- 2023-02-19 01:45:21.001295+00 | 100000000
+              now              |  count
+-------------------------------+----------
+ 2023-03-25 14:19:28.430544+00 | 90000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-02-19 01:48:36.348624+00 | 99998927
+ 2023-03-25 14:22:29.650637+00 | 89999121
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-02-19 02:07:27.197407+00 | 61433630
+ 2023-03-25 14:30:59.952414+00 | 57098294
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-02-19 02:21:32.660584+00 | 99998927
+ 2023-03-25 14:33:35.545917+00 | 89999121
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-02-19 02:33:27.187072+00 |    82
+ 2023-03-25 14:42:17.628288+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
-              now              |  count
--------------------------------+----------
- 2023-02-19 02:33:33.790203+00 | 53997672
+             now              |  count
+------------------------------+----------
+ 2023-03-25 14:42:23.03192+00 | 46871089
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |      erpm       |   total   |   duration   |    avg_erps
--------------------------+-----------------+-----------+--------------+-----------------
- 2023-02-18 02:46:28.289 | 73967.172333378 | 100000000 | 22:31:57.066 | 1232.7862055563
+       load_start        |       erpm       |  total   |   duration   |     avg_erps
+-------------------------+------------------+----------+--------------+------------------
+ 2023-03-24 14:39:57.949 | 85590.0890607672 | 90000000 | 17:31:31.417 | 1426.50148434612
 (1 row)
 
 ```
