@@ -39,14 +39,14 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 3426/second
-    1. Warm-up: 0.33 hours
-    1. Average after warm-up: 1238/second
-    1. Average over entire run: 1232/second
-    1. Time to load 100M: 22.53 hours
+    1. Peak: 3329/second
+    1. Warm-up: 0.45 hours
+    1. Average after warm-up: 1437/second
+    1. Average over entire run: 1425/second
+    1. Time to load 90M: 17.53 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:   882,035,913
-    1. Total Billed write IOPS:  455,594,372
+    1. Total Billed read IOPS:   8,351,086
+    1. Total Billed write IOPS:  5,615,377
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
@@ -61,6 +61,64 @@ Note:  This is using local senzing data.  Withinfo disabled.
 - [loader 1](data/loop-loader-2687788d42ad4c8fb4c204871dd0d59a.csv)
 - [loader 2](data/loop-loader-f20a7df9a7394d8898b76a9f7a524874.csv)
 - [redoer](data/loop-redoer-e1877ccfc8374b69a0b290b6103e03c2.csv)
+
+### producer issue:  missing 80000001-90000000 producer
+
+- producer/a8beda6df0794626ad425642c0d9abdc
+```
+    "record_max": 100000000,
+    "record_min": 90000001,
+```
+
+- producer/3ea095d924554bde86f57abb95c11a75
+```
+    "record_max": 80000000,
+    "record_min": 70000001,
+```
+
+- producer/2db62bc9e67d43a6a64bdb500e38f3aa
+
+```
+    "record_max": 70000000,
+    "record_min": 60000001,
+```
+
+- producer/4fafd5d3fc9d48b9922a115c1d16b785
+```
+    "record_max": 60000000,
+    "record_min": 50000001,
+```
+
+- producer/9b853c4f62cb4d29b84f027daa2b0c62
+```
+    "record_max": 50000000,
+    "record_min": 40000001,
+```
+
+- producer/12b588db2bf84b749d54a252782f5a33
+```
+    "record_max": 40000000,
+    "record_min": 30000001,
+```
+
+- producer/4ce48a35f1d54f299417acce318eb0f3
+```
+    "record_max": 30000000,
+    "record_min": 20000001,
+```
+
+- producer/749100b89c1e4914a200e04d62daf5d2
+```
+    "record_max": 20000000,
+    "record_min": 10000001,
+```
+
+- producer/57973804a01944f5a331dfc3be500889
+```
+    "record_max": 10000000,
+    "record_min": 0,
+```
+
 ### Final metrics
 
 #### SQS
