@@ -136,8 +136,8 @@ Average after warm-up:          |  1548          |  1665          |  1797       
 Average over entire run:        |  1497          |  1575          |  1727          |  1606          |  1421          |  1232          |  1425          |
 Time to load 100M:              |    23.12 hours |    17.67 hours |    16.07 hours |    17.28 hours |    19.53 hours |    22.53 hours |    17.53 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS          |                |                |                |  768,870,955   | 1,199,978,286  |   882,035,913  |   8,351,086    | <- oddly low
-Total Billed write IOPS         |                |                |                |  656,884,630   |   672,190,198  |   455,594,372  |   5,615,377    | <- oddly low
+Total Billed read IOPS          |                |                |                |  768,870,955   | 1,199,978,286  |   882,035,913  |  684,242,971   |
+Total Billed write IOPS         |                |                |                |  656,884,630   |   672,190,198  |   455,594,372  |  634,318,816   |
 Max loader tasks:               |                |                |    68          |    63          |    65          |    60          |    54          |
 Max redoer tasks:               |                |                |     8          |    12          |    11          |    19          |    17          |
 Notes:                          |                |                |                |                |                | sz_sqs_consumer|   ONLY 90M     |
