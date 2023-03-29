@@ -129,19 +129,19 @@ Total Billed write IOPS         |               |                |  148,886,718 
 
 100M perf test run:
 ========================================================================================================================================================
-Build:                          |  2.8.8-22088   |  3.0.0-22102   |  3.0.0-22110   |  3.4.0-22350   |  3.4.0-23002   |  3.5.0-23044   |  3.5.0-23081   |
-Peak:                           |  2665          |  2745          |  2858          |  3017          |  2967          |  3426          |  3329          |
-Warm-up:                        |     1.13 hours |     1.45 hours |    0.92 hours  |    0.47 hours  |    0.47 hours  |    0.33 hours  |    0.45 hours  |
-Average after warm-up:          |  1548          |  1665          |  1797          |  1630          |  1439          |  1238          |  1437          |
-Average over entire run:        |  1497          |  1575          |  1727          |  1606          |  1421          |  1232          |  1425          |
-Time to load 100M:              |    23.12 hours |    17.67 hours |    16.07 hours |    17.28 hours |    19.53 hours |    22.53 hours |    17.53 hours |
+Build:                          |  2.8.8-22088   |  3.0.0-22102   |  3.0.0-22110   |  3.4.0-22350   |  3.4.0-23002   |  3.5.0-23044   |  3.5.0-23084   |
+Peak:                           |  2665          |  2745          |  2858          |  3017          |  2967          |  3426          | not collected  |
+Warm-up:                        |     1.13 hours |     1.45 hours |    0.92 hours  |    0.47 hours  |    0.47 hours  |    0.33 hours  | not collected  |
+Average after warm-up:          |  1548          |  1665          |  1797          |  1630          |  1439          |  1238          | not collected  |
+Average over entire run:        |  1497          |  1575          |  1727          |  1606          |  1421          |  1232          |  1345          |
+Time to load 100M:              |    23.12 hours |    17.67 hours |    16.07 hours |    17.28 hours |    19.53 hours |    22.53 hours |    20.65 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS          |                |                |                |  768,870,955   | 1,199,978,286  |   882,035,913  |  684,242,971   |
-Total Billed write IOPS         |                |                |                |  656,884,630   |   672,190,198  |   455,594,372  |  634,318,816   |
-Max loader tasks:               |                |                |    68          |    63          |    65          |    60          |    54          |
-Max redoer tasks:               |                |                |     8          |    12          |    11          |    19          |    17          |
-Notes:                          |                |                |                |                |                | sz_sqs_consumer|   ONLY 90M     |
-                                |                |                |                |                |                |sz_simple_redoer|   records!     |
+Total Billed read IOPS          |                |                |                |  768,870,955   | 1,199,978,286  |   882,035,913  | not collected  |
+Total Billed write IOPS         |                |                |                |  656,884,630   |   672,190,198  |   455,594,372  | not collected  |
+Max loader tasks:               |                |                |    68          |    63          |    65          |    60          |    62          |
+Max redoer tasks:               |                |                |     8          |    12          |    11          |    19          |    21          |
+Notes:                          |                |                |                |                |                | sz_sqs_consumer|                |
+                                |                |                |                |                |                |sz_simple_redoer|                |
 ========================================================================================================================================================
 
 
