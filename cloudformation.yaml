@@ -263,7 +263,7 @@ Mappings:
     StreamProducer:
       DataSource: TEST
       EntityType: GENERIC
-      InputUrl: https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz
+      InputUrl: https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m-with-data-source.json.gz
       RecordMin: 0
 
   # NOTE: The CIDRs for subnets may collide with existing subnets.  The values may be altered.
