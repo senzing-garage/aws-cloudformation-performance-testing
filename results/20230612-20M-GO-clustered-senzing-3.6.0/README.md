@@ -17,9 +17,7 @@
 
 1. Performed: Jun 12, 2023
 2. Senzing version: 3.6.0.23150
-3. Instructions:
-   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
-    1. [Cloudformation.yaml]()
+3. [Methods](#methods)
 4. Changes:
     1. using go-load: https://github.com/roncewind/load
     1. using go-move: https://github.com/roncewind/move
