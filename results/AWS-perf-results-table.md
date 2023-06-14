@@ -1,6 +1,26 @@
 
 
 20M perf test run:
+
+
+===================================================================
+Build:                          |  3.5.0.23044   |  3.6.0.23160   |
+Peak:                           |  3430          |  4231          |
+Warm-up:                        |     0.45 hours |     0.35 hours |
+Average after warm-up:          |  2741          |  2802          |
+Average over entire run:        |  2415          |  2488          |
+Time to load 20M:               |     2.33 hours |     2.22 hours |
+Records in dead-letter queue:   |     0          |     0          |
+Total Billed read IOPS:         |   21,704,226   |     73,021,926 | <- changed to volume read IOPS
+Total Billed write IOPS:        |   69,134,272   |     94,894,153 | <- changed to volume write IOPS
+Max loader tasks:               |    65          |    54          | (AWS doesn't have "Billed" IOPS
+Max redoer tasks:               |    11          |     9          |  stat available any more)
+Notes:                          | sz_sqs_consumer|    go-load     |
+                                |sz_simple_redoer|sz_simple_redoer|
+===================================================================
+
+
+
 =======================================================================================================================================================
 Build:                          |  2.8.2-21243  |  2.8.8-22088   |  3.0.0-22119   |  3.2.0-22229   |  3.3.0.22245   |  3.4.0.22352   |  3.4.0.23002   |
 Peak:                           |  2635         |  2588          |  2868          |  3235          |  3165          |  2887          |  2944          |
