@@ -40,8 +40,8 @@
     1. Average over entire run: 1232/second
     1. Time to load 100M: 22.53 hours
     1. Records in dead-letter queue: 0
-    1. Total Billed read IOPS:   882,035,913
-    1. Total Billed write IOPS:  455,594,372
+    1. Volume read IOPS:   882,035,913
+    1. Volume write IOPS:  455,594,372
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
