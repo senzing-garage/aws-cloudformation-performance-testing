@@ -2,21 +2,21 @@
 
 20M perf test run:
 
-===================================================================
-Build:                          |  3.5.0.23044   |  3.6.0.23160   |
-Peak:                           |  3430          |  4266          |
-Warm-up:                        |     0.45 hours |     0.48 hours |
-Average after warm-up:          |  2741          |  3559          |
-Average over entire run:        |  2415          |  3137          |
-Time to load 20M:               |     2.33 hours |     1.77 hours |
-Records in dead-letter queue:   |     0          |     0          |
-Total Billed read IOPS:         |   21,704,226   |    7,958,177   | <- changed to volume read IOPS
-Total Billed write IOPS:        |   69,134,272   |   48,696,085   | <- changed to volume write IOPS
-Max loader tasks:               |    65          |     62         | (AWS doesn't have "Billed" IOPS
-Max redoer tasks:               |    11          |     12         |  stat available any more)
-Notes:                          | sz_sqs_consumer| sz_sqs_consumer|
-                                |sz_simple_redoer|sz_simple_redoer|
-===================================================================
+====================================================================================
+Build:                          |  3.5.0.23044   |  3.6.0.23160   |  3.7.0-23234   |
+Peak:                           |  3430          |  4266          |  3990          |
+Warm-up:                        |     0.45 hours |     0.48 hours |     0.32 hours |
+Average after warm-up:          |  2741          |  3559          |  3372          |
+Average over entire run:        |  2415          |  3137          |  2983          |
+Time to load 20M:               |     2.33 hours |     1.77 hours |     1.87 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |
+Total Billed read IOPS:         |   21,704,226   |    7,958,177   |      162,059   | <- changed to volume read IOPS
+Total Billed write IOPS:        |   69,134,272   |   48,696,085   |   88,897,587   | <- changed to volume write IOPS
+Max loader tasks:               |    65          |     62         |     58         | (AWS doesn't have "Billed" IOPS
+Max redoer tasks:               |    11          |     12         |     12         |  stat available any more)
+Notes:                          | sz_sqs_consumer| sz_sqs_consumer| sz_sqs_consumer|
+                                |sz_simple_redoer|sz_simple_redoer|sz_simple_redoer|
+====================================================================================
 
 ====================================================================================
 Build:                          |  3.5.0.23044   |  3.6.0.23160   |  3.6.0.23160   |
