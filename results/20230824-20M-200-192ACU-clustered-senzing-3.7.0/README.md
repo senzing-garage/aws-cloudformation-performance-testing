@@ -1,4 +1,4 @@
-# senzing-test-results-20230824-100M-200-192ACU-clustered-senzing-3.7.0
+# senzing-test-results-20230823-20M-200-192ACU-clustered-senzing-3.7.0
 
 ## Contents
 
@@ -34,20 +34,20 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 4274/second
-    1. Warm-up: 0.25 hours
-    1. Average after warm-up: 1543/second
-    1. Average over entire run: 1532/second
-    1. Time to load 100M: 18.12 hours
+    1. Peak: 3990/second
+    1. Warm-up: 0.32 hours
+    1. Average after warm-up: 3372/second
+    1. Average over entire run: 2983/second
+    1. Time to load 20M: 1.87 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:   834,099,266
-    1. Volume write IOPS:  630,115,766
+    1. Volume read IOPS:      162,059
+    1. Volume write IOPS:  88,897,587
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 63
-- Max Redoer tasks: 20
+- Max Stream-loader tasks: 58
+- Max Redoer tasks: 12
 
 ### Final metrics
 
@@ -87,19 +87,16 @@ N/A.  Ran without `withinfo` enabled.
 
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
-![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
 
 ##### Database Metrics LIBFEAT final
 
 ![Database metrics 1](images/database-metrics-libfeat-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-libfeat-2.png "Database metrics 2")
-![Database metrics 3](images/database-metrics-libfeat-3.png "Database metrics 3")
 
 ##### Database Metrics RES final
 
 ![Database metrics 1](images/database-metrics-res-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-res-2.png "Database metrics 2")
-![Database metrics 3](images/database-metrics-res-3.png "Database metrics 3")
 
 ##### DSRC_RECORD
 
@@ -109,45 +106,43 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-             now              |   count
-------------------------------+-----------
- 2023-06-28 15:00:51.93373+00 | 100000000
+              now              |  count
+-------------------------------+----------
+ 2023-08-23 14:26:41.345068+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-06-28 15:06:27.875841+00 | 99998927
+ 2023-08-23 14:30:11.764397+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-06-28 15:12:07.754342+00 | 61481459
+ 2023-08-23 14:31:43.523128+00 | 17472973
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
-             now              |  count
-------------------------------+----------
- 2023-06-28 15:18:20.93415+00 | 99998925
+              now              |  count
+-------------------------------+----------
+ 2023-08-23 14:31:56.870496+00 | 19999959
 (1 row)
-
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-06-28 15:29:55.921051+00 |     0
+ 2023-08-23 14:47:14.850165+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+----------
- 2023-06-28 15:29:59.513618+00 | 53601647
+ 2023-08-23 14:47:19.689428+00 | 11378494
 (1 row)
-
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |      erpm      |   total   |   duration   |     avg_erps
--------------------------+----------------+-----------+--------------+------------------
- 2023-06-27 16:30:25.405 | 92029.20908932 | 100000000 | 18:06:36.692 | 1533.82015148867
+       load_start        |       erpm       |  total   |   duration   |     avg_erps
+-------------------------+------------------+----------+--------------+------------------
+ 2023-08-23 11:52:27.581 | 178985.999565959 | 20000000 | 01:51:44.435 | 2983.09999276598
 (1 row)
 
 ```
