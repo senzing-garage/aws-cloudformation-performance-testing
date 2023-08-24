@@ -15,8 +15,8 @@
 
 ## Overview
 
-1. Performed: Aug 23, 2023
-2. Senzing version: 3.7.0-23234
+1. Performed: Aug 24, 2023
+2. Senzing version: 3.7.0-23235
 3. Instructions:
    [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
     1. [Cloudformation.yaml]()
@@ -46,8 +46,8 @@
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 58
-- Max Redoer tasks: 12
+- Max Stream-loader tasks: 60
+- Max Redoer tasks: 13
 
 ### Final metrics
 
@@ -87,16 +87,22 @@ N/A.  Ran without `withinfo` enabled.
 
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
+![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
 ##### Database Metrics LIBFEAT final
 
 ![Database metrics 1](images/database-metrics-libfeat-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-libfeat-2.png "Database metrics 2")
+![Database metrics 3](images/database-metrics-libfeat-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-libfeat-4.png "Database metrics 4")
 
 ##### Database Metrics RES final
 
 ![Database metrics 1](images/database-metrics-res-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-res-2.png "Database metrics 2")
+![Database metrics 3](images/database-metrics-res-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-res-4.png "Database metrics 4")
 
 ##### DSRC_RECORD
 
