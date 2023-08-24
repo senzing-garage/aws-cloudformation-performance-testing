@@ -41,7 +41,7 @@
     1. Time to load 20M: 1.88 hours
     1. Records in dead-letter queue: 0
     1. Volume read IOPS:      270,154
-    1. Volume write IOPS:  87,706,883
+    1. Volume write IOPS:  89,706,883
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
