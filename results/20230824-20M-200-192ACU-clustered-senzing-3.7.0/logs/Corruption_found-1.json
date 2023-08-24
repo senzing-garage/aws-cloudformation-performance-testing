@@ -1,0 +1,514 @@
+{
+    "workload": {
+        "apiVersion": "3.7.0.23235",
+        "loadedRecords": -1,
+        "addedRecords": 0,
+        "deletedRecords": 0,
+        "reevaluations": 5970,
+        "repairedEntities": 5987,
+        "duration": 1037776,
+        "retries": 0,
+        "candidates": 47412,
+        "actualAmbiguousTest": 171,
+        "cachedAmbiguousTest": 1,
+        "libFeatCacheHit": 863481,
+        "libFeatCacheMiss": 356184,
+        "resFeatStatCacheHit": 3500060,
+        "resFeatStatCacheMiss": 735658,
+        "resFeatStatUpdate": 17114,
+        "unresolveTest": 6254,
+        "abortedUnresolve": 0,
+        "gnrScorersUsed": 1,
+        "unresolveTriggers": {
+            "normalResolve": 0,
+            "update": 0,
+            "relLink": 0,
+            "extensiveResolve": 5970,
+            "ambiguousNoResolve": 284,
+            "ambiguousMultiResolve": 0
+        },
+        "reresolveTriggers": {
+            "abortRetry": 0,
+            "unresolveMovement": 8,
+            "multipleResolvableCandidates": 0,
+            "resolveNewFeatures": 0,
+            "newFeatureFTypes": []
+        },
+        "reresolveSkipped": 0,
+        "filteredObsFeat": 3683,
+        "expressedFeatureCalls": [
+            {
+                "EFCALL_ID": 1,
+                "EFUNC_CODE": "PHONE_HASHER",
+                "numCalls": 3584
+            },
+            {
+                "EFCALL_ID": 2,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 3716
+            },
+            {
+                "EFCALL_ID": 3,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 2393
+            },
+            {
+                "EFCALL_ID": 5,
+                "EFUNC_CODE": "EXPRESS_BOM",
+                "numCalls": 5159
+            },
+            {
+                "EFCALL_ID": 7,
+                "EFUNC_CODE": "NAME_HASHER",
+                "numCalls": 5970
+            },
+            {
+                "EFCALL_ID": 9,
+                "EFUNC_CODE": "ADDR_HASHER",
+                "numCalls": 5970
+            },
+            {
+                "EFCALL_ID": 10,
+                "EFUNC_CODE": "EXPRESS_BOM",
+                "numCalls": 2120
+            },
+            {
+                "EFCALL_ID": 14,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 3654
+            },
+            {
+                "EFCALL_ID": 16,
+                "EFUNC_CODE": "EXPRESS_ID",
+                "numCalls": 4205
+            }
+        ],
+        "expressedFeaturesCreated": [
+            {
+                "ADDR_KEY": 10809
+            },
+            {
+                "ID_KEY": 13968
+            },
+            {
+                "NAME_KEY": 42518
+            },
+            {
+                "PHONE_KEY": 3584
+            },
+            {
+                "SEARCH_KEY": 7279
+            }
+        ],
+        "scoredPairs": [
+            {
+                "ACCT_NUM": 23665
+            },
+            {
+                "ADDRESS": 80459
+            },
+            {
+                "DOB": 18001
+            },
+            {
+                "DRLIC": 25835
+            },
+            {
+                "GENDER": 52438
+            },
+            {
+                "LOGIN_ID": 1419
+            },
+            {
+                "NAME": 63906
+            },
+            {
+                "PASSPORT": 11828
+            },
+            {
+                "PHONE": 42976
+            },
+            {
+                "SSN": 33163
+            }
+        ],
+        "cacheHit": [
+            {
+                "ADDRESS": 16290
+            },
+            {
+                "DOB": 3287
+            },
+            {
+                "DRLIC": 5189
+            },
+            {
+                "NAME": 12210
+            },
+            {
+                "PASSPORT": 2362
+            },
+            {
+                "PHONE": 8453
+            }
+        ],
+        "cacheMiss": [
+            {
+                "ADDRESS": 64169
+            },
+            {
+                "DOB": 14714
+            },
+            {
+                "DRLIC": 20646
+            },
+            {
+                "NAME": 51696
+            },
+            {
+                "PASSPORT": 9466
+            },
+            {
+                "PHONE": 34523
+            }
+        ],
+        "redoTriggers": [
+            {
+                "ADDR_KEY": 30
+            },
+            {
+                "DRLIC": 20
+            },
+            {
+                "ID_KEY": 40
+            },
+            {
+                "LOGIN_ID": 60
+            }
+        ],
+        "latchContention": [],
+        "highContentionFeat": [],
+        "highContentionResEnt": [],
+        "genericDetect": [
+            {
+                "ADDR_KEY": 3
+            },
+            {
+                "DRLIC": 4
+            },
+            {
+                "ID_KEY": 8
+            },
+            {
+                "LOGIN_ID": 12
+            },
+            {
+                "NAME_KEY": 72
+            }
+        ],
+        "candidateBuilders": [
+            {
+                "ACCT_NUM": 9932
+            },
+            {
+                "ADDR_KEY": 14397
+            },
+            {
+                "DRLIC": 9488
+            },
+            {
+                "ID_KEY": 14306
+            },
+            {
+                "LOGIN_ID": 875
+            },
+            {
+                "NAME_KEY": 14665
+            },
+            {
+                "PASSPORT": 6803
+            },
+            {
+                "PHONE": 12313
+            },
+            {
+                "PHONE_KEY": 9637
+            },
+            {
+                "SEARCH_KEY": 13704
+            },
+            {
+                "SSN": 11167
+            }
+        ],
+        "suppressedCandidateBuilders": [],
+        "suppressedScoredFeatureType": [],
+        "reducedScoredFeatureType": [],
+        "suppressedDisclosedRelationshipDomainCount": 0,
+        "CorruptEntityTestDiagnosis": {
+            "CORRUPTION_FOUND": [
+                {
+                    "ResEntID": 693963,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 3628939,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 3998411,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 4071527,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 4541356,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 5469856,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 5737790,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 5834473,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 6344184,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 6364885,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 6999088,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 7293773,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 7364605,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 7721096,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 7804552,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 7981884,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 8685978,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 8770395,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 8970714,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 9074238,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 10203368,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 10225000,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 10510629,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 10587180,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 10656994,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 11886398,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 11907964,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 11951614,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 12316178,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 12332109,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 12730152,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 12830663,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 12830890,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 12923989,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 13169668,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 13975264,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 14068825,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 15972200,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 16001627,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 16244158,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 16632733,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 16640085,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 17170644,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 17186793,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 17212220,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 17640470,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 17772080,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 18312013,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 18748564,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 19340244,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 19633746,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 19819731,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 20007886,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 20102450,
+                    "Details": "RES_FEATURES_CORRUPT"
+                },
+                {
+                    "ResEntID": 20916692,
+                    "Details": "RES_ENT_NOT_FOUND,RES_ENT_OKEY_NOT_FOUND,RES_FEATURES_CORRUPT"
+                }
+            ]
+        },
+        "threadState": {
+            "active": 4,
+            "idle": 17,
+            "sqlExecuting": 3,
+            "loader": 0,
+            "resolver": 4,
+            "scoring": 2,
+            "dataLatchContention": 0,
+            "obsEntContention": 0,
+            "resEntContention": 0
+        },
+        "systemResources": {
+            "initResources": [
+                {
+                    "physicalCores": 4
+                },
+                {
+                    "logicalCores": 4
+                },
+                {
+                    "totalMemory": "30.8GB"
+                },
+                {
+                    "availableMemory": "29.8GB"
+                }
+            ],
+            "currResources": [
+                {
+                    "availableMemory": "25.2GB"
+                },
+                {
+                    "activeThreads": 4
+                },
+                {
+                    "workerThreads": 21
+                },
+                {
+                    "systemLoad": []
+                }
+            ]
+        }
+    }
+}
