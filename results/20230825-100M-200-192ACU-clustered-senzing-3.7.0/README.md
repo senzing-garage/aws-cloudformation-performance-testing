@@ -38,7 +38,7 @@
     1. Warm-up: 0.35 hours
     1. Average after warm-up: 1254/second
     1. Average over entire run: 1246/second
-    1. Time to load 100M: 21.27 hours
+    1. Time to load 100M: 22.27 hours
     1. Records in dead-letter queue: 0
     1. Volume read IOPS:    52,810,611
     1. Volume write IOPS:  440,730,877

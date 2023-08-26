@@ -169,7 +169,7 @@ Peak:                           |  3426          |  4274          |  4039       
 Warm-up:                        |    0.33 hours  |     0.25 hours |     0.35 hours |
 Average after warm-up:          |  1238          |  1543          |  1254          |
 Average over entire run:        |  1232          |  1533          |  1246          |
-Time to load 100M:              |    22.53 hours |    18.12 hours |    21.27 hours |
+Time to load 100M:              |    22.53 hours |    18.12 hours |    22.27 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |
 Volume read IOPS                |   882,035,913  |  834,099,266   |   52,810,611   |
 Volume write IOPS               |   455,594,372  |  630,115,766   |  440,730,877   |
