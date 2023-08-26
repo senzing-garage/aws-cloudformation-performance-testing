@@ -126,7 +126,7 @@ G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-06-28 15:12:07.754342+00 | 61481459
+ 2023-08-26 14:29:01.217647+00 | 61485546
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
