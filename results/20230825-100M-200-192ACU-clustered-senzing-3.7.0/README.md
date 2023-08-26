@@ -130,9 +130,9 @@ G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
-             now              |  count
-------------------------------+----------
- 2023-06-28 15:18:20.93415+00 | 99998925
+              now              |  count
+-------------------------------+----------
+ 2023-08-26 14:20:46.789997+00 | 99998920
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
