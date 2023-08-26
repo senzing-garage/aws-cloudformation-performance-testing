@@ -120,7 +120,7 @@ G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-06-28 15:06:27.875841+00 | 99998927
+ 2023-08-26 14:38:59.366519+00 | 99998927
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
