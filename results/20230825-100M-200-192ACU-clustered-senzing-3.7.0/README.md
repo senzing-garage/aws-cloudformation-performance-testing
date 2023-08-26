@@ -88,18 +88,21 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
 ##### Database Metrics LIBFEAT final
 
 ![Database metrics 1](images/database-metrics-libfeat-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-libfeat-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-libfeat-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-libfeat-4.png "Database metrics 4")
 
 ##### Database Metrics RES final
 
 ![Database metrics 1](images/database-metrics-res-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-res-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-res-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-res-4.png "Database metrics 4")
 
 ##### DSRC_RECORD
 
