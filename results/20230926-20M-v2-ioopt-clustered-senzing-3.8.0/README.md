@@ -46,7 +46,7 @@
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 60
+- Max Stream-loader tasks: 42
 - Max Redoer tasks: 13
 
 ### Final metrics
@@ -89,6 +89,7 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
 ![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
+![Database metrics 5](images/database-metrics-core-5.png "Database metrics 5")
 
 ##### Database Metrics LIBFEAT final
 
@@ -96,6 +97,7 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 2](images/database-metrics-libfeat-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-libfeat-3.png "Database metrics 3")
 ![Database metrics 4](images/database-metrics-libfeat-4.png "Database metrics 4")
+![Database metrics 5](images/database-metrics-libfeat-5.png "Database metrics 5")
 
 ##### Database Metrics RES final
 
@@ -103,6 +105,7 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 2](images/database-metrics-res-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-res-3.png "Database metrics 3")
 ![Database metrics 4](images/database-metrics-res-4.png "Database metrics 4")
+![Database metrics 5](images/database-metrics-res-5.png "Database metrics 5")
 
 ##### DSRC_RECORD
 
@@ -114,43 +117,43 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2023-08-24 14:35:47.313655+00 | 20000000
+ 2023-09-26 20:26:26.984327+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-08-24 14:37:27.007003+00 | 19999959
+ 2023-09-26 20:27:50.464216+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-08-24 14:43:04.595566+00 | 17472982
+ 2023-09-26 20:30:42.653597+00 | 17462283
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
-              now              |  count
--------------------------------+----------
- 2023-08-24 14:43:55.727039+00 | 19999959
+             now              |  count
+------------------------------+----------
+ 2023-09-26 20:30:47.57747+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-08-24 14:44:20.046726+00 |     0
+ 2023-09-26 20:30:51.038666+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+----------
- 2023-08-24 14:44:24.427975+00 | 11378088
+ 2023-09-26 20:30:54.641485+00 | 10092489
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |       erpm       |  total   |   duration   |    avg_erps
--------------------------+------------------+----------+--------------+-----------------
- 2023-08-24 11:37:16.434 | 176305.483335606 | 20000000 | 01:53:26.368 | 2938.4247222601
+       load_start        |          erpm           |  total   |   duration   |       avg_erps
+-------------------------+-------------------------+----------+--------------+-----------------------
+ 2023-09-26 17:23:23.318 | 165580.4588565675833201 | 20000000 | 02:00:47.232 | 2759.6743142761263887
 (1 row)
 
 ```
