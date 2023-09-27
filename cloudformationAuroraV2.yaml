@@ -1474,8 +1474,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 64
-        MinCapacity: 64
+        MaxCapacity: 128
+        MinCapacity: 2
       StorageEncrypted: true
       StorageType: aurora-iopt1
       Tags:
@@ -1510,8 +1510,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 64
-        MinCapacity: 64
+        MaxCapacity: 128
+        MinCapacity: 2
       StorageEncrypted: true
       StorageType: aurora-iopt1
       Tags:
@@ -1546,8 +1546,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 64
-        MinCapacity: 64
+        MaxCapacity: 128
+        MinCapacity: 2
       StorageEncrypted: true
       StorageType: aurora-iopt1
       Tags:
