@@ -34,20 +34,20 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 3010/second
-    1. Warm-up: 0.22 hours
-    1. Average after warm-up: 2638/second
-    1. Average over entire run: 2493/second
-    1. Time to load 20M: 2.23 hours
+    1. Peak: 5845/second
+    1. Warm-up: 0.13 hours
+    1. Average after warm-up: 3800/second
+    1. Average over entire run: 3579/second
+    1. Time to load 20M: 1.55 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:      229,730
-    1. Volume write IOPS:  85,411,348
+    1. Volume read IOPS:     1,140,226
+    1. Volume write IOPS:  153,285,668
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 45
-- Max Redoer tasks: 25
+- Max Stream-loader tasks: 78
+- Max Redoer tasks: 27
 
 ### Final metrics
 
@@ -88,21 +88,18 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
-![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
 ##### Database Metrics LIBFEAT final
 
 ![Database metrics 1](images/database-metrics-libfeat-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-libfeat-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-libfeat-3.png "Database metrics 3")
-![Database metrics 4](images/database-metrics-libfeat-4.png "Database metrics 4")
 
 ##### Database Metrics RES final
 
 ![Database metrics 1](images/database-metrics-res-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-res-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-res-3.png "Database metrics 3")
-![Database metrics 4](images/database-metrics-res-4.png "Database metrics 4")
 
 ##### DSRC_RECORD
 
@@ -114,43 +111,43 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2023-09-28 16:05:48.901169+00 | 20000000
+ 2023-09-29 14:48:33.847394+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-09-28 16:09:46.210343+00 | 19999959
+ 2023-09-29 14:51:07.961483+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-09-28 16:09:52.239588+00 | 17462186
+ 2023-09-29 14:52:38.723879+00 | 17462066
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-09-28 16:09:56.558047+00 | 19999959
+ 2023-09-29 14:53:41.212015+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-09-28 16:10:00.272193+00 |     0
+ 2023-09-29 14:53:53.244524+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+----------
- 2023-09-28 16:10:04.990874+00 | 10306250
+ 2023-09-29 14:53:56.358794+00 | 10616555
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |          erpm           |  total   |  duration   |       avg_erps
--------------------------+-------------------------+----------+-------------+-----------------------
- 2023-09-28 13:05:38.508 | 149561.9703792517664265 | 20000000 | 02:13:43.43 | 2492.6995063208627738
+       load_start        |       erpm       |  total   |   duration   |     avg_erps
+-------------------------+------------------+----------+--------------+------------------
+ 2023-09-29 12:51:04.186 | 214732.319164519 | 20000000 | 01:33:08.353 | 3578.87198607532
 (1 row)
 
 ```
