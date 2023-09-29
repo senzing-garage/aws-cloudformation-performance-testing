@@ -1281,11 +1281,12 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: "14.6"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-core-cluster"
@@ -1313,11 +1314,12 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: "14.6"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-libfeat-cluster"
@@ -1345,11 +1347,12 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: "14.6"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-res-cluster"
@@ -1369,7 +1372,8 @@ Resources:
         Ref: RdsDbClusterCore
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
   RdsDbInstanceCore2:
@@ -1384,7 +1388,8 @@ Resources:
         Ref: RdsDbClusterCore
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
   RdsDbInstanceLibfeat1:
@@ -1399,7 +1404,8 @@ Resources:
         Ref: RdsDbClusterLibfeat
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
   RdsDbInstanceLibfeat2:
