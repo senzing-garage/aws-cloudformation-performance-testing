@@ -1488,7 +1488,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: serverless
-      EngineVersion: "11.13"
+      EngineVersion: "11.18"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       ScalingConfiguration:
@@ -1529,7 +1529,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: serverless
-      EngineVersion: "14.8"
+      EngineVersion: "11.18"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       ScalingConfiguration:
@@ -1572,7 +1572,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: serverless
-      EngineVersion: "14.8"
+      EngineVersion: "11.18"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       ScalingConfiguration:
@@ -1615,7 +1615,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: serverless
-      EngineVersion: "14.8"
+      EngineVersion: "11.18"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       ScalingConfiguration:
