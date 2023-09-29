@@ -4,35 +4,35 @@
 
 =======================================================================================================================================
 Build:                          |  3.5.0.23044   |  3.6.0.23160   |  3.7.0-23235   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
-Peak:                           |  3430          |  4266          |  4132          |  3020          |  3010          |  5845          |
-Warm-up:                        |     0.45 hours |     0.48 hours |     0.6  hours |     0.23 hours |     0.22 hours |     0.13 hours |
-Average after warm-up:          |  2741          |  3559          |  3327          |  2375          |  2638          |  3800          |
-Average over entire run:        |  2415          |  3137          |  2938          |  2240          |  2493          |  3579          |
-Time to load 20M:               |     2.33 hours |     1.77 hours |     1.88 hours |     2.48 hours |     2.23 hours |     1.55 hours |
+Peak:                           |  3430          |  4266          |  4132          |  3010          |  5845          |  5565          |
+Warm-up:                        |     0.45 hours |     0.48 hours |     0.6  hours |     0.22 hours |     0.13 hours |     0.18 hours |
+Average after warm-up:          |  2741          |  3559          |  3327          |  2638          |  3800          |  3527          |
+Average over entire run:        |  2415          |  3137          |  2938          |  2493          |  3579          |  3141          |
+Time to load 20M:               |     2.33 hours |     1.77 hours |     1.88 hours |     2.23 hours |     1.55 hours |     1.77 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |   21,704,226   |    7,958,177   |      270,154   |      846,564   |      229,730   |    1,140,226   |
-Total Billed write IOPS:        |   69,134,272   |   48,696,085   |   89,706,883   |   67,755,672   |   85,411,348   |  153,285,668   |
-Max loader tasks:               |    65          |     62         |     60         |     70         |     45         |     78         |
-Max redoer tasks:               |    11          |     12         |     13         |     28         |     25         |     27         |
-Notes:                          | sz_sqs_consumer| sz_sqs_consumer| sz_sqs_consumer| 20% loader cpu | 30% loader cpu | 30% loader cpu |
-                                |sz_simple_redoer|sz_simple_redoer|sz_simple_redoer|  DB 2-128 ACU  |  DB 2-128 ACU  |V1 DB 2-192 ACU |
+Total Billed read IOPS:         |   21,704,226   |    7,958,177   |      270,154   |      229,730   |    1,140,226   |    1,292,359   |
+Total Billed write IOPS:        |   69,134,272   |   48,696,085   |   89,706,883   |   85,411,348   |  153,285,668   |   69,182,119   |
+Max loader tasks:               |    65          |     62         |     60         |     45         |     78         |     84         |
+Max redoer tasks:               |    11          |     12         |     13         |     25         |     27         |     30         |
+Notes:                          | sz_sqs_consumer| sz_sqs_consumer| sz_sqs_consumer| 30% loader cpu | 30% loader cpu | 30% loader cpu |
+                                |sz_simple_redoer|sz_simple_redoer|sz_simple_redoer|  DB 2-128 ACU  |V1 DB 2-192 ACU |V1 DB 2-192 ACU |
 =======================================================================================================================================
 
-=====================================================================================================
-Build:                          |  3.5.0.23044   |  3.6.0.23160   |  3.6.0.23160   |  3.8.0-23258   |
-Peak:                           |  3430          |  4231          |  4266          |  3495          |
-Warm-up:                        |     0.45 hours |     0.35 hours |     0.48 hours |     0.02 hours |
-Average after warm-up:          |  2741          |  2802          |  3559          |  2760          |
-Average over entire run:        |  2415          |  2488          |  3137          |  2760          |
-Time to load 20M:               |     2.33 hours |     2.22 hours |     1.77 hours |     2.0  hours |
-Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |   21,704,226   |     73,021,926 |    7,958,177   |      166,939   |<- changed to volume read IOPS
-Total Billed write IOPS:        |   69,134,272   |     94,894,153 |   48,696,085   |   84,804,069   |<- changed to volume write IOPS
-Max loader tasks:               |    65          |    54          |     62         |     42         |(AWS doesn't have "Billed" IOPS
-Max redoer tasks:               |    11          |     9          |     12         |     25         | stat available any more)
-Notes:                          | sz_sqs_consumer|    go-load     | sz_sqs_consumer| 30% loader cpu |
-                                |sz_simple_redoer|sz_simple_redoer|sz_simple_redoer|  DB 64-64 ACU  |
-=====================================================================================================
+======================================================================================================================
+Build:                          |  3.5.0.23044   |  3.6.0.23160   |  3.6.0.23160   |  3.8.0-23258   |  3.8.0-23258   |
+Peak:                           |  3430          |  4231          |  4266          |  3495          |  3020          |
+Warm-up:                        |     0.45 hours |     0.35 hours |     0.48 hours |     0.02 hours |     0.23 hours |
+Average after warm-up:          |  2741          |  2802          |  3559          |  2760          |  2375          |
+Average over entire run:        |  2415          |  2488          |  3137          |  2760          |  2240          |
+Time to load 20M:               |     2.33 hours |     2.22 hours |     1.77 hours |     2.0  hours |     2.48 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |   21,704,226   |     73,021,926 |    7,958,177   |      166,939   |      846,564   |<- changed to volume read IOPS
+Total Billed write IOPS:        |   69,134,272   |     94,894,153 |   48,696,085   |   84,804,069   |   67,755,672   |<- changed to volume write IOPS
+Max loader tasks:               |    65          |    54          |     62         |     42         |     70         |(AWS doesn't have "Billed" IOPS
+Max redoer tasks:               |    11          |     9          |     12         |     25         |     28         | stat available any more)
+Notes:                          | sz_sqs_consumer|    go-load     | sz_sqs_consumer| 30% loader cpu | 20% loader cpu |
+                                |sz_simple_redoer|sz_simple_redoer|sz_simple_redoer|  DB 64-64 ACU  |  DB 2-128 ACU  |
+======================================================================================================================
 
 
 =======================================================================================================================================================
