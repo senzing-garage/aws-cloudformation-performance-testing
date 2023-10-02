@@ -1420,7 +1420,8 @@ Resources:
         Ref: RdsDbClusterLibfeat
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
   RdsDbInstanceRes1:
@@ -1435,7 +1436,8 @@ Resources:
         Ref: RdsDbClusterRes
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
   RdsDbInstanceRes2:
@@ -1450,7 +1452,8 @@ Resources:
         Ref: RdsDbClusterRes
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------
