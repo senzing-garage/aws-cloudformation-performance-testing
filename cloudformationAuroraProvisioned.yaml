@@ -1828,7 +1828,7 @@ Resources:
                       # Make AWS ECS request to start multiple producers.
                       #  the stride is the number of records each producer
                       #  should produce
-                      stride = 10_000_000
+                      stride = 5_000_000
                       max = run_task_parameters.pop("recordMax")
                       start = run_task_parameters.pop("recordMin")
                       if max - start < stride:
@@ -3138,6 +3138,8 @@ Resources:
               Value: !FindInMap [Constants, StreamProducer, RecordMin]
             - Name: SENZING_RECORD_MONITOR
               Value: "100000"
+            - Name: SENZING_RECORDS_PER_MESSAGE
+              Value: "10"
             - Name: SENZING_SQS_QUEUE_URL
               Value: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsInput.QueueName}"
             - Name: SENZING_SUBCOMMAND
@@ -3312,7 +3314,7 @@ Resources:
     Condition: IfRunStreamLoader
     Properties:
       Cluster: !Ref EcsCluster
-      DesiredCount: 8
+      DesiredCount: 0
       EnableECSManagedTags: true
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -3406,7 +3408,7 @@ Resources:
     Condition: IfRunStreamLoader
     Properties:
       MaxCapacity: 200
-      MinCapacity: 1
+      MinCapacity: 0
       ResourceId: !Sub "service/${EcsCluster}/${EcsServiceStreamLoader.Name}"
       RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
       ScalableDimension: ecs:service:DesiredCount
