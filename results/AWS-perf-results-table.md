@@ -27,7 +27,7 @@ Total Billed write IOPS:        |   89,706,883   |  153,285,668   |   69,182,119
 Max loader tasks:               |     60         |     78         |     84         |     55         |     123        |    113         |
 Max redoer tasks:               |     13         |     27         |     30         |     14         |      18        |     20         |
 Notes:                          | sz_sqs_consumer| 30% loader cpu | 30% loader cpu | provisioned    | pre-load queue |   no IO opt    |
-                                |sz_simple_redoer|V1 DB 2-192 ACU |V1 DB 2-192 ACU | db.r6i.32xlarge| db.r6i.32xlarge|  DB 2-128 ACU  |
+                                |sz_simple_redoer|V1 DB 2-192 ACU |V1 DB 2-192 ACU | db.r6i.32xlarge| db.r6i.32xlarge| db.r6i.32xlarge|
 =======================================================================================================================================
 
 =======================================================================================================================================
