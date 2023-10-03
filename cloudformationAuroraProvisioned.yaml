@@ -1286,7 +1286,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
-      StorageType: aurora-iopt1
+      StorageType: aurora
+      # StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-core-cluster"
@@ -1319,7 +1320,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
-      StorageType: aurora-iopt1
+      StorageType: aurora
+      # StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-libfeat-cluster"
@@ -1352,7 +1354,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
-      StorageType: aurora-iopt1
+      StorageType: aurora
+      # StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-res-cluster"
