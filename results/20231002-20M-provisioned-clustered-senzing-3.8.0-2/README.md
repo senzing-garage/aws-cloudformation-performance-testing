@@ -22,6 +22,7 @@
     1. [cloudformationAuroraV2.yaml](https://github.com/Senzing/aws-cloudformation-performance-testing/blob/main/cloudformationAuroraV2.yaml)
 4. Changes:
     1. Pre-load input queue by setting loader DesiredCount and MinCapacity to 0
+    1. Postgres 14.8
 
 ## System
 
