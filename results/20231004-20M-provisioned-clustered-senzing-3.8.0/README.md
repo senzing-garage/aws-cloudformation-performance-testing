@@ -36,14 +36,14 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 4309/second
-    1. Warm-up: n/a
-    1. Average after warm-up: n/a
-    1. Average over entire run: 3151/second
-    1. Time to load 20M: 1.77 hours
+    1. Peak: 4262/second
+    1. Warm-up: 3 mins
+    1. Average after warm-up: 3128/second
+    1. Average over entire run: 2852/second
+    1. Time to load 20M: 1.95 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:       138,795
-    1. Volume write IOPS:   81,025,325
+    1. Volume read IOPS:        67,497
+    1. Volume write IOPS:   78,283,087
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
@@ -53,6 +53,7 @@
 
 1. Notes:
     - db.r6i.4xlarge RES cluster seems to be running at 96% CPU with 47 loaders running.
+    - the dsrc_record.csv average over entire run was 3058/second, which is quite different from the Brian's SQL number above.  this could be due to an oddity I noticed toward the end of the run.  There were 38 records that too quite a bit of extra time to resolve. I've ignored the extra 9 minutes in the "warm-up" average.
 
 
 ### Final metrics
