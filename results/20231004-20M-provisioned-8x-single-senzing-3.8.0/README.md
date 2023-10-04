@@ -37,11 +37,11 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 4262/second
-    1. Warm-up: 3 mins
-    1. Average after warm-up: 3128/second
-    1. Average over entire run: 2852/second
-    1. Time to load 20M: 1.95 hours
+    1. Peak: 2511/second
+    1. Warm-up: 1 mins
+    1. Average after warm-up: 2263/second
+    1. Average over entire run: 2271/second
+    1. Time to load 20M: 2.45 hours
     1. Records in dead-letter queue: 0
     1. Volume read IOPS:       383,053
     1. Volume write IOPS:   80,747,403
