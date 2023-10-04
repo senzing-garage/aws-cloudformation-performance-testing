@@ -46,13 +46,13 @@
     1. Volume write IOPS:   81,025,325
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
-Note:  This is using local senzing data.  Withinfo disabled.
+1. Max tasks:
 
-- Max Stream-loader tasks: 52
-- Max Redoer tasks: 9
+    - Max Stream-loader tasks: 20
+    - Max Redoer tasks: 1
 
-1. db.r6i.4xlarge RES cluster seems to be running at 95% CPU with 52 loaders running.
-
+1. Notes:
+    - db.r6i.4xlarge RES cluster seems to be running at 95% CPU with 52 loaders running.
 
 
 ### Final metrics
