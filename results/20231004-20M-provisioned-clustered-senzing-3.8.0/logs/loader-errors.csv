@@ -1,0 +1,8 @@
+message
+"senzing.G2Exception.G2Exception: 1019E|Datastore schema tables not found. [Datastore schema tables not found. [(7:42P01ERROR:  relation ""sys_vars"" does not exist LINE 1: SELECT VAR_VALUE,SYS_LSTUPD_DT FROM SYS_VARS WHERE VAR_GROUP...                                             ^ )]]"
+Traceback (most recent call last):
+"  File ""/app/sz_simple_redoer.py"", line 97, in <module>"
+"    g2.init(""sz_simple_redoer"", engine_config, args.debugTrace)"
+"  File ""/opt/senzing/g2/sdk/python/senzing/G2Engine.py"", line 211, in init"
+    raise TranslateG2ModuleException(tls_var.buf.value)
+"senzing.G2Exception.G2Exception: senzing.G2Exception.G2Exception: 1019E|Datastore schema tables not found. [Datastore schema tables not found. [(7:42P01ERROR:  relation ""sys_vars"" does not exist LINE 1: SELECT VAR_VALUE,SYS_LSTUPD_DT FROM SYS_VARS WHERE VAR_GROUP...                                             ^ )]]"
