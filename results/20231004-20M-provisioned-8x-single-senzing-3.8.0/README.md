@@ -53,9 +53,7 @@
     - Max Redoer tasks: 7
 
 1. Notes:
-    - db.r6i.4xlarge RES cluster seems to be running at 96% CPU with 47 loaders running.
-    - the dsrc_record.csv average over entire run was 3058/second, which is quite different from the Brian's SQL number above.  this could be due to an oddity I noticed toward the end of the run.  There were 38 records that too quite a bit of extra time to resolve. I've ignored the extra 9 minutes in the "warm-up" average.
-    - there was a single loader error, See [loader-errors.csv](logs/loader-errors.csv)
+    - db.r6i.8xlarge RES cluster seems to be running at 96% CPU with 47 loaders running.
 
 
 ### Final metrics
