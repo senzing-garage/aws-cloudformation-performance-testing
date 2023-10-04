@@ -1949,8 +1949,7 @@ Resources:
                                 '    "SQL": {'
                                 '        "BACKEND": "SQL",'
                                 f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
-                                '    },'
-                                f'    {data_encryption}'
+                                '    }'
                                 '}')
                       else:
                           response_data["ConfigJSON"] = (
