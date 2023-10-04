@@ -43,14 +43,14 @@
     1. Average over entire run: 2852/second
     1. Time to load 20M: 1.95 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:        67,497
-    1. Volume write IOPS:   78,283,087
+    1. Volume read IOPS:       383,053
+    1. Volume write IOPS:   80,747,403
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
-    - Max Stream-loader tasks: 34
-    - Max Redoer tasks: 4
+    - Max Stream-loader tasks: 37
+    - Max Redoer tasks: 14
 
 1. Notes:
     - db.r6i.8xlarge RES cluster seems to be running at 92% CPU with 34 loaders running.
@@ -90,26 +90,12 @@ N/A.  Ran without `withinfo` enabled.
 
 #### RDS
 
-##### Database Metrics CORE final
+##### Database Metrics CORE/LIBFEAT/RES final
 
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
-![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
-##### Database Metrics LIBFEAT final
-
-![Database metrics 1](images/database-metrics-libfeat-1.png "Database metrics 1")
-![Database metrics 2](images/database-metrics-libfeat-2.png "Database metrics 2")
-![Database metrics 3](images/database-metrics-libfeat-3.png "Database metrics 3")
-![Database metrics 4](images/database-metrics-libfeat-4.png "Database metrics 4")
-
-##### Database Metrics RES final
-
-![Database metrics 1](images/database-metrics-res-1.png "Database metrics 1")
-![Database metrics 2](images/database-metrics-res-2.png "Database metrics 2")
-![Database metrics 3](images/database-metrics-res-3.png "Database metrics 3")
-![Database metrics 4](images/database-metrics-res-4.png "Database metrics 4")
 
 ##### DSRC_RECORD
 
@@ -119,45 +105,45 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-             now              |  count
-------------------------------+----------
- 2023-10-04 16:32:32.38701+00 | 20000000
+              now              |  count
+-------------------------------+----------
+ 2023-10-04 22:29:28.139203+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-10-04 16:32:36.290433+00 | 19999959
+ 2023-10-04 22:29:32.725175+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-10-04 16:32:39.960225+00 | 17461682
+ 2023-10-04 22:29:45.291686+00 | 17461843
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-10-04 16:32:43.419333+00 | 19999959
+ 2023-10-04 22:30:01.354552+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-10-04 16:32:47.037482+00 |     0
+ 2023-10-04 22:31:51.464783+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+---------
- 2023-10-04 16:32:50.189321+00 | 9114328
+ 2023-10-04 22:31:56.272968+00 | 9099818
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |          erpm           |  total   |   duration   |       avg_erps
--------------------------+-------------------------+----------+--------------+-----------------------
- 2023-10-04 14:16:33.447 | 171164.0740301736587904 | 20000000 | 01:56:50.817 | 2852.7345671695609798
+       load_start        |          erpm           |  total   |  duration   |       avg_erps
+-------------------------+-------------------------+----------+-------------+-----------------------
+ 2023-10-04 19:30:34.547 | 136234.5231905217100756 | 20000000 | 02:26:48.34 | 2270.5753865086951679
 (1 row)
 
 ```
