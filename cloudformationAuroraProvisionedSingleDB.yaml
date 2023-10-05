@@ -1315,25 +1315,25 @@ Resources:
       # DBInstanceClass: db.r6i.32xlarge
     Type: AWS::RDS::DBInstance
 
-  RdsDbInstanceCore2:
-    Properties:
-      DBSubnetGroupName: !Sub
-        - "${StackNameAsLower}-db-subnet"
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      DBParameterGroupName:
-        Ref: RdsDbParameterGroup
-      Engine: aurora-postgresql
-      DBClusterIdentifier:
-        Ref: RdsDbClusterCore
-      PubliclyAccessible: "true"
-      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      # DBInstanceClass: db.r6i.4xlarge
-      # DBInstanceClass: db.r6i.8xlarge
-      DBInstanceClass: db.r6i.12xlarge
-      # DBInstanceClass: db.r6i.16xlarge
-      # DBInstanceClass: db.r6i.24xlarge
-      # DBInstanceClass: db.r6i.32xlarge
-    Type: AWS::RDS::DBInstance
+  # RdsDbInstanceCore2:
+  #   Properties:
+  #     DBSubnetGroupName: !Sub
+  #       - "${StackNameAsLower}-db-subnet"
+  #       - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+  #     DBParameterGroupName:
+  #       Ref: RdsDbParameterGroup
+  #     Engine: aurora-postgresql
+  #     DBClusterIdentifier:
+  #       Ref: RdsDbClusterCore
+  #     PubliclyAccessible: "true"
+  #     AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+  #     # DBInstanceClass: db.r6i.4xlarge
+  #     # DBInstanceClass: db.r6i.8xlarge
+  #     DBInstanceClass: db.r6i.12xlarge
+  #     # DBInstanceClass: db.r6i.16xlarge
+  #     # DBInstanceClass: db.r6i.24xlarge
+  #     # DBInstanceClass: db.r6i.32xlarge
+  #   Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------
 
@@ -1432,10 +1432,10 @@ Resources:
       DbInstanceCore1Ready: !GetAtt RdsDbInstanceCore1.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
-  DbInstanceCore2Ready:
-    Metadata:
-      DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
-    Type: AWS::CloudFormation::WaitConditionHandle
+  # DbInstanceCore2Ready:
+  #   Metadata:
+  #     DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
+  #   Type: AWS::CloudFormation::WaitConditionHandle
 
   # -- LambdaFunction -----------------------------------------------------------
 
@@ -2145,7 +2145,7 @@ Resources:
   LambdaRunnerInitPostgresConfiguration:
     DependsOn:
       - DbInstanceCore1Ready
-      - DbInstanceCore2Ready
+      # - DbInstanceCore2Ready
       - DbClusterCoreReady
     Properties:
       ClusterId: !Ref EcsCluster
@@ -2176,7 +2176,7 @@ Resources:
   LambdaRunnerSenzingEngineConfigurationJson:
     DependsOn:
       - DbInstanceCore1Ready
-      - DbInstanceCore2Ready
+      # - DbInstanceCore2Ready
       - DbClusterCoreReady
     Properties:
       DatabaseHostCore: !GetAtt RdsDbClusterCore.Endpoint.Address
