@@ -14,40 +14,40 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 20M perf test run:
 
-=======================================================================================================================================
-Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
-Peak:                           |  5845          |  8847          |  7798          |  4309          |  4262          |  2511          |
-Warm-up:                        |     0.13 hours |     0.00 hours |     0.07 hours |     0 hours    |     3 mins     |     1 mins     |
-Average after warm-up:          |  3800          |  N/A           |  6162          |   n/a          |  3128          |  2263          |
-Average over entire run:        |  3579          |  6872          |  5851          |  3151          |  2852          |  2271          |
-Time to load 20M:               |     1.55 hours |    48 Mins     |    57 Mins     |    1.77 hours  |    1.95 hours  |    2.45 hours  |
-Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |    1,140,226   |           21   |           19   |      138,795   |       67,497   |      383,053   |
-Total Billed write IOPS:        |  153,285,668   |   43,889,497   |   81,479,603   |   81,025,325   |   78,283,087   |   80,747,403   |
-Max loader tasks:               |     78         |     123        |    113         |     52         |     49         |     37         |
-Max redoer tasks:               |     27         |      18        |     20         |      9         |      7         |     14         |
-Notes:                          | 30% loader cpu |pre-loaded queue|pre-loaded queue|pre-loaded queue|pre-loaded queue|   single DB    |
-                                |V1 DB 2-192 ACU | db.r6i.32xlarge| db.r6i.32xlarge| db.r6i.4xlarge | db.r6i.4xlarge | db.r6i.8xlarge |
-                                |                |     IO opt     |   no IO opt    |     IO opt     |  not IO opt    |     IO opt     |
-=======================================================================================================================================
+======================================================================================================================
+Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
+Peak:                           |  5845          |  8847          |  4309          |  2511          |  3104          |
+Warm-up:                        |     0.13 hours |     0 mins     |     0 mins     |     1 mins     |     0 mins     |
+Average after warm-up:          |  3800          |   n/a          |   n/a          |  2263          |   n/a          |
+Average over entire run:        |  3579          |  6872          |  3151          |  2271          |  2685          |
+Time to load 20M:               |     1.55 hours |    48 Mins     |    1.77 hours  |    2.45 hours  |    2.07 hours  |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |    1,140,226   |           21   |      138,795   |      383,053   |           35   |
+Total Billed write IOPS:        |  153,285,668   |   43,889,497   |   81,025,325   |   80,747,403   |   81,271,690   |
+Max loader tasks:               |     78         |     123        |     52         |     37         |     40         |
+Max redoer tasks:               |     27         |      18        |      9         |     14         |     12         |
+Notes:                          | 30% loader cpu |pre-loaded queue|pre-loaded queue|   single DB    |   single DB    |
+                                |V1 DB 2-192 ACU | db.r6i.32xlarge| db.r6i.4xlarge | db.r6i.8xlarge | db.r6i.12xlarge|
+                                |                |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
+======================================================================================================================
 
 
-========================================================================================================================================================
-Build:                          |  3.7.0-23235   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
-Peak:                           |  4132          |  5845          |  5565          |  6489          |  8847          |  7798          |  4309          |
-Warm-up:                        |     0.6  hours |     0.13 hours |     0.18 hours |     0.00 hours |     0.00 hours |     0.07 hours |     0 hours    |
-Average after warm-up:          |  3327          |  3800          |  3527          |  N/A           |  N/A           |  6162          |   n/a          |
-Average over entire run:        |  2938          |  3579          |  3141          |  3791          |  6872          |  5851          |  3151          |
-Time to load 20M:               |     1.88 hours |     1.55 hours |     1.77 hours |     1.47 hours |    48 Mins     |    57 Mins     |    1.77 hours  |
-Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |      270,154   |    1,140,226   |    1,292,359   |           21   |           21   |           19   |      138,795   |
-Total Billed write IOPS:        |   89,706,883   |  153,285,668   |   69,182,119   |   67,048,111   |   43,889,497   |   81,479,603   |   81,025,325   |
-Max loader tasks:               |     60         |     78         |     84         |     55         |     123        |    113         |     52         |
-Max redoer tasks:               |     13         |     27         |     30         |     14         |      18        |     20         |      9         |
-Notes:                          | sz_sqs_consumer| 30% loader cpu | 30% loader cpu | provisioned    |pre-loaded queue|pre-loaded queue|pre-loaded queue|
-                                |sz_simple_redoer|V1 DB 2-192 ACU |V1 DB 2-192 ACU | db.r6i.32xlarge| db.r6i.32xlarge| db.r6i.32xlarge| db.r6i.4xlarge |
-                                |                |                |                |     IO opt     |     IO opt     |   no IO opt    |     IO opt     |
-========================================================================================================================================================
+==========================================================================================================================================================================================
+Build:                          |  3.7.0-23235   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
+Peak:                           |  4132          |  5845          |  5565          |  6489          |  8847          |  7798          |  4309          |  7798          |  4262          |
+Warm-up:                        |     0.6  hours |     0.13 hours |     0.18 hours |     0.00 hours |     0.00 hours |     0.07 hours |     0 hours    |     0.07 hours |     3 mins     |
+Average after warm-up:          |  3327          |  3800          |  3527          |  N/A           |  N/A           |  6162          |   n/a          |  6162          |  3128          |
+Average over entire run:        |  2938          |  3579          |  3141          |  3791          |  6872          |  5851          |  3151          |  5851          |  2852          |
+Time to load 20M:               |     1.88 hours |     1.55 hours |     1.77 hours |     1.47 hours |    48 Mins     |    57 Mins     |    1.77 hours  |    57 Mins     |    1.95 hours  |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |      270,154   |    1,140,226   |    1,292,359   |           21   |           21   |           19   |      138,795   |           19   |       67,497   |
+Total Billed write IOPS:        |   89,706,883   |  153,285,668   |   69,182,119   |   67,048,111   |   43,889,497   |   81,479,603   |   81,025,325   |   81,479,603   |   78,283,087   |
+Max loader tasks:               |     60         |     78         |     84         |     55         |     123        |    113         |     52         |    113         |     49         |
+Max redoer tasks:               |     13         |     27         |     30         |     14         |      18        |     20         |      9         |     20         |      7         |
+Notes:                          | sz_sqs_consumer| 30% loader cpu | 30% loader cpu | provisioned    |pre-loaded queue|pre-loaded queue|pre-loaded queue|pre-loaded queue|pre-loaded queue|
+                                |sz_simple_redoer|V1 DB 2-192 ACU |V1 DB 2-192 ACU | db.r6i.32xlarge| db.r6i.32xlarge| db.r6i.32xlarge| db.r6i.4xlarge | db.r6i.32xlarge| db.r6i.4xlarge |
+                                |                |                |                |     IO opt     |     IO opt     |   no IO opt    |     IO opt     |   no IO opt    |   no IO opt    |
+==========================================================================================================================================================================================
 
 =======================================================================================================================================
 Build:                          |  3.5.0.23044   |  3.6.0.23160   |  3.6.0.23160   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
