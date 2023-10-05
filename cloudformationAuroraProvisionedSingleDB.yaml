@@ -1677,7 +1677,7 @@ Resources:
                       # Make AWS ECS request to start multiple producers.
                       #  the stride is the number of records each producer
                       #  should produce
-                      stride = 5_000_000
+                      stride = 10_000_000
                       max = run_task_parameters.pop("recordMax")
                       start = run_task_parameters.pop("recordMin")
                       if max - start < stride:
@@ -2975,7 +2975,7 @@ Resources:
             - Name: SENZING_RECORD_MONITOR
               Value: "100000"
             - Name: SENZING_RECORDS_PER_MESSAGE
-              Value: "10"
+              Value: "1"
             - Name: SENZING_SQS_QUEUE_URL
               Value: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsInput.QueueName}"
             - Name: SENZING_SUBCOMMAND
