@@ -37,23 +37,23 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 3104/second
+    1. Peak: 3326/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
-    1. Average over entire run: 2685/second
-    1. Time to load 20M: 2.07 hours
+    1. Average over entire run: 2893/second
+    1. Time to load 20M: 1.92 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:            35
-    1. Volume write IOPS:   81,271,690
+    1. Volume read IOPS:             9
+    1. Volume write IOPS:   32,287,062
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
-    - Max Stream-loader tasks: 41
-    - Max Redoer tasks: 3
+    - Max Stream-loader tasks: 44
+    - Max Redoer tasks: 14
 
 1. Notes:
-    - db.r6i.12xlarge RES cluster seems to be running at 81% CPU with 40 loaders running.
+    - db.r6i.12xlarge RES cluster seems to be running at 85% CPU with 44 loaders running.
 
 
 ### Final metrics
@@ -95,7 +95,6 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
-![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
 
 ##### DSRC_RECORD
@@ -108,43 +107,43 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2023-10-05 17:13:46.081315+00 | 19999999
+ 2023-10-05 22:30:07.880879+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-10-05 17:13:54.619208+00 | 19999958
+ 2023-10-05 22:41:41.628836+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-10-05 17:14:01.400112+00 | 17461730
+ 2023-10-05 22:41:46.897046+00 | 17461715
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-10-05 17:14:06.674832+00 | 19999958
+ 2023-10-05 22:41:50.913851+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-10-05 17:14:11.868403+00 |     0
+ 2023-10-05 22:41:54.950725+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+---------
- 2023-10-05 17:14:16.548651+00 | 9112016
+ 2023-10-05 22:41:59.648585+00 | 9100668
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
        load_start        |          erpm           |  total   |   duration   |       avg_erps
 -------------------------+-------------------------+----------+--------------+-----------------------
- 2023-10-05 14:51:04.402 | 161111.9869338172063583 | 19999999 | 02:04:08.235 | 2685.1997822302867726
+ 2023-10-05 20:30:33.492 | 173588.9604364720821215 | 20000000 | 01:55:12.882 | 2893.1493406078680354
 (1 row)
 
 ```
