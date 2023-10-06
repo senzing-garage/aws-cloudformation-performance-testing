@@ -1311,8 +1311,8 @@ Resources:
       # DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
-      DBInstanceClass: db.r6i.24xlarge
-      # DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6i.24xlarge
+      DBInstanceClass: db.r6i.32xlarge
     Type: AWS::RDS::DBInstance
 
   # RdsDbInstanceCore2:
@@ -1677,7 +1677,7 @@ Resources:
                       # Make AWS ECS request to start multiple producers.
                       #  the stride is the number of records each producer
                       #  should produce
-                      stride = 10_000_000
+                      stride = 5_000_000
                       max = run_task_parameters.pop("recordMax")
                       start = run_task_parameters.pop("recordMin")
                       if max - start < stride:
