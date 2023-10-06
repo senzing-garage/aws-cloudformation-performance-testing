@@ -49,8 +49,8 @@
 
 1. Max tasks:
 
-    - Max Stream-loader tasks: 75
-    - Max Redoer tasks: 17
+    - Max Stream-loader tasks: 57
+    - Max Redoer tasks: 3
 
 1. Notes:
     - db.r6i.32xlarge RES cluster seems to be running at 69% CPU with 75 loaders running.
