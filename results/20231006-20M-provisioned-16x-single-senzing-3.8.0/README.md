@@ -1,4 +1,4 @@
-# senzing-test-results-20231005-20M-provisioned-12x-single-senzing-3.8.0
+# senzing-test-results-20231006-20M-provisioned-16x-single-senzing-3.8.0
 
 ## Contents
 
@@ -15,7 +15,7 @@
 
 ## Overview
 
-1. Performed: Oct 05, 2023
+1. Performed: Oct 06, 2023
 2. Senzing version: 3.8.0-23258
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/Senzing/aws-cloudformation-performance-testing)
@@ -29,7 +29,7 @@
 1. Database
     1. Aurora PosgreSQL Provisioned
     1. Single database
-    1. Class: db.r6i.12xlarge
+    1. Class: db.r6i.16xlarge
     1. IO Opt (StorageType: aurora-iopt1)
 
 ## Results

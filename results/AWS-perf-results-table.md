@@ -14,22 +14,22 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 20M perf test run:
 
-======================================================================================================================
-Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
-Peak:                           |  5845          |  8847          |  4309          |  2511          |  3326          |
-Warm-up:                        |     0.13 hours |     0 mins     |     0 mins     |     1 mins     |     0 mins     |
-Average after warm-up:          |  3800          |   n/a          |   n/a          |  2263          |   n/a          |
-Average over entire run:        |  3579          |  6872          |  3151          |  2271          |  2893          |
-Time to load 20M:               |     1.55 hours |    48 Mins     |    1.77 hours  |    2.45 hours  |    1.92 hours  |
-Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |    1,140,226   |           21   |      138,795   |      383,053   |            9   |
-Total Billed write IOPS:        |  153,285,668   |   43,889,497   |   81,025,325   |   80,747,403   |   32,287,062   |
-Max loader tasks:               |     78         |     123        |     52         |     37         |     44         |
-Max redoer tasks:               |     27         |      18        |      9         |     14         |     14         |
-Notes:                          | 30% loader cpu |pre-loaded queue|pre-loaded queue|   single DB    | single DB inst |
-                                |V1 DB 2-192 ACU | db.r6i.32xlarge| db.r6i.4xlarge | db.r6i.8xlarge | db.r6i.12xlarge|
-                                |                |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
-======================================================================================================================
+=======================================================================================================================================
+Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
+Peak:                           |  5845          |  8847          |  4309          |  2511          |  3326          |  3326          |
+Warm-up:                        |     0.13 hours |     0 mins     |     0 mins     |     1 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |  3800          |   n/a          |   n/a          |  2263          |   n/a          |   n/a          |
+Average over entire run:        |  3579          |  6872          |  3151          |  2271          |  2893          |  2893          |
+Time to load 20M:               |     1.55 hours |    48 Mins     |    1.77 hours  |    2.45 hours  |    1.92 hours  |    1.92 hours  |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |    1,140,226   |           21   |      138,795   |      383,053   |            9   |            9   |
+Total Billed write IOPS:        |  153,285,668   |   43,889,497   |   81,025,325   |   80,747,403   |   32,287,062   |   32,287,062   |
+Max loader tasks:               |     78         |     123        |     52         |     37         |     44         |     44         |
+Max redoer tasks:               |     27         |      18        |      9         |     14         |     14         |     14         |
+Notes:                          | 30% loader cpu |pre-loaded queue|pre-loaded queue|   single DB    | single DB inst | single DB inst |
+                                |V1 DB 2-192 ACU | db.r6i.32xlarge| db.r6i.4xlarge | db.r6i.8xlarge | db.r6i.12xlarge| db.r6i.16xlarge|
+                                |                |     IO opt     |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
+=======================================================================================================================================
 
 
 ==========================================================================================================================================================================================
