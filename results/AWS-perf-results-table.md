@@ -12,16 +12,16 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 ========================================================================================================================================================
 Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23258   |
-Peak:                           |  5845          |  2511          |  3326          |  4578          |  5392          |  5216          |  8597          |
-Warm-up:                        |     0.13 hours |     1 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
-Average after warm-up:          |  3800          |  2263          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
-Average over entire run:        |  3579          |  2271          |  2893          |  3871          |  4553          |  4662          |  6962          |
-Time to load 20M:               |     1.55 hours |    2.45 hours  |    1.92 hours  |    1.45 hours  |    1.22 hours  |    1.20 hours  |    48 Mins     |
+Peak:                           |  5845          |  2724          |  3326          |  4578          |  5392          |  5216          |  8597          |
+Warm-up:                        |     0.13 hours |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |  3800          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  3579          |  2393          |  2893          |  3871          |  4553          |  4662          |  6962          |
+Time to load 20M:               |     1.55 hours |    2.32 hours  |    1.92 hours  |    1.45 hours  |    1.22 hours  |    1.20 hours  |    48 Mins     |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |    1,140,226   |      383,053   |            9   |           45   |           13   |           35   |           23   |
-Total Billed write IOPS:        |  153,285,668   |   80,747,403   |   32,287,062   |   80,902,551   |   58,882,169   |   75,637,378   |   38,441,895   |
-Max loader tasks:               |     78         |     37         |     44         |     59         |     75         |     77         |     125        |
-Max redoer tasks:               |     27         |     14         |     14         |     14         |     14         |     20         |      28        |
+Total Billed read IOPS:         |    1,140,226   |      192,839   |            9   |           45   |           13   |           35   |           23   |
+Total Billed write IOPS:        |  153,285,668   |   74,549,743   |   32,287,062   |   80,902,551   |   58,882,169   |   75,637,378   |   38,441,895   |
+Max loader tasks:               |     78         |     40         |     44         |     59         |     75         |     77         |     125        |
+Max redoer tasks:               |     27         |     23         |     14         |     14         |     14         |     20         |      28        |
 Notes:                          | 30% loader cpu |   single DB    | single DB inst | single DB inst | single DB inst | single DB inst |    multi DB    |
                                 |V1 DB 2-192 ACU | db.r6i.8xlarge | db.r6i.12xlarge| db.r6i.16xlarge| db.r6i.24xlarge| db.r6i.32xlarge| db.r6i.32xlarge|
                                 |                |     IO opt     |     IO opt     |     IO opt     |     IO opt     |     IO opt     |     IO opt     |

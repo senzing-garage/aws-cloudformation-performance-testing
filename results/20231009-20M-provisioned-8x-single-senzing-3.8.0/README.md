@@ -41,7 +41,7 @@
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
     1. Average over entire run: 2393/second
-    1. Time to load 20M: 3.32 hours
+    1. Time to load 20M: 2.32 hours
     1. Records in dead-letter queue: 0
     1. Volume read IOPS:       192,839
     1. Volume write IOPS:   74,549,743
