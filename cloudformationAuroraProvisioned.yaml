@@ -1286,8 +1286,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
-      StorageType: aurora
-      # StorageType: aurora-iopt1
+      # StorageType: aurora
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-core-cluster"
@@ -1320,8 +1320,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
-      StorageType: aurora
-      # StorageType: aurora-iopt1
+      # StorageType: aurora
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-libfeat-cluster"
@@ -1354,8 +1354,8 @@ Resources:
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
-      StorageType: aurora
-      # StorageType: aurora-iopt1
+      # StorageType: aurora
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-res-cluster"
@@ -1375,8 +1375,8 @@ Resources:
         Ref: RdsDbClusterCore
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6i.4xlarge
-      # DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6i.4xlarge
+      DBInstanceClass: db.r6i.32xlarge
       # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
@@ -1409,8 +1409,8 @@ Resources:
         Ref: RdsDbClusterLibfeat
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6i.4xlarge
-      # DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6i.4xlarge
+      DBInstanceClass: db.r6i.32xlarge
       # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
@@ -1443,8 +1443,8 @@ Resources:
         Ref: RdsDbClusterRes
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6i.4xlarge
-      # DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6i.4xlarge
+      DBInstanceClass: db.r6i.32xlarge
       # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
