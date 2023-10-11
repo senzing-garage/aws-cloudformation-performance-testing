@@ -1281,11 +1281,13 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: "14.6"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
+      # StorageType: aurora
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-core-cluster"
@@ -1313,11 +1315,13 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: "14.6"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
+      # StorageType: aurora
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-libfeat-cluster"
@@ -1345,11 +1349,13 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: "14.6"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       StorageEncrypted: true
+      # StorageType: aurora
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-res-cluster"
@@ -1369,23 +1375,27 @@ Resources:
         Ref: RdsDbClusterCore
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      # DBInstanceClass: db.r6i.4xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
-  RdsDbInstanceCore2:
-    Properties:
-      DBSubnetGroupName: !Sub
-        - "${StackNameAsLower}-db-subnet"
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      DBParameterGroupName:
-        Ref: RdsDbParameterGroup
-      Engine: aurora-postgresql
-      DBClusterIdentifier:
-        Ref: RdsDbClusterCore
-      PubliclyAccessible: "true"
-      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
-    Type: AWS::RDS::DBInstance
+  # RdsDbInstanceCore2:
+  #   Properties:
+  #     DBSubnetGroupName: !Sub
+  #       - "${StackNameAsLower}-db-subnet"
+  #       - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+  #     DBParameterGroupName:
+  #       Ref: RdsDbParameterGroup
+  #     Engine: aurora-postgresql
+  #     DBClusterIdentifier:
+  #       Ref: RdsDbClusterCore
+  #     PubliclyAccessible: "true"
+  #     AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+  #     DBInstanceClass: db.r6i.4xlarge
+  #     # DBInstanceClass: db.r6i.32xlarge
+  #     # DBInstanceClass: db.r6g.16xlarge
+  #   Type: AWS::RDS::DBInstance
 
   RdsDbInstanceLibfeat1:
     Properties:
@@ -1399,23 +1409,27 @@ Resources:
         Ref: RdsDbClusterLibfeat
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      # DBInstanceClass: db.r6i.4xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
-  RdsDbInstanceLibfeat2:
-    Properties:
-      DBSubnetGroupName: !Sub
-        - "${StackNameAsLower}-db-subnet"
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      DBParameterGroupName:
-        Ref: RdsDbParameterGroup
-      Engine: aurora-postgresql
-      DBClusterIdentifier:
-        Ref: RdsDbClusterLibfeat
-      PubliclyAccessible: "true"
-      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
-    Type: AWS::RDS::DBInstance
+  # RdsDbInstanceLibfeat2:
+  #   Properties:
+  #     DBSubnetGroupName: !Sub
+  #       - "${StackNameAsLower}-db-subnet"
+  #       - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+  #     DBParameterGroupName:
+  #       Ref: RdsDbParameterGroup
+  #     Engine: aurora-postgresql
+  #     DBClusterIdentifier:
+  #       Ref: RdsDbClusterLibfeat
+  #     PubliclyAccessible: "true"
+  #     AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+  #     DBInstanceClass: db.r6i.4xlarge
+  #     # DBInstanceClass: db.r6i.32xlarge
+  #     # DBInstanceClass: db.r6g.16xlarge
+  #   Type: AWS::RDS::DBInstance
 
   RdsDbInstanceRes1:
     Properties:
@@ -1429,23 +1443,27 @@ Resources:
         Ref: RdsDbClusterRes
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
+      # DBInstanceClass: db.r6i.4xlarge
+      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6g.16xlarge
     Type: AWS::RDS::DBInstance
 
-  RdsDbInstanceRes2:
-    Properties:
-      DBSubnetGroupName: !Sub
-        - "${StackNameAsLower}-db-subnet"
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      DBParameterGroupName:
-        Ref: RdsDbParameterGroup
-      Engine: aurora-postgresql
-      DBClusterIdentifier:
-        Ref: RdsDbClusterRes
-      PubliclyAccessible: "true"
-      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      DBInstanceClass: db.r6g.16xlarge
-    Type: AWS::RDS::DBInstance
+  # RdsDbInstanceRes2:
+  #   Properties:
+  #     DBSubnetGroupName: !Sub
+  #       - "${StackNameAsLower}-db-subnet"
+  #       - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+  #     DBParameterGroupName:
+  #       Ref: RdsDbParameterGroup
+  #     Engine: aurora-postgresql
+  #     DBClusterIdentifier:
+  #       Ref: RdsDbClusterRes
+  #     PubliclyAccessible: "true"
+  #     AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+  #     DBInstanceClass: db.r6i.4xlarge
+  #     # DBInstanceClass: db.r6i.32xlarge
+  #     # DBInstanceClass: db.r6g.16xlarge
+  #   Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------
 
@@ -1554,30 +1572,30 @@ Resources:
       DbInstanceCore1Ready: !GetAtt RdsDbInstanceCore1.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
-  DbInstanceCore2Ready:
-    Metadata:
-      DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
-    Type: AWS::CloudFormation::WaitConditionHandle
+  # DbInstanceCore2Ready:
+  #   Metadata:
+  #     DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
+  #   Type: AWS::CloudFormation::WaitConditionHandle
 
   DbInstanceLibfeat1Ready:
     Metadata:
       DbInstanceLibfeat1Ready: !GetAtt RdsDbInstanceLibfeat1.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
-  DbInstanceLibfeat2Ready:
-    Metadata:
-      DbInstanceLibfeat2Ready: !GetAtt RdsDbInstanceLibfeat2.Endpoint.Address
-    Type: AWS::CloudFormation::WaitConditionHandle
+  # DbInstanceLibfeat2Ready:
+  #   Metadata:
+  #     DbInstanceLibfeat2Ready: !GetAtt RdsDbInstanceLibfeat2.Endpoint.Address
+  #   Type: AWS::CloudFormation::WaitConditionHandle
 
   DbInstanceRes1Ready:
     Metadata:
       DbInstanceRes1Ready: !GetAtt RdsDbInstanceRes1.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
-  DbInstanceRes2Ready:
-    Metadata:
-      DbInstanceRes2Ready: !GetAtt RdsDbInstanceRes2.Endpoint.Address
-    Type: AWS::CloudFormation::WaitConditionHandle
+  # DbInstanceRes2Ready:
+  #   Metadata:
+  #     DbInstanceRes2Ready: !GetAtt RdsDbInstanceRes2.Endpoint.Address
+  #   Type: AWS::CloudFormation::WaitConditionHandle
 
   # -- LambdaFunction -----------------------------------------------------------
 
@@ -1819,7 +1837,7 @@ Resources:
                       # Make AWS ECS request to start multiple producers.
                       #  the stride is the number of records each producer
                       #  should produce
-                      stride = 10_000_000
+                      stride = 5_000_000
                       max = run_task_parameters.pop("recordMax")
                       start = run_task_parameters.pop("recordMin")
                       if max - start < stride:
@@ -2288,11 +2306,11 @@ Resources:
   LambdaRunnerInitPostgresConfiguration:
     DependsOn:
       - DbInstanceCore1Ready
-      - DbInstanceCore2Ready
+      # - DbInstanceCore2Ready
       - DbInstanceLibfeat1Ready
-      - DbInstanceLibfeat2Ready
+      # - DbInstanceLibfeat2Ready
       - DbInstanceRes1Ready
-      - DbInstanceRes2Ready
+      # - DbInstanceRes2Ready
       - DbClusterCoreReady
       - DbClusterLibfeatReady
       - DbClusterResReady
@@ -2325,11 +2343,11 @@ Resources:
   LambdaRunnerSenzingEngineConfigurationJson:
     DependsOn:
       - DbInstanceCore1Ready
-      - DbInstanceCore2Ready
+      # - DbInstanceCore2Ready
       - DbInstanceLibfeat1Ready
-      - DbInstanceLibfeat2Ready
+      # - DbInstanceLibfeat2Ready
       - DbInstanceRes1Ready
-      - DbInstanceRes2Ready
+      # - DbInstanceRes2Ready
       - DbClusterCoreReady
       - DbClusterLibfeatReady
       - DbClusterResReady
@@ -3129,6 +3147,8 @@ Resources:
               Value: !FindInMap [Constants, StreamProducer, RecordMin]
             - Name: SENZING_RECORD_MONITOR
               Value: "100000"
+            - Name: SENZING_RECORDS_PER_MESSAGE
+              Value: "10"
             - Name: SENZING_SQS_QUEUE_URL
               Value: !Sub "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsInput.QueueName}"
             - Name: SENZING_SUBCOMMAND
@@ -3303,7 +3323,7 @@ Resources:
     Condition: IfRunStreamLoader
     Properties:
       Cluster: !Ref EcsCluster
-      DesiredCount: 8
+      DesiredCount: 0
       EnableECSManagedTags: true
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -3397,7 +3417,7 @@ Resources:
     Condition: IfRunStreamLoader
     Properties:
       MaxCapacity: 200
-      MinCapacity: 1
+      MinCapacity: 0
       ResourceId: !Sub "service/${EcsCluster}/${EcsServiceStreamLoader.Name}"
       RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
       ScalableDimension: ecs:service:DesiredCount

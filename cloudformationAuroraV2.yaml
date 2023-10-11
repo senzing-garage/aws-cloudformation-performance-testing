@@ -228,10 +228,12 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       InitDataEncryption: public.ecr.aws/senzing/data-encryption-aes256cbc-sample:1.0.5
       InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
-      Redoer: public.ecr.aws/senzing/redoer:staging
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer:staging
+      # Redoer: public.ecr.aws/senzing/redoer:staging
       SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:staging
       Sshd: public.ecr.aws/senzing/sshd:staging
-      StreamLoader: public.ecr.aws/senzing/stream-loader:staging
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer:staging
+      # StreamLoader: public.ecr.aws/senzing/stream-loader:staging
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.3
       Swagger: public.ecr.aws/senzing/swagger-ui:v4.13.2
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.3
@@ -677,6 +679,7 @@ Resources:
         Statement:
           - Action:
               - rds:ModifyDBCluster
+              - rds:ListTagsForResource
             Effect: Allow
             Resource:
               - "*"
@@ -724,6 +727,7 @@ Resources:
       PolicyDocument:
         Statement:
           - Action:
+              - sqs:ChangeMessageVisibility
               - sqs:DeleteMessage
               - sqs:GetQueueAttributes
               - sqs:ReceiveMessage
@@ -1466,14 +1470,15 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       # EngineMode: serverless
-      EngineVersion: "14.5"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 64
-        MinCapacity: 64
+        MaxCapacity: 128
+        MinCapacity: 2
       StorageEncrypted: true
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-core-cluster"
@@ -1501,14 +1506,15 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       # EngineMode: serverless
-      EngineVersion: "14.5"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 64
-        MinCapacity: 64
+        MaxCapacity: 128
+        MinCapacity: 2
       StorageEncrypted: true
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-libfeat-cluster"
@@ -1536,14 +1542,15 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       # EngineMode: serverless
-      EngineVersion: "14.5"
+      EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
       ServerlessV2ScalingConfiguration:
-        MaxCapacity: 64
-        MinCapacity: 64
+        MaxCapacity: 128
+        MinCapacity: 2
       StorageEncrypted: true
+      StorageType: aurora-iopt1
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-rds-db-res-cluster"
