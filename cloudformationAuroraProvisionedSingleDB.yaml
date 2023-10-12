@@ -2856,6 +2856,8 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
+      RuntimePlatform:
+        CpuArchitecture: ARM64
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ecs-task-definition-redoer"
@@ -2947,6 +2949,8 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
+      RuntimePlatform:
+        CpuArchitecture: ARM64
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ecs-task-definition-stream-loader"
