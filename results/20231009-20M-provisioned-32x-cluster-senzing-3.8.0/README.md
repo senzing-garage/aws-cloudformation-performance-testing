@@ -28,7 +28,7 @@
 
 1. Database
     1. Aurora PosgreSQL Provisioned
-    1. Single database
+    1. Multiple databases
     1. Class: db.r6i.32xlarge
     1. IO Opt (StorageType: aurora-iopt1)
 
