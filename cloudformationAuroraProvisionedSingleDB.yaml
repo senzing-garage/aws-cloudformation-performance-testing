@@ -1307,8 +1307,9 @@ Resources:
         Ref: RdsDbClusterCore
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
+      DBInstanceClass: db.r7g.8xlarge
       # DBInstanceClass: db.r6i.4xlarge
-      DBInstanceClass: db.r6i.8xlarge
+      # DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
       # DBInstanceClass: db.r6i.24xlarge
@@ -2897,6 +2898,8 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
+      RuntimePlatform:
+        CpuArchitecture: ARM64
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ecs-task-definition-sshd"
