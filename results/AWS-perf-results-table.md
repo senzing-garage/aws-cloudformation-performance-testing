@@ -26,21 +26,21 @@ Notes:                          | 30% loader cpu | single DB inst | single DB in
                                 |V1 DB 2-192 ACU | db.r6i.8xlarge | db.r6i.12xlarge| db.r6i.16xlarge| db.r6i.24xlarge| db.r6i.32xlarge| db.r6i.32xlarge|
                                 |                |     IO opt     |     IO opt     |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
 ========================================================================================================================================================
-Build:                          |                |  3.8.0-23284   |  3.8.0-23284   |
-Peak:                           |                |  2962          |  3447          |
-Warm-up:                        |                |     0 mins     |     0 mins     |
-Average after warm-up:          |                |   n/a          |   n/a          |
-Average over entire run:        |                |  2640          |  2999          |
-Time to load 20M:               |                |     2.1 hours  |     1.85 hours |
-Records in dead-letter queue:   |                |     0          |     0          |
-Total Billed read IOPS:         |                |      371,525   |           72   |
-Total Billed write IOPS:        |                |   79,550,498   |  143,587,589   |
-Max loader tasks:               |                |     38         |     40         |
-Max redoer tasks:               |                |     25         |     13         |
-Notes:                          |                | single DB inst | single DB inst |
-                                |                | db.r7g.8xlarge | db.r7g.12xlarge|
-                                |                |     IO opt     |     IO opt     |
-=====================================================================================
+Build:                          |                |  3.8.0-23284   |  3.8.0-23284   |  3.8.0-23284   |
+Peak:                           |                |  2962          |  3447          |  3872          |
+Warm-up:                        |                |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |                |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |                |  2640          |  2999          |  3159          |
+Time to load 20M:               |                |     2.1 hours  |     1.85 hours |     1.77 hours |
+Records in dead-letter queue:   |                |     0          |     0          |     0          |
+Total Billed read IOPS:         |                |      371,525   |           72   |           32   |
+Total Billed write IOPS:        |                |   79,550,498   |  143,587,589   |   80,455,417   |
+Max loader tasks:               |                |     38         |     40         |     52         |
+Max redoer tasks:               |                |     25         |     13         |     13         |
+Notes:                          |                | single DB inst | single DB inst | single DB inst |
+                                |                | db.r7g.8xlarge | db.r7g.12xlarge| db.r7g.16xlarge|
+                                |                |     IO opt     |     IO opt     |     IO opt     |
+=======================================================================================================
 
 
 =======================================================================================================================================
