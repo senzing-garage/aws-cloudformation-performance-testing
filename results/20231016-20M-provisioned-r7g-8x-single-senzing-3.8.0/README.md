@@ -1,4 +1,4 @@
-# senzing-test-results-20231016-20M-provisioned-r7g-8x-cluster-senzing-3.8.0
+# senzing-test-results-20231016-20M-provisioned-r7g-8x-single-senzing-3.8.0
 
 ## Contents
 
