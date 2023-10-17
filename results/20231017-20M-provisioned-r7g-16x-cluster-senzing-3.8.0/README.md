@@ -29,7 +29,7 @@
 1. Database
     1. Aurora PosgreSQL Provisioned
     1. Single database
-    1. Class: db.r7g.12xlarge
+    1. Class: db.r7g.16xlarge
     1. IO Opt (StorageType: aurora-iopt1)
 
 ## Results
@@ -53,7 +53,7 @@
     - Max Redoer tasks: 13
 
 1. Notes:
-    - db.r7g.12xlarge RES cluster seems to be running at 80% CPU with 40 loaders running.
+    - db.r7g.16xlarge RES cluster seems to be running at 80% CPU with 40 loaders running.
 
 
 ### Final metrics
