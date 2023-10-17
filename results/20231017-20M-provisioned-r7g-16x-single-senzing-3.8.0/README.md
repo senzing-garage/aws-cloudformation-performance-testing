@@ -49,7 +49,7 @@
 
 1. Max tasks:
 
-    - Max Stream-loader tasks: 33
+    - Max Stream-loader tasks: 37
     - Max Redoer tasks: 2
 
 1. Notes:
