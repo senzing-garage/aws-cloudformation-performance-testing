@@ -1,4 +1,4 @@
-# senzing-test-results-20231009-20M-provisioned-32x-cluster-senzing-3.8.0
+# senzing-test-results-20231009-20M-provisioned-32x-single-senzing-3.8.0
 
 ## Contents
 
