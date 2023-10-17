@@ -49,8 +49,8 @@
 
 1. Max tasks:
 
-    - Max Stream-loader tasks: 40
-    - Max Redoer tasks: 13
+    - Max Stream-loader tasks: 29
+    - Max Redoer tasks: 2
 
 1. Notes:
     - db.r7g.16xlarge RES cluster seems to be running at 80% CPU with 40 loaders running.
