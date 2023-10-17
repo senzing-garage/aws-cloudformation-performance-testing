@@ -1307,7 +1307,8 @@ Resources:
         Ref: RdsDbClusterCore
       PubliclyAccessible: "true"
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r7g.8xlarge
+      # DBInstanceClass: db.r7g.8xlarge
+      DBInstanceClass: db.r7g.12xlarge
       # DBInstanceClass: db.r6i.4xlarge
       # DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.12xlarge
