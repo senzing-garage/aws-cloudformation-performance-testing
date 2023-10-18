@@ -1,4 +1,4 @@
-# senzing-test-results-20231017-20M-provisioned-r7g-16x-single-senzing-3.8.0
+# senzing-test-results-20231018-20M-provisioned-r7g-16x-single-senzing-3.8.0
 
 ## Contents
 
@@ -15,7 +15,7 @@
 
 ## Overview
 
-1. Performed: Oct 17, 2023
+1. Performed: Oct 18, 2023
 2. Senzing version: 3.8.0-23284
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/Senzing/aws-cloudformation-performance-testing)
