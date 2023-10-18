@@ -10,21 +10,21 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 20M perf test run:
 
-===================================================================
-Build:                          |  3.8.0-23258   |  3.8.0-23258   |
-Peak:                           |  3326          |  4578          |
-Warm-up:                        |     0 mins     |     0 mins     |
-Average after warm-up:          |   n/a          |   n/a          |
-Average over entire run:        |  2893          |  3871          |
-Time to load 20M:               |    1.92 hours  |    1.45 hours  |
-Records in dead-letter queue:   |     0          |     0          |
-Total Billed read IOPS:         |            9   |           45   |
-Total Billed write IOPS:        |   32,287,062   |   80,902,551   |
-Max loader tasks:               |     44         |     59         |
-Max redoer tasks:               |     14         |     14         |
-Notes:                          | single DB inst | single DB inst |
-                                | db.r6i.12xlarge| db.r6i.16xlarge|
-                                |     IO opt     |     IO opt     |
+====================================================================================
+Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23284   | <----
+Peak:                           |  3326          |  4578          |  4618          | This is a
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     | hybrid install
+Average after warm-up:          |   n/a          |   n/a          |   n/a          | the database
+Average over entire run:        |  2893          |  3871          |  3864          | was intel, but
+Time to load 20M:               |    1.92 hours  |    1.45 hours  |    1.43 hours  | loaders and
+Records in dead-letter queue:   |     0          |     0          |     0          | redoers were
+Total Billed read IOPS:         |            9   |           45   |            6   | graviton
+Total Billed write IOPS:        |   32,287,062   |   80,902,551   |   65,678,413   |
+Max loader tasks:               |     44         |     59         |     51         |
+Max redoer tasks:               |     14         |     14         |     18         |
+Notes:                          | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.12xlarge| db.r6i.16xlarge| db.r6i.16xlarge|
+                                |     IO opt     |     IO opt     |     IO opt     |
 ====================================================================================
 Build:                          |  3.8.0-23284   |  3.8.0-23284   |  3.8.0-23284   |
 Peak:                           |  3447          |  3872          |  3916          |
