@@ -37,14 +37,14 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 3872/second
+    1. Peak: 3916/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
     1. Average over entire run: 3231/second
-    1. Time to load 20M: 1.77 hours
+    1. Time to load 20M: 1.73 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:            32
-    1. Volume write IOPS:   80,455,417
+    1. Volume read IOPS:             6
+    1. Volume write IOPS:   61,417,763
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
@@ -53,7 +53,7 @@
     - Max Redoer tasks: 13
 
 1. Notes:
-    - db.r7g.16xlarge RES cluster seems to be running at 89% CPU with 52 loaders running.
+    - db.r7g.16xlarge RES cluster seems to be running at 90% CPU with 52 loaders running.
 
 
 ### Final metrics
