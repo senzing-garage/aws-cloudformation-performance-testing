@@ -124,7 +124,7 @@ Another area of experimentation that could be beneficial is the quantity of and 
 
 [^1]: [AWS Database Instance Classes](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html)
 [^2]: [AWS ECS Task Runtime Platforms](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#runtime-platform)
-[^3]: Results of Senzing testing can be in the Senzing AWS performance testing repo results directory [here](https://github.com/Senzing/aws-cloudformation-performance-testing/tree/main/results).
+[^3]: Full results of Senzing testing can be in the [Senzing AWS performance testing repo, results directory](https://github.com/Senzing/aws-cloudformation-performance-testing/tree/main/results).
 [^4]: [CloudFormation Templates](https://aws.amazon.com/cloudformation/resources/templates/)
 [^5]: [Simple Queue Service](https://aws.amazon.com/sqs/)
 [^6]: [AWS Application Autoscaling Policies](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-applicationautoscaling-scalingpolicy.html)
