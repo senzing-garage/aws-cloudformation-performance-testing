@@ -107,6 +107,16 @@ Unsurprisingly, the total time to process 20 million records decreases as the da
 
 This is total database cost of processing 20 million records.  Database cost only!  This does not include the cost ECS tasks. It should also be noted that the Serverless V1 cost is an estimate, at best.
 
+#### ECS Fargate task costs of processing 20 million records
+
+![Fargate Task Cost](./images/FargateTaskCost.png)
+
+#### Total cost of processing 20 million records
+
+![Total Cost](./images/TotalCost.png)
+
+
+
 ## Further work
 
 As new instance classes and runtime platforms become available, we should re-run these tests and compare to these results.  Further work could be done to see if there are any advantages to using a hybrid set in which the database instance may be running on one architecture while the loaders are on another.  There could be cost savings and speed improvements by fine tuning these options.
@@ -124,3 +134,4 @@ Another area of experimentation that could be beneficial is the quantity of and 
 [^8]: [IO Optimized](https://press.aboutamazon.com/2023/5/aws-announces-amazon-aurora-i-o-optimized)
 [^9]: [DB instance classes](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary)
 [^10]: [Aurora pricing](https://aws.amazon.com/rds/aurora/pricing/)
+[^11]: [AWS Fargate pricing](https://aws.amazon.com/fargate/pricing/)
