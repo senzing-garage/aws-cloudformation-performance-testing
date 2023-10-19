@@ -115,11 +115,11 @@ This is total database cost of processing 20 million records.  Database cost onl
 
 ![Total Cost](./images/TotalCost.png)
 
-
+Based on this, there appears to be a "sweet spot" that is a balance between performance and cost when using the `db.r6i.16xlarge` database instance class with the Intel runtime platform.
 
 ## Further work
 
-As new instance classes and runtime platforms become available, we should re-run these tests and compare to these results.  Further work could be done to see if there are any advantages to using a hybrid set in which the database instance may be running on one architecture while the loaders are on another.  There could be cost savings and speed improvements by fine tuning these options.
+As new instance classes and runtime platforms become available, we should re-run these tests and compare to these results.  Further work could be done to see if there are any advantages to using a hybrid set in which the database instance may be running on one architecture while the loaders are on another.  There could be cost savings and speed improvements by fine tuning these options. For example, using a Graviton 3 runtime platform for ECS tasks while using the `db.r6i.16xlarge` database instance class.  This combination may yield better results that any of the above.
 
 Another area of experimentation that could be beneficial is the quantity of and auto scaling settings for the loader tasks. We predefined 8 loader tasks to start our tests.  If we knew, a priori, that we'd need, for example, 50 loaders based on the database instance class we were using, we could start with that number of tasks instead of scaling up to an appropriate number. Likewise, these tests used a fairly simple auto scaling policy.  It could be that a more sophisticated scale up policy might more efficiently load the database when many records are being processed.  Similarly, a more sophisticated scale down policy could come with some cost saving when processing is completed and loader tasks need to scale back.
 
