@@ -81,10 +81,6 @@ Our test executions included the following database instance classes[^9]:
 
 ## The Comparison
 
-- Platform size
-- Cross platform
-- Total time
-- Avg. records per second
 - Cost estimates
 
 #### Average records per second for Database instance class
@@ -93,8 +89,18 @@ Our test executions included the following database instance classes[^9]:
 
 The `r6i` database instances are represented by the blue bars.  The `r7g` database instances are represented by the orange bars.  There are two comparison test run on the right side of the diagram.  The red bar is 3 clusters of `db.r6i.32xlarge` instances and represents the largest system tested.  The green bar represents a standard serverless V1 3 cluster run with 2-192 ACU allowed for scaling. Each successive size of database instance class increases performance within the same instance class.  So, as the class size increase within the Intel class, performance increase about 20% per class size until the largest class size and then we see a more modest performance increase.  Across database instance classes, Graviton 3 seems to perform better than Intel until the largest Graviton class size available and then it performs about 20% less than the same sized Intel instance class.  We found this a bit curious, so we re-ran the 16xlarge tests for each class and were able to repeat the results.
 
+#### Peak records per second for Database instance class
+
 ![Peak records per second](./images/PeakRecordsPerSec.png)
+
+We see similar results for peak records per second.
+
+#### Total time to process 20 million records for Database instance class
+
 ![Total time (sec)](./images/TotalTime.png)
+
+The total time to process 20 million records.
+
 
 
 
