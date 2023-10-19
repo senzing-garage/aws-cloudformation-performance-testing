@@ -53,7 +53,7 @@
     - Max Redoer tasks: 17
 
 1. Notes:
-    - db.r6i.24xlarge RES cluster seems to be running at 69% CPU with 75 loaders running.
+    - db.r6i.24xlarge DB seems to be running at 69% CPU with 75 loaders running.
 
 
 ### Final metrics

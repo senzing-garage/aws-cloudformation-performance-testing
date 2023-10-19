@@ -1,4 +1,4 @@
-# senzing-test-results-20231009-20M-provisioned-8x-single-senzing-3.8.0
+# senzing-test-results-20231017-20M-provisioned-r7g-12x-single-senzing-3.8.0
 
 ## Contents
 
@@ -15,8 +15,8 @@
 
 ## Overview
 
-1. Performed: Oct 09, 2023
-2. Senzing version: 3.8.0-23258
+1. Performed: Oct 17, 2023
+2. Senzing version: 3.8.0-23284
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/Senzing/aws-cloudformation-performance-testing)
     1. [cloudformationAuroraV2.yaml](https://github.com/Senzing/aws-cloudformation-performance-testing/blob/main/cloudformationAuroraV2.yaml)
@@ -29,7 +29,7 @@
 1. Database
     1. Aurora PosgreSQL Provisioned
     1. Single database
-    1. Class: db.r6i.8xlarge
+    1. Class: db.r7g.12xlarge
     1. IO Opt (StorageType: aurora-iopt1)
 
 ## Results
@@ -37,23 +37,23 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2724/second
+    1. Peak: 3447/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
-    1. Average over entire run: 2393/second
-    1. Time to load 20M: 2.32 hours
+    1. Average over entire run: 2999/second
+    1. Time to load 20M: 1.85 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:       192,839
-    1. Volume write IOPS:   74,549,743
+    1. Volume read IOPS:             72
+    1. Volume write IOPS:   143,587,589
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
     - Max Stream-loader tasks: 40
-    - Max Redoer tasks: 23
+    - Max Redoer tasks: 13
 
 1. Notes:
-    - db.r6i.8xlarge DB seems to be running at 96% CPU with 40 loaders running.
+    - db.r7g.12xlarge DB seems to be running at 80% CPU with 40 loaders running.
 
 
 ### Final metrics
@@ -107,43 +107,43 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2023-10-09 20:56:12.449836+00 | 20000000
+ 2023-10-17 16:39:52.153381+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-10-09 20:56:16.790273+00 | 19999959
+ 2023-10-17 16:48:20.124808+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-10-09 20:56:31.596147+00 | 17461832
+ 2023-10-17 16:48:24.341424+00 | 17461770
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-10-09 20:56:39.278588+00 | 19999959
+ 2023-10-17 16:48:28.192647+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-10-09 20:56:45.389104+00 |     0
+ 2023-10-17 16:48:31.922993+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+---------
- 2023-10-09 20:56:50.773067+00 | 9078120
+ 2023-10-17 16:48:35.842347+00 | 9116960
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
        load_start        |          erpm           |  total   |   duration   |       avg_erps
 -------------------------+-------------------------+----------+--------------+-----------------------
- 2023-10-09 17:53:35.912 | 143553.1363130338831204 | 20000000 | 02:19:19.274 | 2392.5522718838980520
+ 2023-10-17 14:21:11.043 | 179927.3633234263327355 | 20000000 | 01:51:09.358 | 2998.7893887237722123
 (1 row)
 
 ```
