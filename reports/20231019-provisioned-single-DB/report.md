@@ -33,6 +33,7 @@ To guarantee that records are available for Senzing loader tasks to process, we 
 
 This application auto scaling policy works for our test data set, however other data sets may need addition tuning or more advanced policies.  For the purposes of this test, it is important to have a standard auto scaling policy to see the differences across instance classes and runtime platforms.  In other words, your mileage may vary so please consider tuning this to best fit how your data performs.
 
+Note: the redoer auto scaling policy is identical to the loader auto scaling policy.
 ### Database configuration
 
 The database is configured as a single cluster with a single instance.  This is all we need for our performance test, however it is not a suggested best practice in general.  It's highly recommended that a database administrator and AWS best practice documentation is consulted for individual needs[^7].  Naturally, loading data with Senzing is an IO intensive operation.  To improve the price performance of loading, the database cluster is set to be IO optimized[^8].
@@ -110,6 +111,8 @@ This is total database cost of processing 20 million records.  Database cost onl
 #### ECS Fargate task costs of processing 20 million records
 
 ![Fargate Task Cost](./images/FargateTaskCost.png)
+
+Task cost contain the cost of both the loader tasks and the redoer tasks.
 
 #### Total cost of processing 20 million records
 
