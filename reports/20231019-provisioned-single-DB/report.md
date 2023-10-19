@@ -3,7 +3,7 @@
 
 - intro?
 
-The purpose of this series of test executions is to understand the performance characteristics of various Amazon Web Services (AWS) Aurora database instance classes and AWS Elastic Container (ECS) task runtime platforms when loading data with Senzing.  In particular to compare the difference in both speed and cost of Intel and Graviton 3 processors across database instance class types and runtime platforms. Full results of all Senzing AWS performance testing can be found in the Senzing AWS performance testing GitHub repo[^1].
+The purpose of this series of test executions is to understand the performance characteristics of various Amazon Web Services (AWS) Aurora database instance classes[^1] and AWS Elastic Container (ECS) task runtime platforms[^2] when loading data with Senzing.  In particular to compare the difference in both speed and cost of Intel and Graviton 3 processors across database instance class types and runtime platforms. Full results of all Senzing AWS performance testing can be found in the Senzing AWS performance testing GitHub repo[^3].
 
 ## The Methodology
 
@@ -47,7 +47,9 @@ As new instance classes and runtime platforms become available, we should re-run
 ## References:
 
 1. Senzing AWS performance repository:  https://github.com/Senzing/aws-cloudformation-performance-testing
-1. AWS Database class intance types:  https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html
+1. AWS Database class intance types:
 
 
-[^1]: Results of Senzing testing can be in the Senzing AWS performance testing repo results directory [here](https://github.com/Senzing/aws-cloudformation-performance-testing/tree/main/results).
+[^1]: [AWS Database Instance Classes](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html)
+[^2]: [AWS ECS Task Runtime Platforms](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html#runtime-platform)
+[^3]: Results of Senzing testing can be in the Senzing AWS performance testing repo results directory [here](https://github.com/Senzing/aws-cloudformation-performance-testing/tree/main/results).
