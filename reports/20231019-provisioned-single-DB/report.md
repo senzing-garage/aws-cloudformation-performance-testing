@@ -21,7 +21,23 @@ We chose to process 20 million records as part of our test.  The same 20 million
 - Start 8 loaders
 - 30% CPU … auto scaling setup?
 
-To guarantee that records are available for Senzing loader tasks to process, we pre-loaded a Simple Queue Service[^5] (SQS) queue with the 20 million records.  Early on we discovered that large database class types would scale to out pace our sending of records to the SQS queue. This led us to redesign the test to load the SQS queue prior to executing the test. In our normal performance testing, we start 8 loader tasks on stack creation.  When we redesigned the test we changed the CFT to start the stack with 0 loaders tasks. We then manually start the 8 loader tasks once the SQS was fully loaded with 20 million records.  The AWS application auto scaling policy was set for the loader tasks as 30% of the average CPU usage. In previous testing we found that if the CPU is above 30%, then there is usually database availability that other loader tasks could utilize.
+To guarantee that records are available for Senzing loader tasks to process, we pre-loaded a Simple Queue Service[^5] (SQS) queue with the 20 million records.  Early on we discovered that large database class types would scale to out pace our sending of records to the SQS queue. This led us to redesign the test to load the SQS queue prior to executing the test. In our normal performance testing, we start 8 loader tasks on stack creation.  When we redesigned the test we changed the CFT to start the stack with 0 loaders tasks. We then manually start the 8 loader tasks once the SQS was fully loaded with 20 million records.  The AWS application auto scaling policy was set for the loader tasks as 30% of the average CPU usage. In previous testing we found that if the CPU is above 30%, then there is usually database availability that other loader tasks could utilize. In the CFT, the loader policy looks like this:
+
+```
+  ApplicationAutoScalingScalingPolicyStreamLoader:
+    Condition: IfRunStreamLoader
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-scaling-policy-stream-loader"
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref ApplicationAutoScalingScalableTargetStreamLoader
+      TargetTrackingScalingPolicyConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ECSServiceAverageCPUUtilization
+        ScaleInCooldown: 1200
+        ScaleOutCooldown: 300
+        TargetValue: 30
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+```
 
 ### Database configuration
 - IO optimized
