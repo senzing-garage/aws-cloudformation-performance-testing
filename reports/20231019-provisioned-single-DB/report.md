@@ -79,11 +79,11 @@ Our test executions included the following database instance classes[^9]:
 
 | Instance class | vCPU | Memory (GiB) | Max. bandwidth (Mbps) of local storage | Network performance (Gbps) |
 | -------------- | ---: | -----------: | -------------------------------------: | :------------------------- |
-| db.r7g <td colspan="4">– memory-optimized instance classes powered by AWS Graviton3 processors</td>
+| <td colspan="5">db.r7g – memory-optimized instance classes powered by AWS Graviton3 processors</td>
 | db.r7g.16xlarge | 64 | 512 | 20,000 | 30 |
 | db.r7g.12xlarge | 48 | 384 | 15,000 | 22.5 |
 | db.r7g.8xlarge | 32 | 256 | 10,000 | 15 |
-| db.r6i <td colspan="4">– memory-optimized instance classes</td>
+| <td colspan="5">db.r6i – memory-optimized instance classes</td>
 | db.r6i.32xlarge	| 128 | 1,024 |	40,000 | 50 |
 | db.r6i.24xlarge	| 96 | 768	| 30,000 | 37.5 |
 | db.r6i.16xlarge	| 64 | 512	| 20,000 | 25 |
