@@ -105,7 +105,7 @@ Unsurprisingly, the total time to process 20 million records decreases as the da
 
 ![Total DB Cost](./images/TotalDBCost.png)
 
-This is total database cost of processing 20 million records.  Database cost only!  This does not include the cost ECS tasks.
+This is total database cost of processing 20 million records.  Database cost only!  This does not include the cost ECS tasks. It should also be noted that the Serverless V1 cost is an estimate, at best.
 
 ## Further work
 
