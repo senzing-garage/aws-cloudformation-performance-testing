@@ -91,6 +91,10 @@ Our test executions included the following database instance classes[^9]:
 
 ![Average records per second](./images/AvgRecordsPerSec.png)
 
+Here we see that each successive size of database instance class increases performance within the same instance class.  So, as the class size increase within the Intel class, performance increase about 20% per class size until the largest class size and then we see a more modest performance increase.  Across database instance classes, Graviton 3 seems to perform better than Intel until the largest Graviton class size available and then it performs about 20% less than the same sized Intel instance class.  We found this a bit curious, so we re-ran the 16xlarge tests for each class and were able to repeat the results.
+
+
+
 ## Further work
 
 As new instance classes and runtime platforms become available, we should re-run these tests and compare to these results.  Further work could be done to see if there are any advantages to using a hybrid set in which the database instance may be running on one architecture while the loaders are on another.  There could be cost savings and speed improvements by fine tuning these options.
