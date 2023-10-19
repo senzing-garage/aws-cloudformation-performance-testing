@@ -21,7 +21,7 @@ We chose to process 20 million records as part of our test.  The same 20 million
 - Start 8 loaders
 - 30% CPU … auto scaling setup?
 
-To guarantee that records are available for Senzing loader tasks to process, we pre-loaded a Simple Queue Service[^5] (SQS) queue with the 20 million records.  Early on we discovered that large database class types would scale to out pace our sending of records to the SQS queue. This led us to redesign the test to load the SQS queue prior to executing the test. In our normal performance testing, we start 8 loader tasks on stack creation.  When we redesigned the test we changed the CFT to start the stack with 0 loaders tasks. We then manually start the 8 loader tasks once the SQS was fully loaded with 20 million records.  The AWS application auto scaling policy was set for the loader tasks as 30% of the average CPU usage. In previous testing we found that if the CPU is above 30%, then there is usually database availability that other loader tasks could utilize. In the CFT, the loader policy looks like this:
+To guarantee that records are available for Senzing loader tasks to process, we pre-loaded a Simple Queue Service[^5] (SQS) queue with the 20 million records.  Early on we discovered that large database class types would scale to out pace our sending of records to the SQS queue. This led us to redesign the test to load the SQS queue prior to executing the test. In our normal performance testing, we start 8 loader tasks on stack creation.  When we redesigned the test we changed the CFT to start the stack with 0 loaders tasks. We then manually start the 8 loader tasks once the SQS was fully loaded with 20 million records.  The AWS application auto scaling policy was set for the loader tasks as 30% of the average CPU usage. In previous testing we found that if the CPU is above 30%, then there is usually database availability that other loader tasks could utilize. In the CFT, the loader policy looks like this[^6]:
 
 ```
   ApplicationAutoScalingScalingPolicyStreamLoader:
@@ -39,10 +39,56 @@ To guarantee that records are available for Senzing loader tasks to process, we 
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
 ```
 
+This application auto scaling policy works for our test data set, however other data sets may need addition tuning or more advanced policies.  For the purposes of this test, it is important to have a standard auto scaling policy to see the differences across instance classes and runtime platforms.  In other words, your mileage may vary so please consider tuning this to best fit how your data performs.
+
 ### Database configuration
 - IO optimized
 - Single DB, single instance
 - DB parameters?
+
+The database is configured as a single cluster with a single instance.  This is all we need for our performance test, however it is not a suggested best practice in general.  It's highly recommended that a database administrator and AWS best practice documentation is consulted for individual needs[^7].  Naturally, loading data with Senzing is an IO intensive operation.  To improve the price performance of loading, the database cluster is set to be IO optimized[^8].
+
+```
+...
+    StorageType: aurora-iopt1
+...
+Type: AWS::RDS::DBCluster
+```
+
+This is invariant across all our test.  Similarly, we define a couple of other important database parameters in addition to using the Aurora PostgreSQL 14 database engine.
+
+```
+...
+    Family: aurora-postgresql14
+    Parameters:
+      enable_seqscan: 0
+      pglogical.synchronous_commit: 0
+...
+Type: AWS::RDS::DBParameterGroup
+```
+
+The database instance class was set in the DBInstance.  This is the one place that changed across run.  The example below demonstrates using an Intel based instance with the best possible performance.
+
+```
+...
+    DBInstanceClass: db.r6i.32xlarge
+Type: AWS::RDS::DBInstance
+```
+
+Our test executions included the following database instance classes[^9]:
+
+| Instance class | vCPU | Memory (GiB) | Max. bandwidth (Mbps) of local storage | Network performance (Gbps) |
+| -------------- | ---- | ------------ | -------------------------------------- | -------------------------- |
+| db.r7g – memory-optimized instance classes powered by AWS Graviton3 processors
+| db.r7g.16xlarge | 64 | 512 | 20,000 | 30 |
+| db.r7g.12xlarge | 48 | 384 | 15,000 | 22.5 |
+| db.r7g.8xlarge | 32 | 256 | 10,000 | 15 |
+| db.r6i – memory-optimized instance classes
+| db.r6i.32xlarge	| 128 | 1,024 |	40,000 | 50 |
+| db.r6i.24xlarge	| 96 | 768	| 30,000 | 37.5 |
+| db.r6i.16xlarge	| 64 | 512	| 20,000 | 25 |
+| db.r6i.12xlarge	| 48 | 384	| 15,000 | 18.75 |
+| db.r6i.8xlarge	| 32 | 256	| 10,000 | 12.5 |
 
 ## The Comparison
 
@@ -68,3 +114,7 @@ Another area of experimentation that could be beneficial is the quantity of and 
 [^3]: Results of Senzing testing can be in the Senzing AWS performance testing repo results directory [here](https://github.com/Senzing/aws-cloudformation-performance-testing/tree/main/results).
 [^4]: [CloudFormation Templates](https://aws.amazon.com/cloudformation/resources/templates/)
 [^5]: [Simple Queue Service](https://aws.amazon.com/sqs/)
+[^6]: [AWS Application Autoscaling Policies](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-applicationautoscaling-scalingpolicy.html)
+[^7]: [Aurora Best Practices](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.BestPractices.html)
+[^8]: [IO Optimized](https://press.aboutamazon.com/2023/5/aws-announces-amazon-aurora-i-o-optimized)
+[^9]: [DB instance classes](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html#Concepts.DBInstanceClass.Summary)
