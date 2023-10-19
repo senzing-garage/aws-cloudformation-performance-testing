@@ -1,7 +1,7 @@
 # Results of provisioned database comparative testing
 #### 2023 Oct 19
 
-The purpose of this series of test executions is to understand the performance characteristics of various Amazon Web Services (AWS) Aurora database instance classes[^1] and AWS Elastic Container (ECS) task runtime platforms[^2] when loading data with Senzing.  In particular to compare the difference in both speed and cost of Intel and Graviton 3 processors across database instance class types and runtime platforms. Full results of all Senzing AWS performance testing can be found in the Senzing AWS performance testing GitHub repository[^3].
+The purpose of this series of test executions is to understand the performance characteristics of various Amazon Web Services (AWS) Aurora provisioned database instance classes[^1] and AWS Elastic Container (ECS) task runtime platforms[^2] when loading data with Senzing.  In particular to compare the difference in both speed and cost of Intel and Graviton 3 processors across database instance class types and runtime platforms. Full results of all Senzing AWS performance testing can be found in the Senzing AWS performance testing GitHub repository[^3].
 
 ## The Methodology
 
