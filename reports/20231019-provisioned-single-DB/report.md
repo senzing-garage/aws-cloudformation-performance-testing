@@ -1,25 +1,17 @@
 # Results of provisioned database comparative testing
 #### 2023 Oct 19
 
-- intro?
-
 The purpose of this series of test executions is to understand the performance characteristics of various Amazon Web Services (AWS) Aurora database instance classes[^1] and AWS Elastic Container (ECS) task runtime platforms[^2] when loading data with Senzing.  In particular to compare the difference in both speed and cost of Intel and Graviton 3 processors across database instance class types and runtime platforms. Full results of all Senzing AWS performance testing can be found in the Senzing AWS performance testing GitHub repository[^3].
 
 ## The Methodology
 
-
 To test different platforms we need to hold constant as many variables as possible. We used the same CloudFormation Template[^4] (CFT) across all of our test executions.  There are only a few changes to the CFT necessary to switch between Intel and Graviton Databases and runtime platforms. We used Senzing version 3.8.0 for our tests.
 
 ### The data
-- First 20M from standard test data set
-- Same data for each run
-- 20M queued before test start
 
 We chose to process 20 million records as part of our test.  The same 20 million records were used for each test.  This test set is the same set we use to test new version of Senzing to validate performance across new releases.  Using the same set of data gives us reasonably predictable results across the different database instance classes and runtime platforms.
 
 ### Senzing loader configuration
-- Start 8 loaders
-- 30% CPU … auto scaling setup?
 
 To guarantee that records are available for Senzing loader tasks to process, we pre-loaded a Simple Queue Service[^5] (SQS) queue with the 20 million records.  Early on we discovered that large database class types would scale to out pace our sending of records to the SQS queue. This led us to redesign the test to load the SQS queue prior to executing the test. In our normal performance testing, we start 8 loader tasks on stack creation.  When we redesigned the test we changed the CFT to start the stack with 0 loaders tasks. We then manually start the 8 loader tasks once the SQS was fully loaded with 20 million records.  The AWS application auto scaling policy was set for the loader tasks as 30% of the average CPU usage. In previous testing we found that if the CPU is above 30%, then there is usually database availability that other loader tasks could utilize. In the CFT, the loader policy looks like this[^6]:
 
@@ -42,9 +34,6 @@ To guarantee that records are available for Senzing loader tasks to process, we 
 This application auto scaling policy works for our test data set, however other data sets may need addition tuning or more advanced policies.  For the purposes of this test, it is important to have a standard auto scaling policy to see the differences across instance classes and runtime platforms.  In other words, your mileage may vary so please consider tuning this to best fit how your data performs.
 
 ### Database configuration
-- IO optimized
-- Single DB, single instance
-- DB parameters?
 
 The database is configured as a single cluster with a single instance.  This is all we need for our performance test, however it is not a suggested best practice in general.  It's highly recommended that a database administrator and AWS best practice documentation is consulted for individual needs[^7].  Naturally, loading data with Senzing is an IO intensive operation.  To improve the price performance of loading, the database cluster is set to be IO optimized[^8].
 
@@ -98,11 +87,8 @@ Our test executions included the following database instance classes[^9]:
 - Avg. records per second
 - Cost estimates
 
-Minimize auto scaling by starting X number of loaders at start
 
 ## Further work
-
-- hybrid DB instance class and runtime platform
 
 As new instance classes and runtime platforms become available, we should re-run these tests and compare to these results.  Further work could be done to see if there are any advantages to using a hybrid set in which the database instance may be running on one architecture while the loaders are on another.  There could be cost savings and speed improvements by fine tuning these options.
 
