@@ -101,10 +101,11 @@ We see similar results for peak records per second.
 
 Unsurprisingly, the total time to process 20 million records decreases as the database instance class size increases.
 
-#### Cost of processing 20 million records for each database instance class
+#### Database cost of processing 20 million records for each database instance class
 
-![Cost](./images/TotalDBCost.png)
+![Total DB Cost](./images/TotalDBCost.png)
 
+This is total database cost of processing 20 million records.  Database cost only!  This does not include the cost ECS tasks.
 
 ## Further work
 
