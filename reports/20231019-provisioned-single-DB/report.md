@@ -46,5 +46,8 @@ As new instance classes and runtime platforms become available, we should re-run
 
 ## References:
 
+1. Senzing AWS performance repository:  https://github.com/Senzing/aws-cloudformation-performance-testing
+1. AWS Database class intance types:  https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html
+
 
 [^1]: Results of Senzing testing can be in the Senzing AWS performance testing repo results directory [here](https://github.com/Senzing/aws-cloudformation-performance-testing/tree/main/results).
