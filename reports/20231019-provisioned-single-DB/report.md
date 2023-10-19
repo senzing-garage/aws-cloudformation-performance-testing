@@ -78,7 +78,7 @@ Type: AWS::RDS::DBInstance
 Our test executions included the following database instance classes[^9]:
 
 | Instance class | vCPU | Memory (GiB) | Max. bandwidth (Mbps) of local storage | Network performance (Gbps) |
-| -------------- | ---- | ------------ | -------------------------------------- | -------------------------- |
+| -------------- | ---: | -----------: | -------------------------------------: | :------------------------- |
 | db.r7g – memory-optimized instance classes powered by AWS Graviton3 processors
 | db.r7g.16xlarge | 64 | 512 | 20,000 | 30 |
 | db.r7g.12xlarge | 48 | 384 | 15,000 | 22.5 |
