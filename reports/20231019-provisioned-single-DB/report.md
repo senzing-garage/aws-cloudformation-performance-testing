@@ -79,8 +79,6 @@ Our test executions included the following database instance classes[^9]:
 
 ## The Comparison
 
-- Cost estimates
-
 #### Average records per second for each database instance class
 
 ![Average records per second](./images/AvgRecordsPerSec.png)
