@@ -16,12 +16,8 @@ We chose to process 20 million records as part of our test.  The same 20 million
 To guarantee that records are available for Senzing loader tasks to process, we pre-loaded a Simple Queue Service[^5] (SQS) queue with the 20 million records.  Early on we discovered that large database class types would scale to out pace our sending of records to the SQS queue. This led us to redesign the test to load the SQS queue prior to executing the test. In our normal performance testing, we start 8 loader tasks on stack creation.  When we redesigned the test we changed the CFT to start the stack with 0 loaders tasks. We then manually start the 8 loader tasks once the SQS was fully loaded with 20 million records.  The AWS application auto scaling policy was set for the loader tasks as 30% of the average CPU usage. In previous testing we found that if the CPU is above 30%, then there is usually database availability that other loader tasks could utilize. In the CFT, the loader policy looks like this[^6]:
 
 ```
-  ApplicationAutoScalingScalingPolicyStreamLoader:
-    Condition: IfRunStreamLoader
-    Properties:
-      PolicyName: !Sub "${AWS::StackName}-scaling-policy-stream-loader"
+...
       PolicyType: TargetTrackingScaling
-      ScalingTargetId: !Ref ApplicationAutoScalingScalableTargetStreamLoader
       TargetTrackingScalingPolicyConfiguration:
         PredefinedMetricSpecification:
           PredefinedMetricType: ECSServiceAverageCPUUtilization
@@ -34,6 +30,7 @@ To guarantee that records are available for Senzing loader tasks to process, we 
 This application auto scaling policy works for our test data set, however other data sets may need addition tuning or more advanced policies.  For the purposes of this test, it is important to have a standard auto scaling policy to see the differences across instance classes and runtime platforms.  In other words, your mileage may vary so please consider tuning this to best fit how your data performs.
 
 Note: the redoer auto scaling policy is identical to the loader auto scaling policy.
+
 ### Database configuration
 
 The database is configured as a single cluster with a single instance.  This is all we need for our performance test, however it is not a suggested best practice in general.  It's highly recommended that a database administrator and AWS best practice documentation is consulted for individual needs[^7].  Naturally, loading data with Senzing is an IO intensive operation.  To improve the price performance of loading, the database cluster is set to be IO optimized[^8].
