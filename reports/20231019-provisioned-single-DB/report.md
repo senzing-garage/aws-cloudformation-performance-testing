@@ -9,7 +9,7 @@ To test different platforms we need to hold constant as many variables as possib
 
 ### The data
 
-We chose to process 20 million records as part of our test.  The same 20 million records were used for each test.  This test set is the same set we use to test new version of Senzing to validate performance across new releases.  Using the same set of data gives us reasonably predictable results across the different database instance classes and runtime platforms.
+We chose to process 20 million records as part of our test.  The same 20 million records were used for each test.  This test set is the same set we use to test new versions of Senzing to validate performance across new releases.  Using the same set of data gives us reasonably predictable results across the different database instance classes and runtime platforms.
 
 ### Senzing loader configuration
 
