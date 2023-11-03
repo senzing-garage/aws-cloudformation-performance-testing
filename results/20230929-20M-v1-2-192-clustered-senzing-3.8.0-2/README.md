@@ -19,7 +19,7 @@
 2. Senzing version: 3.8.0-23258
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/Senzing/aws-cloudformation-performance-testing)
-    1. [cloudformationAuroraV2.yaml](https://github.com/Senzing/aws-cloudformation-performance-testing/blob/main/cloudformationAuroraV2.yaml)
+    1. [cloudformation.yaml](https://github.com/Senzing/aws-cloudformation-performance-testing/blob/main/cloudformation.yaml)
 4. Changes:
     1.
 
