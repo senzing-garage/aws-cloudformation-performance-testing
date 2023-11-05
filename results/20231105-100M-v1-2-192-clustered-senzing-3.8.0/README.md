@@ -1,4 +1,4 @@
-# senzing-test-results-20231103-100M-v1-2-192-clustered-senzing-3.8.0
+# senzing-test-results-20231105-100M-v1-2-192-clustered-senzing-3.8.0
 
 ## Contents
 
@@ -15,7 +15,7 @@
 
 ## Overview
 
-1. Performed: Nov 03, 2023
+1. Performed: Nov 05, 2023
 2. Senzing version: 3.8.0-23303
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/Senzing/aws-cloudformation-performance-testing)
@@ -46,8 +46,8 @@
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 78
-- Max Redoer tasks: 27
+- Max Stream-loader tasks: 99
+- Max Redoer tasks: 46
 
 ### Final metrics
 
@@ -88,6 +88,7 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
 ##### Database Metrics LIBFEAT final
 
@@ -109,45 +110,48 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-              now              |  count
--------------------------------+----------
- 2023-09-29 14:48:33.847394+00 | 20000000
+              now              |   count
+-------------------------------+-----------
+ 2023-11-05 14:42:54.662217+00 | 100000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
+^CCancel request sent
+ERROR:  canceling statement due to user request
+G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-09-29 14:51:07.961483+00 | 19999959
+ 2023-11-05 15:00:10.808958+00 | 99998927
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-09-29 14:52:38.723879+00 | 17462066
+ 2023-11-05 16:02:26.846935+00 | 61407235
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-09-29 14:53:41.212015+00 | 19999959
+ 2023-11-05 16:05:50.892976+00 | 99998927
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-09-29 14:53:53.244524+00 |     0
+ 2023-11-05 16:13:38.567139+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+----------
- 2023-09-29 14:53:56.358794+00 | 10616555
+ 2023-11-05 16:13:42.515575+00 | 52796985
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |       erpm       |  total   |   duration   |     avg_erps
--------------------------+------------------+----------+--------------+------------------
- 2023-09-29 12:51:04.186 | 214732.319164519 | 20000000 | 01:33:08.353 | 3578.87198607532
+       load_start       |       erpm       |   total   |  duration   |     avg_erps
+------------------------+------------------+-----------+-------------+------------------
+ 2023-11-04 18:52:48.52 | 86530.3285196031 | 100000000 | 19:15:39.85 | 1442.17214199338
 (1 row)
 
 ```
