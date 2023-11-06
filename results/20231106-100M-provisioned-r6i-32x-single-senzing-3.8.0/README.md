@@ -49,8 +49,8 @@
 
 1. Max tasks:
 
-    - Max Stream-loader tasks: 47
-    - Max Redoer tasks: 3
+    - Max Stream-loader tasks: 65
+    - Max Redoer tasks: 4
 
 1. Notes:
     - db.r6i.32xlarge DB seems to be running at 86% CPU with 51 loaders running.
