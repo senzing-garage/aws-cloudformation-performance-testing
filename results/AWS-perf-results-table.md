@@ -267,8 +267,8 @@ Time to load 100M:              |    22.53 hours |    18.12 hours |    22.27 hou
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
 Volume read IOPS                |   882,035,913  |  834,099,266   |   52,810,611   |   51,285,770   |   10,132,919   |
 Volume write IOPS               |   455,594,372  |  630,115,766   |  440,730,877   |  411,956,606   |   64,709,674   |
-Max loader tasks:               |    60          |    63          |    59          |    99          |    99          |
-Max redoer tasks:               |    19          |    20          |    18          |    46          |    46          |
+Max loader tasks:               |    60          |    63          |    59          |    99          |    83          |
+Max redoer tasks:               |    19          |    20          |    18          |    46          |   124          |
 Notes:                          | sz_sqs_consumer|                |                |                | single DB inst |
                                 |sz_simple_redoer|                |                |                | db.r6i.32xlarge|
                                 |                |                |                |                |   IO opt       |
