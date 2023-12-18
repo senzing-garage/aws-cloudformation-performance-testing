@@ -11,6 +11,24 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 20M perf test run:
 
 ====================================================================================
+Build:                          |  3.8.0-23284   |  3.8.0-23284   |  3.8.0-23303   |
+Peak:                           |  3447          |  3916          |  5301          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2999          |  3231          |  4613          |
+Time to load 20M:               |     1.85 hours |     1.73 hours |     1.2  hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |
+Total Billed read IOPS:         |           72   |            6   |           32   |
+Total Billed write IOPS:        |  143,587,589   |   61,417,763   |   80,968,617   |
+Max loader tasks:               |     40         |     52         |           68   |
+Max redoer tasks:               |     13         |     13         |           17   |
+Notes:                          | single DB inst | single DB inst | single DB inst |
+                                | db.r7g.12xlarge| db.r7g.16xlarge|db.r6id.32xlarge|
+                                |     IO opt     |     IO opt     |     IO opt     |
+====================================================================================
+
+
+====================================================================================
 Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23284   | <----
 Peak:                           |  3326          |  4578          |  4618          | This is a
 Warm-up:                        |     0 mins     |     0 mins     |     0 mins     | hybrid install
