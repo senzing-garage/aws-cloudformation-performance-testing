@@ -1281,7 +1281,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: "14.8"
+      EngineVersion: "14.9"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
@@ -1315,7 +1315,11 @@ Resources:
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
       # DBInstanceClass: db.r6i.24xlarge
-      DBInstanceClass: db.r6i.32xlarge
+      # DBInstanceClass: db.r6i.32xlarge
+      DBInstanceClass: db.r6id.32xlarge
+      # DBInstanceClass: db.r6id.24xlarge
+      # DBInstanceClass: db.r6gd.16xlarge
+      # DBInstanceClass: db.r6gd.12xlarge
     Type: AWS::RDS::DBInstance
 
   # RdsDbInstanceCore2:
