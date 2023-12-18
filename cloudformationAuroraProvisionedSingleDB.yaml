@@ -249,7 +249,7 @@ Mappings:
       StreamLoader: Yes
       WebApp: No
     Stack:
-      Name: staging-simple-100M
+      Name: perf-prov
     StreamProducer:
       DataSource: TEST
       EntityType: GENERIC
