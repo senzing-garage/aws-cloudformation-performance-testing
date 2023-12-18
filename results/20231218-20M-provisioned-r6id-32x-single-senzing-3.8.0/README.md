@@ -53,7 +53,7 @@
     - Max Redoer tasks: 17
 
 1. Notes:
-    - db.r7g.16xlarge DB seems to be running at 64% CPU with 68 loaders running.
+    - db.r6id.32xlarge DB seems to be running at 64% CPU with 68 loaders running.
 
 
 ### Final metrics
