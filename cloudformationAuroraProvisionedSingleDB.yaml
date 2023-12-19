@@ -1317,8 +1317,8 @@ Resources:
       # DBInstanceClass: db.r6i.24xlarge
       # DBInstanceClass: db.r6i.32xlarge
       # DBInstanceClass: db.r6id.32xlarge
-      DBInstanceClass: db.r6id.24xlarge
-      # DBInstanceClass: db.r6gd.16xlarge
+      # DBInstanceClass: db.r6id.24xlarge
+      DBInstanceClass: db.r6gd.16xlarge
       # DBInstanceClass: db.r6gd.12xlarge
     Type: AWS::RDS::DBInstance
 
