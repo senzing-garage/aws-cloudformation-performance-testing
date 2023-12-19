@@ -12,16 +12,16 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 ======================================================================================================================
 Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23303   |  3.8.0-23258   |  3.8.0-23303   |
-Peak:                           |  5216          |  8597          |  5301          |  5392          |  5392          |
+Peak:                           |  5216          |  8597          |  5301          |  5392          |  5222          |
 Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
 Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
-Average over entire run:        |  4662          |  6962          |  4613          |  4553          |  4553          |
+Average over entire run:        |  4662          |  6962          |  4613          |  4553          |  4597          |
 Time to load 20M:               |    1.20 hours  |    48 Mins     |     1.2  hours |    1.22 hours  |    1.22 hours  |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |           35   |           23   |           32   |           13   |           13   |
-Total Billed write IOPS:        |   75,637,378   |   38,441,895   |   80,968,617   |   58,882,169   |   58,882,169   |
-Max loader tasks:               |     77         |     125        |           68   |     75         |     75         |
-Max redoer tasks:               |     20         |      28        |           17   |     14         |     14         |
+Total Billed read IOPS:         |           35   |           23   |           32   |           13   |           31   |
+Total Billed write IOPS:        |   75,637,378   |   38,441,895   |   80,968,617   |   58,882,169   |   80,844,597   |
+Max loader tasks:               |     77         |     125        |           68   |     75         |     64         |
+Max redoer tasks:               |     20         |      28        |           17   |     14         |     31         |
 Notes:                          | single DB inst |    multi DB    | single DB inst | single DB inst | single DB inst |
                                 | db.r6i.32xlarge| db.r6i.32xlarge|db.r6id.32xlarge| db.r6i.24xlarge|db.r6id.24xlarge|
                                 |     IO opt     |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
