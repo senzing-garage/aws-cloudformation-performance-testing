@@ -43,17 +43,17 @@
     1. Average over entire run: 4613/second
     1. Time to load 20M: 1.2 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:            32
-    1. Volume write IOPS:   80,968,617
+    1. Volume read IOPS:            31
+    1. Volume write IOPS:   80,844,597
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
-    - Max Stream-loader tasks: 68
-    - Max Redoer tasks: 17
+    - Max Stream-loader tasks: 64
+    - Max Redoer tasks: 31
 
 1. Notes:
-    - db.r6id.24xlarge DB seems to be running at 64% CPU with 68 loaders running.
+    - db.r6id.24xlarge DB seems to be running at 64% CPU with 64 loaders running.
 
 
 ### Final metrics
