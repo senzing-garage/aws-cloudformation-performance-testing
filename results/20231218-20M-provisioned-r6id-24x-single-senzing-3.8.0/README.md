@@ -29,7 +29,7 @@
 1. Database
     1. Aurora PosgreSQL Provisioned
     1. Single database
-    1. Class: db.r6id.32xlarge
+    1. Class: db.r6id.24xlarge
     1. IO Opt (StorageType: aurora-iopt1)
 
 ## Results
@@ -37,11 +37,11 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 5301/second
+    1. Peak: 5222/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
-    1. Average over entire run: 4613/second
-    1. Time to load 20M: 1.2 hours
+    1. Average over entire run: 4597/second
+    1. Time to load 20M: 1.22 hours
     1. Records in dead-letter queue: 0
     1. Volume read IOPS:            31
     1. Volume write IOPS:   80,844,597
