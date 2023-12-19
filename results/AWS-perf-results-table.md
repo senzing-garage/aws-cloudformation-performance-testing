@@ -11,22 +11,22 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 20M perf test run:
 
 20231219
-====================================================================================
-Build:                          |  3.8.0-23284   |  3.8.0-23284   |  3.8.0-23303   |
-Peak:                           |  3447          |  3916          |  3900          |
-Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |
-Average after warm-up:          |   n/a          |   n/a          |   n/a          |
-Average over entire run:        |  2999          |  3231          |  3413          |
-Time to load 20M:               |     1.85 hours |     1.73 hours |     1.63 hours |
-Records in dead-letter queue:   |     0          |     0          |     0          |
-Total Billed read IOPS:         |           72   |            6   |            6   |
-Total Billed write IOPS:        |  143,587,589   |   61,417,763   |   63,067,972   |
-Max loader tasks:               |     40         |     52         |           46   |
-Max redoer tasks:               |     13         |     13         |           15   |
-Notes:                          | single DB inst | single DB inst | single DB inst |
-  r7g - graviton3               | db.r7g.12xlarge| db.r7g.16xlarge|db.r6gd.16xlarge|
-  r6g - graviton2               |     IO opt     |     IO opt     |     IO opt     |
-====================================================================================
+=====================================================================================================
+Build:                          |  3.8.0-23284   |  3.8.0-23284   |  3.8.0-23303   |  3.8.0-23303   |
+Peak:                           |  3447          |  3916          |  3900          |  3001          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2999          |  3231          |  3413          |  2665          |
+Time to load 20M:               |     1.85 hours |     1.73 hours |     1.63 hours |     2.08 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |           72   |            6   |            6   |           32   |
+Total Billed write IOPS:        |  143,587,589   |   61,417,763   |   63,067,972   |   71,227,988   |
+Max loader tasks:               |     40         |     52         |           46   |           36   |
+Max redoer tasks:               |     13         |     13         |           15   |           12   |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+  r7g - graviton3               | db.r7g.12xlarge| db.r7g.16xlarge|db.r6gd.16xlarge|db.r6gd.16xlarge|
+  r6g - graviton2               |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
+=====================================================================================================
 
 20231218
 ======================================================================================================================
