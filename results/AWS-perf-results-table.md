@@ -294,6 +294,26 @@ Total Billed write IOPS         |               |                |  148,886,718 
 
 100M perf test run:
 
+20231220
+
+===================================================================
+Build:                          |  3.8.0.23303   |  3.8.0.23303   |
+Peak:                           |  5268          |  5358          |
+Warm-up:                        |     0.0  hours |     0.0  hours |
+Average after warm-up:          |   n/a          |   n/a          |
+Average over entire run:        |  2440          |  1856          |
+Time to load 100M:              |    11.37 hours |    14.97 hours |
+Records in dead-letter queue:   |     0          |     0          |
+Volume read IOPS                |   10,132,919   |   23,253,554   |
+Volume write IOPS               |   64,709,674   |  389,707,354   |
+Max loader tasks:               |    83          |           69   |
+Max redoer tasks:               |   124          |           60   |
+Notes:                          | single DB inst | single DB inst |
+                                | db.r6i.32xlarge|db.r6id.24xlarge|
+                                |   IO opt       |   IO opt       |
+===================================================================
+
+
 ======================================================================================================================
 Build:                          |  3.5.0-23044   |  3.6.0.23160   |  3.7.0.23235   |  3.8.0.23303   |  3.8.0.23303   |
 Peak:                           |  3426          |  4274          |  4039          |  5840          |  5268          |
