@@ -104,6 +104,9 @@ N/A.  Ran without `withinfo` enabled.
 
 #### Logs
 
+- [Captured error logs](logs)
+
+
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
              now              |   count
