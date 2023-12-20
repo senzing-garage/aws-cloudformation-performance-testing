@@ -10,6 +10,43 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 20M perf test run:
 
+20231219
+=====================================================================================================
+Build:                          |  3.8.0-23284   |  3.8.0-23284   |  3.8.0-23303   |  3.8.0-23303   |
+Peak:                           |  3447          |  3916          |  3900          |  3001          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2999          |  3231          |  3413          |  2665          |
+Time to load 20M:               |     1.85 hours |     1.73 hours |     1.63 hours |     2.08 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |           72   |            6   |            6   |           32   |
+Total Billed write IOPS:        |  143,587,589   |   61,417,763   |   63,067,972   |   71,227,988   |
+Max loader tasks:               |     40         |     52         |           46   |           36   |
+Max redoer tasks:               |     13         |     13         |           15   |           12   |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+  r7g - graviton3               | db.r7g.12xlarge| db.r7g.16xlarge|db.r6gd.16xlarge|db.r6gd.12xlarge|
+  r6g - graviton2               |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
+=====================================================================================================
+
+20231218
+======================================================================================================================
+Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23303   |  3.8.0-23258   |  3.8.0-23303   |
+Peak:                           |  5216          |  8597          |  5301          |  5392          |  5222          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  4662          |  6962          |  4613          |  4553          |  4597          |
+Time to load 20M:               |    1.20 hours  |    48 Mins     |     1.2  hours |    1.22 hours  |    1.22 hours  |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |           35   |           23   |           32   |           13   |           31   |
+Total Billed write IOPS:        |   75,637,378   |   38,441,895   |   80,968,617   |   58,882,169   |   80,844,597   |
+Max loader tasks:               |     77         |     125        |           68   |     75         |     64         |
+Max redoer tasks:               |     20         |      28        |           17   |     14         |     31         |
+Notes:                          | single DB inst |    multi DB    | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.32xlarge| db.r6i.32xlarge|db.r6id.32xlarge| db.r6i.24xlarge|db.r6id.24xlarge|
+                                |     IO opt     |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
+======================================================================================================================
+
+
 ====================================================================================
 Build:                          |  3.8.0-23258   |  3.8.0-23258   |  3.8.0-23284   | <----
 Peak:                           |  3326          |  4578          |  4618          | This is a
@@ -256,6 +293,26 @@ Total Billed write IOPS         |               |                |  148,886,718 
 
 
 100M perf test run:
+
+20231220
+
+===================================================================
+Build:                          |  3.8.0.23303   |  3.8.0.23303   |
+Peak:                           |  5268          |  5358          |
+Warm-up:                        |     0.0  hours |     0.0  hours |
+Average after warm-up:          |   n/a          |   n/a          |
+Average over entire run:        |  2440          |  1856          |
+Time to load 100M:              |    11.37 hours |    14.97 hours |
+Records in dead-letter queue:   |     0          |     0          |
+Volume read IOPS                |   10,132,919   |   23,253,554   |
+Volume write IOPS               |   64,709,674   |  389,707,354   |
+Max loader tasks:               |    83          |           69   |
+Max redoer tasks:               |   124          |           60   |
+Notes:                          | single DB inst | single DB inst |
+                                | db.r6i.32xlarge|db.r6id.24xlarge|
+                                |   IO opt       |   IO opt       |
+===================================================================
+
 
 ======================================================================================================================
 Build:                          |  3.5.0-23044   |  3.6.0.23160   |  3.7.0.23235   |  3.8.0.23303   |  3.8.0.23303   |

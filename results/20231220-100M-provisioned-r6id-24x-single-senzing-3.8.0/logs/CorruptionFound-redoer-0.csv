@@ -1,0 +1,96 @@
+timestamp,message
+1703087830021,"2023-12-20 15:57:10,021 senzing-50170001I Using governor-postgresql-transaction-id Governor. Version: 1.0.10 Updated: 2023-10-05"
+1703087830021,"2023-12-20 15:57:10,021 senzing-50170002I SENZING_GOVERNOR_POSTGRESQL_HIGH_WATERMARK: 1500000000; SENZING_GOVERNOR_INTERVAL: 100000; SENZING_GOVERNOR_POSTGRESQL_LOW_WATERMARK 1200000000; SENZING_GOVERNOR_HINT: sz_simple_redoer; SENZING_GOVERNOR_LOG_INTERVAL_IN_SECONDS: 600"
+1703087830021,"2023-12-20 15:57:10,021 senzing-50170003I Governor monitoring postgresql://senzing:xxxxxxxx@ron-r6id24x-100m-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com:5432/G2"
+1703088430947,"2023-12-20 16:07:10,947 senzing-50170004I Governor is checking PostgreSQL Transaction IDs. Host: ron-r6id24x-100m-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com; Database: G2; Current XID: 531975167 (res_feat_ekey); High watermark XID: 1500000000"
+1703088778330,Threads: 20
+1703088778330,"Processed 1000 redo, 40 records per second"
+1703088778330,"Processed 2000 redo, 56 records per second"
+1703088778330,"Processed 3000 redo, 53 records per second"
+1703088778330,"Processed 4000 redo, 54 records per second"
+1703088778330,"Processed 5000 redo, 56 records per second"
+1703088778330,"Processed 6000 redo, 52 records per second"
+1703088778330,"Processed 7000 redo, 57 records per second"
+1703088778330,"{ ""workload"": { ""apiVersion"": ""3.8.0.23303"",  ""loadedRecords"": -1,  ""addedRecords"": 0,  ""deletedRecords"": 0,  ""reevaluations"": 7938,  ""repairedEntities"": 7943,  ""duration"": 2734754,  ""retries"": 1,  ""candidates"": 131187,  ""actualAmbiguousTest"": 3583,  ""cachedAmbiguousTest"": 196,  ""libFeatCacheHit"": 3744709,  ""libFeatCacheMiss"": 762933,  ""resFeatStatCacheHit"": 13857901,  ""resFeatStatCacheMiss"": 1507932,  ""resFeatStatUpdate"": 37750,  ""unresolveTest"": 9056,  ""abortedUnresolve"": 0,  ""gnrScorersUsed"": 1,  ""unresolveTriggers"": { ""normalResolve"" : 0,  ""update"" : 0,  ""relLink"" : 0,  ""extensiveResolve"" : 7939,  ""ambiguousNoResolve"" : 1117,  ""ambiguousMultiResolve"" : 0  }, ""reresolveTriggers"": { ""abortRetry"" : 0,  ""unresolveMovement"" : 108,  ""multipleResolvableCandidates"" : 0,  ""resolveNewFeatures"" : 3,  ""newFeatureFTypes"": [  { ""ACCT_NUM"": 1 } ,  { ""ADDRESS"": 2 } ,  { ""ADDR_KEY"": 1 } ,  { ""DOB"": 2 } ,  { ""DRLIC"": 3 } ,  { ""ID_KEY"": 2 } ,  { ""NAME"": 3 } ,  { ""NAME_KEY"": 3 } ,  { ""PHONE"": 1 } ,  { ""PHONE_KEY"": 1 } ,  { ""SEARCH_KEY"": 1 } ,  { ""SSN"": 1 } ]  }, ""reresolveSkipped"" : 1,  ""filteredObsFeat"" : 6702,  ""expressedFeatureCalls"": [  { ""EFCALL_ID"": 1,""EFUNC_CODE"": ""PHONE_HASHER"", ""numCalls"":4694 } ,  { ""EFCALL_ID"": 2,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":4895 } ,  { ""EFCALL_ID"": 3,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":3169 } ,  { ""EFCALL_ID"": 5,""EFUNC_CODE"": ""EXPRESS_BOM"", ""numCalls"":5931 } ,  { ""EFCALL_ID"": 7,""EFUNC_CODE"": ""NAME_HASHER"", ""numCalls"":7939 } ,  { ""EFCALL_ID"": 9,""EFUNC_CODE"": ""ADDR_HASHER"", ""numCalls"":7939 } ,  { ""EFCALL_ID"": 10,""EFUNC_CODE"": ""EXPRESS_BOM"", ""numCalls"":2725 } ,  { ""EFCALL_ID"": 14,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":4753 } ,  { ""EFCALL_ID"": 16,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":5531 } ],  ""expressedFeaturesCreated"": [  { ""ADDR_KEY"": 14413 } ,  { ""ID_KEY"": 18348 } ,  { ""NAME_KEY"": 56146 } ,  { ""PHONE_KEY"": 4694 } ,  { ""SEARCH_KEY"": 8656 } ],  ""scoredPairs"": [  { ""ACCT_NUM"": 108655 } ,  { ""ADDRESS"": 668028 } ,  { ""DOB"": 71937 } ,  { ""DRLIC"": 148989 } ,  { ""GENDER"": 166734 } ,  { ""LOGIN_ID"": 172 } ,  { ""NAME"": 361818 } ,  { ""PASSPORT"": 69557 } ,  { ""PHONE"": 193504 } ,  { ""SSN"": 167634 } ],  ""cacheHit"": [  { ""ADDRESS"": 305387 } ,  { ""DOB"": 36076 } ,  { ""DRLIC"": 65645 } ,  { ""NAME"": 150865 } ,  { ""PASSPORT"": 34322 } ,  { ""PHONE"": 98041 } ],  ""cacheMiss"": [  { ""ADDRESS"": 362641 } ,  { ""DOB"": 35861 } ,  { ""DRLIC"": 83344 } ,  { ""NAME"": 210953 } ,  { ""PASSPORT"": 35235 } ,  { ""PHONE"": 95463 } ],  ""redoTriggers"": [  { ""ADDR_KEY"": 50 } ,  { ""DRLIC"": 95 } ,  { ""ID_KEY"": 10 } ,  { ""LOGIN_ID"": 10 } ,  { ""SEARCH_KEY"": 140 } ],  ""latchContention"": [ ],  ""highContentionFeat"": [ ],  ""highContentionResEnt"": [  { ""5821652"": 12 } ],  ""genericDetect"": [  { ""ADDR_KEY"": 13 } ,  { ""DRLIC"": 18 } ,  { ""ID_KEY"": 3 } ,  { ""LOGIN_ID"": 9 } ,  { ""NAME_KEY"": 97 } ,  { ""SEARCH_KEY"": 22 } ],  ""candidateBuilders"": [  { ""ACCT_NUM"": 29951 } ,  { ""ADDR_KEY"": 37900 } ,  { ""DRLIC"": 27672 } ,  { ""ID_KEY"": 38103 } ,  { ""LOGIN_ID"": 96 } ,  { ""NAME_KEY"": 38775 } ,  { ""PASSPORT"": 23537 } ,  { ""PHONE"": 34283 } ,  { ""PHONE_KEY"": 28987 } ,  { ""SEARCH_KEY"": 23564 } ,  { ""SSN"": 32345 } ],  ""suppressedCandidateBuilders"": [ ],  ""suppressedScoredFeatureType"": [ ],  ""reducedScoredFeatureType"": [ ],  ""suppressedDisclosedRelationshipDomainCount"":  0 ,  ""CorruptEntityTestDiagnosis"": {  ""CORRUPTION_FOUND"": [{""ResEntID"":20362722, ""Details"":""RES_FEATURES_CORRUPT""}] },  ""threadState"": { ""active"": 18,""idle"": 3,""sqlExecuting"": 16,""loader"": 1,""resolver"": 13,""scoring"": 3,""dataLatchContention"": 0,""obsEntContention"": 0,""resEntContention"": 0},  ""systemResources"": {  ""initResources"": [ { ""physicalCores"": 4 },{ ""logicalCores"": 4 },{ ""totalMemory"": ""30.9GB"" },{ ""availableMemory"": ""30.0GB"" }],  ""currResources"": [ { ""availableMemory"": ""24.6GB"" },{ ""activeThreads"": 18 },{ ""workerThreads"": 21 }, {  ""systemLoad"": [ ] } ] } } }"
+1703088778330,"Processed 8000 redo, 57 records per second"
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703088778330,No redo records available. Pausing for 10 seconds.
+1703089031606,"2023-12-20 16:17:11,606 senzing-50170004I Governor is checking PostgreSQL Transaction IDs. Host: ron-r6id24x-100m-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com; Database: G2; Current XID: 531976068 (res_feat_ekey); High watermark XID: 1500000000"
+1703089632271,"2023-12-20 16:27:12,271 senzing-50170004I Governor is checking PostgreSQL Transaction IDs. Host: ron-r6id24x-100m-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com; Database: G2; Current XID: 100102056 (res_ent); High watermark XID: 1500000000"
+1703090232933,"2023-12-20 16:37:12,933 senzing-50170004I Governor is checking PostgreSQL Transaction IDs. Host: ron-r6id24x-100m-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com; Database: G2; Current XID: 100102973 (res_ent); High watermark XID: 1500000000"

@@ -1491,6 +1491,7 @@ Resources:
       EngineVersion: "11.18"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      PerformanceInsightsEnabled: true
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
@@ -1532,6 +1533,7 @@ Resources:
       EngineVersion: "11.18"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      PerformanceInsightsEnabled: true
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
@@ -1575,6 +1577,7 @@ Resources:
       EngineVersion: "11.18"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      PerformanceInsightsEnabled: true
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 192
