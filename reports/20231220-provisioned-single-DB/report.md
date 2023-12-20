@@ -1,7 +1,7 @@
 # Results of provisioned database comparative testing
-2023 Oct 19
+2023 Dec 20 updated from 2023 Oct 19
 
-The purpose of this series of test executions is to understand the performance characteristics of various Amazon Web Services (AWS) Aurora provisioned database instance classes[^1] and AWS Elastic Container (ECS) task runtime platforms[^2] when loading data with Senzing.  In particular to compare the difference in both speed and cost of Intel and Graviton 3 processors across database instance class types and runtime platforms. Full results of all Senzing AWS performance testing can be found in the Senzing AWS performance testing GitHub repository[^3].
+The purpose of this series of test executions is to understand the performance characteristics of various Amazon Web Services (AWS) Aurora provisioned database instance classes[^1] and AWS Elastic Container (ECS) task runtime platforms[^2] when loading data with Senzing.  In particular to compare the difference in both speed and cost of Intel and Graviton 3 processors across database instance class types and runtime platforms. Full results of all Senzing AWS performance testing can be found in the Senzing AWS performance testing GitHub repository[^3].  This report has been updated from the 2023 Oct 19 report to include 4 new database "Optimized read" instance classes.
 
 ## The Methodology
 
@@ -70,12 +70,19 @@ Our test executions included the following database instance classes[^9]:
 | db.r7g.16xlarge | 64 | 512 | 20,000 | 30 |
 | db.r7g.12xlarge | 48 | 384 | 15,000 | 22.5 |
 | db.r7g.8xlarge | 32 | 256 | 10,000 | 15 |
+| db.r6g <td colspan="4">– memory-optimized instance classes powered by AWS Graviton2 processors</td>
+| db.r6gd.16xlarge | 64 | 512 | 19,000 | 30 |
+| db.r6gd.12xlarge | 48 | 384 | 13,500 | 22.5 |
 | db.r6i <td colspan="4">– memory-optimized instance classes</td>
 | db.r6i.32xlarge	| 128 | 1,024 |	40,000 | 50 |
+| db.r6id.32xlarge	| 128 | 1,024 |	40,000 | 50 |
 | db.r6i.24xlarge	| 96 | 768	| 30,000 | 37.5 |
+| db.r6id.24xlarge	| 96 | 768	| 30,000 | 37.5 |
 | db.r6i.16xlarge	| 64 | 512	| 20,000 | 25 |
 | db.r6i.12xlarge	| 48 | 384	| 15,000 | 18.75 |
 | db.r6i.8xlarge	| 32 | 256	| 10,000 | 12.5 |
+
+Note: the r6gd and r6id are not documented to be different than the r6g and r6i instance classes as the time of this report.
 
 ## The Comparison
 
@@ -114,6 +121,11 @@ Task cost contain the cost of both the loader tasks and the redoer tasks.
 ![Total Cost](./images/TotalCost.png)
 
 Based on this, there appears to be a "sweet spot" that is a balance between performance and cost when using the `db.r6i.16xlarge` database instance class with the Intel runtime platform.
+
+#### New instance classes tests (2023 Dec 20)
+
+The new instance classes r6gd and r6id did not seem to perform any differently their non-*d equivalents.  Pricing for these instance classes was not available at the
+time of writing this report, so it's unknown if the cost is any better.
 
 ## Further work
 
