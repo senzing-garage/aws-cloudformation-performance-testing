@@ -15,7 +15,7 @@
 
 ## Overview
 
-1. Performed: Nov 11, 2023
+1. Performed: Dec 20, 2023
 2. Senzing version: 3.8.0-23303
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/Senzing/aws-cloudformation-performance-testing)
@@ -37,23 +37,23 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 5268/second
+    1. Peak: 5358/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
-    1. Average over entire run: 2440/second
-    1. Time to load 100M: 11.37 hours
+    1. Average over entire run: 1856/second
+    1. Time to load 100M: 14.97 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:    10,132,919
-    1. Volume write IOPS:   64,709,674
+    1. Volume read IOPS:    23,253,554
+    1. Volume write IOPS:  389,707,354
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
-    - Max Stream-loader tasks: 83
-    - Max Redoer tasks: 124
+    - Max Stream-loader tasks: 69
+    - Max Redoer tasks: 60
 
 1. Notes:
-    - db.r6id.24xlarge DB seems to be running at 99% CPU with 73 loaders and 6 redoers running.
+    - db.r6id.24xlarge DB seems to be running at 99% CPU with 69 loaders running.
 
 
 ### Final metrics
@@ -95,6 +95,7 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
 
 ##### DSRC_RECORD
@@ -105,46 +106,47 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-              now              |   count
--------------------------------+-----------
- 2023-11-07 04:18:57.306047+00 | 100000000
+             now              |   count
+------------------------------+-----------
+ 2023-12-20 16:15:02.66816+00 | 100000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-11-07 04:19:14.806491+00 | 99998927
+ 2023-12-20 16:15:32.540185+00 | 99998927
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
               now              |  count
 -------------------------------+----------
- 2023-11-07 04:22:24.756975+00 | 61416086
+ 2023-12-20 16:15:54.254722+00 | 61407473
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
-             now              |  count
-------------------------------+----------
- 2023-11-07 04:23:10.06571+00 | 99998927
+              now              |  count
+-------------------------------+----------
+ 2023-12-20 16:16:36.158338+00 | 99998927
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-11-07 04:23:26.072714+00 |     0
+ 2023-12-20 16:16:47.104119+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
-              now              |  count
--------------------------------+----------
- 2023-11-07 04:23:37.929294+00 | 39821635
+             now              |  count
+------------------------------+----------
+ 2023-12-20 16:16:50.99681+00 | 39878548
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-      load_start       |          erpm           |   total   |   duration   |       avg_erps
------------------------+-------------------------+-----------+--------------+-----------------------
- 2023-11-06 15:42:01.8 | 146453.6290342757388480 | 100000000 | 11:22:48.599 | 2440.8938172379289808
+       load_start        |          erpm           |   total   |   duration   |       avg_erps
+-------------------------+-------------------------+-----------+--------------+-----------------------
+ 2023-12-20 00:53:15.023 | 111384.9716908596991039 | 100000000 | 14:57:47.231 | 1856.4161948476616517
 (1 row)
+
 
 ```
 
