@@ -24,7 +24,7 @@ Total Billed write IOPS:        |  143,587,589   |   61,417,763   |   63,067,972
 Max loader tasks:               |     40         |     52         |           46   |           36   |
 Max redoer tasks:               |     13         |     13         |           15   |           12   |
 Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
-  r7g - graviton3               | db.r7g.12xlarge| db.r7g.16xlarge|db.r6gd.16xlarge|db.r6gd.16xlarge|
+  r7g - graviton3               | db.r7g.12xlarge| db.r7g.16xlarge|db.r6gd.16xlarge|db.r6gd.12xlarge|
   r6g - graviton2               |     IO opt     |     IO opt     |     IO opt     |     IO opt     |
 =====================================================================================================
 
