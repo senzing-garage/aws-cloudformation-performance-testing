@@ -1284,6 +1284,7 @@ Resources:
       EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      PerformanceInsightsEnabled: true
       Port: 5432
       StorageEncrypted: true
       # StorageType: aurora
@@ -1318,6 +1319,7 @@ Resources:
       EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      PerformanceInsightsEnabled: true
       Port: 5432
       StorageEncrypted: true
       # StorageType: aurora
@@ -1352,6 +1354,7 @@ Resources:
       EngineVersion: "14.8"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      PerformanceInsightsEnabled: true
       Port: 5432
       StorageEncrypted: true
       # StorageType: aurora
@@ -1370,6 +1373,7 @@ Resources:
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
       DBParameterGroupName:
         Ref: RdsDbParameterGroup
+      EnablePerformanceInsights: true
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
@@ -1404,6 +1408,7 @@ Resources:
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
       DBParameterGroupName:
         Ref: RdsDbParameterGroup
+      EnablePerformanceInsights: true
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterLibfeat
@@ -1438,6 +1443,7 @@ Resources:
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
       DBParameterGroupName:
         Ref: RdsDbParameterGroup
+      EnablePerformanceInsights: true
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterRes

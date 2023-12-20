@@ -1284,6 +1284,7 @@ Resources:
       EngineVersion: "14.9"
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
+      PerformanceInsightsEnabled: true
       Port: 5432
       StorageEncrypted: true
       # StorageType: aurora
@@ -1302,6 +1303,7 @@ Resources:
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
       DBParameterGroupName:
         Ref: RdsDbParameterGroup
+      EnablePerformanceInsights: true
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
