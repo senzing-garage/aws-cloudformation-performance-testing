@@ -124,8 +124,7 @@ Based on this, there appears to be a "sweet spot" that is a balance between perf
 
 #### New instance classes tests (2023 Dec 20)
 
-The new optimized read instance classes (r6gd and r6id) did not seem to perform any differently their non-optimized read equivalents.  Pricing for these instance classes was not available at the time of writing this report.  _The above charts base cost on their non-optimized read equivalents._  Using the same pricing as the
-non-optimized read instance class, there seems to be a cost saving associated with the r6id instance class.
+The new optimized read instance classes (r6gd and r6id) did not seem to perform any differently their non-optimized read equivalents.  Pricing for these instances are higher, but since fewer Fargate tasks are run the total cost is less.
 
 ## Further work
 
