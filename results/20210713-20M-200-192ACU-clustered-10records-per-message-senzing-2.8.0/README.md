@@ -18,8 +18,8 @@
 1. Performed: July 13, 2021
 1. Senzing version: 2.8.0
 1. Instructions:
-   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
-    1. [Cloudformation.yaml](https://github.com/Senzing/aws-cloudformation-ecs/blob/0c94e6685461100f0ae18e7302542b0d29f6c3b0/cloudformation/aws-cloudformation-ecs-staging-simple-100M/cloudformation.yaml)
+   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
+    1. [Cloudformation.yaml](https://github.com/senzing-garage/aws-cloudformation-ecs/blob/0c94e6685461100f0ae18e7302542b0d29f6c3b0/cloudformation/aws-cloudformation-ecs-staging-simple-100M/cloudformation.yaml)
 1. Configured to include 10 records per SQS message
 
 ## System

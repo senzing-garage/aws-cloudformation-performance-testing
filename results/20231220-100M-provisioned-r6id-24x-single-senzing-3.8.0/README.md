@@ -18,8 +18,8 @@
 1. Performed: Dec 20, 2023
 2. Senzing version: 3.8.0-23303
 3. Instructions:
-   [aws-cloudformation-performance-testing](https://github.com/Senzing/aws-cloudformation-performance-testing)
-    1. [cloudformationAuroraProvisionedSingleDB](https://github.com/Senzing/aws-cloudformation-performance-testing/blob/main/cloudformationAuroraProvisionedSingleDB)
+   [aws-cloudformation-performance-testing](https://github.com/senzing-garage/aws-cloudformation-performance-testing)
+    1. [cloudformationAuroraProvisionedSingleDB](https://github.com/senzing-garage/aws-cloudformation-performance-testing/blob/main/cloudformationAuroraProvisionedSingleDB)
 4. Changes:
     1. Pre-load input queue by setting loader DesiredCount and MinCapacity to 0
     1. Postgres 14.9

@@ -24,8 +24,8 @@
 1. Performed: Oct 27, 2020
 1. Senzing version: 2.2.2
 1. Instructions:
-   [advanced-100M-serverless](https://github.com/Senzing/docker-compose-aws-ecscli-demo/tree/master/docs/advanced-100M-serverless)
-    1. [Pinned version](https://github.com/Senzing/docker-compose-aws-ecscli-demo/tree/eb73c9041c022b1250e2d34b210c0f1fedb8b707/docs/advanced-100M-serverless#autoscale-stream-loader-service)
+   [advanced-100M-serverless](https://github.com/senzing-garage/docker-compose-aws-ecscli-demo/tree/master/docs/advanced-100M-serverless)
+    1. [Pinned version](https://github.com/senzing-garage/docker-compose-aws-ecscli-demo/tree/eb73c9041c022b1250e2d34b210c0f1fedb8b707/docs/advanced-100M-serverless#autoscale-stream-loader-service)
 
 ## System
 

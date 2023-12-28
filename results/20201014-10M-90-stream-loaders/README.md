@@ -25,8 +25,8 @@
 1. Performed: Oct 14, 2020
 1. Senzing version: 2.2.1
 1. Instructions:
-   [advanced](https://github.com/Senzing/docker-compose-aws-ecscli-demo/tree/master/docs/advanced)
-    1. [Pinned version](https://github.com/Senzing/docker-compose-aws-ecscli-demo/tree/bcaa6694650269fb19849adc5dc4674f3a95bab5/docs/advanced)
+   [advanced](https://github.com/senzing-garage/docker-compose-aws-ecscli-demo/tree/master/docs/advanced)
+    1. [Pinned version](https://github.com/senzing-garage/docker-compose-aws-ecscli-demo/tree/bcaa6694650269fb19849adc5dc4674f3a95bab5/docs/advanced)
 
 ## System
 

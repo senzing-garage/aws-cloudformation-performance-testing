@@ -18,7 +18,7 @@
 1. Performed: Dec 21, 2022
 2. Senzing version: 3.4.0.22352
 3. Instructions:
-   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
+   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
     1. [Cloudformation.yaml]()
 4. Notable updates for this run:
     1. Due to restricted ACU, warm-up has been redefined to when we hit 70k/min
