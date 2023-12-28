@@ -18,7 +18,7 @@
 1. Performed: Mar 28, 2023
 2. Senzing version: 3.5.0.23084
 3. Instructions:
-   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
+   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
     1. [Cloudformation.yaml]()
 4. Changes:
     1. using SQS Consumer: https://github.com/brianmacy/sz_sqs_consumer

@@ -18,7 +18,7 @@
 1. Performed: Sep 09, 2022
 2. Senzing version: 3.3.0.22245
 3. Instructions:
-   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
+   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
     1. [Cloudformation.yaml]()
 4. Changes:
     1. This is using the Senzing inside containers

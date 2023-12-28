@@ -24,8 +24,8 @@
 1. Performed: Nov 17, 2020
 1. Senzing version: 2.3.0
 1. Instructions:
-   [advanced](https://github.com/Senzing/docker-compose-aws-ecscli-demo/tree/issue-39.dockter.1/docs/advanced-cluster)
-    1. [Pinned version](https://github.com/Senzing/docker-compose-aws-ecscli-demo/tree/27bffe9981b2d0e495ed95fc981abfdcba8b64e8/docs/advanced-cluster)
+   [advanced](https://github.com/senzing-garage/docker-compose-aws-ecscli-demo/tree/issue-39.dockter.1/docs/advanced-cluster)
+    1. [Pinned version](https://github.com/senzing-garage/docker-compose-aws-ecscli-demo/tree/27bffe9981b2d0e495ed95fc981abfdcba8b64e8/docs/advanced-cluster)
 
 ## System
 

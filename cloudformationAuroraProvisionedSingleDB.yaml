@@ -6,13 +6,13 @@ AWSTemplateFormatVersion: 2010-09-09
 #     Nag: https://github.com/stelligent/cfn_nag
 #     aws cloudformation validate-template: https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/validate-template.html
 # This cloudformation template should be nearly identical to
-#   https://github.com/Senzing/aws-cloudformation-ecs-poc-simple
+#   https://github.com/senzing-garage/aws-cloudformation-ecs-poc-simple
 # But tailored to run use Senzing RPMs from the staging server.
 
 Description: >-
   Senzing aws-cloudformation-ecs-staging-simple-100M Version: 1.0.16
   For more information see
-  https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M
+  https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M
 
 # -----------------------------------------------------------------------------
 # Metadata
@@ -1522,7 +1522,7 @@ Resources:
     Condition: IfUsingWeb
     Properties:
       Code:
-        # This code can be seen at https://github.com/Senzing/aws-lambda-self-signed-certificate
+        # This code can be seen at https://github.com/senzing-garage/aws-lambda-self-signed-certificate
         S3Bucket: !Sub "senzing-public-${AWS::Region}"
         S3Key: "aws-lambda-self-signed-certificate/self-signed-certificate-1.0.2.zip"
       Description: Generate Public/Private key pair.
@@ -2572,19 +2572,19 @@ Resources:
                     <li>
                         <b>Senzing Entity Search web app: </b> <a href="https://${Host}/app">https://${Host}/app</a>
                         <br />
-                        (For more details see the <a href="https://github.com/Senzing/entity-search-web-app">GitHub repository</a>)
+                        (For more details see the <a href="https://github.com/senzing-garage/entity-search-web-app">GitHub repository</a>)
                     </li>
                     <br />
                     <li>
                         <b>Senzing API Server: </b> <a href="https://${Host}/api/heartbeat">https://${Host}/api/heartbeat</a>
                         <br />
-                        (For more details see the <a href="https://github.com/Senzing/senzing-api-server">GitHub repository</a>)
+                        (For more details see the <a href="https://github.com/senzing-garage/senzing-api-server">GitHub repository</a>)
                     </li>
                   </ol>
               </p>
               <p>
                   For more information on the
-                  <a href="https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M">Senzing simple test install with selectable test data quantity</a>
+                  <a href="https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M">Senzing simple test install with selectable test data quantity</a>
                   "${AWS::StackName}"
                   AWS Cloudformation,
                   contact ${Contact}.

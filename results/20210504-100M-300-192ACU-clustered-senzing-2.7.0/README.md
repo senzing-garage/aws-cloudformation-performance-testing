@@ -18,14 +18,14 @@
 1. Performed: June 04, 2020
 1. Senzing version: 2.7.0
 1. Instructions:
-   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
-    1. [Cloudformation.yaml](https://github.com/Senzing/aws-cloudformation-ecs/blob/f832ce04d281fa763bdf17eecb0c8c04c37a7c1b/cloudformation/aws-cloudformation-ecs-staging-simple-100M/cloudformation.yaml)
+   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
+    1. [Cloudformation.yaml](https://github.com/senzing-garage/aws-cloudformation-ecs/blob/f832ce04d281fa763bdf17eecb0c8c04c37a7c1b/cloudformation/aws-cloudformation-ecs-staging-simple-100M/cloudformation.yaml)
 
 ## Caveats:
 
 1. Over the first 10 hours, the `ForceApplyCapacityChange` was not set.
    Meaning that the database didn't scale up properly for the first 10 hours.
-   See [How to set AWS RDS force-scaling-capacity](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/set-aws-rds-force-scaling-capacity.md)
+   See [How to set AWS RDS force-scaling-capacity](https://github.com/senzing-garage/knowledge-base/blob/master/HOWTO/set-aws-rds-force-scaling-capacity.md)
 ## System
 
 1. Database

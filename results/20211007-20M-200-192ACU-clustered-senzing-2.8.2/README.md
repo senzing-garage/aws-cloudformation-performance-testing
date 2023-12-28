@@ -18,8 +18,8 @@
 1. Performed: Oct 07, 2021
 2. Senzing version: 2.8.2-21243
 3. Instructions:
-   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/Senzing/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
-    1. [Cloudformation.yaml](https://github.com/Senzing/aws-cloudformation-ecs/blob/dc7df9044a8ef45d81196180b10080510fc9707e/cloudformation/aws-cloudformation-ecs-staging-simple-100M/cloudformation.yaml)
+   [aws-cloudformation-ecs-staging-simple-100M](https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M)
+    1. [Cloudformation.yaml](https://github.com/senzing-garage/aws-cloudformation-ecs/blob/dc7df9044a8ef45d81196180b10080510fc9707e/cloudformation/aws-cloudformation-ecs-staging-simple-100M/cloudformation.yaml)
 
 ## System
 
