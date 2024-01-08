@@ -2952,7 +2952,7 @@ Resources:
               awslogs-group: !Ref LogsLogGroupMain
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: service
-          Name: stream-loader
+          Name: consumer
           Privileged: false
           ReadonlyRootFilesystem: false
       Cpu: "4096"
@@ -3180,7 +3180,7 @@ Resources:
             - !Ref Ec2SubnetPrivate2
       PlatformVersion: 1.4.0
       PropagateTags: TASK_DEFINITION
-      ServiceName: stream-loader
+      ServiceName: consumer
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ecs-service-stream-loader"
