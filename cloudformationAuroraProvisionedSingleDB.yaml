@@ -240,7 +240,7 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:3.3.6
       InitPostgresql: public.ecr.aws/senzing/init-postgresql:1.1.6
       Redoer: public.ecr.aws/senzing/sz_simple_redoer:staging
-      SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:3.4.0
+      SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:staging
       Sshd: public.ecr.aws/senzing/sshd:staging
       StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer:staging
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.4
