@@ -228,6 +228,15 @@ Mappings:
       Name: G2
       Username: senzing
     Images:
+      # ApiServer: public.ecr.aws/senzing/senzing-poc-server:3.3.6
+      # InitPostgresql: public.ecr.aws/senzing/init-postgresql:1.1.6
+      # Redoer: public.ecr.aws/senzing/redoer:2.1.11
+      # SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:3.4.0
+      # Sshd: public.ecr.aws/senzing/sshd:1.4.9
+      # StreamLoader: public.ecr.aws/senzing/stream-loader:2.2.10
+      # StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.4
+      # WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.4
+
       # ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       InitDataEncryption: public.ecr.aws/senzing/data-encryption-aes256cbc-sample:1.0.5
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
@@ -237,13 +246,14 @@ Mappings:
       # StreamLoader: public.ecr.aws/senzing/stream-loader:staging
       # StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.3
       # WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.3
+
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:3.3.6
-      InitPostgresql: public.ecr.aws/senzing/init-postgresql:1.1.6
+      InitPostgresql: public.ecr.aws/senzing/init-postgresql:1.1.13
       Redoer: public.ecr.aws/senzing/sz_simple_redoer:staging
       SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:staging
       Sshd: public.ecr.aws/senzing/sshd:staging
       StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer:staging
-      StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.4
+      StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.4
     Run:
       ApiServer: No
@@ -1315,10 +1325,10 @@ Resources:
       # DBInstanceClass: db.r7g.12xlarge
       # DBInstanceClass: db.r7g.16xlarge
       # DBInstanceClass: db.r6i.4xlarge
-      # DBInstanceClass: db.r6i.8xlarge
+      DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
-      DBInstanceClass: db.r6i.24xlarge
+      # DBInstanceClass: db.r6i.24xlarge
       # DBInstanceClass: db.r6i.32xlarge
       # DBInstanceClass: db.r6id.32xlarge
       # DBInstanceClass: db.r6id.24xlarge
