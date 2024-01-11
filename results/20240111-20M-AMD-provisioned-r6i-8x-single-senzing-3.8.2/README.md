@@ -38,23 +38,23 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2962/second
+    1. Peak: 2704/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
     1. Average over entire run: 2640/second
     1. Time to load 20M: 2.1 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:       371,525
-    1. Volume write IOPS:   79,550,498
+    1. Volume read IOPS:       308,590
+    1. Volume write IOPS:   78,831,249
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
     - Max Stream-loader tasks: 40
-    - Max Redoer tasks: 3
+    - Max Redoer tasks: 43
 
 1. Notes:
-    - db.r6i.8xlarge DB seems to be running at 92% CPU with 38 loaders running.
+    - db.r6i.8xlarge DB seems to be running at 95% CPU with 40 loaders running.
 
 
 ### Final metrics
@@ -96,6 +96,7 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
+![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
 
 ##### DSRC_RECORD
