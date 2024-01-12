@@ -10,6 +10,24 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 20M perf test run:
 
+20240112
+====================================================================================
+Build:                          |  3.8.0-23258   |  3.8.2-24009   |  3.8.2-24011   |
+Peak:                           |  2724          |  2704          |  2708          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2393          |  2640          |  2355          |
+Time to load 20M:               |    2.32 hours  |     2.1 hours  |     2.35 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |
+Total Billed read IOPS:         |      192,839   |      308,590   |      689,234   |
+Total Billed write IOPS:        |   74,549,743   |   78,831,249   |   84,635,912   |
+Max loader tasks:               |     40         |     40         |     35         |
+Max redoer tasks:               |     23         |     43         |     37         |
+Notes:                          | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |     IO opt     | IO opt - AMD   | IO opt - ARM   |
+====================================================================================
+
 20231219
 =====================================================================================================
 Build:                          |  3.8.0-23284   |  3.8.0-23284   |  3.8.0-23303   |  3.8.0-23303   |
