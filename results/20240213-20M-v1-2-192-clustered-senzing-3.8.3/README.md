@@ -28,6 +28,7 @@
 1. Database
     1. Aurora PosgreSQL Serverless V1
     1. ACU range: 2 - 192
+    1. Single database
 
 ## Results
 
