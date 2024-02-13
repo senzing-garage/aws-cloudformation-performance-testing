@@ -46,8 +46,8 @@
 
 Note:  This is using local senzing data.  Withinfo disabled.
 
-- Max Stream-loader tasks: 84
-- Max Redoer tasks: 30
+- Max Stream-loader tasks: 41
+- Max Redoer tasks: 3
 
 ### Final metrics
 
@@ -83,23 +83,11 @@ N/A.  Ran without `withinfo` enabled.
 
 #### RDS
 
-##### Database Metrics CORE final
+##### Database Metrics final
 
-![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
-![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
-![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
-
-##### Database Metrics LIBFEAT final
-
-![Database metrics 1](images/database-metrics-libfeat-1.png "Database metrics 1")
-![Database metrics 2](images/database-metrics-libfeat-2.png "Database metrics 2")
-![Database metrics 3](images/database-metrics-libfeat-3.png "Database metrics 3")
-
-##### Database Metrics RES final
-
-![Database metrics 1](images/database-metrics-res-1.png "Database metrics 1")
-![Database metrics 2](images/database-metrics-res-2.png "Database metrics 2")
-![Database metrics 3](images/database-metrics-res-3.png "Database metrics 3")
+![Database metrics 1](images/database-metrics-1.png "Database metrics 1")
+![Database metrics 2](images/database-metrics-2.png "Database metrics 2")
+![Database metrics 3](images/database-metrics-3.png "Database metrics 3")
 
 ##### DSRC_RECORD
 
