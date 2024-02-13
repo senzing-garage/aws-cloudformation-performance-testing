@@ -10,6 +10,26 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 20M perf test run:
 
+20240213
+======================================================================================================================
+Build:                          |  3.8.0-23258   |  3.8.2-24009   |  3.8.2-24011   |  3.8.0-23258   |  3.8.3-24043   |
+Peak:                           |  2724          |  2704          |  2708          |  3010          |  2955          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |    13 mins     |    12 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |  2638          |  2665          |
+Average over entire run:        |  2393          |  2640          |  2355          |  2493          |  2499          |
+Time to load 20M:               |    2.32 hours  |     2.1 hours  |     2.35 hours |     2.23 hours |     2.21 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |      192,839   |      308,590   |      689,234   |      229,730   |      498,257   |
+Total Billed write IOPS:        |   74,549,743   |   78,831,249   |   84,635,912   |   85,411,348   |   87,776,206   |
+Max loader tasks:               |     40         |     40         |     35         |     45         |     41         |
+Max redoer tasks:               |     23         |     43         |     37         |     25         |     42         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |   serverless   |   serverless   |
+                                |     IO opt     | IO opt - AMD   | IO opt - ARM   |                |                |
+======================================================================================================================
+
+
+
 20240112
 ====================================================================================
 Build:                          |  3.8.0-23258   |  3.8.2-24009   |  3.8.2-24011   |
