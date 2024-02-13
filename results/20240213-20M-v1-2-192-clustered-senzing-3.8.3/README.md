@@ -47,7 +47,7 @@
 Note:  This is using local senzing data.  Withinfo disabled.
 
 - Max Stream-loader tasks: 41
-- Max Redoer tasks: 3
+- Max Redoer tasks: 42
 
 ### Final metrics
 
