@@ -34,14 +34,14 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 5565/second
-    1. Warm-up: 0.18 hours
-    1. Average after warm-up: 3527/second
+    1. Peak: 2955/second
+    1. Warm-up: 0.2 hours
+    1. Average after warm-up: 2665/second
     1. Average over entire run: 2499/second
-    1. Time to load 20M: 1.77 hours
+    1. Time to load 20M: 2.21 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:     1,292,359
-    1. Volume write IOPS:   69,182,119
+    1. Volume read IOPS:       498,257
+    1. Volume write IOPS:   87,776,206
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  This is using local senzing data.  Withinfo disabled.
