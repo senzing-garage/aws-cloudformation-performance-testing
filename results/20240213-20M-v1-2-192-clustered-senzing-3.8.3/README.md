@@ -37,7 +37,7 @@
     1. Peak: 5565/second
     1. Warm-up: 0.18 hours
     1. Average after warm-up: 3527/second
-    1. Average over entire run: 3141/second
+    1. Average over entire run: 2499/second
     1. Time to load 20M: 1.77 hours
     1. Records in dead-letter queue: 0
     1. Volume read IOPS:     1,292,359
@@ -97,45 +97,45 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-             now              |  count
-------------------------------+----------
- 2023-09-29 18:59:17.87676+00 | 20000000
+              now              |  count
+-------------------------------+----------
+ 2024-02-13 17:57:36.538173+00 | 20000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2023-09-29 18:59:23.382731+00 | 19999959
+ 2024-02-13 17:57:53.028761+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
-             now              |  count
-------------------------------+----------
- 2023-09-29 19:01:30.47053+00 | 17462005
+              now              |  count
+-------------------------------+----------
+ 2024-02-13 17:58:01.477656+00 | 17462260
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2023-09-29 19:02:12.371492+00 | 19999959
+ 2024-02-13 17:58:05.478266+00 | 19999959
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2023-09-29 19:03:00.494463+00 |     0
+ 2024-02-13 17:58:09.309122+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+----------
- 2023-09-29 19:03:04.180641+00 | 10625835
+ 2024-02-13 17:58:13.027868+00 | 10096709
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |       erpm       |  total   |   duration   |    avg_erps
--------------------------+------------------+----------+--------------+-----------------
- 2023-09-29 16:48:37.354 | 188435.967338394 | 20000000 | 01:46:08.211 | 3140.5994556399
+       load_start        |       erpm       |  total   |   duration   |     avg_erps
+-------------------------+------------------+----------+--------------+------------------
+ 2024-02-13 15:09:04.889 | 149936.145943846 | 20000000 | 02:13:23.407 | 2498.93576573077
 (1 row)
 
 ```
