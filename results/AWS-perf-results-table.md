@@ -10,6 +10,25 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 20M perf test run:
 
+20240228
+======================================================================================================================
+Build:                          |  3.8.2-24009   |  3.8.2-24011   |  3.8.3-24043   |  3.8.3-24043   |  3.9.0-24058   |
+Peak:                           |  2704          |  2708          |  2955          |  6004          |  2736          |
+Warm-up:                        |     0 mins     |     0 mins     |    12 mins     |    10 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |  2665          |  4116          |   n/a          |
+Average over entire run:        |  2640          |  2355          |  2499          |  3758          |  2350          |
+Time to load 20M:               |     2.1 hours  |     2.35 hours |     2.21 hours |     1.47 hours |     2.35 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |      308,590   |      689,234   |      498,257   |      669,101   |      167,371   |
+Total Billed write IOPS:        |   78,831,249   |   84,635,912   |   87,776,206   |   81,852,443   |   74,908,026   |
+Max loader tasks:               |     40         |     35         |     41         |     83         |     42         |
+Max redoer tasks:               |     43         |     37         |     42         |     56         |     40         |
+Notes:                          | single DB inst | single DB inst | single DB inst | multi DB inst  | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge |   serverless   |   serverless   | db.r6i.8xlarge |
+                                | IO opt - AMD   | IO opt - ARM   |                |                | IO opt - AMD   |
+======================================================================================================================
+
+
 20240213
 =======================================================================================================================================
 Build:                          |  3.8.0-23258   |  3.8.2-24009   |  3.8.2-24011   |  3.8.0-23258   |  3.8.3-24043   |  3.8.3-24043   |
