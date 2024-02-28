@@ -247,14 +247,14 @@ Mappings:
       # StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.3
       # WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.3
 
-      ApiServer: public.ecr.aws/senzing/senzing-poc-server:3.3.6
-      InitPostgresql: public.ecr.aws/senzing/init-postgresql:1.1.13
+      ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
+      InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       Redoer: public.ecr.aws/senzing/sz_simple_redoer:staging
       SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:staging
       Sshd: public.ecr.aws/senzing/sshd:staging
       StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer:staging
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
-      WebApp: public.ecr.aws/senzing/entity-search-web-app:2.7.4
+      WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
     Run:
       ApiServer: No
       Redoer: Yes
@@ -2878,7 +2878,7 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       RuntimePlatform:
-        CpuArchitecture: ARM64
+        CpuArchitecture: X86_64
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ecs-task-definition-redoer"
@@ -2919,7 +2919,7 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       RuntimePlatform:
-        CpuArchitecture: ARM64
+        CpuArchitecture: X86_64
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ecs-task-definition-sshd"
@@ -2973,7 +2973,7 @@ Resources:
       RequiresCompatibilities:
         - FARGATE
       RuntimePlatform:
-        CpuArchitecture: ARM64
+        CpuArchitecture: X86_64
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-ecs-task-definition-stream-loader"
