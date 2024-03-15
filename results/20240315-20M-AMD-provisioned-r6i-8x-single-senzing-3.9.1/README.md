@@ -1,4 +1,4 @@
-# senzing-test-results-20240228-20M-AMD-provisioned-r6i-8x-single-senzing-3.9.0
+# senzing-test-results-20240315-20M-AMD-provisioned-r6i-8x-single-senzing-3.9.1
 
 ## Contents
 
@@ -15,11 +15,11 @@
 
 ## Overview
 
-1. Performed: Feb 28, 2024
-2. Senzing version: 3.9.0-24058
+1. Performed: Mar 15, 2024
+2. Senzing version: 3.9.1-24074
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/senzing-garage/aws-cloudformation-performance-testing)
-    1. [cloudformationAuroraV2.yaml](https://github.com/senzing-garage/aws-cloudformation-performance-testing/blob/main/cloudformationAuroraV2.yaml)
+    1. [cloudformationAuroraProvisionedSingleDB.yaml](./cloudformationAuroraProvisionedSingleDB.yaml)
 4. Changes:
     1. Pre-load input queue by setting loader DesiredCount and MinCapacity to 0
     1. Postgres 14.9
