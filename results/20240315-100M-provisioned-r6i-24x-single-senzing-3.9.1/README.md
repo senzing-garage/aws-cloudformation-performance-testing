@@ -1,4 +1,4 @@
-# senzing-test-results-20240315-100M-provisioned-r6id-24x-single-senzing-3.9.1
+# senzing-test-results-20240315-100M-provisioned-r6i-24x-single-senzing-3.9.1
 
 ## Contents
 
@@ -29,7 +29,7 @@
 1. Database
     1. Aurora PosgreSQL Provisioned
     1. Single database
-    1. Class: db.r6id.24xlarge
+    1. Class: db.r6i.24xlarge
     1. IO Opt (StorageType: aurora-iopt1)
 
 ## Results
@@ -53,7 +53,7 @@
     - Max Redoer tasks: 60
 
 1. Notes:
-    - db.r6id.24xlarge DB seems to be running at 99% CPU with 69 loaders running.
+    - db.r6i.24xlarge DB seems to be running at 99% CPU with 69 loaders running.
 
 
 ### Final metrics
