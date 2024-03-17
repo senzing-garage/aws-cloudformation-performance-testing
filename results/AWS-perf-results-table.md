@@ -374,18 +374,18 @@ Total Billed write IOPS         |               |                |  148,886,718 
 20240315
 ====================================================================================
 Build:                          |  3.8.0.23303   |  3.8.0.23303   |  3.9.1.24074   |
-Peak:                           |  5268          |  5358          |  5358          |
+Peak:                           |  5268          |  5358          |  5053          |
 Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |
 Average after warm-up:          |   n/a          |   n/a          |   n/a          |
-Average over entire run:        |  2440          |  1856          |  1856          |
-Time to load 100M:              |    11.37 hours |    14.97 hours |    14.97 hours |
+Average over entire run:        |  2440          |  1856          |  2067          |
+Time to load 100M:              |    11.37 hours |    14.97 hours |    13.43 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |
-Volume read IOPS                |   10,132,919   |   23,253,554   |   23,253,554   |
-Volume write IOPS               |   64,709,674   |  389,707,354   |  389,707,354   |
-Max loader tasks:               |    83          |           69   |           69   |
-Max redoer tasks:               |   124          |           60   |           60   |
+Volume read IOPS                |   10,132,919   |   23,253,554   |   46,846,823   |
+Volume write IOPS               |   64,709,674   |  389,707,354   |  413,350,943   |
+Max loader tasks:               |    83          |           69   |           53   |
+Max redoer tasks:               |   124          |           60   |           75   |
 Notes:                          | single DB inst | single DB inst | single DB inst |
-                                | db.r6i.32xlarge|db.r6id.24xlarge|db.r6id.24xlarge|
+                                | db.r6i.32xlarge|db.r6id.24xlarge| db.r6i.24xlarge|
                                 |   IO opt       |   IO opt       |   IO opt       |
 ====================================================================================
 
