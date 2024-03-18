@@ -10,6 +10,26 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 20M perf test run:
 
+20240315
+======================================================================================================================
+Build:                          |  3.8.2-24009   |  3.8.3-24043   |  3.8.3-24043   |  3.9.0-24058   |  3.9.1-24074   |
+Peak:                           |  2704          |  2955          |  6004          |  2736          |  2679          |
+Warm-up:                        |     0 mins     |    12 mins     |    10 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |  2665          |  4116          |   n/a          |   n/a          |
+Average over entire run:        |  2640          |  2499          |  3758          |  2350          |  2321          |
+Time to load 20M:               |     2.1 hours  |     2.21 hours |     1.47 hours |     2.35 hours |     2.38 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |      308,590   |      498,257   |      669,101   |      167,371   |      724,890   |
+Total Billed write IOPS:        |   78,831,249   |   87,776,206   |   81,852,443   |   74,908,026   |   84,475,715   |
+Max loader tasks:               |     40         |     41         |     83         |     42         |     30         |
+Max redoer tasks:               |     43         |     42         |     56         |     40         |     31         |
+Notes:                          | single DB inst | single DB inst | multi DB inst  | single DB inst | single DB inst |
+                                | db.r6i.8xlarge |   serverless   |   serverless   | db.r6i.8xlarge | db.r6i.8xlarge |
+                                | IO opt - AMD   |                |                | IO opt - AMD   | IO opt - AMD   |
+======================================================================================================================
+
+
+
 20240228
 ======================================================================================================================
 Build:                          |  3.8.2-24009   |  3.8.2-24011   |  3.8.3-24043   |  3.8.3-24043   |  3.9.0-24058   |
@@ -351,8 +371,25 @@ Total Billed write IOPS         |               |                |  148,886,718 
 
 100M perf test run:
 
-20231220
+20240315
+====================================================================================
+Build:                          |  3.8.0.23303   |  3.8.0.23303   |  3.9.1.24074   |
+Peak:                           |  5268          |  5358          |  5053          |
+Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2440          |  1856          |  2067          |
+Time to load 100M:              |    11.37 hours |    14.97 hours |    13.43 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |
+Volume read IOPS                |   10,132,919   |   23,253,554   |   46,846,823   |
+Volume write IOPS               |   64,709,674   |  389,707,354   |  413,350,943   |
+Max loader tasks:               |    83          |           69   |           53   |
+Max redoer tasks:               |   124          |           60   |           75   |
+Notes:                          | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.32xlarge|db.r6id.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |
+====================================================================================
 
+20231220
 ===================================================================
 Build:                          |  3.8.0.23303   |  3.8.0.23303   |
 Peak:                           |  5268          |  5358          |
