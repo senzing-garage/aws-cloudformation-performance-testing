@@ -9,6 +9,24 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 
 
 20M perf test run:
+20240425
+=======================================================================================================================================
+Build:                          |  3.8.2-24009   |  3.8.3-24043   |  3.8.3-24043   |  3.9.0-24058   |  3.9.1-24074   |  3.10.0-24115  |
+Peak:                           |  2704          |  2955          |  6004          |  2736          |  2679          |  2627          |
+Warm-up:                        |     0 mins     |    12 mins     |    10 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |  2665          |  4116          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2640          |  2499          |  3758          |  2350          |  2321          |  2314          |
+Time to load 20M:               |     2.1 hours  |     2.21 hours |     1.47 hours |     2.35 hours |     2.38 hours |     2.4 hours  |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |      308,590   |      498,257   |      669,101   |      167,371   |      724,890   |      672,562   |
+Total Billed write IOPS:        |   78,831,249   |   87,776,206   |   81,852,443   |   74,908,026   |   84,475,715   |   84,355,485   |
+Max loader tasks:               |     40         |     41         |     83         |     42         |     30         |     30         |
+Max redoer tasks:               |     43         |     42         |     56         |     40         |     31         |     40         |
+Notes:                          | single DB inst | single DB inst | multi DB inst  | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge |   serverless   |   serverless   | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                | IO opt - AMD   |                |                | IO opt - AMD   | IO opt - AMD   | IO opt - AMD   |
+=======================================================================================================================================
+
 
 20240315
 ======================================================================================================================
