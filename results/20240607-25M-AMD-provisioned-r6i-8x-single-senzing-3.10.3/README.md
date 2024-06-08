@@ -32,26 +32,27 @@
     1. Single database
     1. Class: db.r6i.8xlarge
     1. IO Opt (StorageType: aurora-iopt1)
+1. sshd docker container tagged `staging` failed to run. created new task definition using 1.4.11 and updated the CFT to reflect that.
 
 ## Results
 
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2627/second
+    1. Peak: 2444/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
-    1. Average over entire run: 2314/second
-    1. Time to load 20M: 2.4 hours
+    1. Average over entire run: 1937/second
+    1. Time to load 25M: 3.1 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:       672,562
-    1. Volume write IOPS:   84,355,485
+    1. Volume read IOPS:       828,136
+    1. Volume write IOPS:   94,762,780
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
     - Max Consumer tasks: 44
-    - Max Redoer tasks: 3
+    - Max Redoer tasks: 38
 
 ### Final metrics
 
@@ -105,43 +106,43 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2024-04-25 21:10:52.417589+00 | 20000000
+ 2024-06-08 01:42:22.267157+00 | 21645223
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2024-04-25 21:10:55.712271+00 | 19999959
+ 2024-06-08 01:42:44.349482+00 | 21112490
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
-             now              |  count
-------------------------------+----------
- 2024-04-25 21:11:06.67704+00 | 17460649
+              now              |  count
+-------------------------------+----------
+ 2024-06-08 01:42:57.641523+00 | 18023639
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2024-04-25 21:11:10.037584+00 | 19999959
+ 2024-06-08 01:43:00.807339+00 | 21112494
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2024-04-25 21:11:14.795455+00 |     0
+ 2024-06-08 01:43:04.860011+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+----------
- 2024-04-25 21:11:18.190834+00 | 10096651
+ 2024-06-08 01:43:09.663841+00 | 10347262
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
        load_start        |          erpm           |  total   |   duration   |       avg_erps
 -------------------------+-------------------------+----------+--------------+-----------------------
- 2024-04-25 18:05:46.559 | 138864.2340584437901560 | 20000000 | 02:24:01.534 | 2314.4039009740631693
+ 2024-06-07 21:57:10.575 | 116223.1594117505978686 | 21645223 | 03:06:14.308 | 1937.0526568625099645
 (1 row)
 
 G2=> select dr.RECORD_ID,oe.OBS_ENT_ID,reo.RES_ENT_ID from DSRC_RECORD dr left outer join OBS_ENT oe ON dr.dsrc_id = oe.dsrc_id and dr.ent_src_key = oe.ent_src_key left outer join RES_ENT_OKEY reo ON oe.OBS_ENT_ID = reo.OBS_ENT_ID where reo.RES_ENT_ID is null;
@@ -150,9 +151,14 @@ G2=> select dr.RECORD_ID,oe.OBS_ENT_ID,reo.RES_ENT_ID from DSRC_RECORD dr left o
 (0 rows)
 
 G2=> select dr.RECORD_ID,reo.OBS_ENT_ID,reo.RES_ENT_ID from RES_ENT_OKEY reo left outer join OBS_ENT oe ON oe.OBS_ENT_ID = reo.OBS_ENT_ID  left outer join DSRC_RECORD dr  ON dr.dsrc_id = oe.dsrc_id and dr.ent_src_key = oe.ent_src_key where dr.RECORD_ID is null;
+
  record_id | obs_ent_id | res_ent_id
 -----------+------------+------------
-(0 rows)
+           |   20975386 |   20975386
+           |   18587544 |   18587544
+           |   17619193 |   17619193
+           |   13243854 |   13243854
+(4 rows)
 ```
 
 ## Methods

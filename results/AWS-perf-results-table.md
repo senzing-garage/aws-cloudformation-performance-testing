@@ -7,6 +7,26 @@ Average over entire run:        |  1401         |  3141          |
 Time to load 20M:               |     4.0 hours |  1.77 hours    |
 ==================================================================
 
+2x M perf test run:
+20240607
+===================================================================
+Build:                          |  3.10.0-24115  |  3.10.3-24159  |
+Number of records:              |    20 M        |    25 M        |
+Peak:                           |  2627          |  2444          |
+Warm-up:                        |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |
+Average over entire run:        |  2314          |  1937          |
+Time to load 20M:               |     2.4 hours  |     3.1 hours  |
+Records in dead-letter queue:   |     0          |     0          |
+Total Billed read IOPS:         |      672,562   |      828,136   |
+Total Billed write IOPS:        |   84,355,485   |   94,762,780   |
+Max loader tasks:               |     30         |     44         |
+Max redoer tasks:               |     40         |     38         |
+Notes:                          | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge |
+                                | IO opt - AMD   | IO opt - AMD   |
+===================================================================
+
 
 20M perf test run:
 20240425
