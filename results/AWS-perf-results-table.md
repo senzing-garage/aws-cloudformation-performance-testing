@@ -8,6 +8,25 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 ==================================================================
 
 2x M perf test run:
+20240610
+===================================================================
+Build:                          |  3.8.3-24043   |  3.10.3-24159  |
+Number of records:              |    20 M        |    25 M        |
+Peak:                           |  6004          |  5309          |
+Warm-up:                        |    10 mins     |    25 mins     |
+Average after warm-up:          |  4116          |  4492          |
+Average over entire run:        |  3758          |  3530          |
+Time to load 20M:               |     1.47 hours |     1.7 hours  |
+Records in dead-letter queue:   |     0          |     0          |
+Total Billed read IOPS:         |      669,101   |      508,216   |
+Total Billed write IOPS:        |   81,852,443   |  100,824,689   |
+Max loader tasks:               |     83         |    100         |
+Max redoer tasks:               |     56         |     76         |
+Notes:                          | multi DB inst  | multi DB inst  |
+                                |   serverless   |   serverless   |
+===================================================================
+
+2x M perf test run:
 20240607
 ===================================================================
 Build:                          |  3.10.0-24115  |  3.10.3-24159  |
