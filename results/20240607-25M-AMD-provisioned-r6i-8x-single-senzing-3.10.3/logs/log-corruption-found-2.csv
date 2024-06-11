@@ -1,0 +1,129 @@
+timestamp,message
+1717810451480,"Processed 79000 redo, 63 records per second"
+1717810451480,"Processed 80000 redo, 64 records per second"
+1717810451480,"Processed 81000 redo, 61 records per second"
+1717810451480,"Processed 82000 redo, 68 records per second"
+1717810451480,"Processed 83000 redo, 65 records per second"
+1717810451480,"Processed 84000 redo, 64 records per second"
+1717810451480,"Processed 85000 redo, 64 records per second"
+1717810451480,"Processed 86000 redo, 66 records per second"
+1717810451480,"Processed 87000 redo, 67 records per second"
+1717810451480,"Processed 88000 redo, 62 records per second"
+1717810451480,"{ ""workload"": { ""apiVersion"": ""3.10.3.24159"",  ""loadedRecords"": -1,  ""addedRecords"": 0,  ""optimizedOut"": 1,  ""optimizedOutSkipped"": 0,  ""newObsEnt"": 0,  ""obsEntHashSame"": 9709,  ""obsEntHashDiff"": 0,  ""partiallyResolved"": 0,  ""deletedRecords"": 0,  ""changeDeletes"": 0,  ""reevaluations"": 9708,  ""repairedEntities"": 9735,  ""duration"": 2838990,  ""retries"": 1,  ""candidates"": 132768,  ""actualAmbiguousTest"": 1427,  ""cachedAmbiguousTest"": 857,  ""libFeatCacheHit"": 3141208,  ""libFeatCacheMiss"": 574856,  ""resFeatStatCacheHit"": 12863892,  ""resFeatStatCacheMiss"": 623624,  ""libFeatInsert"": 0,  ""resFeatStatInsert"": 0,  ""resFeatStatUpdateAttempt"": 5200,  ""resFeatStatUpdateFail"": 0,  ""unresolveTest"": 11195,  ""abortedUnresolve"": 0,  ""gnrScorersUsed"": 1,  ""unresolveTriggers"": { ""normalResolve"" : 0,  ""update"" : 0,  ""relLink"" : 0,  ""extensiveResolve"" : 9709,  ""ambiguousNoResolve"" : 1489,  ""ambiguousMultiResolve"" : 0  }, ""reresolveTriggers"": { ""abortRetry"" : 0,  ""unresolveMovement"" : 52,  ""multipleResolvableCandidates"" : 0,  ""resolveNewFeatures"" : 1,  ""newFeatureFTypes"": [  { ""ACCT_NUM"": 1 } ,  { ""ADDRESS"": 1 } ,  { ""ADDR_KEY"": 1 } ,  { ""DOB"": 1 } ,  { ""DRLIC"": 1 } ,  { ""ID_KEY"": 1 } ,  { ""NAME"": 1 } ,  { ""NAME_KEY"": 1 } ,  { ""PHONE"": 1 } ]  }, ""reresolveSkipped"" : 0,  ""filteredObsFeat"" : 5871,  ""expressedFeatureCalls"": [  { ""EFCALL_ID"": 1,""EFUNC_CODE"": ""PHONE_HASHER"", ""numCalls"":5808 } ,  { ""EFCALL_ID"": 2,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":5996 } ,  { ""EFCALL_ID"": 3,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":3932 } ,  { ""EFCALL_ID"": 5,""EFUNC_CODE"": ""EXPRESS_BOM"", ""numCalls"":5344 } ,  { ""EFCALL_ID"": 7,""EFUNC_CODE"": ""NAME_HASHER"", ""numCalls"":9709 } ,  { ""EFCALL_ID"": 9,""EFUNC_CODE"": ""ADDR_HASHER"", ""numCalls"":9709 } ,  { ""EFCALL_ID"": 10,""EFUNC_CODE"": ""EXPRESS_BOM"", ""numCalls"":3246 } ,  { ""EFCALL_ID"": 14,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":5844 } ,  { ""EFCALL_ID"": 16,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":6673 } ],  ""expressedFeaturesCreated"": [  { ""ADDR_KEY"": 17504 } ,  { ""ID_KEY"": 22445 } ,  { ""NAME_KEY"": 76568 } ,  { ""PHONE_KEY"": 5808 } ,  { ""SEARCH_KEY"": 8590 } ],  ""scoredPairs"": [  { ""ACCT_NUM"": 57083 } ,  { ""ADDRESS"": 171190 } ,  { ""DOB"": 74435 } ,  { ""DRLIC"": 81244 } ,  { ""GENDER"": 141459 } ,  { ""LOGIN_ID"": 32097 } ,  { ""NAME"": 991841 } ,  { ""PASSPORT"": 46674 } ,  { ""PHONE"": 112349 } ,  { ""SSN"": 102870 } ],  ""cacheHit"": [  { ""ADDRESS"": 101058 } ,  { ""DOB"": 55633 } ,  { ""DRLIC"": 58371 } ,  { ""NAME"": 644040 } ,  { ""PASSPORT"": 36144 } ,  { ""PHONE"": 74497 } ],  ""cacheMiss"": [  { ""ADDRESS"": 70132 } ,  { ""DOB"": 18802 } ,  { ""DRLIC"": 22873 } ,  { ""NAME"": 347801 } ,  { ""PASSPORT"": 10530 } ,  { ""PHONE"": 37852 } ],  ""redoTriggers"": [  { ""DRLIC"": 5 } ,  { ""LOGIN_ID"": 745 } ,  { ""NAME_KEY"": 160 } ],  ""latchContention"": [ ],  ""highContentionFeat"": [ ],  ""highContentionResEnt"": [  { ""4628149"": 12 } ],  ""genericDetect"": [  { ""LOGIN_ID"": 154 } ],  ""candidateBuilders"": [  { ""ACCT_NUM"": 20443 } ,  { ""ADDR_KEY"": 34843 } ,  { ""DRLIC"": 20129 } ,  { ""ID_KEY"": 29962 } ,  { ""LOGIN_ID"": 10831 } ,  { ""NAME_KEY"": 35656 } ,  { ""PASSPORT"": 14777 } ,  { ""PHONE"": 29511 } ,  { ""PHONE_KEY"": 23137 } ,  { ""SEARCH_KEY"": 26125 } ,  { ""SSN"": 24275 } ],  ""suppressedCandidateBuilders"": [  { ""NAME_KEY"": 1257 } ],  ""suppressedScoredFeatureType"": [ ],  ""reducedScoredFeatureType"": [ ],  ""suppressedDisclosedRelationshipDomainCount"":  0 ,  ""CorruptEntityTestDiagnosis"": {  ""CORRUPTION_FOUND"": [{""ResEntID"":9404391, ""Details"":""RES_ENT_OKEY_NOT_FOUND""}, {""ResEntID"":17732087, ""Details"":""RES_ENT_OKEY_NOT_FOUND""}] },  ""threadState"": { ""active"": 18,""idle"": 3,""sqlExecuting"": 17,""loader"": 3,""resolver"": 12,""scoring"": 5,""dataLatchContention"": 0,""obsEntContention"": 0,""resEntContention"": 0},  ""systemResources"": {  ""initResources"": [ { ""physicalCores"": 4 },{ ""logicalCores"": 4 },{ ""totalMemory"": ""30.8GB"" },{ ""availableMemory"": ""29.8GB"" }],  ""currResources"": [ { ""availableMemory"": ""23.6GB"" },{ ""activeThreads"": 18 },{ ""workerThreads"": 21 }, {  ""systemLoad"": [ { ""cpuUser"": 27.355923 }, { ""cpuSystem"": 1.138926 }, { ""cpuIdle"": 69.718277 }, { ""cpuWait"": 0.010020 }, { ""cpuSoftIrq"": 1.766838 }, { ""cpuSteal"": 0.010020 }] } ] } } }"
+1717810451480,"Processed 89000 redo, 64 records per second"
+1717810451480,"Processed 90000 redo, 64 records per second"
+1717810451480,"Processed 91000 redo, 62 records per second"
+1717810451480,"Processed 92000 redo, 63 records per second"
+1717810451480,"Processed 93000 redo, 64 records per second"
+1717810451480,"Processed 94000 redo, 62 records per second"
+1717810451480,"Processed 95000 redo, 72 records per second"
+1717810451480,"Processed 96000 redo, 71 records per second"
+1717810451480,"Processed 97000 redo, 74 records per second"
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,No redo records available. Pausing for 10 seconds.
+1717810451480,"{ ""workload"": { ""apiVersion"": ""3.10.3.24159"",  ""loadedRecords"": -1,  ""addedRecords"": 0,  ""optimizedOut"": 2,  ""optimizedOutSkipped"": 0,  ""newObsEnt"": 0,  ""obsEntHashSame"": 9026,  ""obsEntHashDiff"": 0,  ""partiallyResolved"": 0,  ""deletedRecords"": 0,  ""changeDeletes"": 0,  ""reevaluations"": 9023,  ""repairedEntities"": 9043,  ""duration"": 2538020,  ""retries"": 3,  ""candidates"": 92070,  ""actualAmbiguousTest"": 872,  ""cachedAmbiguousTest"": 453,  ""libFeatCacheHit"": 2071066,  ""libFeatCacheMiss"": 504571,  ""resFeatStatCacheHit"": 8214007,  ""resFeatStatCacheMiss"": 540420,  ""libFeatInsert"": 0,  ""resFeatStatInsert"": 0,  ""resFeatStatUpdateAttempt"": 3253,  ""resFeatStatUpdateFail"": 6,  ""unresolveTest"": 10117,  ""abortedUnresolve"": 0,  ""gnrScorersUsed"": 1,  ""unresolveTriggers"": { ""normalResolve"" : 0,  ""update"" : 0,  ""relLink"" : 0,  ""extensiveResolve"" : 9026,  ""ambiguousNoResolve"" : 1092,  ""ambiguousMultiResolve"" : 0  }, ""reresolveTriggers"": { ""abortRetry"" : 0,  ""unresolveMovement"" : 58,  ""multipleResolvableCandidates"" : 0,  ""resolveNewFeatures"" : 4,  ""newFeatureFTypes"": [  { ""ACCT_NUM"": 1 } ,  { ""ADDRESS"": 4 } ,  { ""ADDR_KEY"": 4 } ,  { ""DOB"": 2 } ,  { ""DRLIC"": 4 } ,  { ""ID_KEY"": 4 } ,  { ""LOGIN_ID"": 1 } ,  { ""NAME"": 4 } ,  { ""NAME_KEY"": 4 } ,  { ""PASSPORT"": 1 } ,  { ""PHONE"": 2 } ,  { ""PHONE_KEY"": 2 } ,  { ""SEARCH_KEY"": 1 } ,  { ""SSN"": 1 } ]  }, ""reresolveSkipped"" : 0,  ""filteredObsFeat"" : 5289,  ""expressedFeatureCalls"": [  { ""EFCALL_ID"": 1,""EFUNC_CODE"": ""PHONE_HASHER"", ""numCalls"":5321 } ,  { ""EFCALL_ID"": 2,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":5407 } ,  { ""EFCALL_ID"": 3,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":3626 } ,  { ""EFCALL_ID"": 5,""EFUNC_CODE"": ""EXPRESS_BOM"", ""numCalls"":5780 } ,  { ""EFCALL_ID"": 7,""EFUNC_CODE"": ""NAME_HASHER"", ""numCalls"":9026 } ,  { ""EFCALL_ID"": 9,""EFUNC_CODE"": ""ADDR_HASHER"", ""numCalls"":9026 } ,  { ""EFCALL_ID"": 10,""EFUNC_CODE"": ""EXPRESS_BOM"", ""numCalls"":3010 } ,  { ""EFCALL_ID"": 14,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":5349 } ,  { ""EFCALL_ID"": 16,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":6217 } ],  ""expressedFeaturesCreated"": [  { ""ADDR_KEY"": 16288 } ,  { ""ID_KEY"": 20599 } ,  { ""NAME_KEY"": 69545 } ,  { ""PHONE_KEY"": 5321 } ,  { ""SEARCH_KEY"": 8790 } ],  ""scoredPairs"": [  { ""ACCT_NUM"": 33619 } ,  { ""ADDRESS"": 124666 } ,  { ""DOB"": 45209 } ,  { ""DRLIC"": 47637 } ,  { ""GENDER"": 97328 } ,  { ""LOGIN_ID"": 17668 } ,  { ""NAME"": 512237 } ,  { ""PASSPORT"": 25481 } ,  { ""PHONE"": 77015 } ,  { ""SSN"": 68328 } ],  ""cacheHit"": [  { ""ADDRESS"": 58744 } ,  { ""DOB"": 27907 } ,  { ""DRLIC"": 26611 } ,  { ""NAME"": 312722 } ,  { ""PASSPORT"": 15525 } ,  { ""PHONE"": 40943 } ],  ""cacheMiss"": [  { ""ADDRESS"": 65922 } ,  { ""DOB"": 17302 } ,  { ""DRLIC"": 21026 } ,  { ""NAME"": 199515 } ,  { ""PASSPORT"": 9956 } ,  { ""PHONE"": 36072 } ],  ""redoTriggers"": [  { ""DRLIC"": 10 } ,  { ""ID_KEY"": 20 } ,  { ""LOGIN_ID"": 395 } ,  { ""NAME_KEY"": 190 } ],  ""latchContention"": [ ],  ""highContentionFeat"": [ ],  ""highContentionResEnt"": [  { ""2199455"": 13 } ,  { ""9566701"": 12 } ,  { ""18846322"": 11 } ],  ""genericDetect"": [  { ""LOGIN_ID"": 90 } ],  ""candidateBuilders"": [  { ""ACCT_NUM"": 16187 } ,  { ""ADDR_KEY"": 27660 } ,  { ""DRLIC"": 15731 } ,  { ""ID_KEY"": 24942 } ,  { ""LOGIN_ID"": 6917 } ,  { ""NAME_KEY"": 28636 } ,  { ""PASSPORT"": 11301 } ,  { ""PHONE"": 23204 } ,  { ""PHONE_KEY"": 17859 } ,  { ""SEARCH_KEY"": 21865 } ,  { ""SSN"": 19592 } ],  ""suppressedCandidateBuilders"": [  { ""NAME_KEY"": 510 } ],  ""suppressedScoredFeatureType"": [ ],  ""reducedScoredFeatureType"": [ ],  ""suppressedDisclosedRelationshipDomainCount"":  0 ,  ""CorruptEntityTestDiagnosis"": { },  ""threadState"": { ""active"": 3,""idle"": 18,""sqlExecuting"": 1,""loader"": 2,""resolver"": 2,""scoring"": 0,""dataLatchContention"": 0,""obsEntContention"": 0,""resEntContention"": 2},  ""systemResources"": {  ""initResources"": [ { ""physicalCores"": 4 },{ ""logicalCores"": 4 },{ ""totalMemory"": ""30.8GB"" },{ ""availableMemory"": ""29.8GB"" }],  ""currResources"": [ { ""availableMemory"": ""23.6GB"" },{ ""activeThreads"": 3 },{ ""workerThreads"": 21 }, {  ""systemLoad"": [ { ""cpuUser"": 12.900826 }, { ""cpuSystem"": 0.622717 }, { ""cpuIdle"": 85.558044 }, { ""cpuWait"": 0.006854 }, { ""cpuSoftIrq"": 0.903724 }, { ""cpuSteal"": 0.007833 }] } ] } } }"
+1717810645744,"2024-06-08 01:37:25,744 senzing-50170004I Governor is checking PostgreSQL Transaction IDs. Host: ron-perf-1030-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com; Database: G2; Current XID: 196682371 (pg_type); High watermark XID: 1500000000"
+1717811246416,"2024-06-08 01:47:26,416 senzing-50170004I Governor is checking PostgreSQL Transaction IDs. Host: ron-perf-1030-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com; Database: G2; Current XID: 196684906 (pg_type); High watermark XID: 1500000000"
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,"{ ""workload"": { ""apiVersion"": ""3.10.3.24159"",  ""loadedRecords"": -1,  ""addedRecords"": 0,  ""optimizedOut"": 2,  ""optimizedOutSkipped"": 0,  ""newObsEnt"": 0,  ""obsEntHashSame"": 8,  ""obsEntHashDiff"": 0,  ""partiallyResolved"": 0,  ""deletedRecords"": 0,  ""changeDeletes"": 0,  ""reevaluations"": 8,  ""repairedEntities"": 8,  ""duration"": 4769,  ""retries"": 0,  ""candidates"": 572,  ""actualAmbiguousTest"": 20,  ""cachedAmbiguousTest"": 0,  ""libFeatCacheHit"": 10320,  ""libFeatCacheMiss"": 1116,  ""resFeatStatCacheHit"": 30312,  ""resFeatStatCacheMiss"": 1360,  ""libFeatInsert"": 0,  ""resFeatStatInsert"": 0,  ""resFeatStatUpdateAttempt"": 696,  ""resFeatStatUpdateFail"": 0,  ""unresolveTest"": 8,  ""abortedUnresolve"": 0,  ""gnrScorersUsed"": 1,  ""unresolveTriggers"": { ""normalResolve"" : 0,  ""update"" : 0,  ""relLink"" : 0,  ""extensiveResolve"" : 8,  ""ambiguousNoResolve"" : 0,  ""ambiguousMultiResolve"" : 0  }, ""reresolveTriggers"": { ""abortRetry"" : 0,  ""unresolveMovement"" : 24,  ""multipleResolvableCandidates"" : 0,  ""resolveNewFeatures"" : 16,  ""newFeatureFTypes"": [  { ""ACCT_NUM"": 8 } ,  { ""ADDRESS"": 16 } ,  { ""ADDR_KEY"": 12 } ,  { ""DOB"": 4 } ,  { ""DRLIC"": 16 } ,  { ""ID_KEY"": 16 } ,  { ""NAME"": 16 } ,  { ""NAME_KEY"": 16 } ,  { ""PASSPORT"": 4 } ,  { ""PHONE"": 8 } ,  { ""PHONE_KEY"": 4 } ]  }, ""reresolveSkipped"" : 0,  ""filteredObsFeat"" : 4,  ""expressedFeatureCalls"": [  { ""EFCALL_ID"": 1,""EFUNC_CODE"": ""PHONE_HASHER"", ""numCalls"":4 } ,  { ""EFCALL_ID"": 2,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":8 } ,  { ""EFCALL_ID"": 3,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":2 } ,  { ""EFCALL_ID"": 7,""EFUNC_CODE"": ""NAME_HASHER"", ""numCalls"":8 } ,  { ""EFCALL_ID"": 9,""EFUNC_CODE"": ""ADDR_HASHER"", ""numCalls"":8 } ,  { ""EFCALL_ID"": 10,""EFUNC_CODE"": ""EXPRESS_BOM"", ""numCalls"":2 } ,  { ""EFCALL_ID"": 14,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":8 } ,  { ""EFCALL_ID"": 16,""EFUNC_CODE"": ""EXPRESS_ID"", ""numCalls"":2 } ],  ""expressedFeaturesCreated"": [  { ""ADDR_KEY"": 14 } ,  { ""ID_KEY"": 20 } ,  { ""NAME_KEY"": 52 } ,  { ""PHONE_KEY"": 4 } ,  { ""SEARCH_KEY"": 2 } ],  ""scoredPairs"": [  { ""ACCT_NUM"": 368 } ,  { ""ADDRESS"": 1204 } ,  { ""DOB"": 348 } ,  { ""DRLIC"": 340 } ,  { ""GENDER"": 608 } ,  { ""NAME"": 956 } ,  { ""PASSPORT"": 100 } ,  { ""PHONE"": 376 } ,  { ""SSN"": 344 } ],  ""cacheHit"": [  { ""ADDRESS"": 564 } ,  { ""DOB"": 268 } ,  { ""DRLIC"": 172 } ,  { ""NAME"": 652 } ,  { ""PASSPORT"": 36 } ,  { ""PHONE"": 224 } ],  ""cacheMiss"": [  { ""ADDRESS"": 640 } ,  { ""DOB"": 80 } ,  { ""DRLIC"": 168 } ,  { ""NAME"": 304 } ,  { ""PASSPORT"": 64 } ,  { ""PHONE"": 152 } ],  ""redoTriggers"": [ ],  ""latchContention"": [ ],  ""highContentionFeat"": [ ],  ""highContentionResEnt"": [ ],  ""genericDetect"": [ ],  ""candidateBuilders"": [  { ""ACCT_NUM"": 100 } ,  { ""ADDR_KEY"": 124 } ,  { ""DRLIC"": 36 } ,  { ""ID_KEY"": 124 } ,  { ""NAME_KEY"": 124 } ,  { ""PASSPORT"": 56 } ,  { ""PHONE"": 68 } ,  { ""PHONE_KEY"": 52 } ,  { ""SEARCH_KEY"": 56 } ,  { ""SSN"": 100 } ],  ""suppressedCandidateBuilders"": [ ],  ""suppressedScoredFeatureType"": [ ],  ""reducedScoredFeatureType"": [ ],  ""suppressedDisclosedRelationshipDomainCount"":  0 ,  ""CorruptEntityTestDiagnosis"": { },  ""threadState"": { ""active"": 0,""idle"": 21,""sqlExecuting"": 0,""loader"": 0,""resolver"": 0,""scoring"": 0,""dataLatchContention"": 0,""obsEntContention"": 0,""resEntContention"": 0},  ""systemResources"": {  ""initResources"": [ { ""physicalCores"": 4 },{ ""logicalCores"": 4 },{ ""totalMemory"": ""30.8GB"" },{ ""availableMemory"": ""29.8GB"" }],  ""currResources"": [ { ""availableMemory"": ""23.6GB"" },{ ""activeThreads"": 0 },{ ""workerThreads"": 21 }, {  ""systemLoad"": [ { ""cpuUser"": 0.104585 }, { ""cpuSystem"": 0.077302 }, { ""cpuIdle"": 99.804474 }, { ""cpuWait"": 0.006821 }, { ""cpuSoftIrq"": 0.003410 }, { ""cpuSteal"": 0.003410 }] } ] } } }"
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352524,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811352525,No redo records available. Pausing for 10 seconds.
+1717811847014,"2024-06-08 01:57:27,014 senzing-50170004I Governor is checking PostgreSQL Transaction IDs. Host: ron-perf-1030-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com; Database: G2; Current XID: 196685830 (pg_type); High watermark XID: 1500000000"
+1717812447629,"2024-06-08 02:07:27,629 senzing-50170004I Governor is checking PostgreSQL Transaction IDs. Host: ron-perf-1030-aurora-senzing-core-cluster.cluster-cpxzlu10bixk.us-east-2.rds.amazonaws.com; Database: G2; Current XID: 196686758 (pg_type); High watermark XID: 1500000000"
