@@ -1,0 +1,4 @@
+quiet: true
+skip-path: 
+  - cloudformation.*.yaml
+  - results/
