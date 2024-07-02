@@ -1,4 +1,4 @@
-# senzing-test-results-20240315-20M-AMD-provisioned-r6i-8x-single-senzing-3.9.1
+# senzing-test-results-20240701-25M-AMD-provisioned-r6i-8x-single-senzing-3.10.4
 
 ## Contents
 
@@ -15,8 +15,8 @@
 
 ## Overview
 
-1. Performed: Mar 15, 2024
-2. Senzing version: 3.9.1-24074
+1. Performed: Jul 01, 2024
+2. Senzing version: 3.10.4
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/senzing-garage/aws-cloudformation-performance-testing)
     1. [cloudformationAuroraProvisionedSingleDB.yaml](./cloudformationAuroraProvisionedSingleDB.yaml)
@@ -35,23 +35,23 @@
 
 ## Results
 
-### Observations
+### Observations --- DID NOT COMPLETE.  diagnostic test only
 
 1. Inserts per second:
-    1. Peak: 2679/second
+    1. Peak: --/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
-    1. Average over entire run: 2321/second
-    1. Time to load 20M: 2.38 hours
+    1. Average over entire run: --/second
+    1. Time to load 20M: -- hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:       724,890
-    1. Volume write IOPS:   84,475,715
+    1. Volume read IOPS:       --
+    1. Volume write IOPS:   --
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
-    - Max Consumer tasks: 30
-    - Max Redoer tasks: 31
+    - Max Consumer tasks: --
+    - Max Redoer tasks: --
 
 ### Final metrics
 
@@ -101,47 +101,7 @@ N/A.  Ran without `withinfo` enabled.
 #### Logs
 
 ```
-G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-              now              |  count
--------------------------------+----------
- 2024-03-15 18:56:16.103151+00 | 20000000
-(1 row)
 
-G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
-              now              |  count
--------------------------------+----------
- 2024-03-15 18:56:26.210579+00 | 19999959
-(1 row)
-
-G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
-              now              |  count
--------------------------------+----------
- 2024-03-15 18:56:46.165706+00 | 17460700
-(1 row)
-
-G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
-             now              |  count
-------------------------------+----------
- 2024-03-15 18:56:58.57439+00 | 19999959
-(1 row)
-
-G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
-              now              | count
--------------------------------+-------
- 2024-03-15 18:57:02.141836+00 |     0
-(1 row)
-
-G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
-              now              |  count
--------------------------------+---------
- 2024-03-15 18:57:05.594646+00 | 9992900
-(1 row)
-
-G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |          erpm           |  total   |   duration   |       avg_erps
--------------------------+-------------------------+----------+--------------+-----------------------
- 2024-03-15 14:35:08.384 | 139286.4517577311815912 | 20000000 | 02:23:35.339 | 2321.4408626288530265
-(1 row)
 ```
 
 ## Methods
