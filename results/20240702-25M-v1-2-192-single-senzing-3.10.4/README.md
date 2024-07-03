@@ -1,4 +1,4 @@
-# senzing-test-results-20240701-25M-v1-2-192-single-senzing-3.10.4
+# senzing-test-results-20240702-25M-v1-2-192-single-senzing-3.10.4
 
 ## Contents
 
@@ -16,7 +16,7 @@
 ## Overview
 
 1. Performed: Jul 02, 2024
-2. Senzing version: 3.10.4
+2. Senzing version: 3.10.4.24184
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/senzing-garage/aws-cloudformation-performance-testing)
     1. [cloudformation.yaml](https://github.com/senzing-garage/aws-cloudformation-performance-testing/blob/main/cloudformation.yaml)
@@ -30,25 +30,25 @@
     1. ACU range: 2 - 192 (384 RES)
     1. Single database
 
-## Results - DID NOT FINISH. diagnostic test only
+## Results
 
 ### Observations
 
 1. Inserts per second:
-    1. Peak: --/second
-    1. Warm-up: -- mins
-    1. Average after warm-up: --/second
-    1. Average over entire run: --/second
-    1. Time to load 25M: -- hours
+    1. Peak: 2382/second
+    1. Warm-up: 31 mins
+    1. Average after warm-up: 2025/second
+    1. Average over entire run: 1776/second
+    1. Time to load 25M: 3.4 hours
     1. Records in dead-letter queue: 0
-    1. Volume read IOPS:      --
-    1. Volume write IOPS:  --
+    1. Volume read IOPS:       18,904
+    1. Volume write IOPS:  96,558,504
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 Note:  Withinfo disabled.
 
-- Max Stream-loader tasks: --
-- Max Redoer tasks: --
+- Max Stream-loader tasks: 42
+- Max Redoer tasks: 43
 
 ### Final metrics
 
@@ -89,7 +89,6 @@ N/A.  Ran without `withinfo` enabled.
 ![Database metrics 1](images/database-metrics-core-1.png "Database metrics 1")
 ![Database metrics 2](images/database-metrics-core-2.png "Database metrics 2")
 ![Database metrics 3](images/database-metrics-core-3.png "Database metrics 3")
-![Database metrics 4](images/database-metrics-core-4.png "Database metrics 4")
 
 ##### DSRC_RECORD
 
@@ -98,7 +97,57 @@ N/A.  Ran without `withinfo` enabled.
 #### Logs
 
 ```
+G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
+              now              |  count
+-------------------------------+----------
+ 2024-07-03 01:39:12.265842+00 | 21645223
+(1 row)
 
+G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
+             now              |  count
+------------------------------+----------
+ 2024-07-03 01:39:16.05489+00 | 21112343
+(1 row)
+
+G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
+              now              |  count
+-------------------------------+----------
+ 2024-07-03 01:39:22.233839+00 | 18023317
+(1 row)
+
+G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
+              now              |  count
+-------------------------------+----------
+ 2024-07-03 01:39:37.298476+00 | 21112343
+(1 row)
+
+G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
+              now              | count
+-------------------------------+-------
+ 2024-07-03 01:39:41.083317+00 |     0
+(1 row)
+
+G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
+              now              |  count
+-------------------------------+----------
+ 2024-07-03 01:39:44.691969+00 | 10577767
+(1 row)
+
+G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
+       load_start        |       erpm        |  total   |   duration   |     avg_erps
+-------------------------+-------------------+----------+--------------+-------------------
+ 2024-07-02 21:37:53.416 | 106555.6684250181 | 21645223 | 03:23:08.121 | 1775.927807083635
+(1 row)
+
+G2=> select dr.RECORD_ID,oe.OBS_ENT_ID,reo.RES_ENT_ID from DSRC_RECORD dr left outer join OBS_ENT oe ON dr.dsrc_id = oe.dsrc_id and dr.ent_src_key = oe.ent_src_key left outer join RES_ENT_OKEY reo ON oe.OBS_ENT_ID = reo.OBS_ENT_ID where reo.RES_ENT_ID is null;
+ record_id | obs_ent_id | res_ent_id
+-----------+------------+------------
+(0 rows)
+
+G2=> select dr.RECORD_ID,reo.OBS_ENT_ID,reo.RES_ENT_ID from RES_ENT_OKEY reo left outer join OBS_ENT oe ON oe.OBS_ENT_ID = reo.OBS_ENT_ID  left outer join DSRC_RECORD dr  ON dr.dsrc_id = oe.dsrc_id and dr.ent_src_key = oe.ent_src_key where dr.RECORD_ID is null;
+ record_id | obs_ent_id | res_ent_id
+-----------+------------+------------
+(0 rows)
 ```
 
 ## Methods
