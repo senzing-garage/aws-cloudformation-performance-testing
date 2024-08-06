@@ -8,20 +8,20 @@ Time to load 20M:               |     4.0 hours |  1.77 hours    |
 ==================================================================
 
 Diagnostic runs:
-20240701
+20240702
 ====================================================================================
-Build:                          |  3.10.1.24135  |  3.10.3-24163  |  3.10.4-24159  |
+Build:                          |  3.10.1.24135  |  3.10.3-24163  |  3.10.4-24184  |
 Number of records:              |    25 M        |    25 M        |    25 M        |
-Peak:                           |  2501          |  2404          |  5309          |
-Warm-up:                        |    25 mins     |    29 mins     |    25 mins     |
-Average after warm-up:          |  2197          |  2139          |  4492          |
-Average over entire run:        |  1937          |  1896          |  3530          |
-Time to load 20M:               |     3.1 hours  |     3.2 hours  |     1.7 hours  |
+Peak:                           |  2501          |  2404          |  2382          |
+Warm-up:                        |    25 mins     |    29 mins     |    31 mins     |
+Average after warm-up:          |  2197          |  2139          |  2025          |
+Average over entire run:        |  1937          |  1896          |  1776          |
+Time to load 20M:               |     3.1 hours  |     3.2 hours  |     3.4 hours  |
 Records in dead-letter queue:   |     0          |     0          |     0          |
-Total Billed read IOPS:         |      607,778   |      149,894   |      508,216   |
-Total Billed write IOPS:        |   99,726,985   |   96,757,579   |  100,824,689   |
-Max loader tasks:               |     45         |     44         |    100         |
-Max redoer tasks:               |     43         |     43         |     76         |
+Total Billed read IOPS:         |      607,778   |      149,894   |       18,904   |
+Total Billed write IOPS:        |   99,726,985   |   96,757,579   |   96,558,504   |
+Max loader tasks:               |     45         |     44         |     42         |
+Max redoer tasks:               |     43         |     43         |     43         |
 Notes:                          | single DB inst | single DB inst | single DB inst |
                                 |   serverless   |   serverless   |   serverless   |
 ====================================================================================

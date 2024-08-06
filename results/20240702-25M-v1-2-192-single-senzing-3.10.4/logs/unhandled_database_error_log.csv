@@ -1,0 +1,36 @@
+timestamp,message
+1719956685983,2024-07-02 21:44:45.983 [sql:140618370119424] CRIT: Exception: FATAL:  remaining connection slots are reserved for non-replication superuser connections
+1719956685983,UNHANDLED DATABASE ERROR: ((1:FATAL:  remaining connection slots are reserved for non-replication superuser connections ))
+1719956685983,UNHANDLED DATABASE ERROR: ((1:FATAL:  remaining connection slots are reserved for non-replication superuser connections ))
+1719956685983,2024-07-02 21:44:45.983 [sql:140618359629568] CRIT: Exception: FATAL:  remaining connection slots are reserved for non-replication superuser connections
+1719956685983,"senzing.G2Exception.G2DatabaseException: 1001E|Critical Database Error '(1:FATAL:  remaining connection slots are reserved for non-replication superuser connections )' [{""REASON"":""LIB_FEAT_ID[302] of FTYPE_ID[18] went generic for CANDIDATES"",""DATA_SOURCE"":""TEST"",""RECORD_ID"":""ov47gTSGn"",""ENTITY_TYPE"":""GENERIC"",""DSRC_ACTION"":""X""}]"
+1719956685983,"senzing.G2Exception.G2DatabaseException: 1001E|Critical Database Error '(1:FATAL:  remaining connection slots are reserved for non-replication superuser connections )' [{""REASON"":""LIB_FEAT_ID[200281] of FTYPE_ID[18] went generic for CANDIDATES"",""DATA_SOURCE"":""TEST"",""RECORD_ID"":""79394636"",""ENTITY_TYPE"":""GENERIC"",""DSRC_ACTION"":""X""}]"
+1719956685999,UNHANDLED DATABASE ERROR: ((1:FATAL:  remaining connection slots are reserved for non-replication superuser connections ))
+1719956685999,2024-07-02 21:44:45.999 [sql:140618797922048] CRIT: Exception: FATAL:  remaining connection slots are reserved for non-replication superuser connections
+1719956685999,"senzing.G2Exception.G2DatabaseException: 1001E|Critical Database Error '(1:FATAL:  remaining connection slots are reserved for non-replication superuser connections )' [{""REASON"":""LIB_FEAT_ID[200746] of FTYPE_ID[18] went generic for CANDIDATES"",""DATA_SOURCE"":""TEST"",""RECORD_ID"":""3i5jYUXjw"",""ENTITY_TYPE"":""GENERIC"",""DSRC_ACTION"":""X""}]"
+1719956686006,UNHANDLED DATABASE ERROR: ((1:FATAL:  remaining connection slots are reserved for non-replication superuser connections ))
+1719956686006,2024-07-02 21:44:46.005 [sql:140618349139712] CRIT: Exception: FATAL:  remaining connection slots are reserved for non-replication superuser connections
+1719956686006,"senzing.G2Exception.G2DatabaseException: 1001E|Critical Database Error '(1:FATAL:  remaining connection slots are reserved for non-replication superuser connections )' [{""REASON"":""LIB_FEAT_ID[695] of FTYPE_ID[18] went generic for CANDIDATES"",""DATA_SOURCE"":""TEST"",""RECORD_ID"":""fVmLduXpl"",""ENTITY_TYPE"":""GENERIC"",""DSRC_ACTION"":""X""}]"
+1719956686018,UNHANDLED DATABASE ERROR: ((1:FATAL:  remaining connection slots are reserved for non-replication superuser connections ))
+1719956686018,2024-07-02 21:44:46.018 [sql:140618787432192] CRIT: Exception: FATAL:  remaining connection slots are reserved for non-replication superuser connections
+1719956686018,"senzing.G2Exception.G2DatabaseException: 1001E|Critical Database Error '(1:FATAL:  remaining connection slots are reserved for non-replication superuser connections )' [{""REASON"":""LIB_FEAT_ID[1204] of FTYPE_ID[9] went generic for CANDIDATES"",""DATA_SOURCE"":""TEST"",""RECORD_ID"":""RSDwEoJ3B"",""ENTITY_TYPE"":""GENERIC"",""DSRC_ACTION"":""X""}]"
+1719956715442,Threads: 20
+1719956715442,Still processing (0.0 min: TEST : 230008498
+1719956715442,Still processing (0.0 min: TEST : 6317470
+1719956715442,Still processing (0.0 min: TEST : 30v437O10
+1719956715442,Still processing (0.0 min: TEST : 604653497
+1719956715442,Still processing (0.0 min: TEST : 537938637
+1719956715442,Still processing (0.0 min: TEST : 520445506
+1719956715442,Still processing (0.0 min: TEST : 182214653
+1719956715442,Still processing (0.0 min: TEST : 496029038
+1719956715442,Still processing (0.0 min: TEST : 580516871
+1719956715442,Still processing (0.0 min: TEST : 248549348
+1719956715442,Still processing (0.0 min: TEST : 66766092
+1719956715442,Still processing (0.0 min: TEST : 121543TZ0
+1719956715442,Still processing (0.0 min: TEST : 55347002
+1719956715442,Still processing (0.0 min: TEST : dicn7ITb6
+1719956715442,Still processing (0.0 min: TEST : 3i5jYUXjw
+1719956715442,Still processing (0.0 min: TEST : RSDwEoJ3B
+1719956715442,Still processing (0.0 min: TEST : ov47gTSGn
+1719956715442,Still processing (0.0 min: TEST : 79394636
+1719956715442,Still processing (0.0 min: TEST : fVmLduXpl
