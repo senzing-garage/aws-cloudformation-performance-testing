@@ -7,6 +7,26 @@ Average over entire run:        |  1401         |  3141          |
 Time to load 20M:               |     4.0 hours |  1.77 hours    |
 ==================================================================
 
+20241120
+=====================================================================================================
+Build:                          |  3.8.3-24043   |  3.10.4-24184  |  3.12.1.24295  |  3.12.3.24323  |
+Number of records:              |    20 M        |    25 M        |    25 M        |    24ish M     |
+Number of records loaded:       | 20000000       | 21645223       | 21645223       | 20928140       |
+Peak:                           |  6004          |  2382          |  2049          |  2015          |
+Warm-up:                        |    10 mins     |    31 mins     |    15 mins     |    29 mins     |
+Average after warm-up:          |  4116          |  2025          |  1690          |  1749          |
+Average over entire run:        |  3758          |  1776          |  1612          |  1582          |
+Time to load 20M:               |     1.47 hours |     3.4 hours  |     3.73 hours |     3.67 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |      669,101   |       18,904   |      574,897   |      546,056   |
+Total Billed write IOPS:        |   81,852,443   |   96,558,504   |   99,307,108   |   96,234,006   |
+Max loader tasks:               |     83         |     42         |     36         |     40         |
+Max redoer tasks:               |     56         |     43         |     37         |     40         |
+Notes:                          | multi DB inst  | single DB inst | single DB inst | single DB inst |
+                                |   serverless   |   serverless   |   serverless   |   serverless   |
+=====================================================================================================
+
+
 20241021
 ======================================================================================================================
 Build:                          |  3.8.3-24043   |  3.10.3-24159  |  3.10.4-24184  |  3.12.1-24281  |  3.12.1.24295  |
