@@ -1,5 +1,45 @@
 
 
+20250306
+=====================================================================================================
+Build:                          |  3.8.0-23303   |  3.10.3-24159  |  3.12.3.24323  |  4.0.0.25064   |
+Number of records:              |   20M          |    25 M        |    24ish M     |    25 M        |
+Peak:                           |  5222          |  2444          |  2015          |  4266          |
+Warm-up:                        |     0 mins     |     0 mins     |    29 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |  1749          |   n/a          |
+Average over entire run:        |  4597          |  1937          |  1582          |  3521          |
+Time to load 20M:               |    1.22 hours  |     3.1 hours  |     3.67 hours |     1.97 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |           31   |      828,136   |      546,056   |           44   | <-odd
+Total Billed write IOPS:        |   80,844,597   |   94,762,780   |   96,234,006   |  121,551,476   |
+Max loader tasks:               |     64         |     44         |     40         |     78         | <-lots of processes
+Max redoer tasks:               |     31         |     38         |     40         |    143         | <-lots of processes
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                |db.r6id.24xlarge| db.r6i.8xlarge |   serverless   | db.r6i.24xlarge|
+                                |     IO opt     | IO opt - AMD   |                | IO opt - AMD   |
+=====================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ==================================================================
 Build:                          |  2.8.2-21243  |  3.8.0-23258   |
 Peak:                           |  2635         |  5565          |
