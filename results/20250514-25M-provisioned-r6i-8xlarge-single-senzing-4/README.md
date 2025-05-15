@@ -1,4 +1,4 @@
-# senzing-test-results-20250514-25M-AMD-provisioned-r6i-8xlarge-single-senzing-4
+# senzing-test-results-20250514-25M-provisioned-r6i-8xlarge-single-senzing-4
 
 ## Contents
 
