@@ -1,4 +1,43 @@
 
+20250515
+======================================================================================================================
+Build:                          |  3.10.3-24159  |  3.12.3.24323  |  4.0.0.25132   |  4.0.0.25132   |  4.0.0.25132   |
+Number of records:              |    25 M        |    24ish M     |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2444          |  2015          |  2427          |  2499          |  2483          |
+Warm-up:                        |     0 mins     |    29 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |  1749          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1937          |  1582          |  1727          |  1820          |  1772          |
+Time to load 20M:               |     3.1 hours  |     3.67 hours |     4 hours    |   3.8 hours    |   3.9 hours    |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |      828,136   |      546,056   |    2,391,877   |    2,496,854   |    2,458,397   |
+Total Billed write IOPS:        |   94,762,780   |   96,234,006   |  128,618,481   |  128,271,910   |  128,175,673   |
+Max loader tasks:               |     44         |     40         |     30         |     36         |     36         |
+Max redoer tasks:               |     38         |     40         |     43         |     43         |     39         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge |   serverless   | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                | IO opt - AMD   |                |    IO opt      |    IO opt      |    IO opt      |
+                                |                |                |                | 25% CPU loader | 25% CPU loader |
+                                |                |                |                |                | sync commit off|
+======================================================================================================================
+
+20250514
+======================================================================================================================
+Build:                          |  3.8.0-23303   |  3.10.3-24159  |  3.12.3.24323  |  4.0.0.25064   |  4.0.0.25132   |
+Number of records:              |   20M          |    25 M        |    24ish M     |    25 M        |    25 M        |
+Peak:                           |  5222          |  2444          |  2015          |  4266          |  2427          |
+Warm-up:                        |     0 mins     |     0 mins     |    29 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |  1749          |   n/a          |   n/a          |
+Average over entire run:        |  4597          |  1937          |  1582          |  3521          |  1727          |
+Time to load 20M:               |    1.22 hours  |     3.1 hours  |     3.67 hours |     1.97 hours |     4 hours    |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |           31   |      828,136   |      546,056   |           44   |    2,391,877   |
+Total Billed write IOPS:        |   80,844,597   |   94,762,780   |   96,234,006   |  121,551,476   |  128,618,481   |
+Max loader tasks:               |     64         |     44         |     40         |     78         |     30         |
+Max redoer tasks:               |     31         |     38         |     40         |    143         |     43         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                |db.r6id.24xlarge| db.r6i.8xlarge |   serverless   | db.r6i.24xlarge| db.r6i.8xlarge |
+                                |     IO opt     | IO opt - AMD   |                | IO opt - AMD   |    IO opt      |
+======================================================================================================================
 
 20250306
 =====================================================================================================
