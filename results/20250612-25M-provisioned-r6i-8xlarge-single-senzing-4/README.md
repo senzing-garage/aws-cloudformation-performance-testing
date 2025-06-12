@@ -1,4 +1,4 @@
-# senzing-test-results-20250612-25M-provisioned-r6i-8xlarge-single-senzing-4
+# senzing-test-results-20250610-25M-provisioned-r6i-8xlarge-single-senzing-4
 
 ## Contents
 
@@ -34,6 +34,17 @@
     1. IO Opt (StorageType: aurora-iopt1)
     1. sychronous commit, NOT turned off
     1. Auto scaling of loaders turned from 30% to 25% CPU
+    1. Updated DB parameter group to enable some tracking:
+    ```
+    RdsDbParameterGroup:
+    Properties:
+      Description: !Sub '${AWS::StackName}-rds-db-parameter-group-description'
+      Family: aurora-postgresql14
+      Parameters:
+        shared_preload_libraries: 'pg_stat_statements'
+        track_io_timing: 1
+        enable_seqscan: 0
+    ```
 1. sshd docker container tagged `staging` failed to run. created new task definition using 1.4.11 and updated the CFT to reflect that.
 
 ## Results
@@ -53,8 +64,8 @@
 
 1. Max tasks:
 
-    - Max Consumer tasks: 37
-    - Max Redoer tasks: 43
+    - Max Consumer tasks: 38
+    - Max Redoer tasks: 44
 
 ### Final metrics
 
@@ -112,49 +123,49 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2025-06-11 01:03:48.666078+00 | 25000000
+ 2025-06-12 22:29:19.840795+00 | 25000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2025-06-11 01:03:52.902684+00 | 24999937
+ 2025-06-12 22:29:23.511102+00 | 24999937
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
-             now              |  count
-------------------------------+----------
- 2025-06-11 01:04:00.55268+00 | 21127704
+              now              |  count
+-------------------------------+----------
+ 2025-06-12 22:29:38.110817+00 | 21127675
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2025-06-11 01:04:16.950442+00 | 24999937
+ 2025-06-12 22:29:42.342718+00 | 24999937
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
               now              | count
 -------------------------------+-------
- 2025-06-11 01:04:25.422959+00 |     0
+ 2025-06-12 22:29:46.092836+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT WHERE ent_state != 0 ;
               now              | count
 -------------------------------+-------
- 2025-06-11 01:04:30.364294+00 |    17
+ 2025-06-12 22:29:49.420901+00 |    49
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+----------
- 2025-06-11 01:04:39.756944+00 | 11101848
+ 2025-06-12 22:29:53.800102+00 | 11052024
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
        load_start        |          erpm           |  total   |   duration   |       avg_erps
 -------------------------+-------------------------+----------+--------------+-----------------------
- 2025-06-10 20:29:20.513 | 115208.2669765717844485 | 25000000 | 03:36:59.899 | 1920.1377829428630741
+ 2025-06-12 17:50:46.779 | 115195.9686940363584765 | 25000000 | 03:37:01.289 | 1919.9328115672726413
 (1 row)
 
 G2=> select dr.RECORD_ID,oe.OBS_ENT_ID,reo.RES_ENT_ID from DSRC_RECORD dr left outer join OBS_ENT oe ON dr.dsrc_id = oe.dsrc_id and dr.ent_src_key = oe.ent_src_key left outer join RES_ENT_OKEY reo ON oe.OBS_ENT_ID = reo.OBS_ENT_ID where reo.RES_ENT_ID is null;
