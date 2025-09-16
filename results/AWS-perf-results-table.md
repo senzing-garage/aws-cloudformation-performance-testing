@@ -1,3 +1,25 @@
+
+20250915
+====================================================================================
+Build:                          |  3.10.3-24159  |  4.0.0.25224   |  4.1.0.25254   |
+Number of records:              |    21ish M     |    25 M        |    25 M        |
+Peak:                           |  2444          |  2363          |  2348          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1937          |  1781          |  1793          |
+Time to load 25M:               |adj  3.58 hours |     3.9 hours  |     3.87 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |
+Total Billed read IOPS:         |adj     956,488 |    1,686,563   |    2,065,745   |
+Total Billed write IOPS:        |adj 109,449,993 |  115,298,381   |  118,358,915   |
+Max loader tasks:               |     44         |     39         |     37         |
+Max redoer tasks:               |     38         |     39         |     37         |
+Notes:                          | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                | IO opt - AMD   |    IO opt      |    IO opt      |
+                                |                | 25% CPU loader | 25% CPU loader |
+                                |                | sync commit off| sync commit off|
+====================================================================================
+
 20250813
 =======================================================================================================================================
 Build:                          |  3.10.3-24159  |  3.12.3.24323  |  4.0.0.25132   |  4.0.0.25160   |  4.0.0.25160   |  4.0.0.25224   |
