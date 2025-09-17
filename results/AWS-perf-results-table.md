@@ -650,6 +650,25 @@ Total Billed write IOPS         |               |                |  148,886,718 
 100M perf test run:
 =====================================================================================================================
 
+20250916
+=====================================================================================================
+Build:                          |  3.8.0.23303   |  3.9.1.24074   |  4.0.0.25224   |  4.1.0.25254   |
+Peak:                           |  5358          |  5053          |  4829          |  4688          |
+Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1856          |  2067          |  2877          |  2969          |
+Time to load 100M:              |    14.97 hours |    13.43 hours |     9.65 hours |     9.35 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   23,253,554   |   46,846,823   |   38,951,128   |   33,886,974   |
+Volume write IOPS               |  389,707,354   |  413,350,943   |  474,989,850   |  473,285,471   |
+Max loader tasks:               |           69   |           53   |    117         |    97          |
+Max redoer tasks:               |           60   |           75   |    112         |    99          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                |db.r6id.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |                |                |                | 25% CPU loader |
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+=====================================================================================================
+
 20250813
 ====================================================================================
 Build:                          |  3.8.0.23303   |  3.9.1.24074   |  4.0.0.25224   |
@@ -661,8 +680,8 @@ Time to load 100M:              |    14.97 hours |    13.43 hours |     9.65 hou
 Records in dead-letter queue:   |     0          |     0          |     0          |
 Volume read IOPS                |   23,253,554   |   46,846,823   |   38,951,128   |
 Volume write IOPS               |  389,707,354   |  413,350,943   |  474,989,850   |
-Max loader tasks:               |           69   |           53   |    33          |
-Max redoer tasks:               |           60   |           75   |    30          |
+Max loader tasks:               |           69   |           53   |   117          |
+Max redoer tasks:               |           60   |           75   |   112          |
 Notes:                          | single DB inst | single DB inst | single DB inst |
                                 |db.r6id.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
                                 |   IO opt       |   IO opt       |   IO opt       |
