@@ -1,9 +1,6 @@
 {
-  // Version of the setting file.  Always 0.2
   "version": "0.2",
-  // language - current active spelling language
   "language": "en",
-  // words - list of words to be always considered correct
   "words": [
     "autovacuum",
     "awslogs",
@@ -50,9 +47,5 @@
     "xlarge",
     "XXXDEBUGLEVEL"
   ],
-  "ignorePaths": [
-    ".git/**",
-    "results/**",
-    "reports/**"
-  ]
+  "ignorePaths": [".git/**", "results/**", "reports/**"]
 }
