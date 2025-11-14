@@ -1,3 +1,24 @@
+20251111
+=====================================================================================================
+Build:                          |  3.10.3-24159  |  4.0.0.25224   |  4.1.0.25254   |  4.2.0.25317   |
+Number of records:              |    21ish M     |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2444          |  2363          |  2348          |  2164          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1937          |  1781          |  1793          |  1717          |
+Time to load 25M:               |adj  3.58 hours |     3.9 hours  |     3.87 hours |     4.05 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Total Billed read IOPS:         |adj     956,488 |    1,686,563   |    2,065,745   |    2,001,818   |
+Total Billed write IOPS:        |adj 109,449,993 |  115,298,381   |  118,358,915   |  118,573,811   |
+Max loader tasks:               |     44         |     39         |     37         |     33         |
+Max redoer tasks:               |     38         |     39         |     37         |     35         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                | IO opt - AMD   |    IO opt      |    IO opt      |    IO opt      |
+                                |                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                |                | sync commit off| sync commit off| sync commit off|
+=====================================================================================================
+
 
 20250915
 ====================================================================================
