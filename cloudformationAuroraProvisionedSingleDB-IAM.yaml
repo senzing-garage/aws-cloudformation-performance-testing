@@ -3074,8 +3074,8 @@ Resources:
                   -- Grant rds_iam role
                   GRANT rds_iam TO ${IAM_DB_USER};
 
-                  -- Grant database connection
-                  GRANT CONNECT ON DATABASE ${DB_NAME} TO ${IAM_DB_USER};
+                  -- Grant database connection (quoted to preserve case)
+                  GRANT CONNECT ON DATABASE "${DB_NAME}" TO ${IAM_DB_USER};
 
                   -- Grant schema usage (adjust as needed)
                   GRANT USAGE ON SCHEMA public TO ${IAM_DB_USER};
@@ -3434,6 +3434,10 @@ Resources:
 
   EcsServiceRedoer:
     Condition: IfRunRedoer
+    DependsOn:
+      - LambdaRunnerInitPostgresConfiguration
+      - LambdaRunnerCreateIamDbUser
+      - SsmParameterSenzingEngineConfigurationJson
     Properties:
       Cluster: !Ref EcsCluster
       DesiredCount: 1
@@ -3482,6 +3486,10 @@ Resources:
 
   EcsServiceStreamLoader:
     Condition: IfRunStreamLoader
+    DependsOn:
+      - LambdaRunnerInitPostgresConfiguration
+      - LambdaRunnerCreateIamDbUser
+      - SsmParameterSenzingEngineConfigurationJson
     Properties:
       Cluster: !Ref EcsCluster
       DesiredCount: 0
