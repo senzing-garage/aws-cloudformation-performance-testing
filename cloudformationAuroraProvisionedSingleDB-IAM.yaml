@@ -267,7 +267,7 @@ Mappings:
       # senzing v4
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
-      InitPostgresql: docker.io/senzing/init-database:0.8.0
+      InitPostgresql: docker.io/senzing/init-database:latest
       Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:staging
       SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:staging
       Sshd: public.ecr.aws/senzing/sshd:staging
