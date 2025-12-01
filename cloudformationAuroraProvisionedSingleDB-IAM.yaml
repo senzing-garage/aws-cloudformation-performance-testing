@@ -2082,7 +2082,7 @@ Resources:
   # Lambda function to generate Senzing engine configuration with password authentication
   # This creates traditional postgresql:// connection strings with username:password
   # Used ONLY for initialization tasks (init-database, IAM user creation) that don't support IAM
-  LambdaFunctionSenzingEngineConfigurationJsonPassword:
+  LambdaFunctionSzConfigPassword:
     Properties:
       Code:
         ZipFile: |
@@ -2402,7 +2402,7 @@ Resources:
           Value: !Sub '${AWS::StackName}-lambda-runner-senzing-engine-configuration-json'
     Type: Custom::LambdaRunnerSenzingEngineConfigurationJson
 
-  LambdaRunnerSenzingEngineConfigurationJsonPassword:
+  LambdaRunnerSzConfigPassword:
     DependsOn:
       - DbInstanceCore1Ready
       - DbClusterCoreReady
@@ -2413,11 +2413,11 @@ Resources:
       DatabasePortCore: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabaseUsername: !FindInMap [Constants, Database, Username]
       SenzingLicenseAsBase64: !Ref SenzingLicenseAsBase64
-      ServiceToken: !GetAtt LambdaFunctionSenzingEngineConfigurationJsonPassword.Arn
+      ServiceToken: !GetAtt LambdaFunctionSzConfigPassword.Arn
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-lambda-runner-senzing-engine-configuration-json-password'
-    Type: Custom::LambdaRunnerSenzingEngineConfigurationJsonPassword
+    Type: Custom::LambdaRunnerSzConfigPassword
 
   LambdaRunnerSshPassword:
     Condition: IfRunSshd
@@ -3014,14 +3014,17 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Environment:
-            - Name: SENZING_ENGINE_CONFIGURATION_JSON
-              Value: !GetAtt LambdaRunnerSenzingEngineConfigurationJsonPassword.ConfigJSON
+            # - Name: SENZING_ENGINE_CONFIGURATION_JSON
+            - Name: SENZING_TOOLS_CORE_SETTINGS
+              Value: !GetAtt LambdaRunnerSzConfigPassword.ConfigJSON
             - Name: LC_CTYPE
               Value: en_US.utf8
             - Name: SENZING_SUBCOMMAND
               Value: mandatory
             - Name: SENZING_DEBUG
               Value: False
+            # - Name: SENZING_TOOLS_LOG_LEVEL
+            #   Value: TRACE
           Essential: true
           Image: !FindInMap [Constants, Images, InitPostgresql]
           LogConfiguration:
