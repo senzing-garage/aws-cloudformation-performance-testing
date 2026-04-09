@@ -1,4 +1,4 @@
-# senzing-test-results-20260112-25M-provisioned-r6i-8xlarge-single-senzing-4
+# senzing-test-results-20260408-25M-provisioned-r6i-8xlarge-single-senzing-4.2.4
 
 ## Contents
 
@@ -15,8 +15,8 @@
 
 ## Overview
 
-1. Performed: Apr 07, 2026
-2. Senzing version: 4.2.3.26092
+1. Performed: Apr 0, 2026
+2. Senzing version: 4.2.4.26098
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/senzing-garage/aws-cloudformation-performance-testing)
     1. [cloudformationAuroraProvisionedSingleDB.yaml](./cloudformationAuroraProvisionedSingleDB.yaml)
@@ -52,20 +52,20 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2123/second
+    1. Peak: 2254/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
-    1. Average over entire run: 1594/second
-    1. Time to load 25M: 4.35 hours
-    1. Records in dead-letter queue: 2
-    1. Volume read IOPS:      1,963,438
-    1. Volume write IOPS:   118,888,575
+    1. Average over entire run: 1779/second
+    1. Time to load 25M: 3.92 hours
+    1. Records in dead-letter queue: 0
+    1. Volume read IOPS:      1,998,816
+    1. Volume write IOPS:   118,448,552
     1. See [dsrc_record.csv](data/dsrc_record.csv)
 
 1. Max tasks:
 
-    - Max Consumer tasks: 25
-    - Max Redoer tasks: 28
+    - Max Consumer tasks: 26
+    - Max Redoer tasks: 31
 
 ### Final metrics
 
@@ -117,59 +117,57 @@ N/A.  Ran without `withinfo` enabled.
 
 ```
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
-              now              |  count
--------------------------------+----------
- 2026-04-07 13:09:03.792055+00 | 25000000
+             now              |  count
+------------------------------+----------
+ 2026-04-09 14:36:34.92686+00 | 25000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2026-04-07 13:09:11.366918+00 | 24999937
+ 2026-04-09 14:36:40.039269+00 | 24999937
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
-              now              |  count
--------------------------------+----------
- 2026-04-07 13:09:20.535264+00 | 21133313
+             now              |  count
+------------------------------+----------
+ 2026-04-09 14:36:59.78627+00 | 21131637
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2026-04-07 13:09:24.979373+00 | 24999935
+ 2026-04-09 14:37:29.057572+00 | 24999937
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
-             now              | count
-------------------------------+-------
- 2026-04-07 13:09:29.38037+00 |     0
+              now              | count
+-------------------------------+-------
+ 2026-04-09 14:37:35.167299+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT WHERE ent_state != 0 ;
               now              | count
 -------------------------------+-------
- 2026-04-07 13:09:33.489865+00 |    31
+ 2026-04-09 14:37:39.127015+00 |  7075
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
               now              |  count
 -------------------------------+----------
- 2026-04-07 13:09:37.209113+00 | 11417720
+ 2026-04-09 14:37:43.092037+00 | 11202221
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
-       load_start        |          erpm          |  total   |  duration   |       avg_erps
--------------------------+------------------------+----------+-------------+-----------------------
- 2026-04-07 03:35:09.047 | 95637.0992885237393718 | 25000000 | 04:21:24.29 | 1593.9516548087289895
+       load_start        |          erpm           |  total   |  duration   |       avg_erps
+-------------------------+-------------------------+----------+-------------+-----------------------
+ 2026-04-08 23:50:55.237 | 106765.2133311315973632 | 25000000 | 03:54:09.52 | 1779.4202221855266227
 (1 row)
 
 G2=> select dr.RECORD_ID,oe.OBS_ENT_ID,reo.RES_ENT_ID from DSRC_RECORD dr left outer join OBS_ENT oe ON dr.dsrc_id = oe.dsrc_id and dr.ent_src_key = oe.ent_src_key left outer join RES_ENT_OKEY reo ON oe.OBS_ENT_ID = reo.OBS_ENT_ID where reo.RES_ENT_ID is null;
  record_id | obs_ent_id | res_ent_id
 -----------+------------+------------
- 163732214 |   14882187 |
- 393608419 |   11898456 |
-(2 rows)
+(0 rows)
 
 G2=> select dr.RECORD_ID,reo.OBS_ENT_ID,reo.RES_ENT_ID from RES_ENT_OKEY reo left outer join OBS_ENT oe ON oe.OBS_ENT_ID = reo.OBS_ENT_ID  left outer join DSRC_RECORD dr  ON dr.dsrc_id = oe.dsrc_id and dr.ent_src_key = oe.ent_src_key where dr.RECORD_ID is null;
  record_id | obs_ent_id | res_ent_id

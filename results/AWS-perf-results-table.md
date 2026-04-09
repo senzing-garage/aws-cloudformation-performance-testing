@@ -1,22 +1,43 @@
-20260407
+20260408
 ======================================================================================================================
-Build:                          |  3.10.3-24159  |  4.0.0.25224   |  4.1.0.25254   |  4.2.0.26011   |  4.2.3.26092   |
-Number of records:              |    21ish M     |    25 M        |    25 M        |    25 M        |    25 M        |
-Peak:                           |  2444          |  2363          |  2348          |  2286          |  2123          |
+Build:                          |  4.1.0.25254   |  4.2.0.26011   |  4.2.2.26075   |  4.2.3.26092   |  4.2.4.26098   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2348          |  2286          |  2256          |  2123          |  2254          |
 Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
 Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
-Average over entire run:        |  1937          |  1781          |  1793          |  1797          |  1594          |
-Time to load 25M:               |adj  3.58 hours |     3.9 hours  |     3.87 hours |     3.87 hours |     4.35 hours |
-Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     0          |
-Total Billed read IOPS:         |adj     956,488 |    1,686,563   |    2,065,745   |    1,968,068   |    1,963,438   |
-Total Billed write IOPS:        |adj 109,449,993 |  115,298,381   |  118,358,915   |  118,214,667   |  118,888,575   |
-Max loader tasks:               |     44         |     39         |     37         |     25         |     25         |
-Max redoer tasks:               |     38         |     39         |     37         |     31         |     28         |
+Average over entire run:        |  1793          |  1797          |  1791          |  1594          |  1779          |
+Time to load 25M:               |     3.87 hours |     3.87 hours |     3.88 hours |     4.35 hours |     3.92 hours |
+Records in dead-letter queue:   |     0          |     0          |     2          |     2          |     0          |
+Total Billed read IOPS:         |    2,065,745   |    1,968,068   |    2,002,329   |    1,963,438   |    1,998,816   |
+Total Billed write IOPS:        |  118,358,915   |  118,214,667   |  118,556,285   |  118,888,575   |  118,448,552   |
+Max loader tasks:               |     37         |     25         |     27         |     25         |     26         |
+Max redoer tasks:               |     37         |     31         |     33         |     28         |     31         |
 Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
                                 | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
-                                | IO opt - AMD   |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
-                                |                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
-                                |                | sync commit off| sync commit off| sync commit off| sync commit off|
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
+======================================================================================================================
+
+20260407
+======================================================================================================================
+Build:                          |  4.0.0.25224   |  4.1.0.25254   |  4.2.0.26011   |  4.2.2.26075   |  4.2.3.26092   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2363          |  2348          |  2286          |  2256          |  2123          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1781          |  1793          |  1797          |  1791          |  1594          |
+Time to load 25M:               |     3.9 hours  |     3.87 hours |     3.87 hours |     3.88 hours |     4.35 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     2          |     2          |
+Total Billed read IOPS:         |    1,686,563   |    2,065,745   |    1,968,068   |    2,002,329   |    1,963,438   |
+Total Billed write IOPS:        |  115,298,381   |  118,358,915   |  118,214,667   |  118,556,285   |  118,888,575   |
+Max loader tasks:               |     39         |     37         |     25         |     27         |     25         |
+Max redoer tasks:               |     39         |     37         |     31         |     33         |     28         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
 ======================================================================================================================
 
 20260112
