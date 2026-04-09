@@ -111,7 +111,7 @@ Parameters:
       - '50M'
       - '75M'
       - '100M'
-    Default: '20M'
+    Default: '25M'
     Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#recordmax'
     Type: String
 
@@ -1260,12 +1260,12 @@ Resources:
   RdsDbClusterParameterGroup:
     Properties:
       Description: !Sub '${AWS::StackName}-rds-db-cluster-parameter-group-description'
-      Family: aurora-postgresql14
+      Family: aurora-postgresql17
       Parameters:
         autovacuum_max_workers: 5
         enable_seqscan: 0
-        pglogical.synchronous_commit: 0
-        synchronous_commit: 'off'
+        # pglogical.synchronous_commit: 0
+        # synchronous_commit: 'off'
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-rds-db-cluster-parameter-group'
@@ -1274,10 +1274,12 @@ Resources:
   RdsDbParameterGroup:
     Properties:
       Description: !Sub '${AWS::StackName}-rds-db-parameter-group-description'
-      Family: aurora-postgresql14
+      Family: aurora-postgresql17
       Parameters:
+        shared_preload_libraries: 'pg_stat_statements'
+        track_io_timing: 1
         enable_seqscan: 0
-        pglogical.synchronous_commit: 0
+        # pglogical.synchronous_commit: 0
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-rds-db-parameter-group'
@@ -1294,7 +1296,7 @@ Resources:
       AvailabilityZones:
         - !GetAtt Ec2SubnetPrivate1.AvailabilityZone
         - !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      DatabaseName: G2
+      DatabaseName: !FindInMap [Constants, Database, Name]
       DBClusterIdentifier: !Sub '${AWS::StackName}-aurora-senzing-core-cluster'
       DBClusterParameterGroupName:
         Ref: RdsDbClusterParameterGroup
@@ -1306,7 +1308,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: '14.9'
+      EngineVersion: '17.5'
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
@@ -1337,10 +1339,10 @@ Resources:
       # DBInstanceClass: db.r7g.12xlarge
       # DBInstanceClass: db.r7g.16xlarge
       # DBInstanceClass: db.r6i.4xlarge
-      # DBInstanceClass: db.r6i.8xlarge
+      DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
-      DBInstanceClass: db.r6i.24xlarge
+      # DBInstanceClass: db.r6i.24xlarge
       # DBInstanceClass: db.r6i.32xlarge
       # DBInstanceClass: db.r6id.32xlarge
       # DBInstanceClass: db.r6id.24xlarge
@@ -3351,7 +3353,7 @@ Resources:
           PredefinedMetricType: ECSServiceAverageCPUUtilization
         ScaleInCooldown: 1200
         ScaleOutCooldown: 300
-        TargetValue: 30
+        TargetValue: 25
     Type: AWS::ApplicationAutoScaling::ScalingPolicy
 
   ApplicationAutoScalingScalingPolicyWebApp:
