@@ -1,3 +1,24 @@
+20260422
+======================================================================================================================
+Build:                          |  4.2.0.26011   |  4.2.2.26075   |  4.2.3.26092   |  4.2.4.26098   |  4.3.0.26111   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2286          |  2256          |  2123          |  2254          |  2590          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1797          |  1791          |  1594          |  1779          |  2022          |
+Time to load 25M:               |     3.87 hours |     3.88 hours |     4.35 hours |     3.92 hours |     3.43 hours |
+Records in dead-letter queue:   |     0          |     2          |     2          |     0          |     0          |
+Total Billed read IOPS:         |    1,968,068   |    2,002,329   |    1,963,438   |    1,998,816   |    1,663,817   |
+Total Billed write IOPS:        |  118,214,667   |  118,556,285   |  118,888,575   |  118,448,552   |  115,240,044   |
+Max loader tasks:               |     25         |     27         |     25         |     26         |     30        |
+Max redoer tasks:               |     31         |     33         |     28         |     31         |     35         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
+======================================================================================================================
+
 20260408
 ======================================================================================================================
 Build:                          |  4.1.0.25254   |  4.2.0.26011   |  4.2.2.26075   |  4.2.3.26092   |  4.2.4.26098   |
