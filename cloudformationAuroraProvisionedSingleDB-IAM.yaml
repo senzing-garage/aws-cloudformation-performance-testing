@@ -47,6 +47,11 @@ Metadata:
         Parameters:
           - RunStreamProducer
       - Label:
+          default: 'Optional: Read-offload (Aurora reader replica + Senzing READ_ONLY_CONNECTION)'
+        Parameters:
+          - EnableReadOnlyConnection
+          - ReadOnlyConnections
+      - Label:
           default: Security responsibility
         Parameters:
           - SecurityResponsibility
@@ -60,6 +65,10 @@ Metadata:
         default: 'Optional: Provide the permitted IP address block allowed to connect using CIDR notation.'
       CognitoAdminEmail:
         default: 'Required: Provide the email address for the administrative user.'
+      EnableReadOnlyConnection:
+        default: 'Optional: Add an Aurora reader replica and route Senzing LIB_FEAT reads to it via READ_ONLY_CONNECTION.'
+      ReadOnlyConnections:
+        default: 'Optional: Number of connections in the Senzing read-only pool (only used when EnableReadOnlyConnection=true).'
       RecordMax:
         default: 'Required: Number of records to insert.'
       RunStreamProducer:
@@ -107,6 +116,26 @@ Parameters:
     Default: '_'
     Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#cognitoadminemail'
     Type: String
+
+  EnableReadOnlyConnection:
+    AllowedValues:
+      - 'false'
+      - 'true'
+    Default: 'false'
+    Description: >-
+      When true, add one Aurora reader replica to the cluster (same instance class as the writer)
+      and add READ_ONLY_CONNECTION / READ_ONLY_CONNECTIONS to the Senzing engine config so
+      LIB_FEAT / LIB_FEAT_HKEY reads are routed through the cluster reader endpoint. Writes still
+      go to the primary. Default false matches the original single-instance topology.
+    Type: String
+
+  ReadOnlyConnections:
+    Default: 8
+    Description: >-
+      Size of the Senzing read-only connection pool. Only used when EnableReadOnlyConnection=true.
+    MinValue: 1
+    MaxValue: 64
+    Type: Number
 
   RecordMax:
     AllowedValues:
@@ -309,6 +338,10 @@ Mappings:
 # -----------------------------------------------------------------------------
 
 Conditions:
+  IfEnableReadOnlyConnection: !Equals
+    - !Ref EnableReadOnlyConnection
+    - 'true'
+
   IfRunApiServer: !Equals
     - !FindInMap [Constants, Run, ApiServer]
     - Yes
@@ -1384,25 +1417,22 @@ Resources:
       # DBInstanceClass: db.r6gd.12xlarge
     Type: AWS::RDS::DBInstance
 
-  # RdsDbInstanceCore2:
-  #   Properties:
-  #     DBSubnetGroupName: !Sub
-  #       - "${StackNameAsLower}-db-subnet"
-  #       - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-  #     DBParameterGroupName:
-  #       Ref: RdsDbParameterGroup
-  #     Engine: aurora-postgresql
-  #     DBClusterIdentifier:
-  #       Ref: RdsDbClusterCore
-  #     PubliclyAccessible: "true"
-  #     AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-  #     # DBInstanceClass: db.r6i.4xlarge
-  #     # DBInstanceClass: db.r6i.8xlarge
-  #     DBInstanceClass: db.r6i.12xlarge
-  #     # DBInstanceClass: db.r6i.16xlarge
-  #     # DBInstanceClass: db.r6i.24xlarge
-  #     # DBInstanceClass: db.r6i.32xlarge
-  #   Type: AWS::RDS::DBInstance
+  RdsDbInstanceCore2:
+    Condition: IfEnableReadOnlyConnection
+    Properties:
+      DBSubnetGroupName: !Sub
+        - '${StackNameAsLower}-db-subnet'
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      DBParameterGroupName:
+        Ref: RdsDbParameterGroup
+      EnablePerformanceInsights: true
+      Engine: aurora-postgresql
+      DBClusterIdentifier:
+        Ref: RdsDbClusterCore
+      PubliclyAccessible: 'true'
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      DBInstanceClass: db.r6i.8xlarge
+    Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------
 
@@ -1501,10 +1531,11 @@ Resources:
       DbInstanceCore1Ready: !GetAtt RdsDbInstanceCore1.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
-  # DbInstanceCore2Ready:
-  #   Metadata:
-  #     DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
-  #   Type: AWS::CloudFormation::WaitConditionHandle
+  DbInstanceCore2Ready:
+    Condition: IfEnableReadOnlyConnection
+    Metadata:
+      DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
+    Type: AWS::CloudFormation::WaitConditionHandle
 
   # -- LambdaFunction -----------------------------------------------------------
 
@@ -2010,14 +2041,25 @@ Resources:
                       database_port_res = properties.get('DatabasePortRes', '')
                       database_host_libfeat = properties.get('DatabaseHostLibfeat', '')
                       database_port_libfeat = properties.get('DatabasePortLibfeat', '')
+                      database_host_reader = properties.get('DatabaseHostReader', '')
+                      database_port_reader = properties.get('DatabasePortReader', '')
+                      enable_read_only_connection = str(properties.get('EnableReadOnlyConnection', 'false')).lower() == 'true'
+                      read_only_connections = str(properties.get('ReadOnlyConnections', '8'))
                       region = properties.get('Region', 'us-east-2')
                       data_encryption = properties.get('DataEncryption', '')
                       db_config = 'Multiple'
                       if database_host_core == database_host_res == database_host_libfeat:
                           db_config = 'Single'
-                      logger.info(f"db_config={db_config}")
+                      logger.info(f"db_config={db_config} enable_read_only_connection={enable_read_only_connection}")
                       license_string = properties.get('SenzingLicenseAsBase64', '')
                       if db_config == 'Single':
+                          read_only_block = ''
+                          if enable_read_only_connection:
+                              read_only_block = (
+                                    ','
+                                    f'        "READ_ONLY_CONNECTION": "aurorapostgresql://{database_user_name}@{database_host_reader}:{database_port_reader}:{database_name}/?iam_auth=true&region={region}",'
+                                    f'        "READ_ONLY_CONNECTIONS": "{read_only_connections}"'
+                              )
                           response_data["ConfigJSON"] = (
                                 '{'
                                 '    "PIPELINE": {'
@@ -2029,6 +2071,7 @@ Resources:
                                 '    "SQL": {'
                                 '        "BACKEND": "SQL",'
                                 f'        "CONNECTION": "aurorapostgresql://{database_user_name}@{database_host_core}:{database_port_core}:{database_name}/?iam_auth=true&region={region}"'
+                                f'{read_only_block}'
                                 '    }'
                                 '}')
                       else:
@@ -2381,19 +2424,22 @@ Resources:
   LambdaRunnerSenzingEngineConfigurationJson:
     DependsOn:
       - DbInstanceCore1Ready
-      # - DbInstanceCore2Ready
       - DbClusterCoreReady
     Properties:
       DatabaseHostCore: !GetAtt RdsDbClusterCore.Endpoint.Address
       DatabaseHostLibfeat: !GetAtt RdsDbClusterCore.Endpoint.Address
       DatabaseHostRes: !GetAtt RdsDbClusterCore.Endpoint.Address
+      DatabaseHostReader: !GetAtt RdsDbClusterCore.ReadEndpoint.Address
       DatabaseName: !FindInMap [Constants, Database, Name]
       DatabasePassword: !GetAtt LambdaRunnerDbPassword.RandomString
       DatabasePortCore: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabasePortLibfeat: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabasePortRes: !GetAtt RdsDbClusterCore.Endpoint.Port
+      DatabasePortReader: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabaseUsername: !FindInMap [Constants, Database, Username]
       # DataEncryption: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
+      EnableReadOnlyConnection: !Ref EnableReadOnlyConnection
+      ReadOnlyConnections: !Ref ReadOnlyConnections
       Region: !Ref AWS::Region
       SenzingLicenseAsBase64: !Ref SenzingLicenseAsBase64
       ServiceToken: !GetAtt LambdaFunctionSenzingEngineConfigurationJson.Arn
@@ -3707,6 +3753,13 @@ Outputs:
     Export:
       Name: !Sub '${AWS::StackName}-database-host-core'
     Value: !GetAtt RdsDbClusterCore.Endpoint.Address
+
+  DatabaseHostReader:
+    Condition: IfEnableReadOnlyConnection
+    Description: 'The Aurora cluster reader endpoint used for Senzing READ_ONLY_CONNECTION (load-balances across replicas).'
+    Export:
+      Name: !Sub '${AWS::StackName}-database-host-reader'
+    Value: !GetAtt RdsDbClusterCore.ReadEndpoint.Address
 
   DatabaseName:
     Description: 'The name of the database. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databasename'

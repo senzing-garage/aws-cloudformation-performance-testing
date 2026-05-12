@@ -1,3 +1,13 @@
 {
-  "includeCoAuthoredBy": false
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(command -v cfn-lint)",
+      "Bash(command -v aws)",
+      "Bash(aws sts *)",
+      "Bash(cfn-lint cloudformationAuroraProvisionedSingleDB-IAM.yaml)",
+      "Bash(python3 *)",
+      "Bash(git *)"
+    ]
+  }
 }
