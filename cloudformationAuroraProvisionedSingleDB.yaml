@@ -782,7 +782,13 @@ Resources:
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-loggroup.html
   # AWS Console: https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups > Search for {stack}
 
+  # AWS::Logs::LogGroup defaults to DeletionPolicy: Retain. For an ephemeral
+  # perf-test stack that's brought up and torn down per Senzing release, set
+  # DeletionPolicy: Delete on every log group so the next deploy doesn't fail
+  # with "log group already exists".
   LogsLogGroupDbClusterCore:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub
         - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-core-cluster/postgresql'
@@ -792,6 +798,8 @@ Resources:
 
   LogsLogGroupLambdaCognitoCreateUser:
     Condition: IfUsingWeb
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-cognito-create-user'
       RetentionInDays: 30
@@ -799,54 +807,72 @@ Resources:
 
   LogsLogGroupLambdaGenerateCertificate:
     Condition: IfUsingWeb
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-generate-certificate'
       RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomPassword:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-password'
       RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomString:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-string'
       RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTask:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task'
       RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTaskAndWait:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task-and-wait'
       RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaSetRdbTimeoutAction:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-set-rdb-timeout-action'
       RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunStreamProducerTasks:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-stream-producer-tasks'
       RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaStringToLower:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-string-to-lower'
       RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupMain:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub
         - '/senzing/${StackName}/${AWS::StackName}'
