@@ -1354,7 +1354,6 @@ Resources:
       # 06:00-06:30 UTC backup window - off-hours for US-based perf runs. Adjust if
       # your test schedule conflicts.
       PreferredBackupWindow: '06:00-06:30'
-      SkipFinalSnapshot: true
       StorageEncrypted: true
       # StorageType: aurora
       StorageType: aurora-iopt1
