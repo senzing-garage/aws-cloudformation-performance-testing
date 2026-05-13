@@ -793,7 +793,6 @@ Resources:
       LogGroupName: !Sub
         - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-core-cluster/postgresql'
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaCognitoCreateUser:
@@ -802,7 +801,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-cognito-create-user'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaGenerateCertificate:
@@ -811,7 +809,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-generate-certificate'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomPassword:
@@ -819,7 +816,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-password'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomString:
@@ -827,7 +823,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-string'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTask:
@@ -835,7 +830,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTaskAndWait:
@@ -843,7 +837,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task-and-wait'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaSetRdbTimeoutAction:
@@ -851,7 +844,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-set-rdb-timeout-action'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunStreamProducerTasks:
@@ -859,7 +851,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-stream-producer-tasks'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaStringToLower:
@@ -867,7 +858,6 @@ Resources:
     UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-string-to-lower'
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupMain:
@@ -877,7 +867,6 @@ Resources:
       LogGroupName: !Sub
         - '/senzing/${StackName}/${AWS::StackName}'
         - StackName: !FindInMap [Constants, Stack, Name]
-      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   # -- Cloud, subnets, routing --------------------------------------------------
