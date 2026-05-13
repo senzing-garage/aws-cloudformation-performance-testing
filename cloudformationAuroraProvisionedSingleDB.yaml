@@ -787,67 +787,63 @@ Resources:
       LogGroupName: !Sub
         - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-core-cluster/postgresql'
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-    Type: AWS::Logs::LogGroup
-
-  LogsLogGroupDbClusterLibfeat:
-    Properties:
-      LogGroupName: !Sub
-        - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-libfeat-cluster/postgresql'
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-    Type: AWS::Logs::LogGroup
-
-  LogsLogGroupDbClusterRes:
-    Properties:
-      LogGroupName: !Sub
-        - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-res-cluster/postgresql'
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaCognitoCreateUser:
     Condition: IfUsingWeb
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-cognito-create-user'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaGenerateCertificate:
     Condition: IfUsingWeb
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-generate-certificate'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomPassword:
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-password'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomString:
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-string'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTask:
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTaskAndWait:
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task-and-wait'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaSetRdbTimeoutAction:
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-set-rdb-timeout-action'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunStreamProducerTasks:
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-stream-producer-tasks'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaStringToLower:
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-string-to-lower'
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupMain:
@@ -855,6 +851,7 @@ Resources:
       LogGroupName: !Sub
         - '/senzing/${StackName}/${AWS::StackName}'
         - StackName: !FindInMap [Constants, Stack, Name]
+      RetentionInDays: 30
     Type: AWS::Logs::LogGroup
 
   # -- Cloud, subnets, routing --------------------------------------------------
@@ -1295,6 +1292,10 @@ Resources:
       Description: !Sub '${AWS::StackName}-rds-db-cluster-parameter-group-description'
       Family: aurora-postgresql17
       Parameters:
+        # shared_preload_libraries is a cluster-level static parameter on Aurora.
+        # Belongs here, not on the instance parameter group, or pg_stat_statements
+        # won't actually load.
+        shared_preload_libraries: 'pg_stat_statements'
         autovacuum_max_workers: 5
         enable_seqscan: 0
         # pglogical.synchronous_commit: 0
@@ -1309,9 +1310,7 @@ Resources:
       Description: !Sub '${AWS::StackName}-rds-db-parameter-group-description'
       Family: aurora-postgresql17
       Parameters:
-        shared_preload_libraries: 'pg_stat_statements'
         track_io_timing: 1
-        enable_seqscan: 0
         # pglogical.synchronous_commit: 0
       Tags:
         - Key: Name
@@ -1325,10 +1324,15 @@ Resources:
     DependsOn:
       - LogsLogGroupDbClusterCore
       - RdsDbSubnetGroup
+    # Ephemeral perf-test stack: skip the default final-snapshot on delete so
+    # teardown is fast and we don't accumulate orphaned snapshots across runs.
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       AvailabilityZones:
         - !GetAtt Ec2SubnetPrivate1.AvailabilityZone
         - !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      BackupRetentionPeriod: 1
       DatabaseName: !FindInMap [Constants, Database, Name]
       DBClusterIdentifier: !Sub '${AWS::StackName}-aurora-senzing-core-cluster'
       DBClusterParameterGroupName:
@@ -1338,6 +1342,8 @@ Resources:
         - '${StackNameAsLower}-db-subnet'
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
       DeletionProtection: false
+      EnableCloudwatchLogsExports:
+        - postgresql
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
@@ -1345,6 +1351,10 @@ Resources:
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
+      # 06:00-06:30 UTC backup window - off-hours for US-based perf runs. Adjust if
+      # your test schedule conflicts.
+      PreferredBackupWindow: '06:00-06:30'
+      SkipFinalSnapshot: true
       StorageEncrypted: true
       # StorageType: aurora
       StorageType: aurora-iopt1
@@ -1356,6 +1366,8 @@ Resources:
     Type: AWS::RDS::DBCluster
 
   RdsDbInstanceCore1:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DBSubnetGroupName: !Sub
         - '${StackNameAsLower}-db-subnet'
@@ -1366,7 +1378,7 @@ Resources:
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
-      PubliclyAccessible: 'true'
+      PubliclyAccessible: 'false'
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
       # DBInstanceClass: db.r7g.8xlarge
       # DBInstanceClass: db.r7g.12xlarge
@@ -1385,6 +1397,8 @@ Resources:
 
   RdsDbInstanceCore2:
     Condition: IfEnableReadOnlyConnection
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DBSubnetGroupName: !Sub
         - '${StackNameAsLower}-db-subnet'
@@ -1395,8 +1409,11 @@ Resources:
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
-      PubliclyAccessible: 'true'
-      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      PubliclyAccessible: 'false'
+      # Co-located with the writer (AZ1) so the cluster-ro endpoint stays in the
+      # same AZ as the loader/redoer compute. Eliminates the cross-AZ tax on
+      # read-offload reads and makes the A/B vs. writer-only baseline fair.
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
       DBInstanceClass: db.r6i.8xlarge
     Type: AWS::RDS::DBInstance
 
@@ -1413,7 +1430,9 @@ Resources:
       MaximumMessageSize: 262144
       MessageRetentionPeriod: 1209600
       QueueName: !Sub '${AWS::StackName}-sqs-input'
-      ReceiveMessageWaitTimeSeconds: 0
+      # Long polling reduces empty receives at low queue depth without hurting
+      # steady-state throughput.
+      ReceiveMessageWaitTimeSeconds: 20
       RedrivePolicy:
         deadLetterTargetArn:
           Fn::GetAtt:
@@ -1423,7 +1442,9 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sqs-input'
-      VisibilityTimeout: 14400
+      # 30 min: generous for slow Senzing batches but ~8x faster DLQ feedback
+      # than the previous 4h. Raise back if real batches exceed this.
+      VisibilityTimeout: 1800
     Type: AWS::SQS::Queue
 
   SqsDeadLetter:
@@ -2167,9 +2188,9 @@ Resources:
             assignPublicIp: DISABLED
             securityGroups:
               - !Ref Ec2SecurityGroupLambdaRunner
+            # Pinned to AZ1 (writer AZ) to keep one-shot DB setup same-AZ.
             subnets:
               - !Ref Ec2SubnetPrivate1
-              - !Ref Ec2SubnetPrivate2
         platformVersion: 1.4.0
         tags:
           - key: Name
@@ -2223,7 +2244,6 @@ Resources:
   LambdaRunnerInitPostgresConfiguration:
     DependsOn:
       - DbInstanceCore1Ready
-      # - DbInstanceCore2Ready
       - DbClusterCoreReady
     Properties:
       ClusterId: !Ref EcsCluster
@@ -2237,9 +2257,10 @@ Resources:
             assignPublicIp: DISABLED
             securityGroups:
               - !Ref Ec2SecurityGroupLambdaRunner
+            # Pinned to AZ1 (writer AZ) - this task creates the Senzing schema
+            # via many DDL statements; same-AZ keeps setup latency stable across runs.
             subnets:
               - !Ref Ec2SubnetPrivate1
-              - !Ref Ec2SubnetPrivate2
         platformVersion: 1.4.0
         tags:
           - key: Name
@@ -2270,6 +2291,13 @@ Resources:
       # DataEncryption: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
       EnableReadOnlyConnection: !Ref EnableReadOnlyConnection
       ReadOnlyConnections: !Ref ReadOnlyConnections
+      # When read-offload is enabled, force the engine config to wait until the
+      # reader replica is "available" by creating a graph edge via !Ref.
+      # The Lambda ignores this property; CFN uses it to order the resources.
+      ReaderInstanceId: !If
+        - IfEnableReadOnlyConnection
+        - !Ref RdsDbInstanceCore2
+        - !Ref AWS::NoValue
       SenzingLicenseAsBase64: !Ref SenzingLicenseAsBase64
       ServiceToken: !GetAtt LambdaFunctionSenzingEngineConfigurationJson.Arn
       Tags:
@@ -3197,9 +3225,10 @@ Resources:
           AssignPublicIp: DISABLED
           SecurityGroups:
             - !Ref Ec2SecurityGroupInternal
+          # Pinned to AZ1 (writer AZ) to eliminate cross-AZ DB round-trips on
+          # every redo write. The cluster always keeps the writer in AZ1 here.
           Subnets:
             - !Ref Ec2SubnetPrivate1
-            - !Ref Ec2SubnetPrivate2
       PlatformVersion: 1.4.0
       PropagateTags: TASK_DEFINITION
       ServiceName: redoer
@@ -3245,9 +3274,10 @@ Resources:
           AssignPublicIp: DISABLED
           SecurityGroups:
             - !Ref Ec2SecurityGroupInternal
+          # Pinned to AZ1 (writer AZ) so every loader write is same-AZ.
+          # ~1-2 ms saved per round-trip; significant at 25M+ records.
           Subnets:
             - !Ref Ec2SubnetPrivate1
-            - !Ref Ec2SubnetPrivate2
       PlatformVersion: 1.4.0
       PropagateTags: TASK_DEFINITION
       ServiceName: consumer
