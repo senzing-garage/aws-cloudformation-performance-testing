@@ -1,4 +1,4 @@
-# senzing-test-results-20260513-25M-provisioned-r6i-8xlarge-single-senzing-4.3.0
+# senzing-test-results-20260518-25M-provisioned-r6i-8xlarge-single-senzing-4.3.0
 
 ## Contents
 
@@ -15,8 +15,8 @@
 
 ## Overview
 
-1. Performed: May 13, 2026
-2. Senzing version: 4.3.0.26126
+1. Performed: May 18, 2026
+2. Senzing version: 4.3.0.26135
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/senzing-garage/aws-cloudformation-performance-testing)
     1. [cloudformationAuroraProvisionedSingleDB.yaml](./cloudformationAuroraProvisionedSingleDB.yaml)
@@ -53,11 +53,11 @@
 ### Observations
 
 1. Inserts per second:
-    1. Peak: 2434/second
+    1. Peak: 2427/second
     1. Warm-up: 0 mins
     1. Average after warm-up: n/a
-    1. Average over entire run: 2002/second
-    1. Time to load 25M: 3.47 hours
+    1. Average over entire run: 1977/second
+    1. Time to load 25M: 3.5 hours
     1. Records in dead-letter queue: 0
     1. Volume read IOPS:        604,047
     1. Volume write IOPS:   116,257,403
@@ -65,7 +65,7 @@
 
 1. Max tasks:
 
-    - Max Consumer tasks: 30
+    - Max Consumer tasks: 31
     - Max Redoer tasks: 39
 
 ### Final metrics
@@ -120,50 +120,49 @@ N/A.  Ran without `withinfo` enabled.
 G2=> SELECT NOW(), COUNT(*) FROM DSRC_RECORD;
               now              |  count
 -------------------------------+----------
- 2026-05-13 22:22:06.700934+00 | 25000000
+ 2026-05-18 18:54:13.998402+00 | 25000000
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM OBS_ENT;
               now              |  count
 -------------------------------+----------
- 2026-05-13 22:22:11.414931+00 | 24999937
+ 2026-05-18 18:54:18.963772+00 | 24999937
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT;
-             now              |  count
-------------------------------+----------
- 2026-05-13 22:22:16.54059+00 | 21108628
+              now              |  count
+-------------------------------+----------
+ 2026-05-18 18:54:25.477922+00 | 21108658
 (1 row)
 
-G2=>
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT_OKEY;
               now              |  count
 -------------------------------+----------
- 2026-05-13 22:22:26.865927+00 | 24999937
+ 2026-05-18 18:54:31.379911+00 | 24999937
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM SYS_EVAL_QUEUE;
-             now              | count
-------------------------------+-------
- 2026-05-13 22:22:32.78532+00 |     0
+              now              | count
+-------------------------------+-------
+ 2026-05-18 18:54:35.926592+00 |     0
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_ENT WHERE ent_state != 0 ;
-             now              | count
-------------------------------+-------
- 2026-05-13 22:22:37.94195+00 |    34
+              now              | count
+-------------------------------+-------
+ 2026-05-18 18:54:39.612301+00 |    35
 (1 row)
 
 G2=> SELECT NOW(), COUNT(*) FROM RES_RELATE;
-             now              |  count
-------------------------------+----------
- 2026-05-13 22:22:42.35642+00 | 11510931
+              now              |  count
+-------------------------------+----------
+ 2026-05-18 18:54:43.357382+00 | 11508535
 (1 row)
 
 G2=> select min(first_seen_dt) load_start, count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60) erpm, count(*) total, max(first_seen_dt)-min(first_seen_dt) duration, (count(*) / (extract(EPOCH FROM (max(first_seen_dt)-min(first_seen_dt)))/60))/60 as avg_erps from dsrc_record;
        load_start        |          erpm           |  total   |   duration   |       avg_erps
 -------------------------+-------------------------+----------+--------------+-----------------------
- 2026-05-13 18:24:46.872 | 120103.1061145372079215 | 25000000 | 03:28:09.269 | 2001.7184352422867987
+ 2026-05-18 14:56:16.717 | 118621.4104370392349202 | 25000000 | 03:30:45.272 | 1977.0235072839872487
 (1 row)
 
 G2=> select dr.RECORD_ID,oe.OBS_ENT_ID,reo.RES_ENT_ID from DSRC_RECORD dr left outer join OBS_ENT oe ON dr.dsrc_id = oe.dsrc_id and dr.ent_src_key = oe.ent_src_key left outer join RES_ENT_OKEY reo ON oe.OBS_ENT_ID = reo.OBS_ENT_ID where reo.RES_ENT_ID is null;
