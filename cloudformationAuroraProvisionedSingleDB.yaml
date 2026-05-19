@@ -2972,10 +2972,13 @@ Resources:
           Name: redoer
           Privileged: false
           ReadonlyRootFilesystem: false
-      Cpu: '4096'
+      # Sized to match Azure (2 vCPU / 4 GB / 20 threads) for cross-cloud
+      # apples-to-apples comparison. May 2026 graphs showed prior 4 vCPU / 30 GB
+      # was running at ~25% CPU and ~3% memory utilization - way oversized.
+      Cpu: '2048'
       ExecutionRoleArn: !GetAtt IamRoleRedoer.Arn
       Family: !Sub '${AWS::StackName}-task-definition-redoer'
-      Memory: '30720'
+      Memory: '4096'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
@@ -3067,10 +3070,13 @@ Resources:
           Name: consumer
           Privileged: false
           ReadonlyRootFilesystem: false
-      Cpu: '4096'
+      # Sized to match Azure (2 vCPU / 4 GB / 20 threads) for cross-cloud
+      # apples-to-apples comparison. May 2026 graphs showed prior 4 vCPU / 30 GB
+      # was running at ~25% CPU and ~3% memory utilization - way oversized.
+      Cpu: '2048'
       ExecutionRoleArn: !GetAtt IamRoleStreamLoader.Arn
       Family: !Sub '${AWS::StackName}-task-definition-stream-loader'
-      Memory: '30720'
+      Memory: '4096'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
