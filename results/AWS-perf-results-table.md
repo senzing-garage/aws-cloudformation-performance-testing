@@ -1,3 +1,26 @@
+20260520
+=======================================================================================================================================
+Build:                          |  4.2.4.26098   |  4.3.0.26111   |  4.3.0.26126   |  4.3.0.26126   |  4.3.0.26135   |  4.3.0.26135   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2254          |  2590          |  2358          |  2471          |  2427          |  2493          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1779          |  2022          |  1915          |  1973          |  1977          |  1919          |
+Time to load 25M:               |     3.92 hours |     3.43 hours |     3.63 hours |     3.52 hours |     3.5 hours  |     3.62 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |     2          |     0          |
+Total Billed read IOPS:         |    1,998,816   |    1,663,817   |    1,997,747   |      697,521   |      604,047   |      770,680   |
+Total Billed write IOPS:        |  118,448,552   |  115,240,044   |  118,341,704   |  119,463,075   |  116,257,403   |  119,071,592   |
+Max loader tasks:               |     26         |     30         |     29         |     30         |     31         |     71         |
+Max redoer tasks:               |     31         |     35         |     31         |     37         |     39         |     63         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
+                                |                |                |                | w/ RO conn.    |  w/ RO conn.   |  w/ RO conn.   |
+                                |                |                |                |                |                | small consumers|
+=======================================================================================================================================
+
 20260518
 ======================================================================================================================
 Build:                          |  4.2.4.26098   |  4.3.0.26111   |  4.3.0.26126   |  4.3.0.26126   |  4.3.0.26135   |
