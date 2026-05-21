@@ -39,11 +39,6 @@ Metadata:
         Parameters:
           - RunStreamProducer
       - Label:
-          default: 'Optional: Read-offload (Aurora reader replica + Senzing READ_ONLY_CONNECTION)'
-        Parameters:
-          - EnableReadOnlyConnection
-          - ReadOnlyConnections
-      - Label:
           default: Security responsibility
         Parameters:
           - SecurityResponsibility
@@ -57,10 +52,6 @@ Metadata:
         default: 'Optional: Provide the permitted IP address block allowed to connect using CIDR notation.'
       CognitoAdminEmail:
         default: 'Required: Provide the email address for the administrative user.'
-      EnableReadOnlyConnection:
-        default: 'Optional: Add an Aurora reader replica and route Senzing LIB_FEAT reads to it via READ_ONLY_CONNECTION.'
-      ReadOnlyConnections:
-        default: 'Optional: Number of connections in the Senzing read-only pool (only used when EnableReadOnlyConnection=true).'
       RecordMax:
         default: 'Required: Number of records to insert.'
       RunStreamProducer:
@@ -108,26 +99,6 @@ Parameters:
     Default: '_'
     Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#cognitoadminemail'
     Type: String
-
-  EnableReadOnlyConnection:
-    AllowedValues:
-      - 'false'
-      - 'true'
-    Default: 'false'
-    Description: >-
-      When true, add one Aurora reader replica to the cluster (same instance class as the writer)
-      and add READ_ONLY_CONNECTION / READ_ONLY_CONNECTIONS to the Senzing engine config so
-      LIB_FEAT / LIB_FEAT_HKEY reads are routed through the cluster reader endpoint. Writes still
-      go to the primary. Default false matches the original single-instance topology.
-    Type: String
-
-  ReadOnlyConnections:
-    Default: 8
-    Description: >-
-      Size of the Senzing read-only connection pool. Only used when EnableReadOnlyConnection=true.
-    MinValue: 1
-    MaxValue: 64
-    Type: Number
 
   RecordMax:
     AllowedValues:
@@ -330,10 +301,6 @@ Mappings:
 # -----------------------------------------------------------------------------
 
 Conditions:
-  IfEnableReadOnlyConnection: !Equals
-    - !Ref EnableReadOnlyConnection
-    - 'true'
-
   IfRunApiServer: !Equals
     - !FindInMap [Constants, Run, ApiServer]
     - Yes
@@ -782,87 +749,75 @@ Resources:
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-loggroup.html
   # AWS Console: https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups > Search for {stack}
 
-  # AWS::Logs::LogGroup defaults to DeletionPolicy: Retain. For an ephemeral
-  # perf-test stack that's brought up and torn down per Senzing release, set
-  # DeletionPolicy: Delete on every log group so the next deploy doesn't fail
-  # with "log group already exists".
   LogsLogGroupDbClusterCore:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub
         - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-core-cluster/postgresql'
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
     Type: AWS::Logs::LogGroup
 
+  LogsLogGroupDbClusterLibfeat:
+    Properties:
+      LogGroupName: !Sub
+        - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-libfeat-cluster/postgresql'
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+    Type: AWS::Logs::LogGroup
+
+  LogsLogGroupDbClusterRes:
+    Properties:
+      LogGroupName: !Sub
+        - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-res-cluster/postgresql'
+        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+    Type: AWS::Logs::LogGroup
+
   LogsLogGroupLambdaCognitoCreateUser:
     Condition: IfUsingWeb
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-cognito-create-user'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaGenerateCertificate:
     Condition: IfUsingWeb
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-generate-certificate'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomPassword:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-password'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomString:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-string'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTask:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTaskAndWait:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task-and-wait'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaSetRdbTimeoutAction:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-set-rdb-timeout-action'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunStreamProducerTasks:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-stream-producer-tasks'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaStringToLower:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-string-to-lower'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupMain:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub
         - '/senzing/${StackName}/${AWS::StackName}'
@@ -1307,10 +1262,6 @@ Resources:
       Description: !Sub '${AWS::StackName}-rds-db-cluster-parameter-group-description'
       Family: aurora-postgresql17
       Parameters:
-        # shared_preload_libraries is a cluster-level static parameter on Aurora.
-        # Belongs here, not on the instance parameter group, or pg_stat_statements
-        # won't actually load.
-        shared_preload_libraries: 'pg_stat_statements'
         autovacuum_max_workers: 5
         enable_seqscan: 0
         # pglogical.synchronous_commit: 0
@@ -1325,7 +1276,9 @@ Resources:
       Description: !Sub '${AWS::StackName}-rds-db-parameter-group-description'
       Family: aurora-postgresql17
       Parameters:
+        shared_preload_libraries: 'pg_stat_statements'
         track_io_timing: 1
+        enable_seqscan: 0
         # pglogical.synchronous_commit: 0
       Tags:
         - Key: Name
@@ -1339,15 +1292,10 @@ Resources:
     DependsOn:
       - LogsLogGroupDbClusterCore
       - RdsDbSubnetGroup
-    # Ephemeral perf-test stack: skip the default final-snapshot on delete so
-    # teardown is fast and we don't accumulate orphaned snapshots across runs.
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       AvailabilityZones:
         - !GetAtt Ec2SubnetPrivate1.AvailabilityZone
         - !GetAtt Ec2SubnetPrivate2.AvailabilityZone
-      BackupRetentionPeriod: 1
       DatabaseName: !FindInMap [Constants, Database, Name]
       DBClusterIdentifier: !Sub '${AWS::StackName}-aurora-senzing-core-cluster'
       DBClusterParameterGroupName:
@@ -1357,8 +1305,6 @@ Resources:
         - '${StackNameAsLower}-db-subnet'
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
       DeletionProtection: false
-      EnableCloudwatchLogsExports:
-        - postgresql
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
@@ -1366,9 +1312,6 @@ Resources:
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
-      # 06:00-06:30 UTC backup window - off-hours for US-based perf runs. Adjust if
-      # your test schedule conflicts.
-      PreferredBackupWindow: '06:00-06:30'
       StorageEncrypted: true
       # StorageType: aurora
       StorageType: aurora-iopt1
@@ -1380,8 +1323,6 @@ Resources:
     Type: AWS::RDS::DBCluster
 
   RdsDbInstanceCore1:
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
     Properties:
       DBSubnetGroupName: !Sub
         - '${StackNameAsLower}-db-subnet'
@@ -1392,7 +1333,7 @@ Resources:
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
-      PubliclyAccessible: 'false'
+      PubliclyAccessible: 'true'
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
       # DBInstanceClass: db.r7g.8xlarge
       # DBInstanceClass: db.r7g.12xlarge
@@ -1409,27 +1350,25 @@ Resources:
       # DBInstanceClass: db.r6gd.12xlarge
     Type: AWS::RDS::DBInstance
 
-  RdsDbInstanceCore2:
-    Condition: IfEnableReadOnlyConnection
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
-    Properties:
-      DBSubnetGroupName: !Sub
-        - '${StackNameAsLower}-db-subnet'
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-      DBParameterGroupName:
-        Ref: RdsDbParameterGroup
-      EnablePerformanceInsights: true
-      Engine: aurora-postgresql
-      DBClusterIdentifier:
-        Ref: RdsDbClusterCore
-      PubliclyAccessible: 'false'
-      # Co-located with the writer (AZ1) so the cluster-ro endpoint stays in the
-      # same AZ as the loader/redoer compute. Eliminates the cross-AZ tax on
-      # read-offload reads and makes the A/B vs. writer-only baseline fair.
-      AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6i.8xlarge
-    Type: AWS::RDS::DBInstance
+  # RdsDbInstanceCore2:
+  #   Properties:
+  #     DBSubnetGroupName: !Sub
+  #       - "${StackNameAsLower}-db-subnet"
+  #       - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
+  #     DBParameterGroupName:
+  #       Ref: RdsDbParameterGroup
+  #     Engine: aurora-postgresql
+  #     DBClusterIdentifier:
+  #       Ref: RdsDbClusterCore
+  #     PubliclyAccessible: "true"
+  #     AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+  #     # DBInstanceClass: db.r6i.4xlarge
+  #     # DBInstanceClass: db.r6i.8xlarge
+  #     DBInstanceClass: db.r6i.12xlarge
+  #     # DBInstanceClass: db.r6i.16xlarge
+  #     # DBInstanceClass: db.r6i.24xlarge
+  #     # DBInstanceClass: db.r6i.32xlarge
+  #   Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------
 
@@ -1444,9 +1383,7 @@ Resources:
       MaximumMessageSize: 262144
       MessageRetentionPeriod: 1209600
       QueueName: !Sub '${AWS::StackName}-sqs-input'
-      # Long polling reduces empty receives at low queue depth without hurting
-      # steady-state throughput.
-      ReceiveMessageWaitTimeSeconds: 20
+      ReceiveMessageWaitTimeSeconds: 0
       RedrivePolicy:
         deadLetterTargetArn:
           Fn::GetAtt:
@@ -1456,9 +1393,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sqs-input'
-      # 30 min: generous for slow Senzing batches but ~8x faster DLQ feedback
-      # than the previous 4h. Raise back if real batches exceed this.
-      VisibilityTimeout: 1800
+      VisibilityTimeout: 14400
     Type: AWS::SQS::Queue
 
   SqsDeadLetter:
@@ -1532,11 +1467,10 @@ Resources:
       DbInstanceCore1Ready: !GetAtt RdsDbInstanceCore1.Endpoint.Address
     Type: AWS::CloudFormation::WaitConditionHandle
 
-  DbInstanceCore2Ready:
-    Condition: IfEnableReadOnlyConnection
-    Metadata:
-      DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
-    Type: AWS::CloudFormation::WaitConditionHandle
+  # DbInstanceCore2Ready:
+  #   Metadata:
+  #     DbInstanceCore2Ready: !GetAtt RdsDbInstanceCore2.Endpoint.Address
+  #   Type: AWS::CloudFormation::WaitConditionHandle
 
   # -- LambdaFunction -----------------------------------------------------------
 
@@ -2038,24 +1972,13 @@ Resources:
                       database_port_res = properties.get('DatabasePortRes', '')
                       database_host_libfeat = properties.get('DatabaseHostLibfeat', '')
                       database_port_libfeat = properties.get('DatabasePortLibfeat', '')
-                      database_host_reader = properties.get('DatabaseHostReader', '')
-                      database_port_reader = properties.get('DatabasePortReader', '')
-                      enable_read_only_connection = str(properties.get('EnableReadOnlyConnection', 'false')).lower() == 'true'
-                      read_only_connections = str(properties.get('ReadOnlyConnections', '8'))
                       data_encryption = properties.get('DataEncryption', '')
                       db_config = 'Multiple'
                       if database_host_core == database_host_res == database_host_libfeat:
                           db_config = 'Single'
-                      logger.info(f"db_config={db_config} enable_read_only_connection={enable_read_only_connection}")
+                      logger.info(f"db_config={db_config}")
                       license_string = properties.get('SenzingLicenseAsBase64', '')
                       if db_config == 'Single':
-                          read_only_block = ''
-                          if enable_read_only_connection:
-                              read_only_block = (
-                                    ','
-                                    f'        "READ_ONLY_CONNECTION": "postgresql://{database_user_name}:{database_password}@{database_host_reader}:{database_port_reader}:{database_name}",'
-                                    f'        "READ_ONLY_CONNECTIONS": "{read_only_connections}"'
-                              )
                           response_data["ConfigJSON"] = (
                                 '{'
                                 '    "PIPELINE": {'
@@ -2067,7 +1990,6 @@ Resources:
                                 '    "SQL": {'
                                 '        "BACKEND": "SQL",'
                                 f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
-                                f'{read_only_block}'
                                 '    }'
                                 '}')
                       else:
@@ -2202,9 +2124,9 @@ Resources:
             assignPublicIp: DISABLED
             securityGroups:
               - !Ref Ec2SecurityGroupLambdaRunner
-            # Pinned to AZ1 (writer AZ) to keep one-shot DB setup same-AZ.
             subnets:
               - !Ref Ec2SubnetPrivate1
+              - !Ref Ec2SubnetPrivate2
         platformVersion: 1.4.0
         tags:
           - key: Name
@@ -2258,6 +2180,7 @@ Resources:
   LambdaRunnerInitPostgresConfiguration:
     DependsOn:
       - DbInstanceCore1Ready
+      # - DbInstanceCore2Ready
       - DbClusterCoreReady
     Properties:
       ClusterId: !Ref EcsCluster
@@ -2271,10 +2194,9 @@ Resources:
             assignPublicIp: DISABLED
             securityGroups:
               - !Ref Ec2SecurityGroupLambdaRunner
-            # Pinned to AZ1 (writer AZ) - this task creates the Senzing schema
-            # via many DDL statements; same-AZ keeps setup latency stable across runs.
             subnets:
               - !Ref Ec2SubnetPrivate1
+              - !Ref Ec2SubnetPrivate2
         platformVersion: 1.4.0
         tags:
           - key: Name
@@ -2289,29 +2211,19 @@ Resources:
   LambdaRunnerSenzingEngineConfigurationJson:
     DependsOn:
       - DbInstanceCore1Ready
+      # - DbInstanceCore2Ready
       - DbClusterCoreReady
     Properties:
       DatabaseHostCore: !GetAtt RdsDbClusterCore.Endpoint.Address
       DatabaseHostLibfeat: !GetAtt RdsDbClusterCore.Endpoint.Address
       DatabaseHostRes: !GetAtt RdsDbClusterCore.Endpoint.Address
-      DatabaseHostReader: !GetAtt RdsDbClusterCore.ReadEndpoint.Address
       DatabaseName: !FindInMap [Constants, Database, Name]
       DatabasePassword: !GetAtt LambdaRunnerDbPassword.RandomString
       DatabasePortCore: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabasePortLibfeat: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabasePortRes: !GetAtt RdsDbClusterCore.Endpoint.Port
-      DatabasePortReader: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabaseUsername: !FindInMap [Constants, Database, Username]
       # DataEncryption: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
-      EnableReadOnlyConnection: !Ref EnableReadOnlyConnection
-      ReadOnlyConnections: !Ref ReadOnlyConnections
-      # When read-offload is enabled, force the engine config to wait until the
-      # reader replica is "available" by creating a graph edge via !Ref.
-      # The Lambda ignores this property; CFN uses it to order the resources.
-      ReaderInstanceId: !If
-        - IfEnableReadOnlyConnection
-        - !Ref RdsDbInstanceCore2
-        - !Ref AWS::NoValue
       SenzingLicenseAsBase64: !Ref SenzingLicenseAsBase64
       ServiceToken: !GetAtt LambdaFunctionSenzingEngineConfigurationJson.Arn
       Tags:
@@ -2972,13 +2884,10 @@ Resources:
           Name: redoer
           Privileged: false
           ReadonlyRootFilesystem: false
-      # Sized to match Azure (2 vCPU / 4 GB / 20 threads) for cross-cloud
-      # apples-to-apples comparison. May 2026 graphs showed prior 4 vCPU / 30 GB
-      # was running at ~25% CPU and ~3% memory utilization - way oversized.
-      Cpu: '2048'
+      Cpu: '4096'
       ExecutionRoleArn: !GetAtt IamRoleRedoer.Arn
       Family: !Sub '${AWS::StackName}-task-definition-redoer'
-      Memory: '4096'
+      Memory: '30720'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
@@ -3070,13 +2979,10 @@ Resources:
           Name: consumer
           Privileged: false
           ReadonlyRootFilesystem: false
-      # Sized to match Azure (2 vCPU / 4 GB / 20 threads) for cross-cloud
-      # apples-to-apples comparison. May 2026 graphs showed prior 4 vCPU / 30 GB
-      # was running at ~25% CPU and ~3% memory utilization - way oversized.
-      Cpu: '2048'
+      Cpu: '4096'
       ExecutionRoleArn: !GetAtt IamRoleStreamLoader.Arn
       Family: !Sub '${AWS::StackName}-task-definition-stream-loader'
-      Memory: '4096'
+      Memory: '30720'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
@@ -3245,10 +3151,9 @@ Resources:
           AssignPublicIp: DISABLED
           SecurityGroups:
             - !Ref Ec2SecurityGroupInternal
-          # Pinned to AZ1 (writer AZ) to eliminate cross-AZ DB round-trips on
-          # every redo write. The cluster always keeps the writer in AZ1 here.
           Subnets:
             - !Ref Ec2SubnetPrivate1
+            - !Ref Ec2SubnetPrivate2
       PlatformVersion: 1.4.0
       PropagateTags: TASK_DEFINITION
       ServiceName: redoer
@@ -3294,10 +3199,9 @@ Resources:
           AssignPublicIp: DISABLED
           SecurityGroups:
             - !Ref Ec2SecurityGroupInternal
-          # Pinned to AZ1 (writer AZ) so every loader write is same-AZ.
-          # ~1-2 ms saved per round-trip; significant at 25M+ records.
           Subnets:
             - !Ref Ec2SubnetPrivate1
+            - !Ref Ec2SubnetPrivate2
       PlatformVersion: 1.4.0
       PropagateTags: TASK_DEFINITION
       ServiceName: consumer
@@ -3499,13 +3403,6 @@ Outputs:
     Export:
       Name: !Sub '${AWS::StackName}-database-host-core'
     Value: !GetAtt RdsDbClusterCore.Endpoint.Address
-
-  DatabaseHostReader:
-    Condition: IfEnableReadOnlyConnection
-    Description: 'The Aurora cluster reader endpoint used for Senzing READ_ONLY_CONNECTION (load-balances across replicas).'
-    Export:
-      Name: !Sub '${AWS::StackName}-database-host-reader'
-    Value: !GetAtt RdsDbClusterCore.ReadEndpoint.Address
 
   DatabaseName:
     Description: 'The name of the database. Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#databasename'
