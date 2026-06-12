@@ -1,3 +1,27 @@
+20260612
+=====================================================================================================
+Build:                          |  4.3.0.26126   |  4.3.0.26135   |  4.3.0.26135   |  4.4.0.26163   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2471          |  2427          |  2493          |  2120          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1973          |  1977          |  1919          |  1642          |
+Time to load 25M:               |     3.52 hours |     3.5 hours  |     3.62 hours |     4.23 hours |
+Records in dead-letter queue:   |     0          |     2          |     0          |     0          |
+Total Billed read RW IOPS:      |      697,521   |      604,047   |      770,680   |    1,417,215   |
+Total Billed read RO IOPS:      |        ???     |       ???      |        ???     |      149,903   |
+Total Billed write IOPS:        |  119,463,075   |  116,257,403   |  119,071,592   |  144,678,171   |
+Max loader tasks:               |     30         |     31         |     71         |     56         |
+Max redoer tasks:               |     37         |     39         |     63         |     69         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off|
+                                | w/ RO conn.    |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   |
+                                |                |                | small consumers| small consumers|
+=====================================================================================================
+
 20260520
 =======================================================================================================================================
 Build:                          |  4.2.4.26098   |  4.3.0.26111   |  4.3.0.26126   |  4.3.0.26126   |  4.3.0.26135   |  4.3.0.26135   |
