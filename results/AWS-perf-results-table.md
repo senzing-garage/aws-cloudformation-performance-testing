@@ -18,7 +18,7 @@ Notes:                          | single DB inst | single DB inst | single DB in
                                 |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
                                 | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
                                 | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
-                                |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   | w/0 RO conn.   |
+                                |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   | w/o RO conn.   |
                                 |                | small consumers| small consumers| small consumers| small consumers|
 ======================================================================================================================
 
