@@ -89,3 +89,13 @@ For use in testing versions of Senzing located on the staging server.
       1. Try URIs
          1. GET `/heartbeat`
          1. GET `/entities/{entityId}`
+
+## Performance testing
+
+Once a stack is up, the
+[performance-test runbook](docs/performance-test-runbook.md)
+walks through the measurement workflow end to end: connect to the shell and DB,
+watch load progress, capture trustworthy IO/transaction metrics, validate data
+integrity, export detail CSVs, and scan logs for errors. Supporting SQL helpers
+live in [`scripts/aurora-pg/`](scripts/aurora-pg/); the metrics methodology is in
+[docs/cloud-db-io-metrics.md](docs/cloud-db-io-metrics.md).

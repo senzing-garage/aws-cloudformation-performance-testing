@@ -1,3 +1,29 @@
+20260619
+======================================================================================================================
+Build:                          |  4.3.0.26135   |  4.4.0.26163   |  4.4.0.26167   |  4.4.0.26167   |  4.4.0.26167   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2493          |  2120          |  2496          |  2600          |  2594          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1919          |  1642          |  1960          |  2012          |  2042          |
+Time to load 25M:               |     3.62 hours |     4.23 hours |     3.53 hours |     3.45 hours |     3.38 hours |
+Records in dead-letter queue:   |     0          |     0          |     15         |      0         |     0          |
+Total Billed read RW IOPS:      |      770,680   |    1,417,215   |      581,747   |    1,987,873   |    1,987,682   |
+Total Billed read RO IOPS:      |        ???     |      149,903   |       87,959   |       n/a      |       n/a      |
+Total Billed write IOPS:        |  119,071,592   |  144,678,171   |  115,035,913   |  114,252,104   |  110,278,324   |
+Max loader tasks:               |     71         |     56         |     62         |     61         |     61         |
+Max redoer tasks:               |     63         |     69         |     68         |     59         |     59         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
+                                |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   | w/o RO conn.   | w/o RO conn.   |
+                                | small consumers| small consumers| small consumers| small consumers| small consumers|
+                                |                |                |                |                | advisory lock  |
+======================================================================================================================
+
+
 20260618
 ======================================================================================================================
 Build:                          |  4.3.0.26135   |  4.3.0.26135   |  4.4.0.26163   |  4.4.0.26167   |  4.4.0.26167   |
