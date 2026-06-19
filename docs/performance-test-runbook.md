@@ -121,13 +121,18 @@ PG="psql -h ${SENZING_DATABASE_HOST_CORE} -p 5432 -U ${SENZING_DATABASE_USERNAME
 $PG -f /tmp/00-setup.sql      # once per database (needs pg_stat_statements preloaded — see metrics doc)
 $PG -f /tmp/10-baseline.sql   # immediately BEFORE you start the load
 #   ... run the Senzing load (and nothing else against this DB) ...
-$PG -f /tmp/20-final.sql      # immediately AFTER the load finishes — prints all deltas
+$PG -f /tmp/20-final.sql > /tmp/final-deltas.txt 2>&1   # immediately AFTER the load
 ```
 
-`20-final.sql` prints the run window, the FACT-report headline (logical/physical
-block reads, WAL bytes, txns, tuple ins/upd/del), all scalar deltas, the top
-statements (incl. per-statement WAL bytes), and per-table activity. Save that
-output to the results folder.
+Redirect the final deltas to a file (above) — it's the headline result and you
+do **not** want it living only in terminal scrollback. `20-final.sql` captures
+the run window, the FACT-report headline (logical/physical block reads, WAL
+bytes, txns, tuple ins/upd/del), all scalar deltas, the top statements (incl.
+per-statement WAL bytes), and per-table activity. It is safe to re-run (it
+re-snapshots `final`); on Aurora `wal_bytes` is blank (use `VolumeWriteIOPs`).
+
+`scp` `final-deltas.txt` back with the CSVs (Step 7), then paste it into the run
+README's "Database IO / transaction deltas" section.
 
 ---
 
@@ -168,6 +173,8 @@ mkdir -p "$RUN"
 for f in dsrc_record match_key_ent match_key_rel pg_stat_io pg_stat_statements; do
   scp ${SENZING_SSHD_USERNAME}@${SENZING_SSHD_HOST}:/tmp/$f.csv "$RUN"/
 done
+# the delta report from Step 4 (note: .txt, not .csv):
+scp ${SENZING_SSHD_USERNAME}@${SENZING_SSHD_HOST}:/tmp/final-deltas.txt "$RUN"/
 ```
 
 ---
