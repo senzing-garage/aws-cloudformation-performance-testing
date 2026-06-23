@@ -118,9 +118,12 @@ shell with `PGPASSWORD` exported:
 ```bash
 PG="psql -h ${SENZING_DATABASE_HOST_CORE} -p 5432 -U ${SENZING_DATABASE_USERNAME} -d ${SENZING_DATABASE_NAME}"
 
+echo $SENZING_DATABASE_PASSWORD
 $PG -f /tmp/00-setup.sql      # once per database (needs pg_stat_statements preloaded — see metrics doc)
+echo $SENZING_DATABASE_PASSWORD
 $PG -f /tmp/10-baseline.sql   # immediately BEFORE you start the load
 #   ... run the Senzing load (and nothing else against this DB) ...
+echo $SENZING_DATABASE_PASSWORD
 $PG -f /tmp/20-final.sql > /tmp/final-deltas.txt 2>&1   # immediately AFTER the load
 ```
 
@@ -141,6 +144,7 @@ README's "Database IO / transaction deltas" section.
 Re-run every few minutes to eyeball throughput and queue depth:
 
 ```bash
+echo $SENZING_DATABASE_PASSWORD
 $PG -f /tmp/progress.sql
 ```
 
@@ -151,6 +155,7 @@ $PG -f /tmp/progress.sql
 Both queries must return **zero** rows:
 
 ```bash
+echo $SENZING_DATABASE_PASSWORD
 $PG -f /tmp/validate.sql
 ```
 
@@ -161,6 +166,7 @@ $PG -f /tmp/validate.sql
 On the shell, write the CSVs to `/tmp`:
 
 ```bash
+echo $SENZING_DATABASE_PASSWORD
 $PG -f /tmp/exports.sql
 ```
 
@@ -171,6 +177,7 @@ Then, from your laptop, scp them into the results folder for this run
 RUN=results/$(date +%Y%m%d)-25M-provisioned-r6i-8xlarge-single-senzing-4.4.0/data
 mkdir -p "$RUN"
 for f in dsrc_record match_key_ent match_key_rel pg_stat_io pg_stat_statements; do
+  echo $SENZING_SSHD_PASSWORD
   scp ${SENZING_SSHD_USERNAME}@${SENZING_SSHD_HOST}:/tmp/$f.csv "$RUN"/
 done
 # the delta report from Step 4 (note: .txt, not .csv):
