@@ -1,6 +1,13 @@
 -- =============================================================================
 -- progress.sql  —  run repeatedly DURING a load to watch throughput & queue depth.
 -- Safe to run anytime; read-only. Re-run every few minutes to eyeball the rate.
+--
+-- ⚠️  count(*)-BASED — OK at 25M, but on large/heavily-loaded DBs (e.g. 100M)
+--     these full scans degrade catastrophically (seen: 47s -> 114s -> 31min hang)
+--     under enable_seqscan=0 + a churning sys_eval_queue, AND they pin the vacuum
+--     horizon and pollute the harness deltas. For those runs use progress-live.sql
+--     (instant, catalog-only) for live monitoring and final-capture.sql for exact
+--     end-of-run numbers. See the runbook.
 -- =============================================================================
 \set ON_ERROR_STOP on
 \timing on

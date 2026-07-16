@@ -256,10 +256,10 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       InitPostgresql: docker.io/senzing/init-database:latest
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:staging
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:staging
-      Sshd: public.ecr.aws/senzing/sshd:staging
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:staging
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.3.3
+      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.3.3
+      Sshd: public.ecr.aws/senzing/sshd:4.3.3
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.3.3
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
 
@@ -1293,20 +1293,12 @@ Resources:
       Family: aurora-postgresql17
       Parameters:
         track_io_timing: 1
-        # Raise above the Aurora default (~5,000 on r6i.24xlarge). At 100M the
-        # Redoer + Consumer fleets autoscale to MaxCapacity 200 × 20 threads =
-        # up to 8,000 connections; the flawed 4.4 run peaked at 327 tasks (~6,540)
-        # and exhausted the default pool ("remaining connection slots are reserved
-        # for roles with the SUPERUSER attribute" — the rds_superuser app account
-        # gets NONE of the reserved slots), silently losing records.
-        # max_connections is INCLUSIVE of the reserve, so 8000 (== worst-case
-        # demand, zero overhead headroom) would re-trigger the FATAL. 10000 leaves
-        # ~20% margin over worst-case fleet + overhead; memory-safe on 768 GiB.
-        # NOTE: superuser_reserved_connections is NOT settable in an Aurora DB
-        # parameter group (CREATE fails: "Invalid/Unmodifiable/Unsupported"), and
-        # isn't needed — the default reserve is trivial against the 10000 ceiling.
+        # Raise above the Aurora default (~5,000) so the redoer+consumer fleet is
+        # not refused. 10000 (not 8000, which == worst-case demand with no headroom).
+        # (superuser_reserved_connections is NOT settable in an Aurora DB parameter
+        #  group — deploy fails — and isn't needed given the 10000 ceiling.)
         max_connections: '10000'
-        work_mem: '4096'   # pin Aurora default (kB) so the memory-safety margin can't silently change
+        work_mem: '4096'   # pin Aurora default (kB)
         # pglogical.synchronous_commit: 0
       Tags:
         - Key: Name
@@ -1379,7 +1371,7 @@ Resources:
       # DBInstanceClass: db.r7g.12xlarge
       # DBInstanceClass: db.r7g.16xlarge
       # DBInstanceClass: db.r6i.4xlarge
-      DBInstanceClass: db.r6i.8xlarge
+      DBInstanceClass: db.r6i.24xlarge
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
       # DBInstanceClass: db.r6i.24xlarge
@@ -1409,7 +1401,7 @@ Resources:
       # same AZ as the loader/redoer compute. Eliminates the cross-AZ tax on
       # read-offload reads and makes the A/B vs. writer-only baseline fair.
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6i.8xlarge
+      DBInstanceClass: db.r6i.24xlarge
     Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------

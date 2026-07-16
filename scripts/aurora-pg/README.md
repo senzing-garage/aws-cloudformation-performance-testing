@@ -35,9 +35,12 @@ Re-running `10-baseline.sql` clears the previous snapshot, so each run starts cl
 
 | Script | Run when | Purpose |
 |---|---|---|
-| `progress.sql` | during the load (repeatedly) | row counts + throughput (erpm) |
+| `progress-live.sql` | during the load (repeatedly) | **instant** catalog-only progress + churn health + horizon watchdog. Use this on large/loaded DBs. |
+| `drain-check.sql` | after loader reports done | drain gate — confirm the queue truly drained before capturing |
+| `final-capture.sql` | after `20-final.sql`, load quiet | exact end-of-run counts + throughput/erpm (forces heap seq scan; VACUUMs first) |
 | `validate.sql` | after the load | orphan / dangling-key integrity checks (expect zero rows) |
 | `exports.sql` | after the load | write detail CSVs to `/tmp` for download |
+| `progress.sql` | 25M runs only | ⚠️ count(*)-based; hangs on 100M under load — prefer `progress-live.sql` |
 
 For the full launch → connect → measure → record process, see
 [`docs/performance-test-runbook.md`](../../docs/performance-test-runbook.md).
