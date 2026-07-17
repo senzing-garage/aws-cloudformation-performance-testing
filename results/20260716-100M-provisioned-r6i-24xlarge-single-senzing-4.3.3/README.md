@@ -1,4 +1,4 @@
-# senzing-test-results-20260715-100M-provisioned-r6i-24xlarge-single-senzing-4.3.3
+# senzing-test-results-20260716-100M-provisioned-r6i-24xlarge-single-senzing-4.3.3
 
 ## Contents
 
@@ -15,7 +15,7 @@
 
 ## Overview
 
-1. Performed: Jul 15, 2026
+1. Performed: Jul 16, 2026
 2. Senzing version: 4.3.3 (verify `:4.3.3` image tag exists + deployed build)
 3. Instructions:
    [aws-cloudformation-performance-testing](https://github.com/senzing-garage/aws-cloudformation-performance-testing)
@@ -31,6 +31,7 @@
     1. Senzing images pinned to `:4.3.3` tag (redoer, sqs-consumer, sdk-tools, sshd) — not `:staging`
     1. `max_connections: 10000` in the DB parameter group (fixes the 100M connection-exhaustion seen on the 4.4 run; 8000 was too tight). NB: `superuser_reserved_connections` isn't settable on Aurora — default reserve is fine given the 10000 ceiling
     1. Removed the `AcceptEula` / `SecurityResponsibility` launch prompts (leftover customer-sample ceremony; **inert** — not passed to any container/software, so the A/B vs the flawed 4.4 run is unaffected)
+    1. Launched in **us-west-2** (not us-east-2 like the 4.4 run) because us-east-2 had no `db.r6i.24xlarge` capacity in the writer AZ. No template edit needed (the CFT has no hardcoded region/AZ — AZs derive dynamically). Same-AZ colocation of writer + consumer + redoer is preserved. Region does **not** affect the regression A/B (the OKEY-orphan / silent-drop / advisory-lock behavior is a software concurrency issue); throughput is expected within run-to-run noise of us-east-2 (same `r6i` hardware, same IO-optimized Aurora), noted here only for the record
 
 ## System
 
@@ -155,11 +156,13 @@ Term                       |  instance count |
 ==============================================
 (SENZ0086)                 |       TBD       |
 (error|except)             |       TBD       |
+(ExclusiveLock on advisory lock)|  TBD       |
 (UNHANDLED DATABASE ERROR) |       TBD       |
 (CORRUPTION_FOUND)         |       TBD       |
 (RetryTimeout)             |       TBD       |
 (FAILED)                   |       TBD       |
 (INFINITE)                 |       TBD       |
+(OKEY ORPHAN PREVENTED)    |       TBD       |
 (MISSING_RES_ENT_AND_OKEY) |       TBD       |
 (still)                    |       TBD       |
 (stolen)                   |       TBD       |
@@ -167,6 +170,30 @@ Term                       |  instance count |
 (another command is already in progress) | TBD |
 ==============================================
 ```
+
+##### A/B parity with the 4.4 run
+
+Reproduce the **same** unresolved-record forensics as the
+[20260715 4.4 run](../20260715-100M-provisioned-r6i-24xlarge-single-senzing-4.4.0/senzing-eng-escalation.md)
+so the comparison is apples-to-apples. After the drain gate:
+
+1. `validate.sql` query 1 → the observed-but-unresolved `obs_ent_id`s (4.4 had 40;
+   clean 4.1 had 0). Record the count (`res_ent_okey` = `obs_ent` − N).
+2. Put those ids in [`scripts/aurora-pg/unresolved-forensics.sql`](../../scripts/aurora-pg/unresolved-forensics.sql)
+   and run it (features / locking_id / has_res_ent_okey / last_touch clustering /
+   still-queued).
+3. In CloudWatch Logs Insights (full run window, **consumer + redoer** log groups) export:
+   - every `OKEY ORPHAN PREVENTED` line, and
+   - a bare-id scan of all non-OKEY messages for those ids.
+4. Classify with [`scripts/aurora-pg/classify-unresolved.py`](../../scripts/aurora-pg/classify-unresolved.py)
+   (replace its id list) and record the split: OKEY-victim / collateral / silent /
+   corruption / infinite.
+
+**The A/B question:** does 4.3.3-advisory also hit
+`oent-swap-okey-split-commit-regression` + silent drops (→ an advisory-mode issue), or
+is it clean (→ a 4.4 regression)? Capture the `OKEY ORPHAN PREVENTED`,
+`ExclusiveLock on advisory lock`, `CORRUPTION_FOUND`, and `INFINITE` counts above for
+the side-by-side.
 
 ## Methods
 

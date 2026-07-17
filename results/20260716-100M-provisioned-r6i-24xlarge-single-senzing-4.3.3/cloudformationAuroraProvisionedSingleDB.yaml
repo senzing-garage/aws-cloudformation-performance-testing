@@ -1293,12 +1293,20 @@ Resources:
       Family: aurora-postgresql17
       Parameters:
         track_io_timing: 1
-        # Raise above the Aurora default (~5,000) so the redoer+consumer fleet is
-        # not refused. 10000 (not 8000, which == worst-case demand with no headroom).
-        # (superuser_reserved_connections is NOT settable in an Aurora DB parameter
-        #  group — deploy fails — and isn't needed given the 10000 ceiling.)
+        # Raise above the Aurora default (~5,000 on r6i.24xlarge). At 100M the
+        # Redoer + Consumer fleets autoscale to MaxCapacity 200 × 20 threads =
+        # up to 8,000 connections; the flawed 4.4 run peaked at 327 tasks (~6,540)
+        # and exhausted the default pool ("remaining connection slots are reserved
+        # for roles with the SUPERUSER attribute" — the rds_superuser app account
+        # gets NONE of the reserved slots), silently losing records.
+        # max_connections is INCLUSIVE of the reserve, so 8000 (== worst-case
+        # demand, zero overhead headroom) would re-trigger the FATAL. 10000 leaves
+        # ~20% margin over worst-case fleet + overhead; memory-safe on 768 GiB.
+        # NOTE: superuser_reserved_connections is NOT settable in an Aurora DB
+        # parameter group (CREATE fails: "Invalid/Unmodifiable/Unsupported"), and
+        # isn't needed — the default reserve is trivial against the 10000 ceiling.
         max_connections: '10000'
-        work_mem: '4096'   # pin Aurora default (kB)
+        work_mem: '4096'   # pin Aurora default (kB) so the memory-safety margin can't silently change
         # pglogical.synchronous_commit: 0
       Tags:
         - Key: Name
