@@ -997,6 +997,34 @@ Total Billed write IOPS         |               |                |  148,886,718 
 =====================================================================================================================
 =====================================================================================================================
 
+20260716  (4.4 vs 4.3.3 advisory-mode A/B — neither is clean; see run READMEs)
+=====================================================================================================
+Build:                          |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |  4.3.3         |
+Peak:                           |  4829          |  4688          |  6074          |  5613          |
+Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2877          |  2969          |  3365          |  3255          |
+Time to load 100M:              |     9.65 hours |     9.35 hours |     8.25 hours |     8.51 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   38,951,128   |   33,886,974   |   33,226,016   |   39,627,193   |
+Volume write IOPS               |  474,989,850   |  473,285,471   |  419,688,438   |  467,163,158   |
+Max loader tasks:               |    117         |    97          |   165          |   187          |
+Max redoer tasks:               |    112         |    99          |   157          |   138          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                |                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                |                |                | advisory lock  | advisory lock  |
+                                |                |                | max_conn 10000 | max_conn 10000 |
+                                |                |                |                | us-west-2      |
+                                |                |                | 40 unresolved  | 12 unresolved  |
+                                |                |                | (silent OKEY   | (stranded-lock |
+                                |                |                |  orphan; clean | cascade; NOT   |
+                                |                |                |  err logs)     | clean: 2.08M   |
+                                |                |                |                | rollbacks,     |
+                                |                |                |                | 106k UNHANDLED)|
+=====================================================================================================
+
 20260715
 =====================================================================================================
 Build:                          |  3.9.1.24074   |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |

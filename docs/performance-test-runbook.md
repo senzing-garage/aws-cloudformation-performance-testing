@@ -120,6 +120,7 @@ command scp scripts/aurora-pg/*.sql ${SENZING_SSHD_USERNAME}@${SENZING_SSHD_HOST
 Run these **before you start the loaders** so the delta covers the whole run:
 
 ```bash
+echo $SENZING_DATABASE_PASSWORD
 $PG -f /tmp/00-setup.sql      # once per database (needs pg_stat_statements preloaded)
 $PG -f /tmp/10-baseline.sql   # LAST thing before starting the loaders
 ```

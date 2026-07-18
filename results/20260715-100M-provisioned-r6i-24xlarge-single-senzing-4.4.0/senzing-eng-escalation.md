@@ -1,8 +1,17 @@
-# Senzing 4.4 — 100M perf test reproduced `oent-swap-okey-split-commit-regression`; redo self-heal did not converge
+# Senzing advisory-mode 100M — TWO distinct record-loss defects (4.4 silent OKEY-orphan; 4.3.3 connection cascade)
 
 **Reporter:** Senzing performance testing (AWS CloudFormation / Aurora PostgreSQL)
-**Date:** 2026-07-16
-**Severity (proposed):** High — records silently left unresolved, **not dead-lettered**, with no recovery path and no operator-visible signal.
+**Date:** 2026-07-16 (4.4); updated 2026-07-18 (4.3.3 A/B)
+**Severity (proposed):** High — under `ENTITY_LOCK_MODE=ADVISORY` at 100M, **both**
+4.4 and 4.3.3 leave records permanently unresolved with no recovery path. The
+mechanisms differ by version (see the two sections below); the shared trigger is
+advisory-lock contention on hot entities.
+
+> **Two defects, one trigger.** The body below (Environment, Coverage, Questions)
+> details the **4.4** defect — `oent-swap-okey-split-commit-regression`, silent OKEY
+> orphan. The **4.3.3 A/B follow-up** immediately after TL;DR is a **separate**
+> defect — a connection-recovery cascade that strands entity locks. Both surface only
+> with advisory lock mode enabled at 100M scale.
 
 ## TL;DR
 
@@ -19,6 +28,47 @@ whole run). The consumer logged the condition as handled ("kept on source … se
 via redo"), ACK'd the SQS message, and moved on — so there is **no recovery path**: no
 pending redo, no error-queue capture, and `MISSING_RES_ENT_AND_OKEY` logged **0**. The
 drop is completely silent.
+
+## 4.3.3 A/B follow-up (2026-07-18) — a SECOND, distinct advisory-mode defect
+
+We re-ran the identical 100M advisory-mode test on **Senzing 4.3.3** (same template,
+`db.r6i.24xlarge`, `max_connections=10000`, `ENTITY_LOCK_MODE=ADVISORY`; us-west-2 due
+to capacity). Full detail:
+[20260716 4.3.3 run README](../20260716-100M-provisioned-r6i-24xlarge-single-senzing-4.3.3/README.md).
+
+**4.3.3 is NOT a clean baseline — it fails differently, not less.**
+
+- **12 records left unresolved** (`RES_ENT_OKEY` = `OBS_ENT` − 12; 4.4 was −40; the
+  non-advisory 4.1 run was 0). So unresolved-records under advisory mode is **not a
+  4.4-only regression** — 4.3.3 has it too.
+- **Different mechanism.** All 12 have **`locking_id ≠ 0` (a stranded entity lock)**;
+  4.4's 40 all had `locking_id = 0`. And **0 `OKEY ORPHAN PREVENTED`** in the logs
+  (full window, all groups) → 4.3.3 does **not** hit the OKEY-split regression.
+- **Root cause (proposed): a connection-recovery cascade.** After an advisory-lock
+  **deadlock** (40P01 on `SELECT pg_advisory_lock`), the 4.3.3 client leaves the PG
+  connection in aborted-transaction state (`PQTRANS_INERROR`) — its own logs say *"a
+  prior error was swallowed upstream"* — instead of rolling back / resetting. The
+  `SELECT pg_advisory_unlock($1)` then fails on that poisoned connection, so the
+  resolve dies mid-flight with the **entity lock still held** and no `RES_ENT_OKEY`.
+  The poisoned connection then cascades: **2,185,189** `current transaction is aborted`
+  (25P02), **2,085,101** `prepared statement "…" already exists`, **106,605**
+  `UNHANDLED DATABASE ERROR`, **155,848** refused statements (`Connection found in
+  aborted-transaction state`). DB-level `xact_rollback` = **2,085,437** (4.4: 698).
+- **Same input records fail in both versions.** 4 of the 12 4.3.3-unresolved records
+  (`record_id` 568258243, 568258238, 520309908, 495886296) were **also** among the 40
+  in 4.4. → specific hot / duplicate-heavy entities lose the advisory-lock fight
+  regardless of version. **Advisory-lock contention is the shared trigger; the
+  consequence is version-specific.**
+- Throughput was ~parity (4.3.3 peak 5,613 / avg 3,255 / 8.51 h load vs 4.4
+  6,074 / 3,365 / 8.25 h).
+
+**Net for engineering:** advisory lock mode at 100M produces record loss in BOTH
+builds via two different bugs — 4.4 silently orphans records (OKEY-split), 4.3.3 loudly
+strands them (connection-cascade after a `pg_advisory_lock` deadlock). Neither
+auto-recovers (not queued, not dead-lettered). Additional 4.3.3 questions: (1) why is a
+connection left in `PQTRANS_INERROR` after an advisory-lock deadlock instead of being
+reset — is the upstream error-swallow a known issue? (2) is the stranded `locking_id`
+expected to block those entities from any future re-resolution?
 
 ## Environment
 

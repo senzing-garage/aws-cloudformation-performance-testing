@@ -23,17 +23,21 @@
 \d res_ent
 \d sys_eval_queue
 
--- 1. The suspects. Replace this list with your unresolved OBS_ENT_IDs.
+-- 1. The suspects: COMPUTED from the CURRENT database (observed-but-unresolved =
+--    in OBS_ENT, absent from RES_ENT_OKEY). No hardcoded id list -- it can't go
+--    stale between runs (obs_ent_id is a per-run sequence; a list from another run
+--    probes different records). This is the same anti-join as validate.sql query 1.
+--    The DB is quiet post-drain, so the 100M-vs-100M index anti-join is cheap even
+--    under enable_seqscan=0.
 DROP TABLE IF EXISTS _unresolved;
-CREATE TEMP TABLE _unresolved (obs_ent_id bigint PRIMARY KEY);
-INSERT INTO _unresolved (obs_ent_id) VALUES
- (60117436),(97729754),(79747322),(38268728),(84502166),(41076893),
- (51018134),(32187715),(93316516),(92364105),(70025591),(60448956),
- (72867390),(52459400),(92988409),(100842057),(101605291),(97821075),
- (92153396),(100513093),(54434516),(62666046),(77293682),(27162105),
- (66736818),(73383261),(101346345),(92289621),(52434440),(39636022),
- (68784892),(50949050),(31780752),(83228978),(103702154),(43966566),
- (39813403),(37694182),(49601388),(24900385);
+CREATE TEMP TABLE _unresolved AS
+  SELECT o.obs_ent_id
+  FROM obs_ent o
+  LEFT JOIN res_ent_okey k ON k.obs_ent_id = o.obs_ent_id
+  WHERE k.obs_ent_id IS NULL;
+CREATE UNIQUE INDEX ON _unresolved (obs_ent_id);
+\echo ===== unresolved count (should match obs_ent - res_ent_okey) =====
+SELECT count(*) AS unresolved_count FROM _unresolved;
 
 -- 2. HOW FAR DID EACH GET? (columns confirmed via \d on this run:
 --    OBS_ENT: obs_ent_id, locking_id, last_touch_dt, dsrc_id, ent_src_key, features)
@@ -48,7 +52,8 @@ INSERT INTO _unresolved (obs_ent_id) VALUES
 SELECT
     u.obs_ent_id,
     r.record_id,
-    to_timestamp(o.last_touch_dt / 1000.0) AT TIME ZONE 'UTC' AS last_touch_utc,
+    o.last_touch_dt AS last_touch_raw,   -- NB: 4.3.3 may store 0 (epoch) -> clustering below is moot if so
+    to_timestamp(NULLIF(o.last_touch_dt,0) / 1000.0) AT TIME ZONE 'UTC' AS last_touch_utc,
     o.locking_id,
     (o.features IS NOT NULL) AS features_present,
     EXISTS (SELECT 1 FROM res_ent_okey k WHERE k.obs_ent_id = u.obs_ent_id) AS has_res_ent_okey
