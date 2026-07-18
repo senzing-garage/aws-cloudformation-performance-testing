@@ -1014,7 +1014,8 @@ Notes:                          | single DB inst | single DB inst | single DB in
                                 | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
                                 |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
                                 |                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
-                                |                |                | advisory lock  | advisory lock  |
+                                |                |                | advisory mode  | advisory IGNORED|
+                                |                |                | (feature ON)   | (ran DEFAULT)  |
                                 |                |                | max_conn 10000 | max_conn 10000 |
                                 |                |                |                | us-west-2      |
                                 |                |                | 40 unresolved  | 12 unresolved  |
@@ -1023,6 +1024,7 @@ Notes:                          | single DB inst | single DB inst | single DB in
                                 |                |                |  err logs)     | clean: 2.08M   |
                                 |                |                |                | rollbacks,     |
                                 |                |                |                | 106k UNHANDLED)|
+                                |                |                | confounded A/B: version + lock-mode both differ |
 =====================================================================================================
 
 20260715

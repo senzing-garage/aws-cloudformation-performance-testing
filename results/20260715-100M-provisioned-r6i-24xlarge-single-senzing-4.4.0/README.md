@@ -106,7 +106,7 @@
    races frequent, not the defect. 7 of the 40 carry a direct `obsEntID` OKEY-ORPHAN
    line; the rest are entangled as source/target entities or a related path (classify
    via the broad log query). **Escalate the FAQ name to Senzing engineering** (see
-   [`senzing-eng-escalation.md`](senzing-eng-escalation.md)). The 4.3.3 run (also
+   [`findings-100m-4.4-vs-4.3.3.md`](findings-100m-4.4-vs-4.3.3.md)). The 4.3.3 run (also
    advisory) tests advisory-mode vs 4.4-version. Detail in [Errors](#errors).
 
 ### Final metrics
@@ -380,7 +380,7 @@ Representative lines:
   at all** (silent drops), and **0 of the 40** appear in any `CORRUPTION_FOUND` /
   `INFINITE` line. So the regression explains the logged minority; the majority
   dropped silently — likely resolve aborts on advisory-lock timeouts before any OKEY
-  swap. **Escalation write-up: [`senzing-eng-escalation.md`](senzing-eng-escalation.md).**
+  swap. **Findings write-up: [`findings-100m-4.4-vs-4.3.3.md`](findings-100m-4.4-vs-4.3.3.md).**
   The 4.3.3 run (also advisory) is the decisive test of advisory-mode-vs-4.4.
 
 ## Methods

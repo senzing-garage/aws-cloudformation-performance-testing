@@ -26,7 +26,13 @@
     1. Using X86_64 (AMD64) as `CpuArchitecture` for consumer, redoer, and sshd
     1. `RecordMax` = 100M
     1. DB instance class bumped to `db.r6i.24xlarge` (template edit — not a CFT parameter)
-    1. enabled `ENTITY_LOCK_MODE: ADVISORY` (`"ER": {"ENTITY_LOCK_MODE": "ADVISORY"}`)
+    1. `ENTITY_LOCK_MODE: ADVISORY` was **set in the config but IGNORED** — 4.3.3 does
+       **not** support the advisory-lock feature (confirmed by engine dev), so this run
+       used 4.3.3's **default** locking mode. (NB: 4.3.3 still uses the PostgreSQL
+       `pg_advisory_lock()` *primitive* by default — that's a different thing from the
+       Senzing `ENTITY_LOCK_MODE` feature, and is why the logs still show advisory-lock
+       deadlocks.) **This makes the 4.4-vs-4.3.3 comparison confounded** (version *and*
+       lock mode differ), not a clean advisory-vs-advisory A/B.
     1. no Aurora read-offload (single `CONNECTION`, no `READ_ONLY_CONNECTION`)
     1. Senzing images pinned to `:4.3.3` tag (redoer, sqs-consumer, sdk-tools, sshd) — not `:staging`
     1. `max_connections: 10000` in the DB parameter group (fixes the 100M connection-exhaustion seen on the 4.4 run; 8000 was too tight). NB: `superuser_reserved_connections` isn't settable on Aurora — default reserve is fine given the 10000 ceiling
@@ -79,23 +85,30 @@
 > ⚠️ **This run is NOT clean.** It completed (100M loaded, `sys_eval_queue` drained
 > to 0), but it hit a massive aborted-transaction cascade that the 4.4 run did not.
 > The comparison below changes the 4.4 story — see the Errors section for detail.
+>
+> **Confounded comparison:** 4.3.3 **ignored** `ENTITY_LOCK_MODE=ADVISORY` and ran in
+> **default** mode (see Overview), whereas 4.4 ran with the advisory feature active. So
+> version *and* lock mode differ — this is not a clean advisory-vs-advisory A/B. "Advisory
+> lock" below refers to the PostgreSQL `pg_advisory_lock()` primitive (used by default in
+> both), not the Senzing `ENTITY_LOCK_MODE` feature (4.4 only).
 
 1. **Throughput ≈ parity.** Peak 5,613/s, avg 3,255/s, 8.51 h load — vs 4.4's
    6,074 / 3,365 / 8.25 h. 4.4 is marginally faster (~3–8 %), within run-to-run
    noise. The advisory-lock contention did **not** cost 4.3.3 meaningful throughput.
 
-1. ⚠️ **4.3.3-advisory ALSO leaves records unresolved.** `res_ent_okey` = `obs_ent`
-   − **12** (99,998,915 = 99,998,927 − 12). The 4.4 run had −40; the clean **4.1
-   non-advisory** run had **0**. So the unresolved-records phenomenon is **not unique
-   to 4.4** — it appears in 4.3.3 under advisory too, which points at **advisory mode
-   as a contributing factor**, not a pure 4.4 regression. (4.4 is worse: 40 vs 12.)
+1. ⚠️ **4.3.3 (default mode) ALSO leaves records unresolved.** `res_ent_okey` =
+   `obs_ent` − **12** (99,998,915 = 99,998,927 − 12). The 4.4 run had −40; the older
+   **4.1 non-advisory** run had **0**. Record loss occurs in **4.4-advisory (40) AND
+   4.3.3-default (12)** — so it is **not exclusive to the advisory feature**, and
+   (because the runs are confounded) we **cannot** conclude advisory mode is or isn't
+   the cause from this pair alone. (4.4 lost more: 40 vs 12.)
    `res_ent_active` (ent_state≠0) = **34,623** — far above 4.4-clean's 457 and 4.1's
    162, consistent with resolution repeatedly interrupted mid-flight by the cascade.
    **Parity forensics done (see Logs): the 12 are a DIFFERENT mechanism than 4.4's 40
    — stranded entity locks (`locking_id≠0`) from the aborted-transaction cascade, NOT
-   OKEY orphans (0 `OKEY ORPHAN PREVENTED`). 4 of the 12 are the same input records
-   that also failed in 4.4 → hot-entity advisory-lock contention, version-independent
-   trigger, version-specific consequence.**
+   OKEY orphans (0 `OKEY ORPHAN PREVENTED`, confirmed). 4 of the 12 are the same input
+   records that also failed in 4.4 → hot-entity `pg_advisory_lock` contention,
+   version-independent trigger, version-specific consequence.**
 
 1. 🚨 **A 4.3.3-only aborted-transaction cascade (absent in 4.4).** `xact_rollback` =
    **2,085,437** vs 4.4-clean's **698** — a ~3,000× jump. Driven by connections left
@@ -108,18 +121,20 @@
    advisory-lock error — it poisons the connection and cascades.** This is a distinct
    4.3.3 error-handling behavior, not seen in 4.4.
 
-1. **The two versions fail *differently* under the same advisory-lock contention:**
-   - **4.4 fails silently** — clean logs (0 `UNHANDLED DATABASE ERROR`), but the
-     `oent-swap-okey-split-commit-regression` drops 40 records with no DLQ, no redo,
-     no per-record log.
-   - **4.3.3 fails loudly** — millions of cascade errors and 2.08M rollbacks, but only
-     12 unresolved.
+1. **The two builds fail *differently* under the same `pg_advisory_lock` contention:**
+   - **4.4 (advisory feature) fails silently** — clean logs (0 `UNHANDLED DATABASE
+     ERROR`), but the `oent-swap-okey-split-commit-regression` drops 40 records with no
+     DLQ, no redo, no per-record log.
+   - **4.3.3 (default mode) fails loudly** — millions of cascade errors and 2.08M
+     rollbacks, but only 12 unresolved.
 
-   **Neither is clean.** v4.4 did **not** introduce unresolved-records (4.3.3 has them
-   too, advisory-mode), but it changed the failure mode from loud-and-messy to
-   **silent-and-invisible**, and added the OKEY-split-commit path.
+   **Neither is clean.** Record loss is not new in 4.4 (4.3.3-default has it too), but
+   4.4's failure mode is loud-and-messy → **silent-and-invisible**, plus 4.4 adds the
+   OKEY-split-commit path (which needs the advisory feature). Whether the advisory
+   *feature* itself is the culprit in 4.4 can't be settled here — run 4.4 in default
+   mode to isolate it.
 
-1. **Shared, version-independent signals** (track across both → advisory-linked):
+1. **Shared, version-independent signals** (both use the `pg_advisory_lock` primitive):
    advisory-lock contention 588 (4.4: 617), `INFINITE` loops **22 (identical to 4.4)**,
    `CORRUPTION_FOUND` 127 (4.4: 104).
 
@@ -358,16 +373,16 @@ that poisoned connection then fails:
 
 **Root cause (proposed): the 4.3.3 client does not reset a connection after an
 advisory-lock error**, poisoning it for the rest of its life. 4.4 does not exhibit this
-(`UNHANDLED DATABASE ERROR` = 0, `xact_rollback` = 698). So under identical advisory-lock
-contention, **4.3.3 fails loudly (cascade, 2M rollbacks, 12 unresolved) while 4.4 fails
-silently (0 unhandled, 40 records dropped with no trace).** Both are advisory-mode
-defects; they are different bugs. Escalate the 4.3.3 cascade to Senzing engineering
-alongside the 4.4 `oent-swap-okey-split-commit-regression`.
+(`UNHANDLED DATABASE ERROR` = 0, `xact_rollback` = 698). So under identical
+`pg_advisory_lock` contention, **4.3.3 (default mode) fails loudly (cascade, 2M
+rollbacks, 12 unresolved) while 4.4 (advisory feature) fails silently (0 unhandled, 40
+records dropped with no trace).** Different bugs. Report the 4.3.3 cascade to the engine
+team alongside the 4.4 `oent-swap-okey-split-commit-regression`.
 
 ##### A/B parity with the 4.4 run
 
 Reproduce the **same** unresolved-record forensics as the
-[20260715 4.4 run](../20260715-100M-provisioned-r6i-24xlarge-single-senzing-4.4.0/senzing-eng-escalation.md)
+[20260715 4.4 run](../20260715-100M-provisioned-r6i-24xlarge-single-senzing-4.4.0/findings-100m-4.4-vs-4.3.3.md)
 so the comparison is apples-to-apples. After the drain gate:
 
 1. `validate.sql` query 1 → the observed-but-unresolved `obs_ent_id`s (4.4 had 40;
@@ -382,11 +397,13 @@ so the comparison is apples-to-apples. After the drain gate:
    (replace its id list) and record the split: OKEY-victim / collateral / silent /
    corruption / infinite.
 
-**The A/B question:** does 4.3.3-advisory also hit
-`oent-swap-okey-split-commit-regression` + silent drops (→ an advisory-mode issue), or
-is it clean (→ a 4.4 regression)? Capture the `OKEY ORPHAN PREVENTED`,
-`ExclusiveLock on advisory lock`, `CORRUPTION_FOUND`, and `INFINITE` counts above for
-the side-by-side.
+**A/B answer (this run):** 4.3.3 does **not** hit `oent-swap-okey-split-commit-regression`
+(0 `OKEY ORPHAN PREVENTED`, confirmed) — that defect needs the 4.4 advisory-mode code
+path, which 4.3.3 lacks. But 4.3.3-default is **not** clean either: it loses 12 records
+via a different bug (stranded-lock cascade). Because 4.3.3 ran default mode (not
+advisory), this pair can't isolate advisory-vs-version — the **decisive next test is a
+4.4 run in DEFAULT mode** at 100M (clean → advisory drives 4.4's 40; still ~40 → version
+regression).
 
 ## Methods
 

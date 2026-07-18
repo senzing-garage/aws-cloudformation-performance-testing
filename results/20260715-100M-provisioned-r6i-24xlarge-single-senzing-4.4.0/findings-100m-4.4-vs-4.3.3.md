@@ -1,17 +1,21 @@
-# Senzing advisory-mode 100M — TWO distinct record-loss defects (4.4 silent OKEY-orphan; 4.3.3 connection cascade)
+# 100M perf findings — 4.4 (advisory mode) vs 4.3.3 (default mode): TWO distinct record-loss defects
 
-**Reporter:** Senzing performance testing (AWS CloudFormation / Aurora PostgreSQL)
-**Date:** 2026-07-16 (4.4); updated 2026-07-18 (4.3.3 A/B)
-**Severity (proposed):** High — under `ENTITY_LOCK_MODE=ADVISORY` at 100M, **both**
-4.4 and 4.3.3 leave records permanently unresolved with no recovery path. The
-mechanisms differ by version (see the two sections below); the shared trigger is
-advisory-lock contention on hot entities.
+**Internal engineering findings** (AWS CloudFormation / Aurora PostgreSQL perf tests).
+**Runs:** 4.4.0.26167 with `ENTITY_LOCK_MODE=ADVISORY` (2026-07-15); 4.3.3 (2026-07-16,
+added 2026-07-18). Both at 100M on `db.r6i.24xlarge`, `max_connections=10000`.
 
-> **Two defects, one trigger.** The body below (Environment, Coverage, Questions)
-> details the **4.4** defect — `oent-swap-okey-split-commit-regression`, silent OKEY
-> orphan. The **4.3.3 A/B follow-up** immediately after TL;DR is a **separate**
-> defect — a connection-recovery cascade that strands entity locks. Both surface only
-> with advisory lock mode enabled at 100M scale.
+> **Framing note (important):** this is a **confounded** comparison, not a clean A/B.
+> 4.4 ran with the advisory-mode **feature** active. **4.3.3 does NOT support
+> `ENTITY_LOCK_MODE=ADVISORY` — the JSON config was set but ignored, so 4.3.3 ran in
+> its DEFAULT locking mode.** So version *and* lock mode differ between the two runs;
+> differences can't be attributed to version alone. (Terminology: both builds use the
+> PostgreSQL `pg_advisory_lock()` *primitive* by default — that's why both logs show
+> advisory-lock deadlocks — which is separate from the Senzing `ENTITY_LOCK_MODE`
+> *feature* that only 4.4 has.)
+>
+> **Two defects.** 4.4 (advisory feature): `oent-swap-okey-split-commit-regression`,
+> silent OKEY orphan — detailed in the body below. 4.3.3 (default): a connection-recovery
+> cascade that strands entity locks — the **4.3.3 section** right after the TL;DR.
 
 ## TL;DR
 
@@ -29,21 +33,28 @@ via redo"), ACK'd the SQS message, and moved on — so there is **no recovery pa
 pending redo, no error-queue capture, and `MISSING_RES_ENT_AND_OKEY` logged **0**. The
 drop is completely silent.
 
-## 4.3.3 A/B follow-up (2026-07-18) — a SECOND, distinct advisory-mode defect
+## 4.3.3 (default mode) — a SECOND, distinct defect
 
-We re-ran the identical 100M advisory-mode test on **Senzing 4.3.3** (same template,
-`db.r6i.24xlarge`, `max_connections=10000`, `ENTITY_LOCK_MODE=ADVISORY`; us-west-2 due
-to capacity). Full detail:
+We ran the same 100M test on **Senzing 4.3.3** (same template, `db.r6i.24xlarge`,
+`max_connections=10000`; us-west-2 due to capacity). The `ENTITY_LOCK_MODE=ADVISORY`
+config **was set but 4.3.3 does not support it — it was ignored, so this run used the
+DEFAULT locking mode.** Full detail:
 [20260716 4.3.3 run README](../20260716-100M-provisioned-r6i-24xlarge-single-senzing-4.3.3/README.md).
 
 **4.3.3 is NOT a clean baseline — it fails differently, not less.**
 
 - **12 records left unresolved** (`RES_ENT_OKEY` = `OBS_ENT` − 12; 4.4 was −40; the
-  non-advisory 4.1 run was 0). So unresolved-records under advisory mode is **not a
-  4.4-only regression** — 4.3.3 has it too.
+  older non-advisory 4.1 run was 0). Record loss occurs in **4.4-advisory (40) AND
+  4.3.3-default (12)** — not exclusive to the advisory feature. The runs are confounded
+  (version *and* mode differ), so we can't cleanly attribute to one — the decisive test
+  is a **4.4 run in default mode** (see below).
 - **Different mechanism.** All 12 have **`locking_id ≠ 0` (a stranded entity lock)**;
-  4.4's 40 all had `locking_id = 0`. And **0 `OKEY ORPHAN PREVENTED`** in the logs
-  (full window, all groups) → 4.3.3 does **not** hit the OKEY-split regression.
+  4.4's 40 all had `locking_id = 0`. And **0 `OKEY ORPHAN PREVENTED`** — CONFIRMED by a
+  targeted CloudWatch query on the 4.3.3 app log (`/senzing/perf-prov/perf-433-100M-4`,
+  us-west-2), validated against a control (279 `ExclusiveLock on advisory lock` hits,
+  same group/window). So 4.3.3 does **not** hit `oent-swap-okey-split-commit-regression`
+  — consistent with it lacking the advisory-mode code path. **That defect is specific to
+  the 4.4 advisory feature.**
 - **Root cause (proposed): a connection-recovery cascade.** After an advisory-lock
   **deadlock** (40P01 on `SELECT pg_advisory_lock`), the 4.3.3 client leaves the PG
   connection in aborted-transaction state (`PQTRANS_INERROR`) — its own logs say *"a
@@ -56,19 +67,23 @@ to capacity). Full detail:
   aborted-transaction state`). DB-level `xact_rollback` = **2,085,437** (4.4: 698).
 - **Same input records fail in both versions.** 4 of the 12 4.3.3-unresolved records
   (`record_id` 568258243, 568258238, 520309908, 495886296) were **also** among the 40
-  in 4.4. → specific hot / duplicate-heavy entities lose the advisory-lock fight
-  regardless of version. **Advisory-lock contention is the shared trigger; the
-  consequence is version-specific.**
+  in 4.4. → specific hot / duplicate-heavy entities lose the `pg_advisory_lock` fight
+  **regardless of version**. Advisory-lock (the PG primitive) contention is the shared
+  trigger; the consequence is version-specific.
 - Throughput was ~parity (4.3.3 peak 5,613 / avg 3,255 / 8.51 h load vs 4.4
   6,074 / 3,365 / 8.25 h).
 
-**Net for engineering:** advisory lock mode at 100M produces record loss in BOTH
-builds via two different bugs — 4.4 silently orphans records (OKEY-split), 4.3.3 loudly
-strands them (connection-cascade after a `pg_advisory_lock` deadlock). Neither
-auto-recovers (not queued, not dead-lettered). Additional 4.3.3 questions: (1) why is a
-connection left in `PQTRANS_INERROR` after an advisory-lock deadlock instead of being
-reset — is the upstream error-swallow a known issue? (2) is the stranded `locking_id`
-expected to block those entities from any future re-resolution?
+**Net for engineering:** at 100M, record loss occurs in BOTH builds via two different
+bugs — 4.4 (advisory feature) silently orphans records (OKEY-split); 4.3.3 (default)
+loudly strands them (connection-recovery cascade after a `pg_advisory_lock` deadlock).
+Neither auto-recovers (not queued, not dead-lettered). Questions: (1, 4.4) the
+`oent-swap-okey-split-commit-regression` mitigation says "self-heals via redo" but did
+not converge — why? (2, 4.3.3) why is a connection left in `PQTRANS_INERROR` after a
+`pg_advisory_lock` deadlock instead of being reset — is the upstream error-swallow
+known? (3, 4.3.3) does the stranded `locking_id` block those entities from future
+re-resolution? **(4) Decisive next test: run 4.4 in DEFAULT (non-advisory) mode at 100M**
+— if clean, advisory mode drives the 40; if still ~40 silent, it's a version regression
+independent of the config.
 
 ## Environment
 
