@@ -1,5 +1,16 @@
 # senzing-test-results-20260716-100M-provisioned-r6i-24xlarge-single-senzing-4.3.3
 
+> # ⚠️ INVALID RUN — HYBRID IMAGES, CONCLUSIONS VOID
+> Verified 2026-07-20: the `:4.3.3` images were **mislabeled**. This run actually used a
+> **genuine 4.3.3.26191 consumer** with a **4.4.0.26196 redoer** (the `:4.3.3` redoer tag
+> contained a 4.4 build) — a hybrid, not 4.3.3. So the advisory-lock errors / cascade /
+> stranded-lock "findings" below almost certainly came from the 4.4 redoer and/or a
+> lock-protocol mismatch between the two components — **not** from Senzing 4.3.3.
+> **Do not use any A/B conclusion from this run.** A genuine 4.3.3 run is pending a
+> corrected `:4.3.3` image push from devops. (Root cause: release pipeline mislabeled the
+> redoer tag; verify `szBuildVersion.json` for every service before future runs — see
+> runbook §1.5.)
+
 ## Contents
 
 1. [Overview](#overview)

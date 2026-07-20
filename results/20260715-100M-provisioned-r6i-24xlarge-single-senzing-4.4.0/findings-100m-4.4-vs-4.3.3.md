@@ -1,5 +1,20 @@
 # 100M perf findings — 4.4 (advisory mode) vs 4.3.3 (default mode): TWO distinct record-loss defects
 
+> # ⚠️ THE "4.3.3" ARM IS INVALID (verified 2026-07-20)
+> The `:4.3.3` images were **mislabeled**: the 20260716 "4.3.3" run actually used a
+> genuine **4.3.3.26191 consumer** + a **4.4.0.26196 redoer** (the `:4.3.3` redoer tag
+> held a 4.4 build) — a **hybrid**, not 4.3.3. Everything in the "4.3.3 (default mode)"
+> section below is therefore **void** — its advisory errors / cascade / 12 stranded-lock
+> unresolved almost certainly came from the 4.4 redoer and/or a lock-protocol mismatch
+> between a 4.3.3 consumer and a 4.4-advisory redoer, **not** from 4.3.3. A genuine 4.3.3
+> run is pending a corrected image from devops.
+>
+> The **4.4.0.26167 arm (20260715)** stands on its own — that run claimed 4.4 and ran 4.4
+> (consumer build confirmed via `szBuildVersion.json`; recommend double-checking its
+> redoer build too for completeness). Read the 4.4 sections below as a single-run 4.4
+> report, **not** as a 4.4-vs-4.3.3 comparison. (Prevention: runbook §1.5 now requires
+> verifying `szBuildVersion.json` for every service before a run.)
+
 **Internal engineering findings** (AWS CloudFormation / Aurora PostgreSQL perf tests).
 **Runs:** 4.4.0.26167 with `ENTITY_LOCK_MODE=ADVISORY` (2026-07-15); 4.3.3 (2026-07-16,
 added 2026-07-18). Both at 100M on `db.r6i.24xlarge`, `max_connections=10000`.

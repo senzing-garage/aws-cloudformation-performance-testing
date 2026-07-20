@@ -48,6 +48,44 @@ Record every non-default parameter — it goes in the results folder name and no
 
 ---
 
+## 1.5 Verify the deployed image builds (DO THIS BEFORE LOADING)
+
+> ⚠️ **Learned the hard way (2026-07-20):** image tags are **mutable pointers** and the
+> release pipeline can mislabel them. A `:4.3.3` run once turned out to be a **hybrid** —
+> a genuine 4.3.3 consumer with a **4.4.0.26196 redoer** mistagged `:4.3.3` — which
+> silently invalidated the whole run. **Never trust the tag; verify the build.**
+
+Confirm **every** Senzing service image reports the expected build **before** you start
+the load — the consumer, the **redoer** (the one that was wrong), and sshd are separate
+images and can differ.
+
+**Read the build straight from each image** (public images, no auth; run anywhere with docker):
+```bash
+for img in sz_sqs_consumer-v4 sz_simple_redoer-v4 senzingsdk-tools sshd; do
+  echo "=== $img ==="
+  docker run --rm --entrypoint bash "public.ecr.aws/senzing/${img}:<TAG>" \
+    -c "cat /opt/senzing/er/szBuildVersion.json 2>/dev/null || find / -name szBuildVersion.json 2>/dev/null -exec cat {} +"
+done
+```
+Every `BUILD_VERSION` must match the version under test (e.g. all `4.3.3.x`). A mismatch
+(e.g. a `4.4.x` redoer under `:4.3.3`) means the tag is mislabeled — **stop, get the tag
+re-pushed, and do not run.**
+
+**Confirm the *running* tasks pulled that same image** (tag → digest can drift, and tasks
+can cache): in the perf account + region, with MFA —
+```bash
+for SVC in consumer redoer; do
+  T=$(aws ecs list-tasks --cluster "$CLUSTER" --service-name "$SVC" --region "$REGION" --query 'taskArns' --output text)
+  aws ecs describe-tasks --cluster "$CLUSTER" --tasks $T --region "$REGION" \
+    --query 'tasks[].containers[].{name:name,image:image,digest:imageDigest}' --output table
+done
+```
+The `imageDigest` must equal the digest of the tag you verified above. **Record the
+verified build + digests in the run README's Overview** (so the run is provably the
+version it claims).
+
+---
+
 ## 2. Connect to the shell and the database
 
 ```bash

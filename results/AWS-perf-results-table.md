@@ -997,7 +997,10 @@ Total Billed write IOPS         |               |                |  148,886,718 
 =====================================================================================================================
 =====================================================================================================================
 
-20260716  (4.4 vs 4.3.3 advisory-mode A/B — neither is clean; see run READMEs)
+20260716  ⚠️ INVALID — the "4.3.3" column was a HYBRID (genuine 4.3.3.26191 consumer +
+          MISLABELED 4.4.0.26196 redoer). Its numbers do NOT represent 4.3.3; ignore
+          the 4.3.3 column for version comparison. Genuine 4.3.3 run pending a corrected
+          image. (4.4.0.26167 column stands as a 4.4 run.) See run READMEs.
 =====================================================================================================
 Build:                          |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |  4.3.3         |
 Peak:                           |  4829          |  4688          |  6074          |  5613          |
@@ -1014,16 +1017,15 @@ Notes:                          | single DB inst | single DB inst | single DB in
                                 | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
                                 |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
                                 |                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
-                                |                |                | advisory mode  | advisory IGNORED|
-                                |                |                | (feature ON)   | (ran DEFAULT)  |
-                                |                |                | max_conn 10000 | max_conn 10000 |
-                                |                |                |                | us-west-2      |
-                                |                |                | 40 unresolved  | 12 unresolved  |
-                                |                |                | (silent OKEY   | (stranded-lock |
-                                |                |                |  orphan; clean | cascade; NOT   |
-                                |                |                |  err logs)     | clean: 2.08M   |
-                                |                |                |                | rollbacks,     |
-                                |                |                |                | 106k UNHANDLED)|
+                                |                |                | advisory mode  | ⚠️ HYBRID/INVALID|
+                                |                |                | (feature ON)   | 4.3.3 consumer +|
+                                |                |                | max_conn 10000 | 4.4.0.26196     |
+                                |                |                |                | redoer (mislbl) |
+                                |                |                | 40 unresolved  | numbers NOT     |
+                                |                |                | (silent OKEY   | valid for 4.3.3;|
+                                |                |                |  orphan; clean | ignore column   |
+                                |                |                |  err logs)     | (was: 12 unres, |
+                                |                |                |                | 2.08M rollbacks)|
                                 |                |                | confounded A/B: version + lock-mode both differ |
 =====================================================================================================
 
