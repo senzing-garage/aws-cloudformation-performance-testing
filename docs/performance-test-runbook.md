@@ -175,8 +175,8 @@ second psql session). It's catalog/stats-only — instant, holds no snapshot,
 doesn't pollute the harness deltas:
 
 ```bash
-echo $SENZING_DATABASE_PASSWORD
-$PG -f /tmp/progress-live.sql
+  echo $SENZING_DATABASE_PASSWORD
+  $PG -f /tmp/progress-live.sql
 ```
 
 Headline progress = `dsrc_record.cum_ins` (exact for the insert-only table).
