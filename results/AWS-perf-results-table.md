@@ -997,6 +997,37 @@ Total Billed write IOPS         |               |                |  148,886,718 
 =====================================================================================================================
 =====================================================================================================================
 
+20260720  GENUINE 4.3.3.26191 (advisory OFF) vs 4.4.0.26167 (advisory ON). Both images
+          verified 4.3.3.26191 (running-task digests). NB not a clean advisory A/B —
+          version AND lock-mode differ. Supersedes the INVALID 20260716 "4.3.3" (hybrid).
+=====================================================================================================
+Build:                          |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |  4.3.3.26191   |
+Peak:                           |  4829          |  4688          |  6074          |  5518          |
+Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2877          |  2969          |  3365          |  3199          |
+Time to load 100M:              |     9.65 hours |     9.35 hours |     8.25 hours |     8.68 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   38,951,128   |   33,886,974   |   33,226,016   |   34,413,817   |
+Volume write IOPS               |  474,989,850   |  473,285,471   |  419,688,438   |  478,419,741   |
+Max loader tasks:               |    117         |    97          |   165          |   172          |
+Max redoer tasks:               |    112         |    99          |   157          |   174          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                |                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                |                |                | advisory ON    | advisory OFF   |
+                                |                |                | max_conn 10000 | max_conn 10000 |
+                                |                |                |                | GENUINE 4.3.3  |
+                                |                |                |                | (verified)     |
+                                |                |                | 40 unresolved  | 0 unresolved ✅|
+                                |                |                | (silent OKEY   | 0 advisory-lock|
+                                |                |                |  orphan)       | errors; clean  |
+                                |                |                |                | (8k UNHANDLED, |
+                                |                |                |                | 184k rollback, |
+                                |                |                |                | lost 0 records)|
+=====================================================================================================
+
 20260716  ⚠️ INVALID — the "4.3.3" column was a HYBRID (genuine 4.3.3.26191 consumer +
           MISLABELED 4.4.0.26196 redoer). Its numbers do NOT represent 4.3.3; ignore
           the 4.3.3 column for version comparison. Genuine 4.3.3 run pending a corrected
