@@ -59,17 +59,25 @@ Confirm **every** Senzing service image reports the expected build **before** yo
 the load — the consumer, the **redoer** (the one that was wrong), and sshd are separate
 images and can differ.
 
+> **Repos + version-file differ by major version:**
+> - **4.x**: repos `sz_sqs_consumer-v4` / `sz_simple_redoer-v4` (the `-v4` suffix);
+>   version file `/opt/senzing/er/szBuildVersion.json`.
+> - **3.x**: repos `sz_sqs_consumer` / `sz_simple_redoer` (**no** `-v4`); version file
+>   `/opt/senzing/g2/g2BuildVersion.json`.
+> A `:3.x` tag on a `-v4` repo may not exist or be mislabeled — use the right repo.
+
 **Read the build straight from each image** (public images, no auth; run anywhere with docker):
 ```bash
+# 4.x: use *-v4 repos.  3.x: drop the -v4 suffix.  Adjust REPOS + TAG per run.
 for img in sz_sqs_consumer-v4 sz_simple_redoer-v4 senzingsdk-tools sshd; do
   echo "=== $img ==="
   docker run --rm --entrypoint bash "public.ecr.aws/senzing/${img}:<TAG>" \
-    -c "cat /opt/senzing/er/szBuildVersion.json 2>/dev/null || find / -name szBuildVersion.json 2>/dev/null -exec cat {} +"
+    -c 'find / \( -name szBuildVersion.json -o -name g2BuildVersion.json \) 2>/dev/null -exec cat {} +'
 done
 ```
-Every `BUILD_VERSION` must match the version under test (e.g. all `4.3.3.x`). A mismatch
-(e.g. a `4.4.x` redoer under `:4.3.3`) means the tag is mislabeled — **stop, get the tag
-re-pushed, and do not run.**
+Every `BUILD_VERSION` must match the version under test (e.g. all `3.13.1.x`). A mismatch
+(e.g. a `4.4.x` redoer under `:4.3.3` — which bit us on 20260716) means the tag is
+mislabeled — **stop, get the tag re-pushed, and do not run.**
 
 **Confirm the *running* tasks pulled that same image** (tag → digest can drift, and tasks
 can cache): in the perf account + region, with MFA —
@@ -175,8 +183,8 @@ second psql session). It's catalog/stats-only — instant, holds no snapshot,
 doesn't pollute the harness deltas:
 
 ```bash
-  echo $SENZING_DATABASE_PASSWORD
-  $PG -f /tmp/progress-live.sql
+echo $SENZING_DATABASE_PASSWORD
+$PG -f /tmp/progress-live.sql
 ```
 
 Headline progress = `dsrc_record.cum_ins` (exact for the insert-only table).

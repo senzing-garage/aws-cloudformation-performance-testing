@@ -997,6 +997,38 @@ Total Billed write IOPS         |               |                |  148,886,718 
 =====================================================================================================================
 =====================================================================================================================
 
+20260722  GENUINE 3.13.1.25323 (3.x baseline, advisory N/A) vs the two genuine 4.x runs.
+          3.x = cleanest correctness, slowest throughput. NB task sizing differs (3.x =
+          4 vCPU/30 GB → 96 consumers; 4.x = 2 vCPU → ~165), so records/sec not
+          task-size-matched. IOPS = ReadIOPS/WriteIOPS (per-instance), Sum.
+=====================================================================================================
+Build:                          |  4.1.0.25254   |  4.4.0.26167   |  4.3.3.26191   |  3.13.1.25323  |
+Peak:                           |  4688          |  6074          |  5518          |  4639          |
+Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  2969          |  3365          |  3199          |  2529          |
+Time to load 100M:              |     9.35 hours |     8.25 hours |     8.68 hours |    10.98 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   33,886,974   |   33,226,016   |   34,413,817   |   45,951,166   |
+Volume write IOPS               |  473,285,471   |  419,688,438   |  478,419,741   |  411,894,337   |
+Max loader tasks:               |    97          |   165          |   172          |    96          |
+Max redoer tasks:               |    99          |   157          |   174          |    66          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                |                | advisory ON    | advisory OFF   | advisory N/A   |
+                                |                |                |                | (3.x)          |
+                                |                |                |                | 4 vCPU/30 GB   |
+                                |                |                |                | tasks          |
+                                |                | 40 unresolved  | 0 unresolved   | 0 unresolved ✅|
+                                |                | (silent OKEY   | (8k UNHANDLED, | CLEANEST:      |
+                                |                |  orphan)       | 184k rollback) | deadlk 3,      |
+                                |                |                |                | rollbk 241,    |
+                                |                |                |                | 1 UNHANDLED;   |
+                                |                |                |                | genuine, us-w-2|
+=====================================================================================================
+
 20260720  GENUINE 4.3.3.26191 (advisory OFF) vs 4.4.0.26167 (advisory ON). Both images
           verified 4.3.3.26191 (running-task digests). NB not a clean advisory A/B —
           version AND lock-mode differ. Supersedes the INVALID 20260716 "4.3.3" (hybrid).

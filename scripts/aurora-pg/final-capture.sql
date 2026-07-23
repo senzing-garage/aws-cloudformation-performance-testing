@@ -70,7 +70,18 @@ SELECT now() AS at, 'res_ent'        AS relname, count(*) AS exact_rows FROM res
 SELECT now() AS at, 'res_ent_okey'   AS relname, count(*) AS exact_rows FROM res_ent_okey;
 SELECT now() AS at, 'sys_eval_queue' AS relname, count(*) AS exact_rows FROM sys_eval_queue;  -- expect ~0
 SELECT now() AS at, 'res_relate'     AS relname, count(*) AS exact_rows FROM res_relate;
-SELECT now() AS at, 'res_ent_active' AS relname, count(*) AS exact_rows FROM res_ent WHERE ent_state != 0;
+-- res_ent_active: 4.x has res_ent.ent_state; the 3.x g2 schema differs and errors on this
+-- predicate. Run it DYNAMICALLY (no parse-time column resolution) and degrade to n/a on
+-- any error, so a schema mismatch can't abort the rest of the capture (it did on 3.13.1,
+-- which cost us the erpm/throughput line below).
+DO $$
+DECLARE n bigint;
+BEGIN
+  EXECUTE 'SELECT count(*) FROM res_ent WHERE ent_state <> 0' INTO n;
+  RAISE NOTICE 'res_ent_active exact_rows = %', n;
+EXCEPTION WHEN others THEN
+  RAISE NOTICE 'res_ent_active = n/a (not available on this schema: % %)', SQLSTATE, SQLERRM;
+END $$;
 
 -- --- Step 2: overall throughput / entity-resolutions per minute ---------------
 SELECT
