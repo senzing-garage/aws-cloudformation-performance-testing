@@ -136,6 +136,22 @@
    prior 4.4/hybrid runs → specific hot / duplicate-heavy entities lose the advisory-lock
    fight regardless of version.
 
+1. **Engine-dev record-level query — NOT exact duplicates; hot multi-record entities.**
+   The engine team's record-level orphan query (`DSRC_RECORD → OBS_ENT → RES_ENT_OKEY`,
+   `WHERE reo.RES_ENT_ID IS NULL`) returned **exactly the same 30** (30 rows, 30 distinct
+   `obs_ent_id`, **0 null `obs_ent_id`** — every orphan *was* observed, just never got a
+   RES_ENT_OKEY). **1:1 record↔obs_ent ⇒ no `ent_src_key` exact-duplicates** among the
+   orphans (rules out the "same record loaded twice" theory). BUT **16 of the 30
+   `record_id`s cluster consecutively** — `562372142,143,144,147,148` (×5),
+   `550250960,961,962` (×3), plus pairs `483578320/323`, `496192336/339`, `568258238/243`,
+   `586500813/818`. Consecutive record_ids = multiple records of the **same real-world
+   entity**, so the orphans concentrate on a handful of **hot, merge-heavy entities**
+   (resolution-level duplication, not exact dupes) — exactly what stresses the OKEY
+   split/swap. **Reproduction candidate for engine dev: the `562372142–148` cluster** (one
+   hot entity, 5 records, all orphaned, recurring across every 4.4 build) — re-drive
+   through `addRecord` on a quiet system to trigger the OKEY-split live. Full 30-record
+   list in Logs below.
+
 1. **Throughput ≈ 4.4.0.26167 (FEATURES didn't cost meaningfully).** Peak 5,814/s, avg
    3,262/s, load 8.52 h — vs 26167's 6,074 / 3,365 / 8.25 h. Within run-to-run noise.
    (Slightly higher IOPS, plausibly the extra RES_ENT.FEATURES writes.)

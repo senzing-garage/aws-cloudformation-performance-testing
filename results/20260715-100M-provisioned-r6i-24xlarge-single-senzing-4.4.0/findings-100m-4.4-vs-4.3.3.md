@@ -100,6 +100,39 @@ re-resolution? **(4) Decisive next test: run 4.4 in DEFAULT (non-advisory) mode 
 — if clean, advisory mode drives the 40; if still ~40 silent, it's a version regression
 independent of the config.
 
+## 4.4.0.26204 re-test (2026-07-24) — the regression PERSISTS in the latest 4.4 build
+
+We re-ran 100M on the newest 4.4 (self-built, immutable-tagged **4.4.0.26204**, advisory
+ON) with the new **RES_ENT.FEATURES** feature enabled (`ALTER TABLE RES_ENT ADD COLUMN
+FEATURES TEXT` pre-load). Full detail:
+[20260723 4.4.0.26204 run README](../20260723-100M-provisioned-r6i-24xlarge-single-senzing-4.4.0.26204/README.md).
+
+- **Still broken: 30 records unresolved** (`RES_ENT_OKEY` = `OBS_ENT` − 30) — same
+  `oent-swap-okey-split-commit-regression`, marginally fewer than 4.4.0.26167's 40.
+  **FEATURES did not fix it** (and FEATURES populated fine — 61,120,255 of 61,120,258
+  res_ent — at ~no throughput cost). Newer build did not fix it either.
+- **Same log pattern:** 9 `OKEY ORPHAN PREVENTED`; **4** correlate directly to unresolved
+  records (redo self-heal didn't converge: obsEntID 30713079, 70558554, 78090853,
+  105301184), 3 self-healed, **26 of 30 silent**. Advisory-lock contention present
+  (`ExclusiveLock on advisory lock` 1,290; `db.deadlocks` 729), no connection cascade.
+- **NOT exact duplicates — hot multi-record entities.** Engine dev's record-level query
+  (`DSRC_RECORD→OBS_ENT→RES_ENT_OKEY WHERE res_ent_id IS NULL`) returned exactly the 30
+  (30 distinct obs_ent, **0 null obs_ent_id** — all observed; 1:1 record↔obs_ent, so **no
+  `ent_src_key` exact-duplicates**). But **16 of 30 record_ids cluster consecutively**
+  (`562372142–148` ×5, `550250960–962` ×3, + pairs `483578320/323`, `496192336/339`,
+  `568258238/243`, `586500813/818`) → multiple records of a few **hot, merge-heavy
+  entities**, the profile that stresses the OKEY split/swap. **These same clusters
+  orphaned in every 4.4 run** (26167, hybrid, 26204) — a stable, reproducible signature.
+- **Reproduction set for engineering:** the 30 `record_id`s (in the run README); the
+  cleanest single repro is the **`562372142–148` cluster** — one hot entity, 5 records,
+  orphaned every run. Re-drive through `addRecord` on a quiet system to trigger the
+  OKEY-split live.
+
+**Net:** `oent-swap-okey-split-commit-regression` is present in the **latest** 4.4
+(4.4.0.26204), unaffected by the FEATURES feature — a persistent, reproducible defect on
+specific merge-heavy entities. The only 0-unresolved 100M runs remain genuine 4.3.3.26191
+and 3.13.1.
+
 ## Environment
 
 | | |
