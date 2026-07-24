@@ -163,6 +163,12 @@
 1. **FEATURES populated ✅** — final `res_ent where features is not null` = **61,120,255**
    of **61,120,258** res_ent (3 short — 99.99999%). So the RES_ENT.FEATURES feature worked
    as intended: essentially every resolved entity carries FEATURES.
+   Content verified real (JSON feature blobs, e.g. `{"S":{"1":[[…]],…}}`, ~380–516 chars;
+   `features = ''` count = 0, so none are empty-string). The **3 NULL-features rows**
+   (res_ent_id 92585878, 64867488, 74253999) are a **distinct, negligible edge case**
+   (0.000005%): they are *resolved* entities missing features — **NOT** among the 30
+   orphans and **NOT** in the OKEY-orphan logs (verified) — likely a finalization
+   write-race, unrelated to the OKEY-split defect.
 
 **Bottom line:** 4.4.0.26204 + FEATURES behaves like 4.4.0.26167 — the OKEY-split
 regression is still there (30 vs 40 silent orphans, same mechanism), throughput and errors

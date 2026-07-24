@@ -1005,8 +1005,6 @@ Total Billed write IOPS         |               |                |  148,886,718 
 =====================================================================================================
 Build:                          |  4.4.0.26167   |  4.3.3.26191   |  3.13.1.25323  |  4.4.0.26204   |
 Peak:                           |  6074          |  5518          |  4639          |  5814          |
-Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
-Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
 Average over entire run:        |  3365          |  3199          |  2529          |  3262          |
 Time to load 100M:              |     8.25 hours |     8.68 hours |    10.98 hours |     8.52 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
@@ -1038,8 +1036,6 @@ Notes:                          | single DB inst | single DB inst | single DB in
 =====================================================================================================
 Build:                          |  4.1.0.25254   |  4.4.0.26167   |  4.3.3.26191   |  3.13.1.25323  |
 Peak:                           |  4688          |  6074          |  5518          |  4639          |
-Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
-Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
 Average over entire run:        |  2969          |  3365          |  3199          |  2529          |
 Time to load 100M:              |     9.35 hours |     8.25 hours |     8.68 hours |    10.98 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
@@ -1069,8 +1065,6 @@ Notes:                          | single DB inst | single DB inst | single DB in
 =====================================================================================================
 Build:                          |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |  4.3.3.26191   |
 Peak:                           |  4829          |  4688          |  6074          |  5518          |
-Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
-Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
 Average over entire run:        |  2877          |  2969          |  3365          |  3199          |
 Time to load 100M:              |     9.65 hours |     9.35 hours |     8.25 hours |     8.68 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
@@ -1101,8 +1095,6 @@ Notes:                          | single DB inst | single DB inst | single DB in
 =====================================================================================================
 Build:                          |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |  4.3.3         |
 Peak:                           |  4829          |  4688          |  6074          |  5613          |
-Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
-Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
 Average over entire run:        |  2877          |  2969          |  3365          |  3255          |
 Time to load 100M:              |     9.65 hours |     9.35 hours |     8.25 hours |     8.51 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
@@ -1130,8 +1122,6 @@ Notes:                          | single DB inst | single DB inst | single DB in
 =====================================================================================================
 Build:                          |  3.9.1.24074   |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |
 Peak:                           |  5053          |  4829          |  4688          |  6074          |
-Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
-Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
 Average over entire run:        |  2067          |  2877          |  2969          |  3365          |
 Time to load 100M:              |    13.43 hours |     9.65 hours |     9.35 hours |     8.25 hours |
 Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
