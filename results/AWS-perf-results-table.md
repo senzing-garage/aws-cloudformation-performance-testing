@@ -997,6 +997,40 @@ Total Billed write IOPS         |               |                |  148,886,718 
 =====================================================================================================================
 =====================================================================================================================
 
+20260723  4.4.0.26204 + RES_ENT.FEATURES (advisory ON) vs 4.4.0.26167 (advisory, no FEATURES).
+          FEATURES did NOT fix the OKEY-split silent-orphan regression: 30 unresolved (vs
+          40) — same mechanism (4 logged OKEY-orphans + 26 silent). FEATURES populated
+          (61.1M/61.1M res_ent), ~no throughput cost. Clean comparators: 4.3.3.26191 / 3.13.1.
+          Images self-built + immutable-tagged (:4.4.0-26204) — ends the tag-drift saga.
+=====================================================================================================
+Build:                          |  4.4.0.26167   |  4.3.3.26191   |  3.13.1.25323  |  4.4.0.26204   |
+Peak:                           |  6074          |  5518          |  4639          |  5814          |
+Warm-up:                        |     0.0  hours |     0.0  hours |     0.0  hours |     0.0  hours |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  3365          |  3199          |  2529          |  3262          |
+Time to load 100M:              |     8.25 hours |     8.68 hours |    10.98 hours |     8.52 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   33,226,016   |   34,413,817   |   45,951,166   |   40,413,738   |
+Volume write IOPS               |  419,688,438   |  478,419,741   |  411,894,337   |  446,299,279   |
+Max loader tasks:               |   165          |   172          |    96          |   169          |
+Max redoer tasks:               |   157          |   174          |    66          |   106          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | advisory ON    | advisory OFF   | advisory N/A   | advisory ON    |
+                                | 2 vCPU/4 GB    | 2 vCPU/4 GB    | 4 vCPU/30 GB   | 2 vCPU/4 GB    |
+                                |                |                |                | +RES_ENT.      |
+                                |                |                |                | FEATURES(61.1M)|
+                                | 40 unresolved  | 0 unresolved   | 0 unresolved ✅| 30 unresolved  |
+                                | (silent OKEY   | (clean)        | (clean)        | (OKEY-split    |
+                                |  orphan)       |                |                | PERSISTS: 4    |
+                                |                |                |                | logged+26 sil.;|
+                                |                |                |                | FEATURES≠fix)  |
+                                |                |                |                | self-built,    |
+                                |                |                |                | immutable tag  |
+=====================================================================================================
+
 20260722  GENUINE 3.13.1.25323 (3.x baseline, advisory N/A) vs the two genuine 4.x runs.
           3.x = cleanest correctness, slowest throughput. NB task sizing differs (3.x =
           4 vCPU/30 GB → 96 consumers; 4.x = 2 vCPU → ~165), so records/sec not
