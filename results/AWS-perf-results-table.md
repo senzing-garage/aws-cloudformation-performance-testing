@@ -1,3 +1,128 @@
+20260622
+======================================================================================================================
+Build:                          |  4.4.0.26163   |  4.4.0.26167   |  4.4.0.26167   |  4.4.0.26167   |  4.3.2.26162   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2120          |  2496          |  2600          |  2594          |  2579          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1642          |  1960          |  2012          |  2042          |  1965          |
+Time to load 25M:               |     4.23 hours |     3.53 hours |     3.45 hours |     3.38 hours |     3.53 hours |
+Records in dead-letter queue:   |     0          |     15         |      0         |     0          |     0          |
+Total Billed read RW IOPS:      |    1,417,215   |      581,747   |    1,987,873   |    1,987,682   |    2,141,584   |
+Total Billed read RO IOPS:      |      149,903   |       87,959   |       n/a      |       n/a      |       n/a      |
+Total Billed write IOPS:        |  144,678,171   |  115,035,913   |  114,252,104   |  110,278,324   |  118,455,414   |
+Max loader tasks:               |     56         |     62         |     61         |     61         |     61         |
+Max redoer tasks:               |     69         |     68         |     59         |     59         |     61         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
+                                |  w/ RO conn.   |  w/ RO conn.   | w/o RO conn.   | w/o RO conn.   | w/o RO conn.   |
+                                | small consumers| small consumers| small consumers| small consumers| small consumers|
+                                |                |                |                | advisory lock  | advisory lock  |
+======================================================================================================================
+
+
+20260619
+======================================================================================================================
+Build:                          |  4.3.0.26135   |  4.4.0.26163   |  4.4.0.26167   |  4.4.0.26167   |  4.4.0.26167   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2493          |  2120          |  2496          |  2600          |  2594          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1919          |  1642          |  1960          |  2012          |  2042          |
+Time to load 25M:               |     3.62 hours |     4.23 hours |     3.53 hours |     3.45 hours |     3.38 hours |
+Records in dead-letter queue:   |     0          |     0          |     15         |      0         |     0          |
+Total Billed read RW IOPS:      |      770,680   |    1,417,215   |      581,747   |    1,987,873   |    1,987,682   |
+Total Billed read RO IOPS:      |        ???     |      149,903   |       87,959   |       n/a      |       n/a      |
+Total Billed write IOPS:        |  119,071,592   |  144,678,171   |  115,035,913   |  114,252,104   |  110,278,324   |
+Max loader tasks:               |     71         |     56         |     62         |     61         |     61         |
+Max redoer tasks:               |     63         |     69         |     68         |     59         |     59         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
+                                |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   | w/o RO conn.   | w/o RO conn.   |
+                                | small consumers| small consumers| small consumers| small consumers| small consumers|
+                                |                |                |                |                | advisory lock  |
+======================================================================================================================
+
+
+20260618
+======================================================================================================================
+Build:                          |  4.3.0.26135   |  4.3.0.26135   |  4.4.0.26163   |  4.4.0.26167   |  4.4.0.26167   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2427          |  2493          |  2120          |  2496          |  2600          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1977          |  1919          |  1642          |  1960          |  2012          |
+Time to load 25M:               |     3.5 hours  |     3.62 hours |     4.23 hours |     3.53 hours |     3.45 hours |
+Records in dead-letter queue:   |     2          |     0          |     0          |     15         |      0         |
+Total Billed read RW IOPS:      |      604,047   |      770,680   |    1,417,215   |      581,747   |    1,987,873   |
+Total Billed read RO IOPS:      |       ???      |        ???     |      149,903   |       87,959   |       n/a      |
+Total Billed write IOPS:        |  116,257,403   |  119,071,592   |  144,678,171   |  115,035,913   |  114,252,104   |
+Max loader tasks:               |     31         |     71         |     56         |     62         |     61         |
+Max redoer tasks:               |     39         |     63         |     69         |     68         |     59         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
+                                |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   | w/o RO conn.   |
+                                |                | small consumers| small consumers| small consumers| small consumers|
+======================================================================================================================
+
+
+20260617
+======================================================================================================================
+Build:                          |  4.3.0.26126   |  4.3.0.26135   |  4.3.0.26135   |  4.4.0.26163   |  4.4.0.26167   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2471          |  2427          |  2493          |  2120          |  2496          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1973          |  1977          |  1919          |  1642          |  1960          |
+Time to load 25M:               |     3.52 hours |     3.5 hours  |     3.62 hours |     4.23 hours |     3.53 hours |
+Records in dead-letter queue:   |     0          |     2          |     0          |     0          |     15         |
+Total Billed read RW IOPS:      |      697,521   |      604,047   |      770,680   |    1,417,215   |      581,747   |
+Total Billed read RO IOPS:      |        ???     |       ???      |        ???     |      149,903   |       87,959   |
+Total Billed write IOPS:        |  119,463,075   |  116,257,403   |  119,071,592   |  144,678,171   |  115,035,913   |
+Max loader tasks:               |     30         |     31         |     71         |     56         |     62         |
+Max redoer tasks:               |     37         |     39         |     63         |     69         |     68         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off| sync commit off|
+                                | w/ RO conn.    |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   |
+                                |                |                | small consumers| small consumers| small consumers|
+======================================================================================================================
+
+20260612
+=====================================================================================================
+Build:                          |  4.3.0.26126   |  4.3.0.26135   |  4.3.0.26135   |  4.4.0.26163   |
+Number of records:              |    25 M        |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2471          |  2427          |  2493          |  2120          |
+Warm-up:                        |     0 mins     |     0 mins     |     0 mins     |     0 mins     |
+Average after warm-up:          |   n/a          |   n/a          |   n/a          |   n/a          |
+Average over entire run:        |  1973          |  1977          |  1919          |  1642          |
+Time to load 25M:               |     3.52 hours |     3.5 hours  |     3.62 hours |     4.23 hours |
+Records in dead-letter queue:   |     0          |     2          |     0          |     0          |
+Total Billed read RW IOPS:      |      697,521   |      604,047   |      770,680   |    1,417,215   |
+Total Billed read RO IOPS:      |        ???     |       ???      |        ???     |      149,903   |
+Total Billed write IOPS:        |  119,463,075   |  116,257,403   |  119,071,592   |  144,678,171   |
+Max loader tasks:               |     30         |     31         |     71         |     56         |
+Max redoer tasks:               |     37         |     39         |     63         |     69         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit off| sync commit off|
+                                | w/ RO conn.    |  w/ RO conn.   |  w/ RO conn.   |  w/ RO conn.   |
+                                |                |                | small consumers| small consumers|
+=====================================================================================================
+
 20260520
 =======================================================================================================================================
 Build:                          |  4.2.4.26098   |  4.3.0.26111   |  4.3.0.26126   |  4.3.0.26126   |  4.3.0.26135   |  4.3.0.26135   |
@@ -871,6 +996,147 @@ Total Billed write IOPS         |               |                |  148,886,718 
 =====================================================================================================================
 =====================================================================================================================
 =====================================================================================================================
+
+20260723  4.4.0.26204 + RES_ENT.FEATURES (advisory ON) vs 4.4.0.26167 (advisory, no FEATURES).
+          FEATURES did NOT fix the OKEY-split silent-orphan regression: 30 unresolved (vs
+          40) — same mechanism (4 logged OKEY-orphans + 26 silent). FEATURES populated
+          (61.1M/61.1M res_ent), ~no throughput cost. Clean comparators: 4.3.3.26191 / 3.13.1.
+          Images self-built + immutable-tagged (:4.4.0-26204) — ends the tag-drift saga.
+=====================================================================================================
+Build:                          |  4.4.0.26167   |  4.3.3.26191   |  3.13.1.25323  |  4.4.0.26204   |
+Peak:                           |  6074          |  5518          |  4639          |  5814          |
+Average over entire run:        |  3365          |  3199          |  2529          |  3262          |
+Time to load 100M:              |     8.25 hours |     8.68 hours |    10.98 hours |     8.52 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   33,226,016   |   34,413,817   |   45,951,166   |   40,413,738   |
+Volume write IOPS               |  419,688,438   |  478,419,741   |  411,894,337   |  446,299,279   |
+Max loader tasks:               |   165          |   172          |    96          |   169          |
+Max redoer tasks:               |   157          |   174          |    66          |   106          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | advisory ON    | advisory OFF   | advisory N/A   | advisory ON    |
+                                | 2 vCPU/4 GB    | 2 vCPU/4 GB    | 4 vCPU/30 GB   | 2 vCPU/4 GB    |
+                                |                |                |                | +RES_ENT.      |
+                                |                |                |                | FEATURES(61.1M)|
+                                | 40 unresolved  | 0 unresolved   | 0 unresolved ✅| 30 unresolved  |
+                                | (silent OKEY   | (clean)        | (clean)        | (OKEY-split    |
+                                |  orphan)       |                |                | PERSISTS: 4    |
+                                |                |                |                | logged+26 sil.;|
+                                |                |                |                | FEATURES≠fix)  |
+                                |                |                |                | self-built,    |
+                                |                |                |                | immutable tag  |
+=====================================================================================================
+
+20260722  GENUINE 3.13.1.25323 (3.x baseline, advisory N/A) vs the two genuine 4.x runs.
+          3.x = cleanest correctness, slowest throughput. NB task sizing differs (3.x =
+          4 vCPU/30 GB → 96 consumers; 4.x = 2 vCPU → ~165), so records/sec not
+          task-size-matched. IOPS = ReadIOPS/WriteIOPS (per-instance), Sum.
+=====================================================================================================
+Build:                          |  4.1.0.25254   |  4.4.0.26167   |  4.3.3.26191   |  3.13.1.25323  |
+Peak:                           |  4688          |  6074          |  5518          |  4639          |
+Average over entire run:        |  2969          |  3365          |  3199          |  2529          |
+Time to load 100M:              |     9.35 hours |     8.25 hours |     8.68 hours |    10.98 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   33,886,974   |   33,226,016   |   34,413,817   |   45,951,166   |
+Volume write IOPS               |  473,285,471   |  419,688,438   |  478,419,741   |  411,894,337   |
+Max loader tasks:               |    97          |   165          |   172          |    96          |
+Max redoer tasks:               |    99          |   157          |   174          |    66          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                |                | advisory ON    | advisory OFF   | advisory N/A   |
+                                |                |                |                | (3.x)          |
+                                |                |                |                | 4 vCPU/30 GB   |
+                                |                |                |                | tasks          |
+                                |                | 40 unresolved  | 0 unresolved   | 0 unresolved ✅|
+                                |                | (silent OKEY   | (8k UNHANDLED, | CLEANEST:      |
+                                |                |  orphan)       | 184k rollback) | deadlk 3,      |
+                                |                |                |                | rollbk 241,    |
+                                |                |                |                | 1 UNHANDLED;   |
+                                |                |                |                | genuine, us-w-2|
+=====================================================================================================
+
+20260720  GENUINE 4.3.3.26191 (advisory OFF) vs 4.4.0.26167 (advisory ON). Both images
+          verified 4.3.3.26191 (running-task digests). NB not a clean advisory A/B —
+          version AND lock-mode differ. Supersedes the INVALID 20260716 "4.3.3" (hybrid).
+=====================================================================================================
+Build:                          |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |  4.3.3.26191   |
+Peak:                           |  4829          |  4688          |  6074          |  5518          |
+Average over entire run:        |  2877          |  2969          |  3365          |  3199          |
+Time to load 100M:              |     9.65 hours |     9.35 hours |     8.25 hours |     8.68 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   38,951,128   |   33,886,974   |   33,226,016   |   34,413,817   |
+Volume write IOPS               |  474,989,850   |  473,285,471   |  419,688,438   |  478,419,741   |
+Max loader tasks:               |    117         |    97          |   165          |   172          |
+Max redoer tasks:               |    112         |    99          |   157          |   174          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                |                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                |                |                | advisory ON    | advisory OFF   |
+                                |                |                | max_conn 10000 | max_conn 10000 |
+                                |                |                |                | GENUINE 4.3.3  |
+                                |                |                |                | (verified)     |
+                                |                |                | 40 unresolved  | 0 unresolved ✅|
+                                |                |                | (silent OKEY   | 0 advisory-lock|
+                                |                |                |  orphan)       | errors; clean  |
+                                |                |                |                | (8k UNHANDLED, |
+                                |                |                |                | 184k rollback, |
+                                |                |                |                | lost 0 records)|
+=====================================================================================================
+
+20260716  ⚠️ INVALID — the "4.3.3" column was a HYBRID (genuine 4.3.3.26191 consumer +
+          MISLABELED 4.4.0.26196 redoer). Its numbers do NOT represent 4.3.3; ignore
+          the 4.3.3 column for version comparison. Genuine 4.3.3 run pending a corrected
+          image. (4.4.0.26167 column stands as a 4.4 run.) See run READMEs.
+=====================================================================================================
+Build:                          |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |  4.3.3         |
+Peak:                           |  4829          |  4688          |  6074          |  5613          |
+Average over entire run:        |  2877          |  2969          |  3365          |  3255          |
+Time to load 100M:              |     9.65 hours |     9.35 hours |     8.25 hours |     8.51 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   38,951,128   |   33,886,974   |   33,226,016   |   39,627,193   |
+Volume write IOPS               |  474,989,850   |  473,285,471   |  419,688,438   |  467,163,158   |
+Max loader tasks:               |    117         |    97          |   165          |   187          |
+Max redoer tasks:               |    112         |    99          |   157          |   138          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                |                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                |                |                | advisory mode  | ⚠️ HYBRID/INVALID|
+                                |                |                | (feature ON)   | 4.3.3 consumer +|
+                                |                |                | max_conn 10000 | 4.4.0.26196     |
+                                |                |                |                | redoer (mislbl) |
+                                |                |                | 40 unresolved  | numbers NOT     |
+                                |                |                | (silent OKEY   | valid for 4.3.3;|
+                                |                |                |  orphan; clean | ignore column   |
+                                |                |                |  err logs)     | (was: 12 unres, |
+                                |                |                |                | 2.08M rollbacks)|
+                                |                |                | confounded A/B: version + lock-mode both differ |
+=====================================================================================================
+
+20260715
+=====================================================================================================
+Build:                          |  3.9.1.24074   |  4.0.0.25224   |  4.1.0.25254   |  4.4.0.26167   |
+Peak:                           |  5053          |  4829          |  4688          |  6074          |
+Average over entire run:        |  2067          |  2877          |  2969          |  3365          |
+Time to load 100M:              |    13.43 hours |     9.65 hours |     9.35 hours |     8.25 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     0          |
+Volume read IOPS                |   46,846,823   |   38,951,128   |   33,886,974   |   33,226,016   |
+Volume write IOPS               |  413,350,943   |  474,989,850   |  473,285,471   |  419,688,438   |
+Max loader tasks:               |           53   |    117         |    97          |   165          |
+Max redoer tasks:               |           75   |    112         |    99          |   157          |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |                |                | 25% CPU loader | 25% CPU loader |
+                                |   IO opt       |   IO opt       |   IO opt       |   IO opt       |
+                                |                |                |                | advisory lock  |
+                                |                |                |                | max_conn 10000 |
+                                |                |                |                | 40 unresolved  |
+=====================================================================================================
 
 20250916
 =====================================================================================================

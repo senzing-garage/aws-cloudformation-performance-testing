@@ -25,6 +25,7 @@ Metadata:
       - Label:
           default: Senzing installation
         Parameters:
+          - AcceptEula
           - RecordMax
           - SenzingLicenseAsBase64
       - Label:
@@ -46,7 +47,16 @@ Metadata:
           default: 'Optional: Entity lock mode (Senzing ER ENTITY_LOCK_MODE)'
         Parameters:
           - EnableEntityLockModeAdvisory
+      - Label:
+          default: Security responsibility
+        Parameters:
+          - SecurityResponsibility
     ParameterLabels:
+      AcceptEula:
+        default: >-
+          Required: If you accept the Senzing End User License Agreement at
+          https://senzing.com/end-user-license-agreement,
+          enter 'I_ACCEPT_THE_SENZING_EULA'.
       CidrInbound:
         default: 'Optional: Provide the permitted IP address block allowed to connect using CIDR notation.'
       CognitoAdminEmail:
@@ -63,6 +73,12 @@ Metadata:
         default: 'Optional: Would you like to have an initial set of data imported?'
       # RunDataEncryption:
       #   default: "Optional: Would you like to run with data encryption enabled?"
+      SecurityResponsibility:
+        default: >-
+          Required: A default deployment of this template is for demonstration only.
+          Before using authentic PII, ensure the security of your deployment.
+          The security of this deployment is your responsibility.
+          To acknowledge your understanding and acceptance of the foregoing, type “I AGREE”.
       SenzingLicenseAsBase64:
         default: >-
           The Senzing Evaluation comes with 100k free records of entity resolution.
@@ -75,6 +91,13 @@ Metadata:
 
 Parameters:
   # AWS Console: https://console.aws.amazon.com/cloudformation/home?#/stacks > {stack} > Parameters
+
+  AcceptEula:
+    AllowedPattern: '.+|^I_ACCEPT_THE_SENZING_EULA$'
+    ConstraintDescription: AcceptEula parameter must be 'I_ACCEPT_THE_SENZING_EULA'
+    Default: '_'
+    Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#accepteula'
+    Type: String
 
   CidrInbound:
     AllowedPattern: '(?:\d{1,3}\.){3}\d{1,3}(?:/\d\d?)?'
@@ -153,6 +176,13 @@ Parameters:
   #   Description: "Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#rundataencryption"
   #   Type: String
 
+  SecurityResponsibility:
+    AllowedPattern: '.+|^I AGREE$'
+    ConstraintDescription: SecurityResponsibility parameter must be 'I AGREE'
+    Default: '_'
+    Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#securityresponsibility'
+    Type: String
+
   SenzingLicenseAsBase64:
     #   AllowedPattern: ' ^$|[^-A-Za-z0-9+\/=\s]|=[^=]|={3,}$'
     ConstraintDescription: 'Must contain only Base64 characters. see https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#senzinglicenseasbase64'
@@ -173,6 +203,25 @@ Rules:
             - !Ref CognitoAdminEmail
             - '_'
         AssertDescription: 'Entering initial user email address is required to proceed'
+
+  ConfirmEula:
+    Assertions:
+      - Assert: !Not
+          - !Equals
+            - !Ref AcceptEula
+            - ''
+        AssertDescription: 'EULA needs to be accepted.  Enter "I_ACCEPT_THE_SENZING_EULA"'
+      - Assert: !Equals
+          - !Ref AcceptEula
+          - I_ACCEPT_THE_SENZING_EULA
+        AssertDescription: 'EULA acceptance incorrect.  Enter "I_ACCEPT_THE_SENZING_EULA"'
+
+  ConfirmSecurityResponsibility:
+    Assertions:
+      - Assert: !Equals
+          - !Ref SecurityResponsibility
+          - 'I AGREE'
+        AssertDescription: 'Understanding responsibility and entering "I AGREE" is required to proceed.'
 
   ConfirmSenzingLicenseAsBase64:
     Assertions:
@@ -256,10 +305,16 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       InitPostgresql: docker.io/senzing/init-database:latest
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.4.0-26204
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.4.0-26204
-      Sshd: public.ecr.aws/senzing/sshd:4.4.0-26204
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.4.0-26204
+      # Using ':staging' because the immutable ':4.4.0.26167' tag was NOT published
+      # (same devops pipeline tagging issue that blocked ':4.3.3'). ':staging' was
+      # 4.4.0.26167 on 2026-07-14. ⚠️ AFTER the stack builds, VERIFY the deployed
+      # build: cat /opt/senzing/er/szBuildVersion.json  (want BUILD_VERSION 4.4.0.26167)
+      # and record the image sha256 digest in the README. If staging has DRIFTED to a
+      # newer 4.4 build, that's still a valid "4.4" arm — just relabel the dir/README.
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:staging
+      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:staging
+      Sshd: public.ecr.aws/senzing/sshd:staging
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:staging
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
 
@@ -1293,20 +1348,13 @@ Resources:
       Family: aurora-postgresql17
       Parameters:
         track_io_timing: 1
-        # Raise above the Aurora default (~5,000 on r6i.24xlarge). At 100M the
-        # Redoer + Consumer fleets autoscale to MaxCapacity 200 × 20 threads =
-        # up to 8,000 connections; the flawed 4.4 run peaked at 327 tasks (~6,540)
-        # and exhausted the default pool ("remaining connection slots are reserved
-        # for roles with the SUPERUSER attribute" — the rds_superuser app account
-        # gets NONE of the reserved slots), silently losing records.
-        # max_connections is INCLUSIVE of the reserve, so 8000 (== worst-case
-        # demand, zero overhead headroom) would re-trigger the FATAL. 10000 leaves
-        # ~20% margin over worst-case fleet + overhead; memory-safe on 768 GiB.
-        # NOTE: superuser_reserved_connections is NOT settable in an Aurora DB
-        # parameter group (CREATE fails: "Invalid/Unmodifiable/Unsupported"), and
-        # isn't needed — the default reserve is trivial against the 10000 ceiling.
+        # Raise above the Aurora default (~5,000) so the redoer+consumer fleet is
+        # not refused. 10000 (not 8000, which == worst-case demand with no headroom).
+        # (superuser_reserved_connections is NOT settable in an Aurora DB parameter
+        #  group — deploy fails — and isn't needed: the default reserve is trivial
+        #  against the 10000 ceiling vs ~6,540 peak demand.) See the 4.4 100M run.
         max_connections: '10000'
-        work_mem: '4096'   # pin Aurora default (kB) so the memory-safety margin can't silently change
+        work_mem: '4096'   # pin Aurora default (kB)
         # pglogical.synchronous_commit: 0
       Tags:
         - Key: Name

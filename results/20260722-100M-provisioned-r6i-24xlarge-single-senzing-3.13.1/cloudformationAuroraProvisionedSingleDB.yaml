@@ -255,11 +255,11 @@ Mappings:
       # senzing v4
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
-      InitPostgresql: docker.io/senzing/init-database:latest
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.4.0-26204
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.4.0-26204
-      Sshd: public.ecr.aws/senzing/sshd:4.4.0-26204
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.4.0-26204
+      InitPostgresql: docker.io/senzing/init-postgresql:1.1.20
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer:3.13.1
+      SenzingApiTools: public.ecr.aws/senzing/senzingapi-tools:3.13.1
+      Sshd: public.ecr.aws/senzing/sshd:3.13.1
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer:3.13.1
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
 
@@ -2051,7 +2051,7 @@ Resources:
                                 '    "PIPELINE": {'
                                 '        "CONFIGPATH": "/etc/opt/senzing",'
                                 f'        "LICENSESTRINGBASE64": "{license_string}",'
-                                '        "RESOURCEPATH": "/opt/senzing/er/resources",'
+                                '        "RESOURCEPATH": "/opt/senzing/g2/resources",'
                                 '        "SUPPORTPATH": "/opt/senzing/data"'
                                 '    },'
                                 '    "SQL": {'
@@ -2067,7 +2067,7 @@ Resources:
                                 '    "PIPELINE": {'
                                 '        "CONFIGPATH": "/etc/opt/senzing",'
                                 f'        "LICENSESTRINGBASE64": "{license_string}",'
-                                '        "RESOURCEPATH": "/opt/senzing/er/resources",'
+                                '        "RESOURCEPATH": "/opt/senzing/g2/resources",'
                                 '        "SUPPORTPATH": "/opt/senzing/data"'
                                 '    },'
                                 '    "SQL": {'
@@ -2823,7 +2823,7 @@ Resources:
         - Command:
             - '/bin/bash'
             - '-c'
-            - 'echo "${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; /opt/senzing/er/bin/sz_configtool -f /tmp/G2Config.gtc'
+            - 'echo "${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc'
           Environment:
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
@@ -2965,13 +2965,13 @@ Resources:
           Name: redoer
           Privileged: false
           ReadonlyRootFilesystem: false
-      # Sized to match Azure (2 vCPU / 4 GB / 20 threads) for cross-cloud
-      # apples-to-apples comparison. May 2026 graphs showed prior 4 vCPU / 30 GB
-      # was running at ~25% CPU and ~3% memory utilization - way oversized.
-      Cpu: '2048'
+      # NB: 2 vCPU / 4 GB is the 4.x-tuned size (4.x engine used ~3% of 30 GB).
+      # The 3.x (g2) engine needs far more — 4 vCPU / 30 GB per the proven 3.12.3
+      # reference run; at 4 GB the 3.13.1 redoer OOM-kills (exit 137). See run README.
+      Cpu: '4096'
       ExecutionRoleArn: !GetAtt IamRoleRedoer.Arn
       Family: !Sub '${AWS::StackName}-task-definition-redoer'
-      Memory: '4096'
+      Memory: '30720'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
@@ -3063,13 +3063,13 @@ Resources:
           Name: consumer
           Privileged: false
           ReadonlyRootFilesystem: false
-      # Sized to match Azure (2 vCPU / 4 GB / 20 threads) for cross-cloud
-      # apples-to-apples comparison. May 2026 graphs showed prior 4 vCPU / 30 GB
-      # was running at ~25% CPU and ~3% memory utilization - way oversized.
-      Cpu: '2048'
+      # NB: 2 vCPU / 4 GB is the 4.x-tuned size (4.x engine used ~3% of 30 GB).
+      # The 3.x (g2) engine needs far more — 4 vCPU / 30 GB per the proven 3.12.3
+      # reference run; at 4 GB the 3.13.1 consumer OOM-kills (exit 137). See run README.
+      Cpu: '4096'
       ExecutionRoleArn: !GetAtt IamRoleStreamLoader.Arn
       Family: !Sub '${AWS::StackName}-task-definition-stream-loader'
-      Memory: '4096'
+      Memory: '30720'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE

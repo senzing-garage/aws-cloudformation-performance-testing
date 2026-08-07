@@ -25,6 +25,7 @@ Metadata:
       - Label:
           default: Senzing installation
         Parameters:
+          - AcceptEula
           - RecordMax
           - SenzingLicenseAsBase64
       - Label:
@@ -43,16 +44,19 @@ Metadata:
           - EnableReadOnlyConnection
           - ReadOnlyConnections
       - Label:
-          default: 'Optional: Entity lock mode (Senzing ER ENTITY_LOCK_MODE)'
+          default: Security responsibility
         Parameters:
-          - EnableEntityLockModeAdvisory
+          - SecurityResponsibility
     ParameterLabels:
+      AcceptEula:
+        default: >-
+          Required: If you accept the Senzing End User License Agreement at
+          https://senzing.com/end-user-license-agreement,
+          enter 'I_ACCEPT_THE_SENZING_EULA'.
       CidrInbound:
         default: 'Optional: Provide the permitted IP address block allowed to connect using CIDR notation.'
       CognitoAdminEmail:
         default: 'Required: Provide the email address for the administrative user.'
-      EnableEntityLockModeAdvisory:
-        default: 'Optional: Add "ER": {"ENTITY_LOCK_MODE": "ADVISORY"} to the Senzing engine config.'
       EnableReadOnlyConnection:
         default: 'Optional: Add an Aurora reader replica and route Senzing LIB_FEAT reads to it via READ_ONLY_CONNECTION.'
       ReadOnlyConnections:
@@ -63,6 +67,12 @@ Metadata:
         default: 'Optional: Would you like to have an initial set of data imported?'
       # RunDataEncryption:
       #   default: "Optional: Would you like to run with data encryption enabled?"
+      SecurityResponsibility:
+        default: >-
+          Required: A default deployment of this template is for demonstration only.
+          Before using authentic PII, ensure the security of your deployment.
+          The security of this deployment is your responsibility.
+          To acknowledge your understanding and acceptance of the foregoing, type “I AGREE”.
       SenzingLicenseAsBase64:
         default: >-
           The Senzing Evaluation comes with 100k free records of entity resolution.
@@ -75,6 +85,13 @@ Metadata:
 
 Parameters:
   # AWS Console: https://console.aws.amazon.com/cloudformation/home?#/stacks > {stack} > Parameters
+
+  AcceptEula:
+    AllowedPattern: '.+|^I_ACCEPT_THE_SENZING_EULA$'
+    ConstraintDescription: AcceptEula parameter must be 'I_ACCEPT_THE_SENZING_EULA'
+    Default: '_'
+    Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#accepteula'
+    Type: String
 
   CidrInbound:
     AllowedPattern: '(?:\d{1,3}\.){3}\d{1,3}(?:/\d\d?)?'
@@ -90,16 +107,6 @@ Parameters:
     ConstraintDescription: Entering initial user email address is required to proceed
     Default: '_'
     Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#cognitoadminemail'
-    Type: String
-
-  EnableEntityLockModeAdvisory:
-    AllowedValues:
-      - 'false'
-      - 'true'
-    Default: 'false'
-    Description: >-
-      When true, add an "ER" section with "ENTITY_LOCK_MODE": "ADVISORY" to the Senzing engine
-      config as a sibling of "PIPELINE" and "SQL". Default false omits the section entirely.
     Type: String
 
   EnableReadOnlyConnection:
@@ -153,6 +160,13 @@ Parameters:
   #   Description: "Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#rundataencryption"
   #   Type: String
 
+  SecurityResponsibility:
+    AllowedPattern: '.+|^I AGREE$'
+    ConstraintDescription: SecurityResponsibility parameter must be 'I AGREE'
+    Default: '_'
+    Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#securityresponsibility'
+    Type: String
+
   SenzingLicenseAsBase64:
     #   AllowedPattern: ' ^$|[^-A-Za-z0-9+\/=\s]|=[^=]|={3,}$'
     ConstraintDescription: 'Must contain only Base64 characters. see https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#senzinglicenseasbase64'
@@ -173,6 +187,25 @@ Rules:
             - !Ref CognitoAdminEmail
             - '_'
         AssertDescription: 'Entering initial user email address is required to proceed'
+
+  ConfirmEula:
+    Assertions:
+      - Assert: !Not
+          - !Equals
+            - !Ref AcceptEula
+            - ''
+        AssertDescription: 'EULA needs to be accepted.  Enter "I_ACCEPT_THE_SENZING_EULA"'
+      - Assert: !Equals
+          - !Ref AcceptEula
+          - I_ACCEPT_THE_SENZING_EULA
+        AssertDescription: 'EULA acceptance incorrect.  Enter "I_ACCEPT_THE_SENZING_EULA"'
+
+  ConfirmSecurityResponsibility:
+    Assertions:
+      - Assert: !Equals
+          - !Ref SecurityResponsibility
+          - 'I AGREE'
+        AssertDescription: 'Understanding responsibility and entering "I AGREE" is required to proceed.'
 
   ConfirmSenzingLicenseAsBase64:
     Assertions:
@@ -256,10 +289,10 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       InitPostgresql: docker.io/senzing/init-database:latest
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.4.0-26204
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.4.0-26204
-      Sshd: public.ecr.aws/senzing/sshd:4.4.0-26204
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.4.0-26204
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:staging
+      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:staging
+      Sshd: public.ecr.aws/senzing/sshd:staging
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:staging
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
 
@@ -1293,20 +1326,6 @@ Resources:
       Family: aurora-postgresql17
       Parameters:
         track_io_timing: 1
-        # Raise above the Aurora default (~5,000 on r6i.24xlarge). At 100M the
-        # Redoer + Consumer fleets autoscale to MaxCapacity 200 × 20 threads =
-        # up to 8,000 connections; the flawed 4.4 run peaked at 327 tasks (~6,540)
-        # and exhausted the default pool ("remaining connection slots are reserved
-        # for roles with the SUPERUSER attribute" — the rds_superuser app account
-        # gets NONE of the reserved slots), silently losing records.
-        # max_connections is INCLUSIVE of the reserve, so 8000 (== worst-case
-        # demand, zero overhead headroom) would re-trigger the FATAL. 10000 leaves
-        # ~20% margin over worst-case fleet + overhead; memory-safe on 768 GiB.
-        # NOTE: superuser_reserved_connections is NOT settable in an Aurora DB
-        # parameter group (CREATE fails: "Invalid/Unmodifiable/Unsupported"), and
-        # isn't needed — the default reserve is trivial against the 10000 ceiling.
-        max_connections: '10000'
-        work_mem: '4096'   # pin Aurora default (kB) so the memory-safety margin can't silently change
         # pglogical.synchronous_commit: 0
       Tags:
         - Key: Name
@@ -1379,7 +1398,7 @@ Resources:
       # DBInstanceClass: db.r7g.12xlarge
       # DBInstanceClass: db.r7g.16xlarge
       # DBInstanceClass: db.r6i.4xlarge
-      DBInstanceClass: db.r6i.24xlarge
+      DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
       # DBInstanceClass: db.r6i.24xlarge
@@ -1409,7 +1428,7 @@ Resources:
       # same AZ as the loader/redoer compute. Eliminates the cross-AZ tax on
       # read-offload reads and makes the A/B vs. writer-only baseline fair.
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6i.24xlarge
+      DBInstanceClass: db.r6i.8xlarge
     Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------
@@ -2023,15 +2042,6 @@ Resources:
                       database_port_reader = properties.get('DatabasePortReader', '')
                       enable_read_only_connection = str(properties.get('EnableReadOnlyConnection', 'false')).lower() == 'true'
                       read_only_connections = str(properties.get('ReadOnlyConnections', '8'))
-                      entity_lock_mode_advisory = str(properties.get('EnableEntityLockModeAdvisory', 'false')).lower() == 'true'
-                      er_block = ''
-                      if entity_lock_mode_advisory:
-                          er_block = (
-                                ','
-                                '    "ER": {'
-                                '        "ENTITY_LOCK_MODE": "ADVISORY"'
-                                '    }'
-                          )
                       data_encryption = properties.get('DataEncryption', '')
                       db_config = 'Multiple'
                       if database_host_core == database_host_res == database_host_libfeat:
@@ -2059,7 +2069,6 @@ Resources:
                                 f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
                                 f'{read_only_block}'
                                 '    }'
-                                f'{er_block}'
                                 '}')
                       else:
                           response_data["ConfigJSON"] = (
@@ -2091,7 +2100,6 @@ Resources:
                                 '        "RES_FEAT_LKEY": "C1",'
                                 '        "RES_FEAT_STAT": "C1"'
                                 '    }'
-                                f'{er_block}'
                                 '}')
               except Exception as e:
                   logger.error(e)
@@ -2295,7 +2303,6 @@ Resources:
       DatabasePortReader: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabaseUsername: !FindInMap [Constants, Database, Username]
       # DataEncryption: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
-      EnableEntityLockModeAdvisory: !Ref EnableEntityLockModeAdvisory
       EnableReadOnlyConnection: !Ref EnableReadOnlyConnection
       ReadOnlyConnections: !Ref ReadOnlyConnections
       # When read-offload is enabled, force the engine config to wait until the

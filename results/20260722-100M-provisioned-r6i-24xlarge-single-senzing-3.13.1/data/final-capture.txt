@@ -1,0 +1,63 @@
+Timing is on.
+DO
+Time: 6.541 ms
+VACUUM
+Time: 259.956 ms
+VACUUM
+Time: 66934.886 ms (01:06.935)
+VACUUM
+Time: 33931.616 ms (00:33.932)
+VACUUM
+Time: 16453.620 ms (00:16.454)
+VACUUM
+Time: 23031.485 ms (00:23.031)
+VACUUM
+Time: 21262.055 ms (00:21.262)
+SET
+Time: 0.599 ms
+SET
+Time: 0.549 ms
+SET
+Time: 0.500 ms
+SET
+Time: 0.521 ms
+              at               |   relname   | exact_rows 
+-------------------------------+-------------+------------
+ 2026-07-23 13:22:44.365498+00 | dsrc_record |  100000000
+(1 row)
+
+Time: 3427.008 ms (00:03.427)
+              at               | relname | exact_rows 
+-------------------------------+---------+------------
+ 2026-07-23 13:22:47.792634+00 | obs_ent |   99998927
+(1 row)
+
+Time: 3338.443 ms (00:03.338)
+              at              | relname | exact_rows 
+------------------------------+---------+------------
+ 2026-07-23 13:22:51.13115+00 | res_ent |   61036765
+(1 row)
+
+Time: 1106.574 ms (00:01.107)
+              at               |   relname    | exact_rows 
+-------------------------------+--------------+------------
+ 2026-07-23 13:22:52.237775+00 | res_ent_okey |   99998927
+(1 row)
+
+Time: 1698.077 ms (00:01.698)
+              at               |    relname     | exact_rows 
+-------------------------------+----------------+------------
+ 2026-07-23 13:22:53.935947+00 | sys_eval_queue |          0
+(1 row)
+
+Time: 5822.501 ms (00:05.823)
+              at               |  relname   | exact_rows 
+-------------------------------+------------+------------
+ 2026-07-23 13:22:59.758524+00 | res_relate |   48136004
+(1 row)
+
+Time: 1049.019 ms (00:01.049)
+psql:/tmp/final-capture.sql:73: ERROR:  column "ent_state" does not exist
+LINE 1: ...elname, count(*) AS exact_rows FROM res_ent WHERE ent_state ...
+                                                             ^
+Time: 1.681 ms

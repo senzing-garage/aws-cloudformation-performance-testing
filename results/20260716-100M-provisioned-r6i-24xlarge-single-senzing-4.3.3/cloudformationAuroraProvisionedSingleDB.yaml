@@ -256,10 +256,10 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       InitPostgresql: docker.io/senzing/init-database:latest
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.4.0-26204
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.4.0-26204
-      Sshd: public.ecr.aws/senzing/sshd:4.4.0-26204
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.4.0-26204
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.3.3
+      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.3.3
+      Sshd: public.ecr.aws/senzing/sshd:4.3.3
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.3.3
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
 

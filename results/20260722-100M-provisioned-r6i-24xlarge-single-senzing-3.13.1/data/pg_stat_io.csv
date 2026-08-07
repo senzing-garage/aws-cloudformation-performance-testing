@@ -1,0 +1,7 @@
+backend_type,object,context,reads,read_time,writes,write_time,writebacks,writeback_time,extends,extend_time,op_bytes,hits,evictions,reuses,fsyncs,fsync_time,stats_reset
+client backend,relation,bulkread,764,449.378,0,0,,,,,8192,3093,0,0,,,2026-07-22 03:20:52.608273+00
+client backend,relation,bulkwrite,0,0,945,4.102,,,945,1.315,8192,0,0,0,,,2026-07-22 03:20:52.608273+00
+client backend,relation,normal,2413754165,16788060247.738,0,0,,,127516241,1160424.793,8192,201817255158,1606650892,,,,2026-07-22 03:20:52.608273+00
+autovacuum worker,relation,normal,154063,907760.299,0,0,,,6176,39.831,8192,339407354,85133,,,,2026-07-22 03:20:52.608273+00
+autovacuum worker,relation,vacuum,19702,123959.348,0,0,,,0,0,8192,943067004,6943723,123123325,,,2026-07-22 03:20:52.608273+00
+background worker,relation,normal,6,2.611,0,0,,,0,0,8192,70528872,1715234,,,,2026-07-22 03:20:52.608273+00
