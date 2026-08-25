@@ -256,12 +256,16 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       InitPostgresql: docker.io/senzing/init-database:latest
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.4.0-26204
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.4.0-26204
-      Sshd: public.ecr.aws/senzing/sshd:4.4.0-26204
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.4.0-26204
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.4.0-26232
+      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.4.0-26232
+      Sshd: public.ecr.aws/senzing/sshd:4.4.0-26232
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.4.0-26232
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
+      # Plain PostgreSQL client image (has psql) for the one-shot pgvector setup task
+      # (CREATE EXTENSION vector + the NAME_EMBEDDING / BIZNAME_EMBEDDING vector tables
+      # and HNSW indexes). Version matches the Aurora PostgreSQL 17 cluster.
+      PostgresClient: public.ecr.aws/docker/library/postgres:17
 
     Run:
       ApiServer: No
@@ -274,7 +278,11 @@ Mappings:
     StreamProducer:
       DataSource: TEST
       EntityType: GENERIC
-      InputUrl: https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz
+      # Private embedded-feature-data bucket (us-east-1). Read via s3:// so the
+      # producer authenticates with its task role (see IamPolicyStreamProducerS3);
+      # a plain https URL would be an unsigned request → AccessDenied. Requires the
+      # bucket owner's cross-account bucket policy to also allow this stack.
+      InputUrl: s3://embedded-feature-data/dataset_20.fixed.jsonl
       RecordMin: 0
 
   # NOTE: The CIDRs for subnets may collide with existing subnets.  The values may be altered.
@@ -679,6 +687,33 @@ Resources:
         Version: '2012-10-17'
       Roles:
         - !Ref IamRoleLambda
+    Type: AWS::IAM::Policy
+
+  # Lets the StreamProducer task read the (private) embedded-feature-data bucket
+  # via an s3:// SENZING_INPUT_URL. The role policy grants the permission on this
+  # side; because the bucket is in us-east-1 and (likely) a DIFFERENT account than
+  # this stack, the BUCKET OWNER must ALSO add a bucket policy granting this
+  # stack's account / this role s3:GetObject (+ s3:ListBucket). S3 bucket ARNs are
+  # region/account-agnostic, so the ARNs below are correct cross-region.
+  IamPolicyStreamProducerS3:
+    Condition: IfRunStreamProducer
+    Properties:
+      PolicyName: !Sub '${AWS::StackName}-iam-policy-stream-producer-s3'
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource:
+              - 'arn:aws:s3:::embedded-feature-data/*'
+          - Action:
+              - s3:ListBucket
+            Effect: Allow
+            Resource:
+              - 'arn:aws:s3:::embedded-feature-data'
+        Version: '2012-10-17'
+      Roles:
+        - !Ref IamRoleStreamProducer
     Type: AWS::IAM::Policy
 
   IamPolicySqsConsumer:
@@ -2180,10 +2215,9 @@ Resources:
 
   LambdaRunnerG2ConfigTool:
     # Unconditional: Senzing config is a prerequisite for any DB use (like the
-    # init-postgres schema step). The redoer/loader services DependsOn this so they
-    # never start against an unconfigured DB.
+    # init-postgres schema step). The redoer/loader services DependsOn this.
     DependsOn:
-      - LambdaRunnerInitPostgresConfiguration
+      - LambdaRunnerInitPgvector
     Properties:
       ClusterId: !Ref EcsCluster
       RunTaskParameters:
@@ -2279,6 +2313,38 @@ Resources:
         - Key: Name
           Value: !Sub '${AWS::StackName}-lambda-runner-init-postgres-configuration'
     Type: Custom::LambdaRunnerInitPostgresConfiguration
+
+  # Runs the pgvector setup task after the Senzing schema exists and before the
+  # config-tool step, so the embedding vector tables are present before any load.
+  LambdaRunnerInitPgvector:
+    # Unconditional: pgvector tables are a prerequisite for embedding storage.
+    DependsOn:
+      - LambdaRunnerInitPostgresConfiguration
+    Properties:
+      ClusterId: !Ref EcsCluster
+      RunTaskParameters:
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ecs.html#ECS.Client.run_task
+        cluster: !Ref EcsCluster
+        count: 1
+        launchType: FARGATE
+        networkConfiguration:
+          awsvpcConfiguration:
+            assignPublicIp: DISABLED
+            securityGroups:
+              - !Ref Ec2SecurityGroupLambdaRunner
+            # Pinned to AZ1 (writer AZ) to keep one-shot DB setup same-AZ.
+            subnets:
+              - !Ref Ec2SubnetPrivate1
+        platformVersion: 1.4.0
+        tags:
+          - key: Name
+            value: !Sub '${AWS::StackName}-lambda-runner-init-pgvector-run-task-parameters'
+        taskDefinition: !Ref EcsTaskDefinitionInitPgvector
+      ServiceToken: !GetAtt LambdaFunctionRunTaskAndWait.Arn
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-lambda-runner-init-pgvector'
+    Type: Custom::LambdaRunnerInitPgvector
 
   LambdaRunnerSenzingEngineConfigurationJson:
     DependsOn:
@@ -2824,16 +2890,236 @@ Resources:
         - Command:
             - '/bin/bash'
             - '-c'
-            - 'echo "${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; /opt/senzing/er/bin/sz_configtool -f /tmp/G2Config.gtc'
+            - |
+              set -euo pipefail
+              # 1. Apply the data-source / feature / attribute / threshold config via
+              #    sz_configtool, exporting the result to a file INSTEAD of saving it so
+              #    the search profile can be added before the config is registered.
+              printf '%s\n' "${SENZING_G2CONFIG_GTC}" > /tmp/G2Config.gtc
+              /opt/senzing/er/bin/sz_configtool -f /tmp/G2Config.gtc
+              # 2. Add the EMBEDDED_SEARCH search profile. sz_configtool has no command
+              #    for CFG_SPROFILE, so this script authors the row, resolving the real
+              #    FTYPE_IDs the addFeature step above assigned.
+              printf '%s' "${ADD_SEARCH_PROFILE_PY}" > /tmp/add_search_profile.py
+              python3 /tmp/add_search_profile.py -i /tmp/g2config.json -o /tmp/g2config_new.json
+              # 3. Import the completed config and register it as the default.
+              printf 'importFromFile /tmp/g2config_new.json\nsave\n' > /tmp/G2Config-save.gtc
+              /opt/senzing/er/bin/sz_configtool -f /tmp/G2Config-save.gtc
           Environment:
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
             - Name: SENZING_G2CONFIG_GTC
+              # Base data sources (kept from the standard template) + the OPEN_SANCTIONS
+              # and ICIJ sources for embedding test data, plus the Senzing config needed
+              # to STORE embeddings: two embedding feature types (NAME_EMBEDDING /
+              # BIZNAME_EMBEDDING), load-only posture (behavior FF, candidates No,
+              # comparison NULL_COMP = stored but not used for candidate generation),
+              # their attributes, the name-scoring fragments (11/12), and thresholds.
+              # NB: NULL_COMP must exist in the engine's default config. It was NOT in
+              # 4.4.0-26204 (addFeature failed with "Comparison function 'NULL_COMP'
+              # not found"); running 4.4.0-26232 now — confirm in the g2configtool log
+              # that NULL_COMP resolves (Feature successfully added).
+              # NB: addComparisonThreshold uses execOrder (the input key); returnOrder in the
+              # source draft is an output-only key and is silently ignored by sz_configtool.
               Value: |
                 addDataSource CUSTOMERS
                 addDataSource REFERENCE
                 addDataSource WATCHLIST
+                addDataSource OPEN_SANCTIONS
+                addDataSource ICIJ
+                addFeature {"feature": "NAME_EMBEDDING", "class": "ISSUED_ID", "behavior": "FF", "anonymize": "No", "candidates": "No", "comparison": "NULL_COMP", "matchKey": "Yes", "version": 1, "elementList": [{"element": "EMBEDDING", "expressed": "No", "compared": "Yes", "derived": "Yes", "display": "No"}, {"element": "ALGORITHM", "expressed": "No", "compared": "Yes", "derived": "No", "display": "No"}, {"element": "LABEL", "expressed": "No", "compared": "No", "derived": "No", "display": "Yes"}]}
+                addFeature {"feature": "BIZNAME_EMBEDDING", "class": "ISSUED_ID", "behavior": "FF", "anonymize": "No", "candidates": "No", "comparison": "NULL_COMP", "matchKey": "Yes", "version": 1, "elementList": [{"element": "EMBEDDING", "expressed": "No", "compared": "Yes", "derived": "Yes", "display": "No"}, {"element": "ALGORITHM", "expressed": "No", "compared": "Yes", "derived": "No", "display": "No"}, {"element": "LABEL", "expressed": "No", "compared": "No", "derived": "No", "display": "Yes"}]}
+                addAttribute {"attribute": "NAME_EMBEDDING", "class": "IDENTIFIER", "feature": "NAME_EMBEDDING", "element": "EMBEDDING", "required": "Yes", "default": null, "internal": "No"}
+                addAttribute {"attribute": "NAME_ALGORITHM", "class": "IDENTIFIER", "feature": "NAME_EMBEDDING", "element": "ALGORITHM", "required": "No", "default": null, "internal": "Yes"}
+                addAttribute {"attribute": "NAME_LABEL", "class": "IDENTIFIER", "feature": "NAME_EMBEDDING", "element": "LABEL", "required": "Yes", "default": null, "internal": "No"}
+                addAttribute {"attribute": "BIZNAME_EMBEDDING", "class": "IDENTIFIER", "feature": "BIZNAME_EMBEDDING", "element": "EMBEDDING", "required": "Yes", "default": null, "internal": "No"}
+                addAttribute {"attribute": "BIZNAME_ALGORITHM", "class": "IDENTIFIER", "feature": "BIZNAME_EMBEDDING", "element": "ALGORITHM", "required": "No", "default": null, "internal": "Yes"}
+                addAttribute {"attribute": "BIZNAME_LABEL", "class": "IDENTIFIER", "feature": "BIZNAME_EMBEDDING", "element": "LABEL", "required": "Yes", "default": null, "internal": "No"}
+                setFragment {"id": 11, "fragment": "SAME_NAME", "source": "./SUMMARY/BEHAVIOR/NAME[./SAME > 0] | ./FRAGMENT[./GNR_SAME_NAME>0]"}
+                setFragment {"id": 12, "fragment": "CLOSE_NAME", "source": "./SUMMARY/BEHAVIOR/NAME[sum(./SAME | ./CLOSE) > 0] | ./FRAGMENT[./GNR_CLOSE_NAME>0]"}
+                addComparisonThreshold {"function": "NULL_COMP", "execOrder": 1, "scoreName": "FULL_SCORE", "feature": "BIZNAME_EMBEDDING", "sameScore": 80, "closeScore": 60, "likelyScore": 43, "plausibleScore": 30, "unlikelyScore": 20}
+                addComparisonThreshold {"function": "NULL_COMP", "execOrder": 1, "scoreName": "FULL_SCORE", "feature": "NAME_EMBEDDING", "sameScore": 80, "closeScore": 50, "likelyScore": 30, "plausibleScore": 20, "unlikelyScore": 10}
                 save
+                exportToFile /tmp/g2config.json
+            - Name: ADD_SEARCH_PROFILE_PY
+              # Embedded copy of dev/config/testing/add_search_profile.py (keep in
+              # sync). Written to /tmp and run after sz_configtool to author the
+              # EMBEDDED_SEARCH CFG_SPROFILE row (no config-tool command exists for it).
+              Value: |
+                #!/usr/bin/env python3
+                """Add a search profile (CFG_SPROFILE row) to a g2config document.
+
+                Workflow this script is the second half of
+                --------------------------------------------
+                1. Start from a base g2config document (e.g. ``g2config.json__original``).
+                2. Add the embedding feature types with the **Rust** ``sz_configtool``, e.g.::
+
+                     sz_configtool -c <ini> -f add_embedding_features.szc
+
+                   where ``add_embedding_features.szc`` contains::
+
+                     addFeature {"feature": "NAME_EMBEDDING", "class": "ISSUED_ID", "behavior": "FF", ...}
+                     addFeature {"feature": "BIZNAME_EMBEDDING", "class": "ISSUED_ID", "behavior": "FF", ...}
+                     save
+
+                   ``sz_configtool`` assigns each new feature its own ``FTYPE_ID`` (features seed
+                   at 1000, so the first added feature becomes 1001, the next 1002, ...). This
+                   script does **not** guess those ids -- it reads them back out of the config.
+                3. Run **this** script against the config the tool produced. It resolves the
+                   requested feature *codes* to the ``FTYPE_ID`` values the tool actually
+                   assigned, then emits the CFG_SPROFILE row with a matching ``FTYPE_OVERRIDES``.
+
+                ``sz_configtool`` has no ``addSearchProfile`` command, which is why the profile
+                is authored here.
+
+                Semantics implemented here mirror the engine's CFG_SPROFILE contract
+                (see FAQ ``architecture/cfg-sprofile-spec``):
+
+                * ``GPLAN_ID``            -- resolved from the generic-plan *code* via CFG_GPLAN.
+                * ``DEFAULT_USED_FOR_CAND`` -- ``Normal`` (respect each feature's own
+                  ``USED_FOR_CAND``) or ``Off`` (force every feature off as the base).
+                * ``FTYPE_OVERRIDES``     -- itemized ``[{ftypeId,Y|N}, ...]`` in canonical
+                  mini-format, ordered ascending by ``FTYPE_ID``. ``Y`` turns candidate-list
+                  building on for that feature type, ``N`` turns it off. Overrides always win
+                  over the base mode.
+                """
+
+                import argparse
+                import json
+                import sys
+
+
+                def load_config(path):
+                    with open(path, "r", encoding="utf-8") as handle:
+                        config = json.load(handle)
+                    if "G2_CONFIG" not in config:
+                        raise SystemExit(f"error: {path!r} is not a g2config document (no G2_CONFIG key)")
+                    return config
+
+
+                def resolve_gplan_id(config, plan_code):
+                    """Map a generic-plan code (e.g. 'SEARCH') to its GPLAN_ID."""
+                    for row in config["G2_CONFIG"].get("CFG_GPLAN", []):
+                        if row.get("GPLAN_CODE") == plan_code:
+                            return row["GPLAN_ID"]
+                    known = ", ".join(sorted(r.get("GPLAN_CODE", "?") for r in config["G2_CONFIG"].get("CFG_GPLAN", [])))
+                    raise SystemExit(f"error: generic plan {plan_code!r} not found in CFG_GPLAN (known: {known})")
+
+
+                def resolve_ftype_ids(config, feature_codes):
+                    """Map each feature code to the FTYPE_ID that addFeature assigned it.
+
+                    Fails loudly if any requested feature is missing -- that means the
+                    addFeature step was not run through sz_configtool first.
+                    """
+                    by_code = {r["FTYPE_CODE"]: r["FTYPE_ID"] for r in config["G2_CONFIG"].get("CFG_FTYPE", [])}
+                    resolved = {}
+                    missing = []
+                    for code in feature_codes:
+                        if code in by_code:
+                            resolved[code] = by_code[code]
+                        else:
+                            missing.append(code)
+                    if missing:
+                        raise SystemExit(
+                            "error: feature type(s) not found in CFG_FTYPE: "
+                            + ", ".join(missing)
+                            + "\n       Run the addFeature step through sz_configtool before this script."
+                        )
+                    return resolved
+
+
+                def next_sprofile_id(config):
+                    ids = [r["SPROFILE_ID"] for r in config["G2_CONFIG"].get("CFG_SPROFILE", [])]
+                    return (max(ids) + 1) if ids else 1
+
+
+                def format_ftype_overrides(overrides):
+                    """Serialize {ftypeId: 'Y'|'N'} to canonical mini-format, ordered by id.
+
+                    e.g. {99:'Y', 1001:'Y', 1002:'Y'} -> "[{99,Y},{1001,Y},{1002,Y}]"
+                    """
+                    parts = [f"{{{ftype_id},{flag}}}" for ftype_id, flag in sorted(overrides.items())]
+                    return "[" + ",".join(parts) + "]"
+
+
+                def add_search_profile(config, *, code, desc, plan_code, default_used_for_cand, on_features, off_features):
+                    g2 = config["G2_CONFIG"]
+                    g2.setdefault("CFG_SPROFILE", [])
+
+                    for row in g2["CFG_SPROFILE"]:
+                        if row.get("SPROFILE_CODE") == code:
+                            raise SystemExit(f"error: search profile {code!r} already exists (SPROFILE_ID {row['SPROFILE_ID']})")
+
+                    gplan_id = resolve_gplan_id(config, plan_code)
+
+                    # Resolve the feature codes we override to the ids the tool assigned.
+                    overrides = {}
+                    for ftype_id in resolve_ftype_ids(config, on_features).values():
+                        overrides[ftype_id] = "Y"
+                    for ftype_id in resolve_ftype_ids(config, off_features).values():
+                        overrides[ftype_id] = "N"
+
+                    row = {
+                        "SPROFILE_ID": next_sprofile_id(config),
+                        "SPROFILE_CODE": code,
+                        "SPROFILE_DESC": desc if desc is not None else code,
+                        "GPLAN_ID": gplan_id,
+                        "DEFAULT_USED_FOR_CAND": default_used_for_cand,
+                        "FTYPE_OVERRIDES": format_ftype_overrides(overrides),
+                    }
+                    g2["CFG_SPROFILE"].append(row)
+                    return row
+
+
+                def parse_args(argv):
+                    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+                    parser.add_argument("-i", "--input", default="g2config.json__original",
+                                        help="input g2config document (after addFeature has run)")
+                    parser.add_argument("-o", "--output", default="g2config.json",
+                                        help="output g2config document to write")
+                    parser.add_argument("--profile", default="EMBEDDED_SEARCH", help="SPROFILE_CODE for the new profile")
+                    parser.add_argument("--desc", default=None, help="SPROFILE_DESC (defaults to the profile code)")
+                    parser.add_argument("--generic-plan", default="SEARCH", help="generic plan code -> GPLAN_ID")
+                    parser.add_argument("--candidates", default="Normal", choices=["Normal", "Off"],
+                                        help="DEFAULT_USED_FOR_CAND base mode")
+                    parser.add_argument("--on", nargs="+", default=["SEMANTIC_VALUE", "NAME_EMBEDDING", "BIZNAME_EMBEDDING"],
+                                        help="feature codes to turn candidate-list building ON")
+                    parser.add_argument("--off", nargs="+", default=[],
+                                        help="feature codes to turn candidate-list building OFF")
+                    parser.add_argument("--print-only", action="store_true",
+                                        help="print the generated CFG_SPROFILE row without writing the output file")
+                    return parser.parse_args(argv)
+
+
+                def main(argv=None):
+                    args = parse_args(sys.argv[1:] if argv is None else argv)
+
+                    config = load_config(args.input)
+                    row = add_search_profile(
+                        config,
+                        code=args.profile,
+                        desc=args.desc,
+                        plan_code=args.generic_plan,
+                        default_used_for_cand=args.candidates,
+                        on_features=args.on,
+                        off_features=args.off,
+                    )
+
+                    print("Generated CFG_SPROFILE entry:")
+                    print(json.dumps(row, indent=4))
+
+                    if not args.print_only:
+                        with open(args.output, "w", encoding="utf-8") as handle:
+                            json.dump(config, handle, indent=4)
+                            handle.write("\n")
+                        print(f"\nWrote {args.output}")
+
+                    return 0
+
+
+                if __name__ == "__main__":
+                    raise SystemExit(main())
           Essential: true
           Image: !FindInMap [Constants, Images, SenzingApiTools]
           LogConfiguration:
@@ -2932,6 +3218,77 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-ecs-task-definition-init-postgres-configuration'
+    Type: AWS::ECS::TaskDefinition
+
+  # One-shot task that prepares the database for embedding storage: enables the
+  # pgvector extension and pre-creates the NAME_EMBEDDING / BIZNAME_EMBEDDING vector
+  # tables (the Senzing engine writes embedding vectors into these natively during
+  # load). Runs after the Senzing schema is created and before the config-tool step.
+  # HNSW indexes are OFF for this run: the goal is fastest possible load, so embedding
+  # inserts don't pay HNSW graph-maintenance cost. The (commented) CREATE INDEX block
+  # inside the command builds them after the load, once vector search is wanted.
+  EcsTaskDefinitionInitPgvector:
+    Properties:
+      ContainerDefinitions:
+        - Command:
+            - '/bin/bash'
+            - '-c'
+            - |
+              set -e
+              echo "Enabling pgvector and creating embedding vector tables (no HNSW) on ${PGHOST}:${PGPORT}/${PGDATABASE}"
+              # One table per embedding feature the data can use. The engine writes the
+              # vector into the table NAMED AFTER THE FEATURE the attribute maps to:
+              #   NAME_EMBEDDINGS attr    -> NAME_EMBEDDING feature    -> NAME_EMBEDDING table (persons)
+              #   BIZNAME_EMBEDDINGS attr -> BIZNAME_EMBEDDING feature -> BIZNAME_EMBEDDING table (orgs)
+              #   SEMANTIC_EMBEDDINGS attr-> SEMANTIC_VALUE feature (built-in FTYPE 99) -> SEMANTIC_VALUE table
+              # The OpenSanctions "fixed" datasets use SEMANTIC_EMBEDDINGS for orgs + NAME_EMBEDDINGS
+              # for persons, so SEMANTIC_VALUE is REQUIRED (missing it -> SENZ1019 "relation
+              # semantic_value does not exist" and every semantic record fails).
+              psql -v ON_ERROR_STOP=1 \
+                -c "CREATE EXTENSION IF NOT EXISTS vector;" \
+                -c "CREATE TABLE IF NOT EXISTS NAME_EMBEDDING (LIB_FEAT_ID BIGINT NOT NULL, LABEL VARCHAR(300) NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));" \
+                -c "CREATE TABLE IF NOT EXISTS BIZNAME_EMBEDDING (LIB_FEAT_ID BIGINT NOT NULL, LABEL VARCHAR(300) NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));" \
+                -c "CREATE TABLE IF NOT EXISTS SEMANTIC_VALUE (LIB_FEAT_ID BIGINT NOT NULL, LABEL VARCHAR(300) NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));"
+              # HNSW indexes are intentionally NOT built here: this run optimizes for
+              # fastest load, so embedding inserts avoid HNSW graph-maintenance cost.
+              # To enable vector search later, build them AFTER the load (uncomment):
+              # psql -v ON_ERROR_STOP=1 \
+              #   -c "CREATE INDEX IF NOT EXISTS name_embedding_hnsw ON NAME_EMBEDDING USING hnsw (embedding vector_cosine_ops) WITH (m = 16, ef_construction = 100);" \
+              #   -c "CREATE INDEX IF NOT EXISTS bizname_embedding_hnsw ON BIZNAME_EMBEDDING USING hnsw (embedding vector_cosine_ops) WITH (m = 16, ef_construction = 100);" \
+              #   -c "CREATE INDEX IF NOT EXISTS semantic_value_hnsw ON SEMANTIC_VALUE USING hnsw (embedding vector_cosine_ops) WITH (m = 16, ef_construction = 100);"
+              echo "pgvector setup complete (tables only, HNSW off for fast load)"
+          Environment:
+            - Name: PGHOST
+              Value: !GetAtt RdsDbClusterCore.Endpoint.Address
+            - Name: PGPORT
+              Value: !Sub '${RdsDbClusterCore.Endpoint.Port}'
+            - Name: PGUSER
+              Value: !FindInMap [Constants, Database, Username]
+            - Name: PGPASSWORD
+              Value: !GetAtt LambdaRunnerDbPassword.RandomString
+            - Name: PGDATABASE
+              Value: !FindInMap [Constants, Database, Name]
+          Essential: true
+          Image: !FindInMap [Constants, Images, PostgresClient]
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Ref LogsLogGroupMain
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: job
+          Name: initpgvector
+          Privileged: false
+          ReadonlyRootFilesystem: false
+      Cpu: '512'
+      ExecutionRoleArn: !GetAtt IamRoleInitPostgres.Arn
+      Family: !Sub '${AWS::StackName}-task-definition-init-pgvector'
+      Memory: '1024'
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-ecs-task-definition-init-pgvector'
     Type: AWS::ECS::TaskDefinition
 
   EcsTaskDefinitionRedoer:
@@ -3108,7 +3465,8 @@ Resources:
             - Name: SENZING_SQS_QUEUE_URL
               Value: !Sub 'https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsInput.QueueName}'
             - Name: SENZING_SUBCOMMAND
-              Value: gzipped-json-to-sqs-batch
+              # Plain JSONL (dataset_20.fixed.jsonl is NOT gzipped) → non-gzip subcommand.
+              Value: json-to-sqs-batch
             - Name: SENZING_THREADS_PER_PRINT
               Value: '30'
           Essential: true
@@ -3229,7 +3587,8 @@ Resources:
 
   EcsServiceRedoer:
     Condition: IfRunRedoer
-    # Do not start until the Senzing config is registered (errors on an unconfigured DB).
+    # Do not start the redoer until the Senzing config (data sources + embedding
+    # features) is registered; it errors / exits against an unconfigured DB.
     DependsOn:
       - LambdaRunnerG2ConfigTool
     Properties:
@@ -3281,7 +3640,8 @@ Resources:
 
   EcsServiceStreamLoader:
     Condition: IfRunStreamLoader
-    # Do not start until the Senzing config is registered (add_record errors otherwise).
+    # Do not start the loader until the Senzing config is registered; add_record
+    # errors if data sources / features aren't configured yet.
     DependsOn:
       - LambdaRunnerG2ConfigTool
     Properties:
