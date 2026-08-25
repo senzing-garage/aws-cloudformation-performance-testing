@@ -3465,8 +3465,13 @@ Resources:
             - Name: SENZING_SQS_QUEUE_URL
               Value: !Sub 'https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsInput.QueueName}'
             - Name: SENZING_SUBCOMMAND
-              # Plain JSONL (dataset_20.fixed.jsonl is NOT gzipped) → non-gzip subcommand.
-              Value: json-to-sqs-batch
+              # Plain JSONL (not gzipped), sent NON-batched: one SQS SendMessage per record.
+              # The batched variant (json-to-sqs-batch) groups ~10 records/SendMessageBatch and
+              # SQS caps a batch at 1 MiB; large embedding records blew past that, so SQS rejected
+              # whole batches and silently dropped records (observed on the jae-embed-012 20k run).
+              # Non-batched avoids the 1 MiB batch limit (each message still bound by SQS's 256 KB
+              # per-message limit — records over that must use a non-SQS load path).
+              Value: json-to-sqs
             - Name: SENZING_THREADS_PER_PRINT
               Value: '30'
           Essential: true
