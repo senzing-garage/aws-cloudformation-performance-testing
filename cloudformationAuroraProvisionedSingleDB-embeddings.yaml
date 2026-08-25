@@ -3246,9 +3246,9 @@ Resources:
               # semantic_value does not exist" and every semantic record fails).
               psql -v ON_ERROR_STOP=1 \
                 -c "CREATE EXTENSION IF NOT EXISTS vector;" \
-                -c "CREATE TABLE IF NOT EXISTS NAME_EMBEDDING (LIB_FEAT_ID BIGINT NOT NULL, LABEL VARCHAR(300) NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));" \
-                -c "CREATE TABLE IF NOT EXISTS BIZNAME_EMBEDDING (LIB_FEAT_ID BIGINT NOT NULL, LABEL VARCHAR(300) NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));" \
-                -c "CREATE TABLE IF NOT EXISTS SEMANTIC_VALUE (LIB_FEAT_ID BIGINT NOT NULL, LABEL VARCHAR(300) NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));"
+                -c "CREATE TABLE IF NOT EXISTS NAME_EMBEDDING (LIB_FEAT_ID BIGINT NOT NULL, LABEL TEXT NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));" \
+                -c "CREATE TABLE IF NOT EXISTS BIZNAME_EMBEDDING (LIB_FEAT_ID BIGINT NOT NULL, LABEL TEXT NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));" \
+                -c "CREATE TABLE IF NOT EXISTS SEMANTIC_VALUE (LIB_FEAT_ID BIGINT NOT NULL, LABEL TEXT NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));"
               # HNSW indexes are intentionally NOT built here: this run optimizes for
               # fastest load, so embedding inserts avoid HNSW graph-maintenance cost.
               # To enable vector search later, build them AFTER the load (uncomment):
