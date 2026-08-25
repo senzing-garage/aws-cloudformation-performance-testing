@@ -2179,7 +2179,9 @@ Resources:
     Type: Custom::LambdaRunnerDbPassword
 
   LambdaRunnerG2ConfigTool:
-    Condition: IfRunStreamProducer
+    # Unconditional: Senzing config is a prerequisite for any DB use (like the
+    # init-postgres schema step). The redoer/loader services DependsOn this so they
+    # never start against an unconfigured DB.
     DependsOn:
       - LambdaRunnerInitPostgresConfiguration
     Properties:
@@ -2817,7 +2819,6 @@ Resources:
     Type: AWS::ECS::TaskDefinition
 
   EcsTaskDefinitionG2ConfigTool:
-    Condition: IfRunStreamProducer
     Properties:
       ContainerDefinitions:
         - Command:
@@ -3228,6 +3229,9 @@ Resources:
 
   EcsServiceRedoer:
     Condition: IfRunRedoer
+    # Do not start until the Senzing config is registered (errors on an unconfigured DB).
+    DependsOn:
+      - LambdaRunnerG2ConfigTool
     Properties:
       Cluster: !Ref EcsCluster
       DesiredCount: 1
@@ -3277,6 +3281,9 @@ Resources:
 
   EcsServiceStreamLoader:
     Condition: IfRunStreamLoader
+    # Do not start until the Senzing config is registered (add_record errors otherwise).
+    DependsOn:
+      - LambdaRunnerG2ConfigTool
     Properties:
       Cluster: !Ref EcsCluster
       DesiredCount: 0
