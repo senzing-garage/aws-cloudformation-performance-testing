@@ -723,6 +723,11 @@ Resources:
       PolicyDocument:
         Statement:
           - Action:
+              # ChangeMessageVisibility lets the consumer extend the visibility
+              # timeout while it works a long-running (e.g. lock-contended) record.
+              # Without it the consumer gets AccessDenied and CRASHES (jae-embed-015
+              # finding #3: 2 consumer crashes during the 18:22 contention burst).
+              - sqs:ChangeMessageVisibility
               - sqs:DeleteMessage
               - sqs:GetQueueAttributes
               - sqs:ReceiveMessage

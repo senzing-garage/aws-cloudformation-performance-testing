@@ -1,3 +1,43 @@
+20260826  --  FIRST EMBEDDING PERF RUN (1M) vs recent 25M non-embedding baseline; same db.r6i.8xlarge IO-opt
+============================================================================================
+Build:                          |  4.4.0.26167   |  4.4.0.26232   |
+Number of records:              |    25 M        |    1 M (embed) |
+Number of records loaded:       |    25 M        |    995,744     |
+Peak:                           |  2600          |    2077        |
+Average over entire run:        |  2012          |     790        |
+Time to load:                   |     3.45 hours |  0.33 h insert |
+Records in dead-letter queue:   |     0          |     7          |
+Total Billed read RW IOPS:      |    1,987,873   |     0.7 *      |
+Total Billed write IOPS:        |  114,252,104   |   7,224,994    |
+Max loader tasks:               |     61         |     48         |
+Max redoer tasks:               |     59         |     39         |
+Notes:                          | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off|
+                                | non-embedding  | EMBEDDINGS     |
+                                | 4.4 baseline   | advisory=false |
+============================================================================================
+Embedding avg over entire run = 790 rec/s (engine erpm 829); mean(ipm)/60 basis. Full detail:
+results/20260826-1M-provisioned-r6i-8xlarge-single-senzing-4.4.0.26232-embeddings/ (README; engine findings sent to the team separately).
+Comparison notes:
+  - Embedding load sustains ~39% of the non-embedding average throughput (790 vs 2012 rec/s), though
+    PEAK is comparable (2077 vs 2600 = 80%): embeddings reach a similar top rate but can't hold it —
+    entity-resolution + write-I/O + lock contention drag the sustained average down.
+  - Record INSERT was fast (~20 min for 995,744) but the ER + redo tail ran to ~2.3 h total (full window 02:19).
+  - Embeddings do contribute to resolution: 3,074 of 10,985 matches (28%) used SEMANTIC_VALUE.
+  - DLQ 7 = 6 lock-contention (SzRetryTimeoutExceeded) + 1 varchar(255) overflow crash (engine findings reported to the team separately).
+  - Records loaded 995,744 = 1,001,435 total - 5,690 oversized (>256KB SQS limit) - 1 varchar-crash.
+* IOPS = sum of per-minute Read/WriteIOPS datapoints across the run (same historical basis as every row).
+  write 7,224,994 = ~7.3 write-IOPS/record vs ~4.6/record for the 25M runs -> embeddings ~1.6x write I/O per record.
+  read 0.7 (~0) is REAL, not a glitch: the 1M working set fit entirely in the 256 GB buffer cache, so effectively
+  NO storage reads (DB-side confirms: 151 physical block reads total vs 2.34B cache hits). The 25M runs show
+  ~1-2M read IOPS because that DB (~25x larger) spills the cache. Aurora IO-opt emits no VolumeRead/WriteIOPs;
+  instance WriteIOPS peaked ~594,697/s (1-min) during the 20-min insert. Raw series: data/rds_metrics.csv.
+============================================================================================
+
+
 20260622
 ======================================================================================================================
 Build:                          |  4.4.0.26163   |  4.4.0.26167   |  4.4.0.26167   |  4.4.0.26167   |  4.3.2.26162   |
