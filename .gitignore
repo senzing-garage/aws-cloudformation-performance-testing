@@ -7,3 +7,7 @@
 .history
 
 .claude/*
+
+# Engine-team findings — contain OpenSanctions record content; sent to the team
+# directly and kept out of this public repo.
+results/**/FINDINGS-engine.md

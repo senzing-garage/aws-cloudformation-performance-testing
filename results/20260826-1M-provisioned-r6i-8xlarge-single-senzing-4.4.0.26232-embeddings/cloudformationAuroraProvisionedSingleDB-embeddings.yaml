@@ -10,17 +10,9 @@ AWSTemplateFormatVersion: 2010-09-09
 # But tailored to run use Senzing RPMs from the staging server.
 
 Description: >-
-  Senzing aurora IAM auth perf Version: 1.0.0
-
-  Full-featured Senzing deployment with AWS IAM database authentication for enhanced security.
-  IAM authentication uses temporary credentials instead of passwords for Aurora PostgreSQL connections.
-
-  Key IAM Features:
-  - Aurora cluster with IAM authentication enabled
-  - ECS tasks with IAM task roles for credential injection
-  - Dual configuration: password-based for init, IAM-based for runtime
-  - Automatic IAM database user creation during deployment
-  - Multiple runtime services: StreamLoader, Redoer, G2ConfigTool, SSHD
+  Senzing aws-cloudformation-ecs-staging-simple-100M Version: 1.0.16
+  For more information see
+  https://github.com/senzing-garage/aws-cloudformation-ecs/tree/main/cloudformation/aws-cloudformation-ecs-staging-simple-100M
 
 # -----------------------------------------------------------------------------
 # Metadata
@@ -33,7 +25,6 @@ Metadata:
       - Label:
           default: Senzing installation
         Parameters:
-          - AcceptEula
           - RecordMax
           - SenzingLicenseAsBase64
       - Label:
@@ -52,19 +43,16 @@ Metadata:
           - EnableReadOnlyConnection
           - ReadOnlyConnections
       - Label:
-          default: Security responsibility
+          default: 'Optional: Entity lock mode (Senzing ER ENTITY_LOCK_MODE)'
         Parameters:
-          - SecurityResponsibility
+          - EnableEntityLockModeAdvisory
     ParameterLabels:
-      AcceptEula:
-        default: >-
-          Required: If you accept the Senzing End User License Agreement at
-          https://senzing.com/end-user-license-agreement,
-          enter 'I_ACCEPT_THE_SENZING_EULA'.
       CidrInbound:
         default: 'Optional: Provide the permitted IP address block allowed to connect using CIDR notation.'
       CognitoAdminEmail:
         default: 'Required: Provide the email address for the administrative user.'
+      EnableEntityLockModeAdvisory:
+        default: 'Optional: Add "ER": {"ENTITY_LOCK_MODE": "ADVISORY"} to the Senzing engine config.'
       EnableReadOnlyConnection:
         default: 'Optional: Add an Aurora reader replica and route Senzing LIB_FEAT reads to it via READ_ONLY_CONNECTION.'
       ReadOnlyConnections:
@@ -75,12 +63,6 @@ Metadata:
         default: 'Optional: Would you like to have an initial set of data imported?'
       # RunDataEncryption:
       #   default: "Optional: Would you like to run with data encryption enabled?"
-      SecurityResponsibility:
-        default: >-
-          Required: A default deployment of this template is for demonstration only.
-          Before using authentic PII, ensure the security of your deployment.
-          The security of this deployment is your responsibility.
-          To acknowledge your understanding and acceptance of the foregoing, type “I AGREE”.
       SenzingLicenseAsBase64:
         default: >-
           The Senzing Evaluation comes with 100k free records of entity resolution.
@@ -93,13 +75,6 @@ Metadata:
 
 Parameters:
   # AWS Console: https://console.aws.amazon.com/cloudformation/home?#/stacks > {stack} > Parameters
-
-  AcceptEula:
-    AllowedPattern: '.+|^I_ACCEPT_THE_SENZING_EULA$'
-    ConstraintDescription: AcceptEula parameter must be 'I_ACCEPT_THE_SENZING_EULA'
-    Default: '_'
-    Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#accepteula'
-    Type: String
 
   CidrInbound:
     AllowedPattern: '(?:\d{1,3}\.){3}\d{1,3}(?:/\d\d?)?'
@@ -115,6 +90,16 @@ Parameters:
     ConstraintDescription: Entering initial user email address is required to proceed
     Default: '_'
     Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#cognitoadminemail'
+    Type: String
+
+  EnableEntityLockModeAdvisory:
+    AllowedValues:
+      - 'false'
+      - 'true'
+    Default: 'false'
+    Description: >-
+      When true, add an "ER" section with "ENTITY_LOCK_MODE": "ADVISORY" to the Senzing engine
+      config as a sibling of "PIPELINE" and "SQL". Default false omits the section entirely.
     Type: String
 
   EnableReadOnlyConnection:
@@ -168,13 +153,6 @@ Parameters:
   #   Description: "Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#rundataencryption"
   #   Type: String
 
-  SecurityResponsibility:
-    AllowedPattern: '.+|^I AGREE$'
-    ConstraintDescription: SecurityResponsibility parameter must be 'I AGREE'
-    Default: '_'
-    Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#securityresponsibility'
-    Type: String
-
   SenzingLicenseAsBase64:
     #   AllowedPattern: ' ^$|[^-A-Za-z0-9+\/=\s]|=[^=]|={3,}$'
     ConstraintDescription: 'Must contain only Base64 characters. see https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#senzinglicenseasbase64'
@@ -195,25 +173,6 @@ Rules:
             - !Ref CognitoAdminEmail
             - '_'
         AssertDescription: 'Entering initial user email address is required to proceed'
-
-  ConfirmEula:
-    Assertions:
-      - Assert: !Not
-          - !Equals
-            - !Ref AcceptEula
-            - ''
-        AssertDescription: 'EULA needs to be accepted.  Enter "I_ACCEPT_THE_SENZING_EULA"'
-      - Assert: !Equals
-          - !Ref AcceptEula
-          - I_ACCEPT_THE_SENZING_EULA
-        AssertDescription: 'EULA acceptance incorrect.  Enter "I_ACCEPT_THE_SENZING_EULA"'
-
-  ConfirmSecurityResponsibility:
-    Assertions:
-      - Assert: !Equals
-          - !Ref SecurityResponsibility
-          - 'I AGREE'
-        AssertDescription: 'Understanding responsibility and entering "I AGREE" is required to proceed.'
 
   ConfirmSenzingLicenseAsBase64:
     Assertions:
@@ -297,12 +256,16 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       InitPostgresql: docker.io/senzing/init-database:latest
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:staging
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:staging
-      Sshd: public.ecr.aws/senzing/sshd:staging
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:staging
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.4.0-26232
+      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.4.0-26232
+      Sshd: public.ecr.aws/senzing/sshd:4.4.0-26232
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.4.0-26232
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
+      # Plain PostgreSQL client image (has psql) for the one-shot pgvector setup task
+      # (CREATE EXTENSION vector + the NAME_EMBEDDING / BIZNAME_EMBEDDING vector tables
+      # and HNSW indexes). Version matches the Aurora PostgreSQL 17 cluster.
+      PostgresClient: public.ecr.aws/docker/library/postgres:17
 
     Run:
       ApiServer: No
@@ -315,7 +278,13 @@ Mappings:
     StreamProducer:
       DataSource: TEST
       EntityType: GENERIC
-      InputUrl: https://public-read-access.s3.amazonaws.com/TestDataSets/test-dataset-100m.json.gz
+      # AS DEPLOYED for this run: a PRESIGNED HTTPS URL of this object (signature redacted).
+      # WHY NOT s3://: the s3:// JSON reader (ReadS3JsonMixin) loads the WHOLE file into
+      # memory and OOMs (exit 137) on the 20 GB dataset. The https reader (ReadUrlMixin)
+      # STREAMS line-by-line in bounded memory. The bucket is private, so the https URL
+      # must be presigned (SigV4); presign is valid up to the role-cred lifetime (~11h),
+      # which covered the ~95-min queue-load. Kept SENZING_SUBCOMMAND=json-to-sqs. See README Methods.
+      InputUrl: "https://embedded-feature-data.s3.us-east-1.amazonaws.com/dataset_full.fixed.jsonl?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Security-Token=...&X-Amz-Signature=<REDACTED>"
       RecordMin: 0
 
   # NOTE: The CIDRs for subnets may collide with existing subnets.  The values may be altered.
@@ -692,29 +661,6 @@ Resources:
         - !Ref IamRoleLambda
     Type: AWS::IAM::Policy
 
-  # IAM Policy for RDS IAM Authentication
-  # Grants ECS tasks permission to generate authentication tokens for Aurora PostgreSQL
-  # This policy is attached to all runtime service roles that need database access
-  IamPolicyRdsConnect:
-    Properties:
-      PolicyName: !Sub '${AWS::StackName}-iam-policy-rds-connect'
-      PolicyDocument:
-        Statement:
-          - Action:
-              - rds-db:connect # Permission to generate IAM auth tokens
-            Effect: Allow
-            Resource:
-              # Resource format: arn:aws:rds-db:region:account:dbuser:cluster-resource-id/db-username
-              # The /* allows any database user to authenticate (can be restricted to specific user)
-              - !Sub 'arn:aws:rds-db:${AWS::Region}:${AWS::AccountId}:dbuser:${RdsDbClusterCore.DBClusterResourceId}/*'
-        Version: '2012-10-17'
-      Roles:
-        - !Ref IamRoleG2ConfigTool # G2ConfigTool needs IAM auth to add data sources
-        - !Ref IamRoleRedoer # Redoer needs IAM auth for redo processing
-        - !Ref IamRoleSshd # SSHD container needs IAM auth for manual testing
-        - !Ref IamRoleStreamLoader # StreamLoader needs IAM auth to load records
-    Type: AWS::IAM::Policy
-
   IamPolicyRoute53:
     Properties:
       PolicyName: !Sub '${AWS::StackName}-iam-policy-route53'
@@ -745,6 +691,33 @@ Resources:
         - !Ref IamRoleLambda
     Type: AWS::IAM::Policy
 
+  # Lets the StreamProducer task read the (private) embedded-feature-data bucket
+  # via an s3:// SENZING_INPUT_URL. The role policy grants the permission on this
+  # side; because the bucket is in us-east-1 and (likely) a DIFFERENT account than
+  # this stack, the BUCKET OWNER must ALSO add a bucket policy granting this
+  # stack's account / this role s3:GetObject (+ s3:ListBucket). S3 bucket ARNs are
+  # region/account-agnostic, so the ARNs below are correct cross-region.
+  IamPolicyStreamProducerS3:
+    Condition: IfRunStreamProducer
+    Properties:
+      PolicyName: !Sub '${AWS::StackName}-iam-policy-stream-producer-s3'
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource:
+              - 'arn:aws:s3:::embedded-feature-data/*'
+          - Action:
+              - s3:ListBucket
+            Effect: Allow
+            Resource:
+              - 'arn:aws:s3:::embedded-feature-data'
+        Version: '2012-10-17'
+      Roles:
+        - !Ref IamRoleStreamProducer
+    Type: AWS::IAM::Policy
+
   IamPolicySqsConsumer:
     Condition: IfUsingQueues
     Properties:
@@ -752,10 +725,6 @@ Resources:
       PolicyDocument:
         Statement:
           - Action:
-              # Lets the consumer extend the visibility timeout on long-running
-              # records; without it the consumer gets AccessDenied and crashes under
-              # contention (see jae-embed-015 embedding-run finding #3).
-              - sqs:ChangeMessageVisibility
               - sqs:DeleteMessage
               - sqs:GetQueueAttributes
               - sqs:ReceiveMessage
@@ -817,75 +786,87 @@ Resources:
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-loggroup.html
   # AWS Console: https://console.aws.amazon.com/cloudwatch/home?#logsV2:log-groups > Search for {stack}
 
+  # AWS::Logs::LogGroup defaults to DeletionPolicy: Retain. For an ephemeral
+  # perf-test stack that's brought up and torn down per Senzing release, set
+  # DeletionPolicy: Delete on every log group so the next deploy doesn't fail
+  # with "log group already exists".
   LogsLogGroupDbClusterCore:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub
         - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-core-cluster/postgresql'
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
     Type: AWS::Logs::LogGroup
 
-  LogsLogGroupDbClusterLibfeat:
-    Properties:
-      LogGroupName: !Sub
-        - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-libfeat-cluster/postgresql'
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-    Type: AWS::Logs::LogGroup
-
-  LogsLogGroupDbClusterRes:
-    Properties:
-      LogGroupName: !Sub
-        - '/aws/rds/cluster/${StackNameAsLower}-aurora-senzing-res-cluster/postgresql'
-        - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
-    Type: AWS::Logs::LogGroup
-
   LogsLogGroupLambdaCognitoCreateUser:
     Condition: IfUsingWeb
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-cognito-create-user'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaGenerateCertificate:
     Condition: IfUsingWeb
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-generate-certificate'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomPassword:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-password'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRandomString:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-random-string'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTask:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunTaskAndWait:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-task-and-wait'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaSetRdbTimeoutAction:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-set-rdb-timeout-action'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaRunStreamProducerTasks:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-run-stream-producer-tasks'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupLambdaStringToLower:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-lambda-string-to-lower'
     Type: AWS::Logs::LogGroup
 
   LogsLogGroupMain:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       LogGroupName: !Sub
         - '/senzing/${StackName}/${AWS::StackName}'
@@ -1330,6 +1311,10 @@ Resources:
       Description: !Sub '${AWS::StackName}-rds-db-cluster-parameter-group-description'
       Family: aurora-postgresql17
       Parameters:
+        # shared_preload_libraries is a cluster-level static parameter on Aurora.
+        # Belongs here, not on the instance parameter group, or pg_stat_statements
+        # won't actually load.
+        shared_preload_libraries: 'pg_stat_statements'
         autovacuum_max_workers: 5
         enable_seqscan: 0
         # pglogical.synchronous_commit: 0
@@ -1344,9 +1329,21 @@ Resources:
       Description: !Sub '${AWS::StackName}-rds-db-parameter-group-description'
       Family: aurora-postgresql17
       Parameters:
-        shared_preload_libraries: 'pg_stat_statements'
         track_io_timing: 1
-        enable_seqscan: 0
+        # Raise above the Aurora default (~5,000 on r6i.24xlarge). At 100M the
+        # Redoer + Consumer fleets autoscale to MaxCapacity 200 × 20 threads =
+        # up to 8,000 connections; the flawed 4.4 run peaked at 327 tasks (~6,540)
+        # and exhausted the default pool ("remaining connection slots are reserved
+        # for roles with the SUPERUSER attribute" — the rds_superuser app account
+        # gets NONE of the reserved slots), silently losing records.
+        # max_connections is INCLUSIVE of the reserve, so 8000 (== worst-case
+        # demand, zero overhead headroom) would re-trigger the FATAL. 10000 leaves
+        # ~20% margin over worst-case fleet + overhead; memory-safe on 768 GiB.
+        # NOTE: superuser_reserved_connections is NOT settable in an Aurora DB
+        # parameter group (CREATE fails: "Invalid/Unmodifiable/Unsupported"), and
+        # isn't needed — the default reserve is trivial against the 10000 ceiling.
+        max_connections: '10000'
+        work_mem: '4096'   # pin Aurora default (kB) so the memory-safety margin can't silently change
         # pglogical.synchronous_commit: 0
       Tags:
         - Key: Name
@@ -1360,10 +1357,15 @@ Resources:
     DependsOn:
       - LogsLogGroupDbClusterCore
       - RdsDbSubnetGroup
+    # Ephemeral perf-test stack: skip the default final-snapshot on delete so
+    # teardown is fast and we don't accumulate orphaned snapshots across runs.
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       AvailabilityZones:
         - !GetAtt Ec2SubnetPrivate1.AvailabilityZone
         - !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      BackupRetentionPeriod: 1
       DatabaseName: !FindInMap [Constants, Database, Name]
       DBClusterIdentifier: !Sub '${AWS::StackName}-aurora-senzing-core-cluster'
       DBClusterParameterGroupName:
@@ -1373,16 +1375,18 @@ Resources:
         - '${StackNameAsLower}-db-subnet'
         - StackNameAsLower: !GetAtt LambdaRunnerStackNameAsLower.OutputString
       DeletionProtection: false
+      EnableCloudwatchLogsExports:
+        - postgresql
       EnableHttpEndpoint: true
-      # IAM Authentication: Enables IAM roles to authenticate to the database without passwords
-      # This allows ECS tasks to use temporary credentials instead of static passwords
-      EnableIAMDatabaseAuthentication: true
       Engine: aurora-postgresql
       EngineMode: provisioned
       EngineVersion: '17.5'
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
+      # 06:00-06:30 UTC backup window - off-hours for US-based perf runs. Adjust if
+      # your test schedule conflicts.
+      PreferredBackupWindow: '06:00-06:30'
       StorageEncrypted: true
       # StorageType: aurora
       StorageType: aurora-iopt1
@@ -1394,6 +1398,8 @@ Resources:
     Type: AWS::RDS::DBCluster
 
   RdsDbInstanceCore1:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DBSubnetGroupName: !Sub
         - '${StackNameAsLower}-db-subnet'
@@ -1404,7 +1410,7 @@ Resources:
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
-      PubliclyAccessible: 'true'
+      PubliclyAccessible: 'false'
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
       # DBInstanceClass: db.r7g.8xlarge
       # DBInstanceClass: db.r7g.12xlarge
@@ -1413,7 +1419,7 @@ Resources:
       DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
-      # DBInstanceClass: db.r6i.24xlarge
+      # DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.32xlarge
       # DBInstanceClass: db.r6id.32xlarge
       # DBInstanceClass: db.r6id.24xlarge
@@ -1423,6 +1429,8 @@ Resources:
 
   RdsDbInstanceCore2:
     Condition: IfEnableReadOnlyConnection
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       DBSubnetGroupName: !Sub
         - '${StackNameAsLower}-db-subnet'
@@ -1433,8 +1441,11 @@ Resources:
       Engine: aurora-postgresql
       DBClusterIdentifier:
         Ref: RdsDbClusterCore
-      PubliclyAccessible: 'true'
-      AvailabilityZone: !GetAtt Ec2SubnetPrivate2.AvailabilityZone
+      PubliclyAccessible: 'false'
+      # Co-located with the writer (AZ1) so the cluster-ro endpoint stays in the
+      # same AZ as the loader/redoer compute. Eliminates the cross-AZ tax on
+      # read-offload reads and makes the A/B vs. writer-only baseline fair.
+      AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
       DBInstanceClass: db.r6i.8xlarge
     Type: AWS::RDS::DBInstance
 
@@ -1451,17 +1462,21 @@ Resources:
       MaximumMessageSize: 262144
       MessageRetentionPeriod: 1209600
       QueueName: !Sub '${AWS::StackName}-sqs-input'
-      ReceiveMessageWaitTimeSeconds: 0
+      # Long polling reduces empty receives at low queue depth without hurting
+      # steady-state throughput.
+      ReceiveMessageWaitTimeSeconds: 20
       RedrivePolicy:
         deadLetterTargetArn:
           Fn::GetAtt:
             - SqsDeadLetter
             - Arn
-        maxReceiveCount: 100
+        maxReceiveCount: 5
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-sqs-input'
-      VisibilityTimeout: 14400
+      # 30 min: generous for slow Senzing batches but ~8x faster DLQ feedback
+      # than the previous 4h. Raise back if real batches exceed this.
+      VisibilityTimeout: 1800
     Type: AWS::SQS::Queue
 
   SqsDeadLetter:
@@ -2011,10 +2026,6 @@ Resources:
       Timeout: 600
     Type: AWS::Lambda::Function
 
-  # Lambda function to generate Senzing engine configuration with IAM authentication
-  # This creates connection strings using aurorapostgresql:// scheme with iam_auth=true
-  # Supports both single database (SQL) and multiple database (HYBRID) configurations
-  # Used by all runtime services (SSHD, G2ConfigTool, StreamLoader, Redoer) that support IAM
   LambdaFunctionSenzingEngineConfigurationJson:
     Properties:
       Code:
@@ -2049,7 +2060,15 @@ Resources:
                       database_port_reader = properties.get('DatabasePortReader', '')
                       enable_read_only_connection = str(properties.get('EnableReadOnlyConnection', 'false')).lower() == 'true'
                       read_only_connections = str(properties.get('ReadOnlyConnections', '8'))
-                      region = properties.get('Region', 'us-east-2')
+                      entity_lock_mode_advisory = str(properties.get('EnableEntityLockModeAdvisory', 'false')).lower() == 'true'
+                      er_block = ''
+                      if entity_lock_mode_advisory:
+                          er_block = (
+                                ','
+                                '    "ER": {'
+                                '        "ENTITY_LOCK_MODE": "ADVISORY"'
+                                '    }'
+                          )
                       data_encryption = properties.get('DataEncryption', '')
                       db_config = 'Multiple'
                       if database_host_core == database_host_res == database_host_libfeat:
@@ -2061,7 +2080,7 @@ Resources:
                           if enable_read_only_connection:
                               read_only_block = (
                                     ','
-                                    f'        "READ_ONLY_CONNECTION": "aurorapostgresql://{database_user_name}@{database_host_reader}:{database_port_reader}:{database_name}/?iam_auth=true&region={region}",'
+                                    f'        "READ_ONLY_CONNECTION": "postgresql://{database_user_name}:{database_password}@{database_host_reader}:{database_port_reader}:{database_name}",'
                                     f'        "READ_ONLY_CONNECTIONS": "{read_only_connections}"'
                               )
                           response_data["ConfigJSON"] = (
@@ -2074,9 +2093,10 @@ Resources:
                                 '    },'
                                 '    "SQL": {'
                                 '        "BACKEND": "SQL",'
-                                f'        "CONNECTION": "aurorapostgresql://{database_user_name}@{database_host_core}:{database_port_core}:{database_name}/?iam_auth=true&region={region}"'
+                                f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
                                 f'{read_only_block}'
                                 '    }'
+                                f'{er_block}'
                                 '}')
                       else:
                           response_data["ConfigJSON"] = (
@@ -2089,16 +2109,16 @@ Resources:
                                 '    },'
                                 '    "SQL": {'
                                 '        "BACKEND": "HYBRID",'
-                                f'        "CONNECTION": "aurorapostgresql://{database_user_name}@{database_host_core}:{database_port_core}:{database_name}/?iam_auth=true&region={region}"'
+                                f'        "CONNECTION":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
                                 '    },'
                                 f'    {data_encryption}'
                                 '    "C1": {'
                                 '        "CLUSTER_SIZE": "1",'
-                                f'        "DB_1": "aurorapostgresql://{database_user_name}@{database_host_res}:{database_port_res}:{database_name}/?iam_auth=true&region={region}"'
+                                f'        "DB_1": "postgresql://{database_user_name}:{database_password}@{database_host_res}:{database_port_res}:{database_name}"'
                                 '    },'
                                 '    "C2": {'
                                 '        "CLUSTER_SIZE": "1",'
-                                f'        "DB_1": "aurorapostgresql://{database_user_name}@{database_host_libfeat}:{database_port_libfeat}:{database_name}/?iam_auth=true&region={region}"'
+                                f'        "DB_1": "postgresql://{database_user_name}:{database_password}@{database_host_libfeat}:{database_port_libfeat}:{database_name}"'
                                 '    },'
                                 '    "HYBRID": {'
                                 '        "LIB_FEAT": "C2",'
@@ -2108,6 +2128,7 @@ Resources:
                                 '        "RES_FEAT_LKEY": "C1",'
                                 '        "RES_FEAT_STAT": "C1"'
                                 '    }'
+                                f'{er_block}'
                                 '}')
               except Exception as e:
                   logger.error(e)
@@ -2124,107 +2145,6 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-lambda-senzing-engine-configuration-json'
-    Type: AWS::Lambda::Function
-
-  # Lambda function to generate Senzing engine configuration with password authentication
-  # This creates traditional postgresql:// connection strings with username:password
-  # Used ONLY for initialization tasks (init-database, IAM user creation) that don't support IAM
-  LambdaFunctionSzConfigPassword:
-    Properties:
-      Code:
-        ZipFile: |
-          #!/usr/bin/env python3
-
-          import cfnresponse
-          import json
-          import logging
-          import traceback
-
-          logger = logging.getLogger()
-          logger.setLevel(logging.INFO)
-
-          def handler(event, context):
-              result = cfnresponse.SUCCESS
-              response_data = {}
-              try:
-                  logger.info("Event: {0}".format(json.dumps(event)))
-                  if event['RequestType'] in ['Create', 'Update']:
-                      properties = event.get('ResourceProperties', {})
-                      database_name = properties.get('DatabaseName', '')
-                      database_user_name = properties.get('DatabaseUsername', '')
-                      database_password = properties.get('DatabasePassword', '')
-                      database_host_core = properties.get('DatabaseHostCore', '')
-                      database_port_core = properties.get('DatabasePortCore', '')
-                      database_host_res = properties.get('DatabaseHostRes', '')
-                      database_port_res = properties.get('DatabasePortRes', '')
-                      database_host_libfeat = properties.get('DatabaseHostLibfeat', '')
-                      database_port_libfeat = properties.get('DatabasePortLibfeat', '')
-                      data_encryption = properties.get('DataEncryption', '')
-                      db_config = 'Multiple'
-                      if database_host_core == database_host_res == database_host_libfeat:
-                          db_config = 'Single'
-                      logger.info(f"db_config={db_config}")
-                      license_string = properties.get('SenzingLicenseAsBase64', '')
-                      if db_config == 'Single':
-                          response_data["ConfigJSON"] = (
-                                '{'
-                                '    "PIPELINE": {'
-                                '        "CONFIGPATH": "/etc/opt/senzing",'
-                                f'        "LICENSESTRINGBASE64": "{license_string}",'
-                                '        "RESOURCEPATH": "/opt/senzing/er/resources",'
-                                '        "SUPPORTPATH": "/opt/senzing/data"'
-                                '    },'
-                                '    "SQL": {'
-                                '        "BACKEND": "SQL",'
-                                f'        "CONNECTION": "postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
-                                '    }'
-                                '}')
-                      else:
-                          response_data["ConfigJSON"] = (
-                                '{'
-                                '    "PIPELINE": {'
-                                '        "CONFIGPATH": "/etc/opt/senzing",'
-                                f'        "LICENSESTRINGBASE64": "{license_string}",'
-                                '        "RESOURCEPATH": "/opt/senzing/er/resources",'
-                                '        "SUPPORTPATH": "/opt/senzing/data"'
-                                '    },'
-                                '    "SQL": {'
-                                '        "BACKEND": "HYBRID",'
-                                f'        "CONNECTION": "postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
-                                '    },'
-                                f'    {data_encryption}'
-                                '    "C1": {'
-                                '        "CLUSTER_SIZE": "1",'
-                                f'        "DB_1":"postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
-                                '    },'
-                                '    "C2": {'
-                                '        "CLUSTER_SIZE": "1",'
-                                f'        "DB_1": "postgresql://{database_user_name}:{database_password}@{database_host_core}:{database_port_core}:{database_name}"'
-                                '    },'
-                                '    "HYBRID": {'
-                                '        "LIB_FEAT": "C2",'
-                                '        "LIB_FEAT_HKEY": "C2",'
-                                '        "RES_FEAT": "C1",'
-                                '        "RES_FEAT_EKEY": "C1",'
-                                '        "RES_FEAT_LKEY": "C1",'
-                                '        "RES_FEAT_STAT": "C1"'
-                                '    }'
-                                '}')
-              except Exception as e:
-                  logger.error(e)
-                  traceback.print_exc()
-                  result = cfnresponse.FAILED
-              finally:
-                  cfnresponse.send(event, context, result, response_data)          #!/usr/bin/env python3
-
-      Description: Constructs the Senzing Engine configuration JSON with password auth for init.
-      FunctionName: !Sub '${AWS::StackName}-lambda-senzing-engine-configuration-json-password'
-      Handler: index.handler
-      Role: !GetAtt IamRoleLambda.Arn
-      Runtime: python3.12
-      Tags:
-        - Key: Name
-          Value: !Sub '${AWS::StackName}-lambda-senzing-engine-configuration-json-password'
     Type: AWS::Lambda::Function
 
   LambdaFunctionStringToLower:
@@ -2297,10 +2217,9 @@ Resources:
 
   LambdaRunnerG2ConfigTool:
     # Unconditional: Senzing config is a prerequisite for any DB use (like the
-    # init-postgres schema step). The redoer/loader services DependsOn this so they
-    # never start against an unconfigured DB.
+    # init-postgres schema step). The redoer/loader services DependsOn this.
     DependsOn:
-      - LambdaRunnerInitPostgresConfiguration
+      - LambdaRunnerInitPgvector
     Properties:
       ClusterId: !Ref EcsCluster
       RunTaskParameters:
@@ -2313,9 +2232,9 @@ Resources:
             assignPublicIp: DISABLED
             securityGroups:
               - !Ref Ec2SecurityGroupLambdaRunner
+            # Pinned to AZ1 (writer AZ) to keep one-shot DB setup same-AZ.
             subnets:
               - !Ref Ec2SubnetPrivate1
-              - !Ref Ec2SubnetPrivate2
         platformVersion: 1.4.0
         tags:
           - key: Name
@@ -2369,7 +2288,6 @@ Resources:
   LambdaRunnerInitPostgresConfiguration:
     DependsOn:
       - DbInstanceCore1Ready
-      # - DbInstanceCore2Ready
       - DbClusterCoreReady
     Properties:
       ClusterId: !Ref EcsCluster
@@ -2383,9 +2301,10 @@ Resources:
             assignPublicIp: DISABLED
             securityGroups:
               - !Ref Ec2SecurityGroupLambdaRunner
+            # Pinned to AZ1 (writer AZ) - this task creates the Senzing schema
+            # via many DDL statements; same-AZ keeps setup latency stable across runs.
             subnets:
               - !Ref Ec2SubnetPrivate1
-              - !Ref Ec2SubnetPrivate2
         platformVersion: 1.4.0
         tags:
           - key: Name
@@ -2397,14 +2316,16 @@ Resources:
           Value: !Sub '${AWS::StackName}-lambda-runner-init-postgres-configuration'
     Type: Custom::LambdaRunnerInitPostgresConfiguration
 
-  LambdaRunnerCreateIamDbUser:
+  # Runs the pgvector setup task after the Senzing schema exists and before the
+  # config-tool step, so the embedding vector tables are present before any load.
+  LambdaRunnerInitPgvector:
+    # Unconditional: pgvector tables are a prerequisite for embedding storage.
     DependsOn:
-      - LambdaRunnerInitPostgresConfiguration # Run after initial DB setup
-      - DbInstanceCore1Ready
-      - DbClusterCoreReady
+      - LambdaRunnerInitPostgresConfiguration
     Properties:
       ClusterId: !Ref EcsCluster
       RunTaskParameters:
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/ecs.html#ECS.Client.run_task
         cluster: !Ref EcsCluster
         count: 1
         launchType: FARGATE
@@ -2413,19 +2334,19 @@ Resources:
             assignPublicIp: DISABLED
             securityGroups:
               - !Ref Ec2SecurityGroupLambdaRunner
+            # Pinned to AZ1 (writer AZ) to keep one-shot DB setup same-AZ.
             subnets:
               - !Ref Ec2SubnetPrivate1
-              - !Ref Ec2SubnetPrivate2
         platformVersion: 1.4.0
         tags:
           - key: Name
-            value: !Sub '${AWS::StackName}-lambda-runner-create-iam-db-user-run-task-parameters'
-        taskDefinition: !Ref EcsTaskDefinitionCreateIamDbUser
+            value: !Sub '${AWS::StackName}-lambda-runner-init-pgvector-run-task-parameters'
+        taskDefinition: !Ref EcsTaskDefinitionInitPgvector
       ServiceToken: !GetAtt LambdaFunctionRunTaskAndWait.Arn
       Tags:
         - Key: Name
-          Value: !Sub '${AWS::StackName}-lambda-runner-create-iam-db-user'
-    Type: Custom::LambdaRunnerCreateIamDbUser
+          Value: !Sub '${AWS::StackName}-lambda-runner-init-pgvector'
+    Type: Custom::LambdaRunnerInitPgvector
 
   LambdaRunnerSenzingEngineConfigurationJson:
     DependsOn:
@@ -2444,32 +2365,22 @@ Resources:
       DatabasePortReader: !GetAtt RdsDbClusterCore.Endpoint.Port
       DatabaseUsername: !FindInMap [Constants, Database, Username]
       # DataEncryption: !FindInMap [DataEncryptionMap, !Ref RunDataEncryption, value]
+      EnableEntityLockModeAdvisory: !Ref EnableEntityLockModeAdvisory
       EnableReadOnlyConnection: !Ref EnableReadOnlyConnection
       ReadOnlyConnections: !Ref ReadOnlyConnections
-      Region: !Ref AWS::Region
+      # When read-offload is enabled, force the engine config to wait until the
+      # reader replica is "available" by creating a graph edge via !Ref.
+      # The Lambda ignores this property; CFN uses it to order the resources.
+      ReaderInstanceId: !If
+        - IfEnableReadOnlyConnection
+        - !Ref RdsDbInstanceCore2
+        - !Ref AWS::NoValue
       SenzingLicenseAsBase64: !Ref SenzingLicenseAsBase64
       ServiceToken: !GetAtt LambdaFunctionSenzingEngineConfigurationJson.Arn
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-lambda-runner-senzing-engine-configuration-json'
     Type: Custom::LambdaRunnerSenzingEngineConfigurationJson
-
-  LambdaRunnerSzConfigPassword:
-    DependsOn:
-      - DbInstanceCore1Ready
-      - DbClusterCoreReady
-    Properties:
-      DatabaseHostCore: !GetAtt RdsDbClusterCore.Endpoint.Address
-      DatabaseName: !FindInMap [Constants, Database, Name]
-      DatabasePassword: !GetAtt LambdaRunnerDbPassword.RandomString
-      DatabasePortCore: !GetAtt RdsDbClusterCore.Endpoint.Port
-      DatabaseUsername: !FindInMap [Constants, Database, Username]
-      SenzingLicenseAsBase64: !Ref SenzingLicenseAsBase64
-      ServiceToken: !GetAtt LambdaFunctionSzConfigPassword.Arn
-      Tags:
-        - Key: Name
-          Value: !Sub '${AWS::StackName}-lambda-runner-senzing-engine-configuration-json-password'
-    Type: Custom::LambdaRunnerSzConfigPassword
 
   LambdaRunnerSshPassword:
     Condition: IfRunSshd
@@ -2981,20 +2892,236 @@ Resources:
         - Command:
             - '/bin/bash'
             - '-c'
-            - 'echo "${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; /opt/senzing/er/bin/sz_configtool -f /tmp/G2Config.gtc'
+            - |
+              set -euo pipefail
+              # 1. Apply the data-source / feature / attribute / threshold config via
+              #    sz_configtool, exporting the result to a file INSTEAD of saving it so
+              #    the search profile can be added before the config is registered.
+              printf '%s\n' "${SENZING_G2CONFIG_GTC}" > /tmp/G2Config.gtc
+              /opt/senzing/er/bin/sz_configtool -f /tmp/G2Config.gtc
+              # 2. Add the EMBEDDED_SEARCH search profile. sz_configtool has no command
+              #    for CFG_SPROFILE, so this script authors the row, resolving the real
+              #    FTYPE_IDs the addFeature step above assigned.
+              printf '%s' "${ADD_SEARCH_PROFILE_PY}" > /tmp/add_search_profile.py
+              python3 /tmp/add_search_profile.py -i /tmp/g2config.json -o /tmp/g2config_new.json
+              # 3. Import the completed config and register it as the default.
+              printf 'importFromFile /tmp/g2config_new.json\nsave\n' > /tmp/G2Config-save.gtc
+              /opt/senzing/er/bin/sz_configtool -f /tmp/G2Config-save.gtc
           Environment:
-            - Name: AWS_DEFAULT_REGION
-              Value: !Ref AWS::Region
-            - Name: AWS_REGION
-              Value: !Ref AWS::Region
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
             - Name: SENZING_G2CONFIG_GTC
+              # Base data sources (kept from the standard template) + the OPEN_SANCTIONS
+              # and ICIJ sources for embedding test data, plus the Senzing config needed
+              # to STORE embeddings: two embedding feature types (NAME_EMBEDDING /
+              # BIZNAME_EMBEDDING), load-only posture (behavior FF, candidates No,
+              # comparison NULL_COMP = stored but not used for candidate generation),
+              # their attributes, the name-scoring fragments (11/12), and thresholds.
+              # NB: NULL_COMP must exist in the engine's default config. It was NOT in
+              # 4.4.0-26204 (addFeature failed with "Comparison function 'NULL_COMP'
+              # not found"); running 4.4.0-26232 now — confirm in the g2configtool log
+              # that NULL_COMP resolves (Feature successfully added).
+              # NB: addComparisonThreshold uses execOrder (the input key); returnOrder in the
+              # source draft is an output-only key and is silently ignored by sz_configtool.
               Value: |
                 addDataSource CUSTOMERS
                 addDataSource REFERENCE
                 addDataSource WATCHLIST
+                addDataSource OPEN_SANCTIONS
+                addDataSource ICIJ
+                addFeature {"feature": "NAME_EMBEDDING", "class": "ISSUED_ID", "behavior": "FF", "anonymize": "No", "candidates": "No", "comparison": "NULL_COMP", "matchKey": "Yes", "version": 1, "elementList": [{"element": "EMBEDDING", "expressed": "No", "compared": "Yes", "derived": "Yes", "display": "No"}, {"element": "ALGORITHM", "expressed": "No", "compared": "Yes", "derived": "No", "display": "No"}, {"element": "LABEL", "expressed": "No", "compared": "No", "derived": "No", "display": "Yes"}]}
+                addFeature {"feature": "BIZNAME_EMBEDDING", "class": "ISSUED_ID", "behavior": "FF", "anonymize": "No", "candidates": "No", "comparison": "NULL_COMP", "matchKey": "Yes", "version": 1, "elementList": [{"element": "EMBEDDING", "expressed": "No", "compared": "Yes", "derived": "Yes", "display": "No"}, {"element": "ALGORITHM", "expressed": "No", "compared": "Yes", "derived": "No", "display": "No"}, {"element": "LABEL", "expressed": "No", "compared": "No", "derived": "No", "display": "Yes"}]}
+                addAttribute {"attribute": "NAME_EMBEDDING", "class": "IDENTIFIER", "feature": "NAME_EMBEDDING", "element": "EMBEDDING", "required": "Yes", "default": null, "internal": "No"}
+                addAttribute {"attribute": "NAME_ALGORITHM", "class": "IDENTIFIER", "feature": "NAME_EMBEDDING", "element": "ALGORITHM", "required": "No", "default": null, "internal": "Yes"}
+                addAttribute {"attribute": "NAME_LABEL", "class": "IDENTIFIER", "feature": "NAME_EMBEDDING", "element": "LABEL", "required": "Yes", "default": null, "internal": "No"}
+                addAttribute {"attribute": "BIZNAME_EMBEDDING", "class": "IDENTIFIER", "feature": "BIZNAME_EMBEDDING", "element": "EMBEDDING", "required": "Yes", "default": null, "internal": "No"}
+                addAttribute {"attribute": "BIZNAME_ALGORITHM", "class": "IDENTIFIER", "feature": "BIZNAME_EMBEDDING", "element": "ALGORITHM", "required": "No", "default": null, "internal": "Yes"}
+                addAttribute {"attribute": "BIZNAME_LABEL", "class": "IDENTIFIER", "feature": "BIZNAME_EMBEDDING", "element": "LABEL", "required": "Yes", "default": null, "internal": "No"}
+                setFragment {"id": 11, "fragment": "SAME_NAME", "source": "./SUMMARY/BEHAVIOR/NAME[./SAME > 0] | ./FRAGMENT[./GNR_SAME_NAME>0]"}
+                setFragment {"id": 12, "fragment": "CLOSE_NAME", "source": "./SUMMARY/BEHAVIOR/NAME[sum(./SAME | ./CLOSE) > 0] | ./FRAGMENT[./GNR_CLOSE_NAME>0]"}
+                addComparisonThreshold {"function": "NULL_COMP", "execOrder": 1, "scoreName": "FULL_SCORE", "feature": "BIZNAME_EMBEDDING", "sameScore": 80, "closeScore": 60, "likelyScore": 43, "plausibleScore": 30, "unlikelyScore": 20}
+                addComparisonThreshold {"function": "NULL_COMP", "execOrder": 1, "scoreName": "FULL_SCORE", "feature": "NAME_EMBEDDING", "sameScore": 80, "closeScore": 50, "likelyScore": 30, "plausibleScore": 20, "unlikelyScore": 10}
                 save
+                exportToFile /tmp/g2config.json
+            - Name: ADD_SEARCH_PROFILE_PY
+              # Embedded copy of dev/config/testing/add_search_profile.py (keep in
+              # sync). Written to /tmp and run after sz_configtool to author the
+              # EMBEDDED_SEARCH CFG_SPROFILE row (no config-tool command exists for it).
+              Value: |
+                #!/usr/bin/env python3
+                """Add a search profile (CFG_SPROFILE row) to a g2config document.
+
+                Workflow this script is the second half of
+                --------------------------------------------
+                1. Start from a base g2config document (e.g. ``g2config.json__original``).
+                2. Add the embedding feature types with the **Rust** ``sz_configtool``, e.g.::
+
+                     sz_configtool -c <ini> -f add_embedding_features.szc
+
+                   where ``add_embedding_features.szc`` contains::
+
+                     addFeature {"feature": "NAME_EMBEDDING", "class": "ISSUED_ID", "behavior": "FF", ...}
+                     addFeature {"feature": "BIZNAME_EMBEDDING", "class": "ISSUED_ID", "behavior": "FF", ...}
+                     save
+
+                   ``sz_configtool`` assigns each new feature its own ``FTYPE_ID`` (features seed
+                   at 1000, so the first added feature becomes 1001, the next 1002, ...). This
+                   script does **not** guess those ids -- it reads them back out of the config.
+                3. Run **this** script against the config the tool produced. It resolves the
+                   requested feature *codes* to the ``FTYPE_ID`` values the tool actually
+                   assigned, then emits the CFG_SPROFILE row with a matching ``FTYPE_OVERRIDES``.
+
+                ``sz_configtool`` has no ``addSearchProfile`` command, which is why the profile
+                is authored here.
+
+                Semantics implemented here mirror the engine's CFG_SPROFILE contract
+                (see FAQ ``architecture/cfg-sprofile-spec``):
+
+                * ``GPLAN_ID``            -- resolved from the generic-plan *code* via CFG_GPLAN.
+                * ``DEFAULT_USED_FOR_CAND`` -- ``Normal`` (respect each feature's own
+                  ``USED_FOR_CAND``) or ``Off`` (force every feature off as the base).
+                * ``FTYPE_OVERRIDES``     -- itemized ``[{ftypeId,Y|N}, ...]`` in canonical
+                  mini-format, ordered ascending by ``FTYPE_ID``. ``Y`` turns candidate-list
+                  building on for that feature type, ``N`` turns it off. Overrides always win
+                  over the base mode.
+                """
+
+                import argparse
+                import json
+                import sys
+
+
+                def load_config(path):
+                    with open(path, "r", encoding="utf-8") as handle:
+                        config = json.load(handle)
+                    if "G2_CONFIG" not in config:
+                        raise SystemExit(f"error: {path!r} is not a g2config document (no G2_CONFIG key)")
+                    return config
+
+
+                def resolve_gplan_id(config, plan_code):
+                    """Map a generic-plan code (e.g. 'SEARCH') to its GPLAN_ID."""
+                    for row in config["G2_CONFIG"].get("CFG_GPLAN", []):
+                        if row.get("GPLAN_CODE") == plan_code:
+                            return row["GPLAN_ID"]
+                    known = ", ".join(sorted(r.get("GPLAN_CODE", "?") for r in config["G2_CONFIG"].get("CFG_GPLAN", [])))
+                    raise SystemExit(f"error: generic plan {plan_code!r} not found in CFG_GPLAN (known: {known})")
+
+
+                def resolve_ftype_ids(config, feature_codes):
+                    """Map each feature code to the FTYPE_ID that addFeature assigned it.
+
+                    Fails loudly if any requested feature is missing -- that means the
+                    addFeature step was not run through sz_configtool first.
+                    """
+                    by_code = {r["FTYPE_CODE"]: r["FTYPE_ID"] for r in config["G2_CONFIG"].get("CFG_FTYPE", [])}
+                    resolved = {}
+                    missing = []
+                    for code in feature_codes:
+                        if code in by_code:
+                            resolved[code] = by_code[code]
+                        else:
+                            missing.append(code)
+                    if missing:
+                        raise SystemExit(
+                            "error: feature type(s) not found in CFG_FTYPE: "
+                            + ", ".join(missing)
+                            + "\n       Run the addFeature step through sz_configtool before this script."
+                        )
+                    return resolved
+
+
+                def next_sprofile_id(config):
+                    ids = [r["SPROFILE_ID"] for r in config["G2_CONFIG"].get("CFG_SPROFILE", [])]
+                    return (max(ids) + 1) if ids else 1
+
+
+                def format_ftype_overrides(overrides):
+                    """Serialize {ftypeId: 'Y'|'N'} to canonical mini-format, ordered by id.
+
+                    e.g. {99:'Y', 1001:'Y', 1002:'Y'} -> "[{99,Y},{1001,Y},{1002,Y}]"
+                    """
+                    parts = [f"{{{ftype_id},{flag}}}" for ftype_id, flag in sorted(overrides.items())]
+                    return "[" + ",".join(parts) + "]"
+
+
+                def add_search_profile(config, *, code, desc, plan_code, default_used_for_cand, on_features, off_features):
+                    g2 = config["G2_CONFIG"]
+                    g2.setdefault("CFG_SPROFILE", [])
+
+                    for row in g2["CFG_SPROFILE"]:
+                        if row.get("SPROFILE_CODE") == code:
+                            raise SystemExit(f"error: search profile {code!r} already exists (SPROFILE_ID {row['SPROFILE_ID']})")
+
+                    gplan_id = resolve_gplan_id(config, plan_code)
+
+                    # Resolve the feature codes we override to the ids the tool assigned.
+                    overrides = {}
+                    for ftype_id in resolve_ftype_ids(config, on_features).values():
+                        overrides[ftype_id] = "Y"
+                    for ftype_id in resolve_ftype_ids(config, off_features).values():
+                        overrides[ftype_id] = "N"
+
+                    row = {
+                        "SPROFILE_ID": next_sprofile_id(config),
+                        "SPROFILE_CODE": code,
+                        "SPROFILE_DESC": desc if desc is not None else code,
+                        "GPLAN_ID": gplan_id,
+                        "DEFAULT_USED_FOR_CAND": default_used_for_cand,
+                        "FTYPE_OVERRIDES": format_ftype_overrides(overrides),
+                    }
+                    g2["CFG_SPROFILE"].append(row)
+                    return row
+
+
+                def parse_args(argv):
+                    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+                    parser.add_argument("-i", "--input", default="g2config.json__original",
+                                        help="input g2config document (after addFeature has run)")
+                    parser.add_argument("-o", "--output", default="g2config.json",
+                                        help="output g2config document to write")
+                    parser.add_argument("--profile", default="EMBEDDED_SEARCH", help="SPROFILE_CODE for the new profile")
+                    parser.add_argument("--desc", default=None, help="SPROFILE_DESC (defaults to the profile code)")
+                    parser.add_argument("--generic-plan", default="SEARCH", help="generic plan code -> GPLAN_ID")
+                    parser.add_argument("--candidates", default="Normal", choices=["Normal", "Off"],
+                                        help="DEFAULT_USED_FOR_CAND base mode")
+                    parser.add_argument("--on", nargs="+", default=["SEMANTIC_VALUE", "NAME_EMBEDDING", "BIZNAME_EMBEDDING"],
+                                        help="feature codes to turn candidate-list building ON")
+                    parser.add_argument("--off", nargs="+", default=[],
+                                        help="feature codes to turn candidate-list building OFF")
+                    parser.add_argument("--print-only", action="store_true",
+                                        help="print the generated CFG_SPROFILE row without writing the output file")
+                    return parser.parse_args(argv)
+
+
+                def main(argv=None):
+                    args = parse_args(sys.argv[1:] if argv is None else argv)
+
+                    config = load_config(args.input)
+                    row = add_search_profile(
+                        config,
+                        code=args.profile,
+                        desc=args.desc,
+                        plan_code=args.generic_plan,
+                        default_used_for_cand=args.candidates,
+                        on_features=args.on,
+                        off_features=args.off,
+                    )
+
+                    print("Generated CFG_SPROFILE entry:")
+                    print(json.dumps(row, indent=4))
+
+                    if not args.print_only:
+                        with open(args.output, "w", encoding="utf-8") as handle:
+                            json.dump(config, handle, indent=4)
+                            handle.write("\n")
+                        print(f"\nWrote {args.output}")
+
+                    return 0
+
+
+                if __name__ == "__main__":
+                    raise SystemExit(main())
           Essential: true
           Image: !FindInMap [Constants, Images, SenzingApiTools]
           LogConfiguration:
@@ -3008,7 +3135,6 @@ Resources:
           ReadonlyRootFilesystem: false
       Cpu: '2048'
       ExecutionRoleArn: !GetAtt IamRoleG2ConfigTool.Arn
-      TaskRoleArn: !GetAtt IamRoleG2ConfigTool.Arn
       Family: !Sub '${AWS::StackName}-task-definition-g2configtool'
       Memory: '12288'
       NetworkMode: awsvpc
@@ -3065,17 +3191,14 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Environment:
-            # - Name: SENZING_ENGINE_CONFIGURATION_JSON
-            - Name: SENZING_TOOLS_CORE_SETTINGS
-              Value: !GetAtt LambdaRunnerSzConfigPassword.ConfigJSON
+            - Name: SENZING_ENGINE_CONFIGURATION_JSON
+              Value: !GetAtt LambdaRunnerSenzingEngineConfigurationJson.ConfigJSON
             - Name: LC_CTYPE
               Value: en_US.utf8
             - Name: SENZING_SUBCOMMAND
               Value: mandatory
             - Name: SENZING_DEBUG
               Value: False
-            # - Name: SENZING_TOOLS_LOG_LEVEL
-            #   Value: TRACE
           Essential: true
           Image: !FindInMap [Constants, Images, InitPostgresql]
           LogConfiguration:
@@ -3099,85 +3222,75 @@ Resources:
           Value: !Sub '${AWS::StackName}-ecs-task-definition-init-postgres-configuration'
     Type: AWS::ECS::TaskDefinition
 
-  EcsTaskDefinitionCreateIamDbUser:
+  # One-shot task that prepares the database for embedding storage: enables the
+  # pgvector extension and pre-creates the NAME_EMBEDDING / BIZNAME_EMBEDDING vector
+  # tables (the Senzing engine writes embedding vectors into these natively during
+  # load). Runs after the Senzing schema is created and before the config-tool step.
+  # HNSW indexes are OFF for this run: the goal is fastest possible load, so embedding
+  # inserts don't pay HNSW graph-maintenance cost. The (commented) CREATE INDEX block
+  # inside the command builds them after the load, once vector search is wanted.
+  EcsTaskDefinitionInitPgvector:
     Properties:
       ContainerDefinitions:
         - Command:
-            - /bin/bash
-            - -c
+            - '/bin/bash'
+            - '-c'
             - |
-              # Install PostgreSQL client if needed
-              apt-get update && apt-get install -y postgresql-client
-
-              # Create IAM user and grant privileges
-              PGPASSWORD="${DB_PASSWORD}" psql \
-                "host=${DB_HOST} port=${DB_PORT} dbname=${DB_NAME} user=${DB_ADMIN_USER} sslmode=require" \
-                <<-EOSQL
-                  -- Create the IAM database user
-                  DO \$\$
-                  BEGIN
-                    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '${IAM_DB_USER}') THEN
-                      CREATE USER ${IAM_DB_USER};
-                      RAISE NOTICE 'User ${IAM_DB_USER} created';
-                    ELSE
-                      RAISE NOTICE 'User ${IAM_DB_USER} already exists';
-                    END IF;
-                  END
-                  \$\$;
-
-                  -- Grant rds_iam role
-                  GRANT rds_iam TO ${IAM_DB_USER};
-
-                  -- Grant database connection (quoted to preserve case)
-                  GRANT CONNECT ON DATABASE "${DB_NAME}" TO ${IAM_DB_USER};
-
-                  -- Grant schema usage (adjust as needed)
-                  GRANT USAGE ON SCHEMA public TO ${IAM_DB_USER};
-
-                  -- Grant table privileges (adjust as needed for your use case)
-                  GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO ${IAM_DB_USER};
-                  GRANT SELECT, USAGE ON ALL SEQUENCES IN SCHEMA public TO ${IAM_DB_USER};
-
-                  -- Grant default privileges for future tables
-                  ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO ${IAM_DB_USER};
-                  ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, USAGE ON SEQUENCES TO ${IAM_DB_USER};
-              EOSQL
-
-              echo "IAM database user setup completed successfully"
+              set -e
+              echo "Enabling pgvector and creating embedding vector tables (no HNSW) on ${PGHOST}:${PGPORT}/${PGDATABASE}"
+              # One table per embedding feature the data can use. The engine writes the
+              # vector into the table NAMED AFTER THE FEATURE the attribute maps to:
+              #   NAME_EMBEDDINGS attr    -> NAME_EMBEDDING feature    -> NAME_EMBEDDING table (persons)
+              #   BIZNAME_EMBEDDINGS attr -> BIZNAME_EMBEDDING feature -> BIZNAME_EMBEDDING table (orgs)
+              #   SEMANTIC_EMBEDDINGS attr-> SEMANTIC_VALUE feature (built-in FTYPE 99) -> SEMANTIC_VALUE table
+              # The OpenSanctions "fixed" datasets use SEMANTIC_EMBEDDINGS for orgs + NAME_EMBEDDINGS
+              # for persons, so SEMANTIC_VALUE is REQUIRED (missing it -> SENZ1019 "relation
+              # semantic_value does not exist" and every semantic record fails).
+              psql -v ON_ERROR_STOP=1 \
+                -c "CREATE EXTENSION IF NOT EXISTS vector;" \
+                -c "CREATE TABLE IF NOT EXISTS NAME_EMBEDDING (LIB_FEAT_ID BIGINT NOT NULL, LABEL TEXT NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));" \
+                -c "CREATE TABLE IF NOT EXISTS BIZNAME_EMBEDDING (LIB_FEAT_ID BIGINT NOT NULL, LABEL TEXT NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));" \
+                -c "CREATE TABLE IF NOT EXISTS SEMANTIC_VALUE (LIB_FEAT_ID BIGINT NOT NULL, LABEL TEXT NOT NULL, EMBEDDING VECTOR(512), PRIMARY KEY(LIB_FEAT_ID));"
+              # HNSW indexes are intentionally NOT built here: this run optimizes for
+              # fastest load, so embedding inserts avoid HNSW graph-maintenance cost.
+              # To enable vector search later, build them AFTER the load (uncomment):
+              # psql -v ON_ERROR_STOP=1 \
+              #   -c "CREATE INDEX IF NOT EXISTS name_embedding_hnsw ON NAME_EMBEDDING USING hnsw (embedding vector_cosine_ops) WITH (m = 16, ef_construction = 100);" \
+              #   -c "CREATE INDEX IF NOT EXISTS bizname_embedding_hnsw ON BIZNAME_EMBEDDING USING hnsw (embedding vector_cosine_ops) WITH (m = 16, ef_construction = 100);" \
+              #   -c "CREATE INDEX IF NOT EXISTS semantic_value_hnsw ON SEMANTIC_VALUE USING hnsw (embedding vector_cosine_ops) WITH (m = 16, ef_construction = 100);"
+              echo "pgvector setup complete (tables only, HNSW off for fast load)"
           Environment:
-            - Name: DB_HOST
+            - Name: PGHOST
               Value: !GetAtt RdsDbClusterCore.Endpoint.Address
-            - Name: DB_PORT
-              Value: !GetAtt RdsDbClusterCore.Endpoint.Port
-            - Name: DB_NAME
-              Value: !FindInMap [Constants, Database, Name]
-            - Name: DB_ADMIN_USER
+            - Name: PGPORT
+              Value: !Sub '${RdsDbClusterCore.Endpoint.Port}'
+            - Name: PGUSER
               Value: !FindInMap [Constants, Database, Username]
-            - Name: DB_PASSWORD
+            - Name: PGPASSWORD
               Value: !GetAtt LambdaRunnerDbPassword.RandomString
-            - Name: IAM_DB_USER
-              Value: !FindInMap [Constants, Database, Username]
+            - Name: PGDATABASE
+              Value: !FindInMap [Constants, Database, Name]
           Essential: true
-          Image: ubuntu:22.04
+          Image: !FindInMap [Constants, Images, PostgresClient]
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-group: !Ref LogsLogGroupMain
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: job
-          Name: create-iam-db-user
+          Name: initpgvector
           Privileged: false
           ReadonlyRootFilesystem: false
-      Cpu: '256'
+      Cpu: '512'
       ExecutionRoleArn: !GetAtt IamRoleInitPostgres.Arn
-      Family: !Sub '${AWS::StackName}-task-definition-create-iam-db-user'
-      Memory: '512'
+      Family: !Sub '${AWS::StackName}-task-definition-init-pgvector'
+      Memory: '1024'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
       Tags:
         - Key: Name
-          Value: !Sub '${AWS::StackName}-ecs-task-definition-create-iam-db-user'
+          Value: !Sub '${AWS::StackName}-ecs-task-definition-init-pgvector'
     Type: AWS::ECS::TaskDefinition
 
   EcsTaskDefinitionRedoer:
@@ -3185,10 +3298,6 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Environment:
-            - Name: AWS_DEFAULT_REGION
-              Value: !Ref AWS::Region
-            - Name: AWS_REGION
-              Value: !Ref AWS::Region
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
             - Name: SENZING_EXIT_ON_THREAD_TERMINATION
@@ -3216,10 +3325,13 @@ Resources:
           Name: redoer
           Privileged: false
           ReadonlyRootFilesystem: false
-      Cpu: '4096'
+      # Sized to match Azure (2 vCPU / 4 GB / 20 threads) for cross-cloud
+      # apples-to-apples comparison. May 2026 graphs showed prior 4 vCPU / 30 GB
+      # was running at ~25% CPU and ~3% memory utilization - way oversized.
+      Cpu: '2048'
       ExecutionRoleArn: !GetAtt IamRoleRedoer.Arn
       Family: !Sub '${AWS::StackName}-task-definition-redoer'
-      Memory: '30720'
+      Memory: '4096'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
@@ -3236,16 +3348,6 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Environment:
-            - Name: AWS_DEFAULT_REGION
-              Value: !Ref AWS::Region
-            - Name: AWS_REGION
-              Value: !Ref AWS::Region
-            - Name: DB_ENDPOINT
-              Value: !GetAtt RdsDbClusterCore.Endpoint.Address
-            - Name: DB_PORT
-              Value: !GetAtt RdsDbClusterCore.Endpoint.Port
-            - Name: DB_NAME
-              Value: !FindInMap [Constants, Database, Name]
             - Name: ROOT_PASSWORD
               Value: !GetAtt LambdaRunnerSshPassword.RandomString
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
@@ -3269,7 +3371,6 @@ Resources:
           ReadonlyRootFilesystem: false
       Cpu: '2048'
       ExecutionRoleArn: !GetAtt IamRoleSshd.Arn
-      TaskRoleArn: !GetAtt IamRoleSshd.Arn
       Family: !Sub '${AWS::StackName}-task-definition-sshd'
       Memory: '12288'
       NetworkMode: awsvpc
@@ -3287,10 +3388,6 @@ Resources:
     Properties:
       ContainerDefinitions:
         - Environment:
-            - Name: AWS_DEFAULT_REGION
-              Value: !Ref AWS::Region
-            - Name: AWS_REGION
-              Value: !Ref AWS::Region
             - Name: SENZING_ENGINE_CONFIGURATION_JSON
               Value: !GetAtt SsmParameterSenzingEngineConfigurationJson.Value
             - Name: SENZING_DELAY_IN_SECONDS
@@ -3326,11 +3423,13 @@ Resources:
           Name: consumer
           Privileged: false
           ReadonlyRootFilesystem: false
-      Cpu: '4096'
+      # Sized to match Azure (2 vCPU / 4 GB / 20 threads) for cross-cloud
+      # apples-to-apples comparison. May 2026 graphs showed prior 4 vCPU / 30 GB
+      # was running at ~25% CPU and ~3% memory utilization - way oversized.
+      Cpu: '2048'
       ExecutionRoleArn: !GetAtt IamRoleStreamLoader.Arn
-      TaskRoleArn: !GetAtt IamRoleStreamLoader.Arn
       Family: !Sub '${AWS::StackName}-task-definition-stream-loader'
-      Memory: '30720'
+      Memory: '4096'
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
@@ -3339,6 +3438,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-ecs-task-definition-stream-loader'
+      TaskRoleArn: !GetAtt IamRoleStreamLoader.Arn
     Type: AWS::ECS::TaskDefinition
 
   EcsTaskDefinitionStreamProducer:
@@ -3367,7 +3467,13 @@ Resources:
             - Name: SENZING_SQS_QUEUE_URL
               Value: !Sub 'https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${SqsInput.QueueName}'
             - Name: SENZING_SUBCOMMAND
-              Value: gzipped-json-to-sqs-batch
+              # Plain JSONL (not gzipped), sent NON-batched: one SQS SendMessage per record.
+              # The batched variant (json-to-sqs-batch) groups ~10 records/SendMessageBatch and
+              # SQS caps a batch at 1 MiB; large embedding records blew past that, so SQS rejected
+              # whole batches and silently dropped records (observed on the jae-embed-012 20k run).
+              # Non-batched avoids the 1 MiB batch limit (each message still bound by SQS's 256 KB
+              # per-message limit — records over that must use a non-SQS load path).
+              Value: json-to-sqs
             - Name: SENZING_THREADS_PER_PRINT
               Value: '30'
           Essential: true
@@ -3488,11 +3594,9 @@ Resources:
 
   EcsServiceRedoer:
     Condition: IfRunRedoer
+    # Do not start the redoer until the Senzing config (data sources + embedding
+    # features) is registered; it errors / exits against an unconfigured DB.
     DependsOn:
-      - LambdaRunnerInitPostgresConfiguration
-      - LambdaRunnerCreateIamDbUser
-      - SsmParameterSenzingEngineConfigurationJson
-      # Wait for the Senzing config to be registered before starting.
       - LambdaRunnerG2ConfigTool
     Properties:
       Cluster: !Ref EcsCluster
@@ -3504,9 +3608,10 @@ Resources:
           AssignPublicIp: DISABLED
           SecurityGroups:
             - !Ref Ec2SecurityGroupInternal
+          # Pinned to AZ1 (writer AZ) to eliminate cross-AZ DB round-trips on
+          # every redo write. The cluster always keeps the writer in AZ1 here.
           Subnets:
             - !Ref Ec2SubnetPrivate1
-            - !Ref Ec2SubnetPrivate2
       PlatformVersion: 1.4.0
       PropagateTags: TASK_DEFINITION
       ServiceName: redoer
@@ -3542,11 +3647,9 @@ Resources:
 
   EcsServiceStreamLoader:
     Condition: IfRunStreamLoader
+    # Do not start the loader until the Senzing config is registered; add_record
+    # errors if data sources / features aren't configured yet.
     DependsOn:
-      - LambdaRunnerInitPostgresConfiguration
-      - LambdaRunnerCreateIamDbUser
-      - SsmParameterSenzingEngineConfigurationJson
-      # Wait for the Senzing config to be registered before starting.
       - LambdaRunnerG2ConfigTool
     Properties:
       Cluster: !Ref EcsCluster
@@ -3558,9 +3661,10 @@ Resources:
           AssignPublicIp: DISABLED
           SecurityGroups:
             - !Ref Ec2SecurityGroupInternal
+          # Pinned to AZ1 (writer AZ) so every loader write is same-AZ.
+          # ~1-2 ms saved per round-trip; significant at 25M+ records.
           Subnets:
             - !Ref Ec2SubnetPrivate1
-            - !Ref Ec2SubnetPrivate2
       PlatformVersion: 1.4.0
       PropagateTags: TASK_DEFINITION
       ServiceName: consumer

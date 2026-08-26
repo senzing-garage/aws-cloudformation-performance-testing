@@ -688,6 +688,10 @@ Resources:
       PolicyDocument:
         Statement:
           - Action:
+              # Lets the consumer extend the visibility timeout on long-running
+              # records; without it the consumer gets AccessDenied and crashes under
+              # contention (see jae-embed-015 embedding-run finding #3).
+              - sqs:ChangeMessageVisibility
               - sqs:DeleteMessage
               - sqs:GetQueueAttributes
               - sqs:ReceiveMessage
