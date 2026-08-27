@@ -1,24 +1,30 @@
-20260827  --  EMBEDDING ADVISORY A/B (1M): advisory=true vs the 20260826 advisory=false baseline; same db.r6i.8xlarge IO-opt
-============================================================================================
-Build:                          |  4.4.0.26232   |  4.4.0.26232   |
-Number of records:              |    1 M (embed) |    1 M (embed) |
-Number of records loaded:       |    995,744     |    995,744     |
-Peak:                           |  2077          |  2252          |
-Average over entire run:        |   790          |   873          |
-Time to load:                   |  0.33 h insert |  0.30 h insert |
-Records in dead-letter queue:   |     7          |     1          |
-Total Billed read RW IOPS:      |     0.7        |     0.6        |
-Total Billed write IOPS:        |   7,224,994    |   7,198,962    |
-Max loader tasks:               |     48         |     59         |
-Max redoer tasks:               |     39         |     43         |
-Notes:                          | single DB inst | single DB inst |
-                                | db.r6i.8xlarge | db.r6i.8xlarge |
-                                |    IO opt      |    IO opt      |
-                                | 25% CPU loader | 25% CPU loader |
-                                | EMBEDDINGS     | EMBEDDINGS     |
-                                | advisory=false | advisory=TRUE  |
-============================================================================================
-A/B: advisory=true vs the 20260826 embedding baseline (advisory=false); same 1M dataset + same DB.
+20260827  --  EMBEDDING ADVISORY A/B (1M) + 25M non-embedding reference; same db.r6i.8xlarge IO-opt
+==========================================================================================================
+                                | 25M NON-EMBED  | 1M EMBEDDING   | 1M EMBEDDING   |
+Build:                          |  4.4.0.26167   |  4.4.0.26232   |  4.4.0.26232   |
+Number of records:              |    25 M        |    1 M         |    1 M         |
+Number of records loaded:       |  ~25 M         |    995,744     |    995,744     |
+Peak:                           |  2600          |  2077          |  2252          |
+Average over entire run:        |  2012          |   790          |   873          |
+Time to load:                   |  3.45 hours    |  0.33 h insert |  0.30 h insert |
+Records in dead-letter queue:   |     0          |     7          |     1          |
+Total Billed read RW IOPS:      |    1,987,873   |     0.7        |     0.6        |
+Total Billed write IOPS:        |  114,252,104   |   7,224,994    |   7,198,962    |
+Max loader tasks:               |     61         |     48         |     59         |
+Max redoer tasks:               |     59         |     39         |     43         |
+Notes:                          | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | non-embedding  | EMBEDDINGS     | EMBEDDINGS     |
+                                | 4.4 baseline   | advisory=false | advisory=TRUE  |
+==========================================================================================================
+Non-embedding reference: the 20260622 4.4.0.26167 25M run (see 20260826 block + older blocks).
+  Record counts differ (25M vs 1M), so ABSOLUTE totals (write IOPS, time-to-load) are NOT directly comparable
+  across columns; the RATES are: embedding load runs at ~40% of non-embedding throughput (avg 790-873 vs 2012
+  rec/s) — the cost of embedding features (512-dim vector writes + semantic matching). Read IOPS ~0 on the 1M
+  runs = working set fully cached in 256GB RAM; the 25M DB spills cache (~2M read IOPS).
+A/B (embedding advisory=true vs advisory=false baseline; same 1M dataset + DB):
   - Eliminated all 6 super-entity contention DLQs (SzRetryTimeoutExceeded 7->0); DLQ 7->1 (only the varchar poison left).
   - Recovered the 6 OKEY-orphans: res_ent_okey 995,738 -> 995,744 (all records resolved).
   - ~10% HIGHER throughput (avg 790->873, erpm 829->915, peak 2077->2252) DESPITE ~5x more deadlocks (257->1238):
@@ -28,7 +34,7 @@ A/B: advisory=true vs the 20260826 embedding baseline (advisory=false); same 1M 
   - CMV fix (PR #140) held: 0 AccessDenied consumer crashes (baseline had 2).
   Full detail: results/20260827-1M-provisioned-r6i-8xlarge-single-senzing-4.4.0.26232-embeddings-advisory/.
   IOPS = sum of per-minute Read/WriteIOPS (no x60), same basis as all rows.
-============================================================================================
+==========================================================================================================
 
 
 20260826  --  FIRST EMBEDDING PERF RUN (1M) vs recent 25M non-embedding baseline; same db.r6i.8xlarge IO-opt
