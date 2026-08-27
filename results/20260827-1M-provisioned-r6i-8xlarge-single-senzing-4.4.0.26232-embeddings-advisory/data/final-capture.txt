@@ -1,0 +1,76 @@
+Timing is on.
+DO
+Time: 4.151 ms
+VACUUM
+Time: 16.878 ms
+VACUUM
+Time: 3367.960 ms (00:03.368)
+VACUUM
+Time: 783.622 ms
+VACUUM
+Time: 279.054 ms
+VACUUM
+Time: 215.848 ms
+VACUUM
+Time: 1040.999 ms (00:01.041)
+SET
+Time: 0.975 ms
+SET
+Time: 0.704 ms
+SET
+Time: 0.705 ms
+SET
+Time: 0.690 ms
+              at               |   relname   | exact_rows 
+-------------------------------+-------------+------------
+ 2026-08-27 17:43:18.330923+00 | dsrc_record |     995744
+(1 row)
+
+Time: 32.360 ms
+              at               | relname | exact_rows 
+-------------------------------+---------+------------
+ 2026-08-27 17:43:18.363363+00 | obs_ent |     995744
+(1 row)
+
+Time: 42.729 ms
+              at               | relname | exact_rows 
+-------------------------------+---------+------------
+ 2026-08-27 17:43:18.406131+00 | res_ent |     984626
+(1 row)
+
+Time: 25.614 ms
+              at              |   relname    | exact_rows 
+------------------------------+--------------+------------
+ 2026-08-27 17:43:18.43179+00 | res_ent_okey |     995744
+(1 row)
+
+Time: 25.865 ms
+              at               |    relname     | exact_rows 
+-------------------------------+----------------+------------
+ 2026-08-27 17:43:18.457692+00 | sys_eval_queue |          0
+(1 row)
+
+Time: 0.889 ms
+              at              |  relname   | exact_rows 
+------------------------------+------------+------------
+ 2026-08-27 17:43:18.45861+00 | res_relate |     787468
+(1 row)
+
+Time: 31.406 ms
+psql:/tmp/final-capture.sql:84: NOTICE:  res_ent_active exact_rows = 37
+DO
+Time: 26.536 ms
+       load_start        |        load_end         |   duration   | total  |          erpm          |       avg_erps       
+-------------------------+-------------------------+--------------+--------+------------------------+----------------------
+ 2026-08-27 15:50:46.788 | 2026-08-27 16:08:55.163 | 00:18:08.375 | 995744 | 54893.4328701045137106 | 914.8905478350752285
+(1 row)
+
+Time: 48.262 ms
+RESET
+Time: 0.958 ms
+RESET
+Time: 0.695 ms
+RESET
+Time: 0.712 ms
+RESET
+Time: 0.705 ms

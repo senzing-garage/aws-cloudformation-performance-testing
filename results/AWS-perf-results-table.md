@@ -1,3 +1,36 @@
+20260827  --  EMBEDDING ADVISORY A/B (1M): advisory=true vs the 20260826 advisory=false baseline; same db.r6i.8xlarge IO-opt
+============================================================================================
+Build:                          |  4.4.0.26232   |  4.4.0.26232   |
+Number of records:              |    1 M (embed) |    1 M (embed) |
+Number of records loaded:       |    995,744     |    995,744     |
+Peak:                           |  2077          |  2252          |
+Average over entire run:        |   790          |   873          |
+Time to load:                   |  0.33 h insert |  0.30 h insert |
+Records in dead-letter queue:   |     7          |     1          |
+Total Billed read RW IOPS:      |     0.7        |     0.6        |
+Total Billed write IOPS:        |   7,224,994    |   7,198,962    |
+Max loader tasks:               |     48         |     59         |
+Max redoer tasks:               |     39         |     43         |
+Notes:                          | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader |
+                                | EMBEDDINGS     | EMBEDDINGS     |
+                                | advisory=false | advisory=TRUE  |
+============================================================================================
+A/B: advisory=true vs the 20260826 embedding baseline (advisory=false); same 1M dataset + same DB.
+  - Eliminated all 6 super-entity contention DLQs (SzRetryTimeoutExceeded 7->0); DLQ 7->1 (only the varchar poison left).
+  - Recovered the 6 OKEY-orphans: res_ent_okey 995,738 -> 995,744 (all records resolved).
+  - ~10% HIGHER throughput (avg 790->873, erpm 829->915, peak 2077->2252) DESPITE ~5x more deadlocks (257->1238):
+    PG abort-and-retry resolves faster than the baseline's 300 s contention timeouts; less blocking -> autoscaler
+    pushed higher (59/43 vs 48/39 tasks).
+  - Cost: MVCC churn (dsrc_record dead tuples 508 -> 55,592). Net write IOPS ~unchanged (7.22M -> 7.20M); read ~0 (cached).
+  - CMV fix (PR #140) held: 0 AccessDenied consumer crashes (baseline had 2).
+  Full detail: results/20260827-1M-provisioned-r6i-8xlarge-single-senzing-4.4.0.26232-embeddings-advisory/.
+  IOPS = sum of per-minute Read/WriteIOPS (no x60), same basis as all rows.
+============================================================================================
+
+
 20260826  --  FIRST EMBEDDING PERF RUN (1M) vs recent 25M non-embedding baseline; same db.r6i.8xlarge IO-opt
 ============================================================================================
 Build:                          |  4.4.0.26167   |  4.4.0.26232   |
