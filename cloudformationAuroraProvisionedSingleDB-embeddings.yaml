@@ -2944,6 +2944,16 @@ Resources:
                 setFragment {"id": 12, "fragment": "CLOSE_NAME", "source": "./SUMMARY/BEHAVIOR/NAME[sum(./SAME | ./CLOSE) > 0] | ./FRAGMENT[./GNR_CLOSE_NAME>0]"}
                 addComparisonThreshold {"function": "NULL_COMP", "execOrder": 1, "scoreName": "FULL_SCORE", "feature": "BIZNAME_EMBEDDING", "sameScore": 80, "closeScore": 60, "likelyScore": 43, "plausibleScore": 30, "unlikelyScore": 20}
                 addComparisonThreshold {"function": "NULL_COMP", "execOrder": 1, "scoreName": "FULL_SCORE", "feature": "NAME_EMBEDDING", "sameScore": 80, "closeScore": 50, "likelyScore": 30, "plausibleScore": 20, "unlikelyScore": 10}
+                # Reconfigure the built-in SEMANTIC_VALUE feature (FTYPE 99) to the same
+                # load-only posture as NAME_EMBEDDING / BIZNAME_EMBEDDING above: disable
+                # candidate-list building and swap its scoring comparator to NULL_COMP
+                # (stored but not used for candidates or scoring). setFeature cannot change a
+                # comparison routine, so the existing SEMANTIC_SIMILARITY_COMP call is
+                # deleted and re-added as NULL_COMP over the same elements (EMBEDDING,
+                # ALGORITHM). NULL_COMP must already exist in the default config.
+                setFeature {"feature": "SEMANTIC_VALUE", "candidates": "No"}
+                deleteComparisonCall {"feature": "SEMANTIC_VALUE"}
+                addComparisonCall {"feature": "SEMANTIC_VALUE", "comparison": "NULL_COMP", "elementList": [{"element": "EMBEDDING"}, {"element": "ALGORITHM"}]}
                 save
                 exportToFile /tmp/g2config.json
             - Name: ADD_SEARCH_PROFILE_PY
