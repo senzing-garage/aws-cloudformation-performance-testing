@@ -1,3 +1,37 @@
+20260828  --  EMBEDDING LOAD-ONLY (1M) vs scoring-on embedding + 25M non-embedding; same db.r6i.8xlarge IO-opt
+==========================================================================================================
+                                | 25M NON-EMBED  | 1M EMBED SCORE | 1M EMBED LOAD  |
+Build:                          |  4.4.0.26167   |  4.4.0.26232   |  4.4.0.26232   |
+Number of records:              |    25 M        |    1 M         |    1 M         |
+Number of records loaded:       |  ~25 M         |    995,744     |    995,744     |
+Peak:                           |  2600          |  2077          |  2093          |
+Average over entire run:        |  2012          |   790          |   922          |
+Time to load:                   |  3.45 hours    |  0.33 h insert |  0.30 h insert |
+Records in dead-letter queue:   |     0          |     7          |     5          |
+Total Billed read RW IOPS:      |    1,987,873   |     0.7        |     1.4        |
+Total Billed write IOPS:        |  114,252,104   |   7,224,994    |   7,175,401    |
+Max loader tasks:               |     61         |     48         |     70         |
+Max redoer tasks:               |     59         |     39         |     40         |
+Notes:                          | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | non-embedding  | EMBED scoring  | EMBED loadonly |
+                                | 4.4 baseline   | advisory=false | advisory=false |
+==========================================================================================================
+LOAD-ONLY (017) = the intended embedding load config: built-in SEMANTIC_VALUE reconfigured to candidates:No + NULL_COMP
+(PR #143), so embeddings are STORED but not used for candidate-gen or scoring. vs the 20260826/27 "scoring-on" runs:
+  - Avg throughput 790 -> 922 (+17%), erps 829 -> 951; peak ~same. Input SQS drained ~3x faster (~18 vs ~54 min).
+  - SEMANTIC_VALUE-assisted matches 3,074 -> 0 (embeddings stored, not matched); total non-singleton matches 10,985 -> 8,612.
+  - Contention reduced: SzRetryTimeoutExceeded 7 -> 4, deadlocks 257 -> 175; OKEY-orphans 6 -> 4 (the 4 remaining are
+    name/address super-entity records, advisory=false — would resolve under advisory, cf. 016). DLQ 7 -> 5 (4 contention + 1 varchar).
+  - Write IOPS ~unchanged (embeddings still stored); read ~0 (fully cached).
+  vs 25M non-embedding: ~46% of the non-embedding rate (922 vs 2012) — residual cost of storing the 512-dim vectors.
+  Full detail: results/20260828-1M-provisioned-r6i-8xlarge-single-senzing-4.4.0.26232-embeddings-loadonly/.
+  IOPS = sum of per-minute Read/WriteIOPS (no x60), same basis as all rows.
+==========================================================================================================
+
+
 20260827  --  EMBEDDING ADVISORY A/B (1M) + 25M non-embedding reference; same db.r6i.8xlarge IO-opt
 ==========================================================================================================
                                 | 25M NON-EMBED  | 1M EMBEDDING   | 1M EMBEDDING   |
