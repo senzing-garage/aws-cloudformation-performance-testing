@@ -57,7 +57,9 @@ Inserts per second (from `data/dsrc_record.csv`; cross-checked vs the erpm query
 Resolution outcome (`data/final-capture.txt`):
 - `obs_ent`=**995,744**; `res_ent`=**987,091**; `res_ent_okey`=**995,711**; `res_relate`=780,748; `sys_eval_queue`=0
 - **⚠️ OKEY-orphans: 33** (`res_ent_okey` 995,711 vs `dsrc_record` 995,744) — the 33 `SzRetryTimeoutExceeded`
-  contention records that inserted `obs_ent` but never resolved. **8× 017's 4** — HNSW lengthens each `add_record`
+  contention records that inserted `obs_ent` but never resolved. **Verified: the 33 orphans are *exactly* the DLQ
+  `SzRetryTimeoutExceeded` set (identical — nothing silently lost); the 1 varchar poison is not an orphan (crashed
+  pre-insert), which is why DLQ=34 but orphans=33.** So all 33 are recoverable (reload or advisory run). **8× 017's 4** — HNSW lengthens each `add_record`
   transaction, so entity locks are held longer and the super-entity contention explodes (advisory=false). These would
   resolve under advisory (cf. 016) or single-threaded reload. Record IDs in run notes (kept out of this public repo).
 - Embedding vector storage: `name_embedding`≈657,159; `semantic_value`≈107,706; `bizname_embedding`=0 (final-deltas
