@@ -1,0 +1,97 @@
+DELETE 0
+DELETE 0
+DELETE 0
+psql:/tmp/20-final.sql:15: NOTICE:  pg_stat_wal unavailable (e.g. Aurora) — skipping WAL metrics: Function pg_stat_get_wal() is currently not supported for Aurora
+ snapshot 
+----------
+ 
+(1 row)
+
+
+=================== RUN WINDOW ===================
+          baseline_at          |           final_at            |     elapsed     
+-------------------------------+-------------------------------+-----------------
+ 2026-08-28 23:14:37.899761+00 | 2026-08-29 00:47:07.650207+00 | 01:32:29.750446
+(1 row)
+
+
+=================== FACT REPORT HEADLINE (eviction-immune) ===================
+ logical_block_reads | physical_block_reads | wal_bytes | xact_commit | tup_inserted | tup_updated | tup_deleted 
+---------------------+----------------------+-----------+-------------+--------------+-------------+-------------
+          4707842303 |                  130 |           |    66154732 |    103692073 |    11154948 |     1023358
+(1 row)
+
+
+=================== ALL SCALAR DELTAS ===================
+        metric        |   delta    
+----------------------+------------
+ db.blk_read_time_ms  |     61.443
+ db.blks_hit          | 4707842173
+ db.blks_read         |        130
+ db.blk_write_time_ms | 131878.942
+ db.deadlocks         |        409
+ db.temp_bytes        |          0
+ db.temp_files        |          0
+ db.tup_deleted       |    1023358
+ db.tup_fetched       | 2608021796
+ db.tup_inserted      |  103692073
+ db.tup_returned      | 2901888515
+ db.tup_updated       |   11154948
+ db.xact_commit       |   66154732
+ db.xact_rollback     |        776
+(14 rows)
+
+
+=========== PER-STATEMENT DELTAS (top 25 by exec-time; EVICTION-LOSSY, top-N only) ===========
+  calls  |   rows    | total_ms  | blks_read | blks_written | blks_dirtied | wal_bytes |                                      query                                       
+---------+-----------+-----------+-----------+--------------+--------------+-----------+----------------------------------------------------------------------------------
+ 1311828 |    306605 | 229960161 |         0 |          434 |            0 |         0 | UPDATE RES_ENT SET ENT_STATE=COALESCE(ENT_STATE,$5)|$1 WHERE RES_ENT_ID=$2 AND (
+  657027 |    657027 |  86571400 |        23 |       451965 |            0 |         0 | INSERT INTO NAME_EMBEDDING(LIB_FEAT_ID,LABEL,EMBEDDING) VALUES ($1,$2,$3)
+  995744 |    995744 |  30169446 |         5 |      1785144 |            0 |         0 | INSERT INTO DSRC_RECORD(DSRC_ID,RECORD_ID,ENT_SRC_KEY,JSON_DATA,CONFIG_ID,FIRST_
+ 5106630 |   5092666 |  27946278 |         4 |        45172 |            0 |         0 | UPDATE RES_FEAT_STAT SET FTYPE_ID=$1,NUM_RES_ENT=NUM_RES_ENT+$2,NUM_RES_ENT_OOM=
+ 2327694 |  27932328 |   7089748 |         5 |       453485 |            0 |         0 | INSERT INTO RES_FEAT_EKEY(RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,
+ 1339657 |  18755198 |   5181730 |         6 |       708195 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+  318302 |    318290 |   3725753 |         0 |         1348 |            0 |         0 | UPDATE RES_ENT SET LAST_TOUCH_DT=$1,LOCK_DSRC_ACTION=$2 WHERE RES_ENT_ID=$3 AND 
+  143459 |   1004213 |   2433753 |         4 |       156968 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+  113614 |    908912 |   1826447 |         1 |       117665 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+  633489 |  15832991 |   1744544 |         2 |       149320 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+  107672 |    107672 |   1707981 |         2 |        74998 |            0 |         0 | INSERT INTO SEMANTIC_VALUE(LIB_FEAT_ID,LABEL,EMBEDDING) VALUES ($1,$2,$3)
+   82473 |    742257 |   1547058 |         1 |       108895 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+  117923 |    707538 |   1529254 |         1 |        93271 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+  110415 |    552075 |   1460089 |         1 |        88938 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   72835 |    728350 |   1337571 |         2 |        99318 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+ 1693966 |    308589 |   1301290 |         5 |        14426 |            0 |         0 | INSERT INTO SYS_EVAL_QUEUE(MSG_ID,DSRC_CODE,ENT_SRC_KEY,MSG) VALUES ($1,$2,$3,$4
+    5380 | 516370512 |   1090554 |         0 |            0 |            0 |         0 | SELECT RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,OBS_ENT_CNT FROM RE
+   54071 |    594781 |   1072749 |         1 |        66385 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   48839 |    586068 |   1007980 |         1 |        71494 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+ 1096835 |   1096835 |    816264 |         2 |        55414 |            0 |         0 | UPDATE OBS_ENT SET FEATURES=$1 WHERE OBS_ENT_ID=$2
+   53532 |    214128 |    800379 |         0 |        45586 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   38470 |    500110 |    767622 |         1 |        56705 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+    8610 |      4335 |    754278 |         0 |            1 |            0 |         0 | UPDATE RES_FEAT_STAT AS T SET FTYPE_ID=C.FTYPE_ID,NUM_RES_ENT=C.NUM_RES_ENT_NEW,
+   13489 | 385150104 |    728505 |         0 |            0 |            0 |         0 | SELECT RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,OBS_ENT_CNT FROM RE
+  997078 |    995744 |    671774 |         0 |        18836 |            0 |         0 | INSERT INTO OBS_ENT(OBS_ENT_ID,DSRC_ID,ENT_SRC_KEY,LAST_TOUCH_DT,LOCKING_ID,LOCK
+(25 rows)
+
+
+=================== PER-TABLE DELTAS (tables touched by the run) ===================
+    relname     |   ins    |   upd   |  del   | hot_upd | seq_scan | idx_scan | heap_read | heap_hit  | idx_read 
+----------------+----------+---------+--------+---------+----------+----------+-----------+-----------+----------
+ res_feat_ekey  | 33599142 |  535127 | 536854 |  257843 |        0 | 51363142 |         7 | 108865055 |        2
+ res_feat_stat  | 25450760 | 5210362 |      2 | 2048295 |        0 | 62194607 |         9 | 227911193 |        1
+ lib_feat       | 25554753 |    6821 |     18 |    2738 |     1787 | 98104304 |        10 | 100210178 |        0
+ obs_ent        |   995744 | 2731055 |      0 | 2010662 |        0 | 12724917 |         7 |  65815438 |        8
+ res_ent        |   992000 | 2249674 |   4909 | 1780386 |        0 | 17619411 |         1 |  37224709 |        1
+ res_rel_ekey   |  1661580 |       0 | 100116 |       0 |        0 |  4684044 |         0 |   9003809 |        1
+ dsrc_record    |   995744 |  307117 |      0 |   50256 |        0 |  6943812 |         0 |  20933124 |        2
+ res_ent_okey   |   996112 |    7964 |      0 |    1595 |        0 | 13575756 |         0 |  20174718 |        4
+ res_relate     |   830790 |  101565 |  50058 |   12694 |        0 |  4983056 |         1 |  11331138 |        1
+ name_embedding |   657159 |       0 |      0 |       0 |        0 |   403694 |         0 |   1760620 |       13
+ sys_eval_queue |   308591 |       0 | 308400 |       0 |        0 |  2705956 |         5 |   8552524 |        0
+ semantic_value |   107706 |       0 |      0 |       0 |        0 |    99055 |         0 |    397791 |        1
+ sys_codes_used |      957 |       0 |      1 |       0 |        0 |    63631 |         0 |    155031 |        0
+ sys_sequence   |        0 |     505 |      0 |     502 |        0 |     1292 |         0 |      3471 |        0
+ snap_statement |       59 |       0 |      0 |       0 |        0 |        0 |         0 |        61 |        0
+ snap_table     |       22 |       0 |      0 |       0 |        0 |        0 |         0 |        21 |        0
+ snap_scalar    |       14 |       0 |      0 |       0 |        0 |        0 |         0 |        13 |        0
+(17 rows)
+

@@ -53,7 +53,10 @@ Inserts per second (from `data/dsrc_record.csv`; cross-checked vs the erpm query
 Resolution outcome (`data/final-capture.txt`):
 - `obs_ent`=**995,744**; `res_ent`=**987,119** (fewer merges than 015's 984,625 — no embedding-driven matches);
   `res_ent_okey`=**995,740**; `res_relate`=777,143; `sys_eval_queue`=0
-- Embedding vector storage: `name_embedding`=**657,240**; `semantic_value`=**107,706**; `bizname_embedding`=0 (embeddings stored)
+- Embedding vector storage (verified via live `count(*)`): `name_embedding`=**657,027**; `semantic_value`=**107,672**;
+  `bizname_embedding`=0 — real 512-dim non-null vectors; **no HNSW index** (btree PK on `lib_feat_id` only, per the
+  fast-load config). NB the final-deltas per-table INSERT counts are slightly higher (657,240 / 107,706) — inflated by
+  rolled-back retry re-inserts from the abandon-and-requeue churn; `count(*)` is the true stored count.
 - **SEMANTIC_VALUE-assisted matches: 0** (of 8,612 non-singleton matches) — confirms load-only: embeddings stored, **not matched** (015 had 3,074).
 - **⚠️ OKEY-orphans: 4** — `res_ent_okey` 995,740 vs `dsrc_record` 995,744. These 4 records inserted their observed
   entity (`obs_ent`) but never resolved (`res_ent` NULL); they are exactly the **4 name/address super-entity records
