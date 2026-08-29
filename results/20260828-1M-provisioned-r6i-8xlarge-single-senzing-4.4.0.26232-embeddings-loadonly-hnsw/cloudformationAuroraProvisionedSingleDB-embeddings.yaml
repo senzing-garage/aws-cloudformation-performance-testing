@@ -282,7 +282,7 @@ Mappings:
       # producer authenticates with its task role (see IamPolicyStreamProducerS3);
       # a plain https URL would be an unsigned request → AccessDenied. Requires the
       # bucket owner's cross-account bucket policy to also allow this stack.
-      InputUrl: s3://embedded-feature-data/dataset_20.fixed.jsonl
+      InputUrl: "https://embedded-feature-data.s3.us-east-1.amazonaws.com/dataset_full.fixed.jsonl?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=...&X-Amz-Date=...&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Security-Token=...&X-Amz-Signature=<REDACTED>"
       RecordMin: 0
 
   # NOTE: The CIDRs for subnets may collide with existing subnets.  The values may be altered.
@@ -1419,7 +1419,7 @@ Resources:
       # DBInstanceClass: db.r7g.12xlarge
       # DBInstanceClass: db.r7g.16xlarge
       # DBInstanceClass: db.r6i.4xlarge
-      DBInstanceClass: db.r6i.24xlarge
+      DBInstanceClass: db.r6i.8xlarge
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
       # DBInstanceClass: db.r6i.24xlarge
@@ -1449,7 +1449,7 @@ Resources:
       # same AZ as the loader/redoer compute. Eliminates the cross-AZ tax on
       # read-offload reads and makes the A/B vs. writer-only baseline fair.
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
-      DBInstanceClass: db.r6i.24xlarge
+      DBInstanceClass: db.r6i.8xlarge
     Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------

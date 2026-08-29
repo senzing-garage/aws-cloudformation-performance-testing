@@ -1,3 +1,40 @@
+20260828  --  EMBEDDING LOAD-ONLY: HNSW-ON vs HNSW-OFF (1M) — realistic index-maintenance cost; same db.r6i.8xlarge IO-opt
+==========================================================================================================
+                                | LOADONLY HNSW off | LOADONLY HNSW ON |
+Build:                          |  4.4.0.26232   |  4.4.0.26232   |
+Number of records:              |    1 M (embed) |    1 M (embed) |
+Number of records loaded:       |    995,744     |    995,744     |
+Peak:                           |  2093          |  2051          |
+Average over entire run:        |   922          |   830          |
+Time to load:                   |  0.30 h insert |  0.33 h insert |
+Records in dead-letter queue:   |     5          |     34         |
+Total Billed read RW IOPS:      |     1.4        |     0.9        |
+Total Billed write IOPS:        |   7,175,401    |   7,505,447    |
+Max loader tasks:               |     70         |     48         |
+Max redoer tasks:               |     40         |     32         |
+Notes:                          | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader |
+                                | EMBED loadonly | EMBED loadonly |
+                                | advisory=false | advisory=false |
+                                |   HNSW OFF      |   HNSW ON       |
+==========================================================================================================
+HNSW-ON = HNSW indexes (m=16, ef_construction=100, vector_cosine_ops) built BEFORE the load, so embedding inserts pay
+graph-maintenance cost — the realistic "load into an already-indexed table" number (empty-table HNSW-off overstates it).
+Indexes verified built+valid: name_embedding_hnsw 1711 MB (657K vecs), semantic_value_hnsw 280 MB (107K), bizname 16 kB.
+vs HNSW-off (017):
+  - Throughput cost MODEST: avg 922 -> 830 (-10%), erps 951 -> 865; peak ~same. Write IOPS +5% (7.18M -> 7.51M);
+    logical reads ~2x (DB blks_hit 2.22B -> 4.7B, HNSW graph traversal per insert). Storage reads still ~0 (cached).
+  - Contention cost LARGE: HNSW lengthens each add_record txn -> entity locks held longer -> super-entity contention
+    explodes. DLQ 5 -> 34 (33 SzRetryTimeoutExceeded + 1 varchar); OKEY-orphans 4 -> 33 (8x); deadlocks 175 -> 409.
+  - TAKEAWAY: HNSW-on load is only ~10% slower but leaves 8x more records unresolved (advisory=false). HNSW-on load
+    likely NEEDS advisory lock mode to be viable at scale (advisory killed contention in 016). NEXT: HNSW-on + advisory.
+  Full detail: results/20260828-1M-provisioned-r6i-8xlarge-single-senzing-4.4.0.26232-embeddings-loadonly-hnsw/.
+  IOPS = sum of per-minute Read/WriteIOPS (no x60), same basis as all rows.
+==========================================================================================================
+
+
 20260828  --  EMBEDDING LOAD-ONLY (1M) vs scoring-on embedding + 25M non-embedding; same db.r6i.8xlarge IO-opt
 ==========================================================================================================
                                 | 25M NON-EMBED  | 1M EMBED SCORE | 1M EMBED LOAD  |
