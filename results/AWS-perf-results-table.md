@@ -1,3 +1,36 @@
+20260928  --  4.5.0.26268 25M (OKEY-orphan regression smoke test) vs the 25M advisory baselines; same db.r6i.8xlarge IO-opt
+======================================================================================================================
+Build:                          |  4.4.0.26167   |  4.3.2.26162   |  4.5.0.26268   |
+Number of records:              |    25 M        |    25 M        |    25 M        |
+Peak:                           |  2594          |  2579          |  2573          |
+Average over entire run:        |  2042          |  1965          |  1994          |
+Time to load 25M:               |     3.38 hours |     3.53 hours |     3.48 hours |
+Records in dead-letter queue:   |     0          |     0          |     1          |
+Unresolved (orphans):           |     0          |     0          |     1          |
+Total Billed read RW IOPS:      |    1,987,682   |    2,141,584   |    2,833,836   |
+Total Billed read RO IOPS:      |       n/a      |       n/a      |       n/a      |
+Total Billed write IOPS:        |  110,278,324   |  118,455,414   |  113,925,340   |
+Max loader tasks:               |     61         |     61         |     61         |
+Max redoer tasks:               |     59         |     61         |     47         |
+Notes:                          | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.8xlarge | db.r6i.8xlarge | db.r6i.8xlarge |
+                                |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | sync commit off| sync commit off| sync commit dflt|
+                                | w/o RO conn.   | w/o RO conn.   | w/o RO conn.   |
+                                | small consumers| small consumers| small consumers|
+                                | advisory lock  | advisory lock  | advisory lock  |
+======================================================================================================================
+Throughput on par with 4.4 (avg -2%, +0.1 h). 1 orphan vs 0: TEST 580095239 / obs_ent 26600025. The new 4.5 guard
+"OKEY FLUSH ASSERTION FAILED ... would commit with no RES_ENT_OKEY row. Rolling back and retrying" fired 178x on that one
+obs_ent, never converged, timed out after 300s (SENZ0010), and sent the record to the DLQ, leaving obs_ent committed with no OKEY. So the
+orphan is loud (logged + DLQ) instead of 4.4's silent kind, but it is still an orphan. CORRUPTION_FOUND 5 (all
+RES_ENT_OKEY_NOT_FOUND, auto-repaired) vs 1 / 2. db.deadlocks 106 (4.4: 109). 25M can't confirm the 100M fix (4.4 @100M
+had 40 / 30 silent orphans); a 100M 4.5 run is next. "sync commit dflt": synchronous_commit is commented out in all three
+CFTs, so the "sync commit off" label on the older columns is inherited text; the config is the same.
+  Full detail: results/20260928-25M-provisioned-r6i-8xlarge-single-senzing-4.5.0.26268/.
+
+
 20260828  --  EMBEDDING LOAD-ONLY: HNSW-ON vs HNSW-OFF (1M) — realistic index-maintenance cost; same db.r6i.8xlarge IO-opt
 ==========================================================================================================
                                 | LOADONLY HNSW off | LOADONLY HNSW ON |
