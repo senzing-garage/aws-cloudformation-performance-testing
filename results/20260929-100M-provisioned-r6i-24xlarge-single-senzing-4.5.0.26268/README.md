@@ -20,9 +20,10 @@
 1. Overview
 2. Orphan checks (primary)
 3. Deep-dive plan
-4. Caveats
-5. Results (Observations / comparison / Final metrics)
-6. Methods
+4. Deep-dive findings (repair tests: re-add heals, reevaluate doesn't)
+5. Caveats
+6. Results (Observations / comparison / Final metrics)
+7. Methods
 
 ## Overview
 1. **Performed:** 2026-09-29. Stack `perf-100m-450-26268` create 17:59 → CREATE_COMPLETE 18:12 UTC (10 producer tasks, ~11.9K msgs/s). `00-setup` ~18:20; `10-baseline` ~18:28; **consumers → 8 at 18:29 UTC with the queue
@@ -126,6 +127,57 @@ Guard hits that **did** converge (guard fired, obs_ent ended resolved): **1**, `
 5. Hot-record overlap: do the orphan `record_id`s recur from 20260715 / 20260723 (the "same hot records across builds" finding)?
 6. Keep record content out of this public README: IDs only, with anything from OpenSanctions or test-record content going in a gitignored
    `FINDINGS-engine.md`.
+
+## Deep-dive findings (2026-09-30, on the kept stack)
+Tools: [`orphan-deepdive-4.5.sql`](../../scripts/aurora-pg/orphan-deepdive-4.5.sql) (DB state),
+[`orphan-targets-4.5.sql`](../../scripts/aurora-pg/orphan-targets-4.5.sql) (target activity) and
+[`orphan-probe-4.5.py`](../../scripts/aurora-pg/orphan-probe-4.5.py) (engine view and repair tests). All read-only except the
+probe's `--readd` / `--reevaluate*`. The snapshot `perf-100m-450-26268-orphans-pristine` holds the pre-test state. IDs only here; record
+content stays on the sshd host.
+
+**DB state of the 17 orphans**
+- `obs_ent` and `dsrc_record` were written **0.3–4.2 s before the first guard hit** (`obs_ent.last_touch` = `dsrc_record.first_seen_dt`).
+  So the record insert commits first, and the guard's rollback only undoes the entity attachment.
+- `dsrc_record.last_seen_dt` lands at the **end** of each 300 s guard window, so some writes on the retry path persist while the
+  OKEY write keeps rolling back.
+- The orphans carry a leftover marker: **`obs_ent.lock_dsrc_action = 'A'`, `locking_id = 0`** on all 17. The converged record has NULL / 2.
+  `WHERE lock_dsrc_action = 'A'` is a cheap orphan finder.
+- The records are ordinary: `FEATURES` 212–479 bytes (the format is JSON `{"S":{"<ftype_id>[:usage]":[lib_feat_id,…]}}`).
+- Through the SDK, `get_record` fails with **SENZ0055** (`EAS_ERR_NO_RESOLVED_ENTITY_FOR_DSRC_ENTITY_KEY`) and
+  `get_entity_by_record_id` with **SENZ0038**. The record is stored but can't be retrieved.
+
+**Where they should have gone** (`search_by_attributes` with each orphan's own attributes)
+- **Every orphan has a strong RESOLVED home**, mostly full-profile keys (for example `+NAME+DOB+ADDRESS+PHONE+SSN+PASSPORT+ACCT_NUM`).
+  These are not ambiguous matches.
+- 4 of 17 match **2–3 entities at RESOLVED level** (so adding them would force a merge); 5 match a **single-record** entity.
+- **The targets were quiet during the guard windows:** none of the 20 target entities received a record inside its orphan's window,
+  and they were ordinary (1–13 records, mostly created hours earlier). So there was no concurrent-add race on the target.
+  (`res_ent.last_touch_dt` appears not to update when records are added, so "no new records" is the evidence here, not last_touch.)
+- **The converged control (obs_ent 98511411 → entity 22248760) recovered exactly when a sibling record (`574924384`) joined the same
+  entity at +20.1 s.** Its guard hits stopped at +20 s. It didn't recover by retrying; it recovered because another record changed its target.
+
+**Repair tests** (run on the quiet DB, one fresh orphan per test)
+| Test | Record / obs_ent | Time | Result | `lock_dsrc_action` |
+|---|---|---|---|---|
+| `reevaluate_record` | 598304638 / 49700916 | 0.9 s | ❌ returns OK, still no entity | `A` → `X` |
+| `reevaluate_entity(target 3260050)` + `reevaluate_record` | 561972462 / 43941309 | 1.4 s | ❌ both return OK, still no entity | `A` → `X` |
+| `reevaluate_record` (verbose; log kept on host for Jae) | 441754847 / 63658802 | 0.9 s | ❌ returns OK, still no entity | `A` → `X` |
+| **`add_record` (re-add = DLQ replay)** | 544184792 / 32683731 | 1.6 s | ✅ **resolved into 2853872** (the predicted target) | cleared, `locking_id` 1 |
+
+**Conclusions for the engine team**
+1. **Remediation exists: replay the DLQ.** Re-adding heals an orphan instantly. That's the practical gain over 4.4, whose orphans weren't
+   dead-lettered and couldn't be recovered.
+2. **`reevaluate_record` on an orphan fails silently:** it reports OK, doesn't resolve, and changes the marker `A` → `X`. (What does `X` mean?)
+3. **The failing condition doesn't live in the stored target state.** The same add that failed 228–1,931 times in a row during the
+   run succeeds instantly now, and the target got no new records in between. **Hypothesis (unconfirmed):** the retrying consumer works from
+   stale in-memory state for that resolution (for example a cached entity), which would explain why every retry fails identically on
+   the same stream, why the retries speed up, why the converged case cleared only when another record changed its entity, and why a
+   fresh process succeeds.
+4. Suggested engine-side fixes: invalidate or refresh state between guard retries (or back off and re-read); fall back to dead-lettering
+   **before** committing the `obs_ent` row, or roll it back; make `reevaluate_record` actually resolve an obs_ent that has no OKEY.
+
+After the tests: **16 orphans remain** (13 untouched in state `A`, 3 in state `X` after reevaluate) and **1 was healed** by re-add. Restore the
+snapshot for a clean re-run of any test.
 
 ## Caveats
 - ⚠️ **Only 97,626,220 of 100M records reached SQS. This is a 97.6M run.** One of the 10 stream-producer tasks
