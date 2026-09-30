@@ -1,3 +1,38 @@
+20260929  --  4.5.0.26268 100M (97.6M loaded) OKEY-orphan test vs the 4.4 / 4.3.3 100M runs; db.r6i.24xlarge IO-opt
+======================================================================================================================
+Build:                          |  4.4.0.26167   |  4.4.0.26204   |  4.3.3         |  4.5.0.26268   |
+Number of records:              |   100 M        |   100 M        |   100 M        |  97.6 M (*)    |
+Peak:                           |  6074          |  5814          |  5518          |  6037          |
+Average over entire run:        |  3365          |  3262          |  3199          |  3715          |
+Time to load:                   |     8.25 hours |     8.52 hours |     8.68 hours |     7.30 hours |
+Records in dead-letter queue:   |     0          |     0          |     0          |     17         |
+Unresolved (orphans):           |     40         |     30         |      0         |     17         |
+Silent orphans (no log/DLQ):    |     30         |     26         |      0         |      0         |
+Total Billed read RW IOPS:      |   33,226,016   |   40,413,738   |   34,413,817   |   38,293,933   |
+Total Billed read RO IOPS:      |       n/a      |       n/a      |       n/a      |       n/a      |
+Total Billed write IOPS:        |  419,688,438   |  446,299,279   |  478,419,741   |  431,127,842   |
+Max loader tasks:               |    165         |    169         |    172         |    188         |
+Max redoer tasks:               |    157         |    106         |    174         |    116         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | w/o RO conn.   | w/o RO conn.   | w/o RO conn.   | w/o RO conn.   |
+                                | small consumers| small consumers| small consumers| small consumers|
+                                | advisory lock  | adv + FEATURES | advisory OFF   | advisory lock  |
+======================================================================================================================
+(*) One of 10 stream-producer tasks hit EOFError (truncated S3 gzip stream) at file line 47,626,325 and hung in RUNNING
+instead of exiting, so 2,373,676 records were never enqueued. SQS received 97,626,220 = dsrc_record exactly. Consumers had
+been started mid-fill, which hid it. Lesson: pre-load fully and verify queue == RecordMax before starting consumers.
+Throughput ~on par or better than 4.4 (not strictly like-for-like: 2.4% fewer records, consumers started mid-fill).
+Orphans: all 17 were caught by the new 4.5 guard "OKEY FLUSH ASSERTION FAILED ... would commit with no RES_ENT_OKEY row"
+(13,126 hits on 18 obs_ents; 1 converged in 20 s, 17 retried for the full 300 s), hit SENZ0010, and went to the DLQ. 0 silent
+(4.4: 30 / 26 silent). So the silent regression is fixed, but the orphans are not: obs_ent stays committed with no OKEY. The guard
+first fired ~2.5 h / ~35M records in. CORRUPTION_FOUND 172 (179 RES_ENT_OKEY_NOT_FOUND entries, auto-repaired); INFINITE 10;
+55P03 0; db.deadlocks 621; res_ent_active 262 (4.4: 457 / 329).
+  Full detail: results/20260929-100M-provisioned-r6i-24xlarge-single-senzing-4.5.0.26268/.
+
+
 20260928  --  4.5.0.26268 25M (OKEY-orphan regression smoke test) vs the 25M advisory baselines; same db.r6i.8xlarge IO-opt
 ======================================================================================================================
 Build:                          |  4.4.0.26167   |  4.3.2.26162   |  4.5.0.26268   |
