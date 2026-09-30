@@ -11,7 +11,9 @@
 > 📋 **RESULT: 17 orphans (4.4: 40 / 30), all 17 caught by the new guard and dead-lettered, 0 silent (4.4: 30 / 26 silent).**
 > The 4.5 guard `OKEY FLUSH ASSERTION FAILED` fired on 18 obs_ents (13,126 hits). **1** recovered on retry; **17** retried
 > for the full 300 s, then hit SENZ0010 and went to the DLQ, leaving `obs_ent` committed with no `RES_ENT_OKEY`. The silent regression is gone and every
-> orphan is now visible and replayable, but the guard's retry almost never repairs anything. ⚠️ Only **97.6M** records were loaded (a producer hung; see Caveats).
+> orphan is now visible and replayable, but the guard's retry almost never repairs anything.
+> **Update 09-30:** 4 of the 17 have since resolved (3 by re-add, 1 unattributed); **13 remain, the deterministic "ambiguous bridge" class** ([GDEV-4734](https://senzing.atlassian.net/browse/GDEV-4734)).
+> 3 of the 13 are reproduced single-threaded; 10 are classified by topology and have not been re-driven. See Deep-dive findings. ⚠️ Only **97.6M** records were loaded (a producer hung; see Caveats).
 >
 > 🔬 **The stack is kept overnight for a next-morning orphan deep dive.** The DB is snapshotted after capture and before any repair attempt,
 > so the orphan state can be restored.
@@ -20,7 +22,7 @@
 1. Overview
 2. Orphan checks (primary)
 3. Deep-dive plan
-4. Deep-dive findings (root cause GDEV-4734; re-add heals only if the bridge dissolved; reevaluate doesn't)
+4. Deep-dive findings (root cause GDEV-4734; 13 deterministic, 4 resolved on re-drive; reevaluate doesn't heal)
 5. Caveats
 6. Results (Observations / comparison / Final metrics)
 7. Methods
@@ -170,10 +172,13 @@ content stays on the sshd host.
 1. **The orphans are loud, not silent.** Every one has 228–1,931 `OKEY FLUSH ASSERTION FAILED` lines naming its obs_ent, then a
    `SENZ0010`, then a DLQ entry. That is the gain over 4.4, where 26–30 per run left no trace. What stays hidden is the load's summary
    (consumers report success) and the SDK view (SENZ0055), so someone must watch the DLQ and the ERR lines.
-2. **Re-add (= DLQ replay) heals an orphan only if its bridge has since dissolved.** Our re-add of 544184792 / 32683731 healed in 1.6 s.
-   Its target 2853872 gained a record at 22:48, after that orphan's guard window (20:56–21:01), which changed the topology. Jae's
-   single-threaded re-add of the canonical bridge 532246852 / 100247130 re-livelocked (999 guard hits, then SENZ0010; GDEV-4734).
-   So replaying the DLQ is a partial backstop until the engine fix lands.
+2. **Re-add (= DLQ replay) heals some orphans and not others; the bug count is 13, not 17.** 4 of the 17 now resolve (below). 13 stay stuck;
+   3 of those were re-added single-threaded by Jae and re-livelocked (`532246852`, `568258238`, `598370653`; GDEV-4734). The other 10 have
+   **not** been re-driven since the run (their `last_seen_dt` = the end of their guard window, to within 2 s), so they are classified as the
+   bridge class from search topology only. What made the 4 resolvable is **not established**. An earlier revision said "the target gained a
+   record after the window". That is withdrawn, because the targets of 3 of the stuck 13 (`14064352`, `10537896`, `1712724`) also gained records later.
+   Competitor shape predicts better: the 4 had a single RESOLVED target and no POSSIBLY_SAME competitor, while most of the 13 have a
+   POSSIBLY_SAME or multi-RESOLVED competitor. The exceptions are `441754847` and `453174730` (only POSSIBLY_RELATED competitors).
 3. **`reevaluate_record` on an orphan is a no-op that reports success:** it returns OK (`AFFECTED_ENTITIES: []`, since it keys off a resolved
    entity that doesn't exist), doesn't resolve the record, and changes the marker `A` → `X`. (What does `X` mean?)
 4. **Root cause (Jae, [GDEV-4734](https://senzing.atlassian.net/browse/GDEV-4734)): a deterministic "ambiguous bridge" OKEY drop.** The
@@ -181,14 +186,25 @@ content stays on the sshd host.
    (`assertFlushedObsEntsHaveOKeys`, first arm) correctly refuses to commit it and retries, but the topology is unchanged, so every retry
    reproduces the drop until `SENZ0010`. #2087's `repairDroppedAddOrphans` only handles the merge-onto-destroyed-target arm, so it
    no-ops here. This supersedes the stale-consumer-state hypothesis in an earlier revision of this section. That hypothesis was wrong:
-   the failure reproduces single-threaded, and the one heal we saw followed a topology change.
+   the failure reproduces single-threaded.
 5. Fixes (GDEV-4734): make a bridging add produce a stable membership (attach the new obs_ent to a surviving entity), in
    `collectObsEntEffects` / `resolveObsEntNetOps`. Also worth considering: bound the guard's retries for a deterministic
    failure; don't commit the `obs_ent` row ahead of the guarded resolve; make `reevaluate_record` handle an obs_ent with no OKEY.
 
-After our tests: **16 orphans remain** (13 in state `A`, 3 in state `X` after reevaluate) and **1 was healed** by re-add. Jae's re-add of
-532246852 ran on the same DB at about the same time (it re-livelocked and left the record an orphan). Coordinate writes from here, and restore the
-snapshot for a clean re-run of any test.
+**State of the 17 as of 2026-09-30 ~19:55 UTC** ([`orphan-state-4.5.sql`](../../scripts/aurora-pg/orphan-state-4.5.sql); `sys_eval_queue` = 0 rows;
+consumers and redoers scaled to 0, min capacity 0, at 19:52 UTC. A failed re-add still updates `dsrc_record.last_seen_dt`, so that column shows who touched what):
+
+| Group | record_id / obs_ent_id | `lock_dsrc_action` | `last_seen_dt` (UTC) | How it got here |
+|---|---|---|---|---|
+| Stuck, untouched since the run (10) | 598304638 / 49700916, 441754847 / 63658802 | X | end of their guard window | our `reevaluate_record` (doesn't update `last_seen_dt`) |
+| | 496097295 / 65167600, 520098662 / 69623324, 544560158 / 82502528, 507695948 / 86507744, 495855280 / 88490872, 598782155 / 98108857, 453174730 / 98236077, 465600576 / 100204658 | A | end of their guard window | nothing since the run |
+| Stuck, reproduced by Jae (3) | 532246852 / 100247130 | X | 09-30 18:20:19 | Jae's single-threaded re-add (999 guard hits, SENZ0010) |
+| | 568258238 / 94779725, 598370653 / 96469831 | A | 09-30 18:57:00 / 18:57:08 | Jae's single-threaded re-add, livelocked |
+| Resolved (4) | 544184792 / 32683731 → 2853872 | cleared | 09-30 17:40:15 | our SDK `add_record` |
+| | 561972462 / 43941309 → 3260050 | cleared | 09-30 17:41:46 | **unattributed**: ~90 s after our reevaluate left it X; the redoers were running then (idle, "No redo records available" at 17:42:27); asked on GDEV-4734 |
+| | 538068695 / 68932502 → 28910449, 567971778 / 75782375 → 9507337 | cleared | 09-30 18:48:23 / 18:48:25 | Jae's re-adds (~0.6 s each) |
+
+Coordinate writes on this DB (we and Jae tested concurrently on 09-30), and restore the snapshot for a clean re-run of any test.
 
 ## Caveats
 - ⚠️ **Only 97,626,220 of 100M records reached SQS. This is a 97.6M run.** One of the 10 stream-producer tasks
