@@ -149,7 +149,7 @@ content stays on the sshd host.
 **Where they should have gone** (`search_by_attributes` with each orphan's own attributes)
 - **Every orphan has a strong RESOLVED home**, mostly full-profile keys (for example `+NAME+DOB+ADDRESS+PHONE+SSN+PASSPORT+ACCT_NUM`).
   These are not ambiguous matches.
-- 4 of 17 match **2–3 entities at RESOLVED level** (so adding them would force a merge); 5 match a **single-record** entity.
+- 4 of 17 match **2–3 entities at RESOLVED level** (so adding them would force a merge); 4 have only a **single-record** target.
 - **The targets were quiet during the guard windows:** none of the 20 target entities received a record inside its orphan's window,
   and they were ordinary (1–13 records, mostly created hours earlier). So there was no concurrent-add race on the target.
   (`res_ent.last_touch_dt` appears not to update when records are added, so "no new records" is the evidence here, not last_touch.)
