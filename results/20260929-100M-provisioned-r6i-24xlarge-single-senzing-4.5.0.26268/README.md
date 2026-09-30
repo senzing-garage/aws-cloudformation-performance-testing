@@ -20,7 +20,7 @@
 1. Overview
 2. Orphan checks (primary)
 3. Deep-dive plan
-4. Deep-dive findings (repair tests: re-add heals, reevaluate doesn't)
+4. Deep-dive findings (root cause GDEV-4734; re-add heals only if the bridge dissolved; reevaluate doesn't)
 5. Caveats
 6. Results (Observations / comparison / Final metrics)
 7. Methods
@@ -147,14 +147,16 @@ content stays on the sshd host.
   `get_entity_by_record_id` with **SENZ0038**. The record is stored but can't be retrieved.
 
 **Where they should have gone** (`search_by_attributes` with each orphan's own attributes)
-- **Every orphan has a strong RESOLVED home**, mostly full-profile keys (for example `+NAME+DOB+ADDRESS+PHONE+SSN+PASSPORT+ACCT_NUM`).
-  These are not ambiguous matches.
+- **Every orphan has a strong RESOLVED match**, mostly full-profile keys (for example `+NAME+DOB+ADDRESS+PHONE+SSN+PASSPORT+ACCT_NUM`),
+  **but they are "bridges"**. Their other candidates conflict on exclusive features (`-SSN`, `-PASSPORT`, `-DRLIC` in the match keys), or
+  they RESOLVE into two entities at once. That is the root-cause topology in [GDEV-4734](https://senzing.atlassian.net/browse/GDEV-4734).
 - 4 of 17 match **2–3 entities at RESOLVED level** (so adding them would force a merge); 4 have only a **single-record** target.
 - **The targets were quiet during the guard windows:** none of the 20 target entities received a record inside its orphan's window,
   and they were ordinary (1–13 records, mostly created hours earlier). So there was no concurrent-add race on the target.
   (`res_ent.last_touch_dt` appears not to update when records are added, so "no new records" is the evidence here, not last_touch.)
+  That fits a **deterministic** failure (GDEV-4734), not a race.
 - **The converged control (obs_ent 98511411 → entity 22248760) recovered exactly when a sibling record (`574924384`) joined the same
-  entity at +20.1 s.** Its guard hits stopped at +20 s. It didn't recover by retrying; it recovered because another record changed its target.
+  entity at +20.1 s.** Its guard hits stopped at +20 s. It didn't recover by retrying; another record changed the topology.
 
 **Repair tests** (run on the quiet DB, one fresh orphan per test)
 | Test | Record / obs_ent | Time | Result | `lock_dsrc_action` |
@@ -165,18 +167,27 @@ content stays on the sshd host.
 | **`add_record` (re-add = DLQ replay)** | 544184792 / 32683731 | 1.6 s | ✅ **resolved into 2853872** (the predicted target) | cleared, `locking_id` 1 |
 
 **Conclusions for the engine team**
-1. **Remediation exists: replay the DLQ.** Re-adding heals an orphan instantly. That's the practical gain over 4.4, whose orphans weren't
-   dead-lettered and couldn't be recovered.
-2. **`reevaluate_record` on an orphan fails silently:** it reports OK, doesn't resolve, and changes the marker `A` → `X`. (What does `X` mean?)
-3. **The failing condition doesn't live in the stored target state.** The same add that failed 228–1,931 times in a row during the
-   run succeeds instantly now, and the target got no new records in between. **Hypothesis (unconfirmed):** the retrying consumer works from
-   stale in-memory state for that resolution (for example a cached entity), which would explain why every retry fails identically on
-   the same stream, why the retries speed up, why the converged case cleared only when another record changed its entity, and why a
-   fresh process succeeds.
-4. Suggested engine-side fixes: invalidate or refresh state between guard retries (or back off and re-read); fall back to dead-lettering
-   **before** committing the `obs_ent` row, or roll it back; make `reevaluate_record` actually resolve an obs_ent that has no OKEY.
+1. **The orphans are loud, not silent.** Every one has 228–1,931 `OKEY FLUSH ASSERTION FAILED` lines naming its obs_ent, then a
+   `SENZ0010`, then a DLQ entry. That is the gain over 4.4, where 26–30 per run left no trace. What stays hidden is the load's summary
+   (consumers report success) and the SDK view (SENZ0055), so someone must watch the DLQ and the ERR lines.
+2. **Re-add (= DLQ replay) heals an orphan only if its bridge has since dissolved.** Our re-add of 544184792 / 32683731 healed in 1.6 s.
+   Its target 2853872 gained a record at 22:48, after that orphan's guard window (20:56–21:01), which changed the topology. Jae's
+   single-threaded re-add of the canonical bridge 532246852 / 100247130 re-livelocked (999 guard hits, then SENZ0010; GDEV-4734).
+   So replaying the DLQ is a partial backstop until the engine fix lands.
+3. **`reevaluate_record` on an orphan is a no-op that reports success:** it returns OK (`AFFECTED_ENTITIES: []`, since it keys off a resolved
+   entity that doesn't exist), doesn't resolve the record, and changes the marker `A` → `X`. (What does `X` mean?)
+4. **Root cause (Jae, [GDEV-4734](https://senzing.atlassian.net/browse/GDEV-4734)): a deterministic "ambiguous bridge" OKEY drop.** The
+   add computes an unstable membership in which the new obs_ent's `RES_ENT_OKEY` add is dropped. The GDEV-4367 assertion
+   (`assertFlushedObsEntsHaveOKeys`, first arm) correctly refuses to commit it and retries, but the topology is unchanged, so every retry
+   reproduces the drop until `SENZ0010`. #2087's `repairDroppedAddOrphans` only handles the merge-onto-destroyed-target arm, so it
+   no-ops here. This supersedes the stale-consumer-state hypothesis in an earlier revision of this section. That hypothesis was wrong:
+   the failure reproduces single-threaded, and the one heal we saw followed a topology change.
+5. Fixes (GDEV-4734): make a bridging add produce a stable membership (attach the new obs_ent to a surviving entity), in
+   `collectObsEntEffects` / `resolveObsEntNetOps`. Also worth considering: bound the guard's retries for a deterministic
+   failure; don't commit the `obs_ent` row ahead of the guarded resolve; make `reevaluate_record` handle an obs_ent with no OKEY.
 
-After the tests: **16 orphans remain** (13 untouched in state `A`, 3 in state `X` after reevaluate) and **1 was healed** by re-add. Restore the
+After our tests: **16 orphans remain** (13 in state `A`, 3 in state `X` after reevaluate) and **1 was healed** by re-add. Jae's re-add of
+532246852 ran on the same DB at about the same time (it re-livelocked and left the record an orphan). Coordinate writes from here, and restore the
 snapshot for a clean re-run of any test.
 
 ## Caveats
