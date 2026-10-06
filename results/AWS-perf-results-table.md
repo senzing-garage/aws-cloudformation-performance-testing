@@ -1,3 +1,37 @@
+20261005  --  4.5.0.26275 100M (GDEV-4734 fix validation) vs the 4.5.0.26268 / 4.4 100M runs; db.r6i.24xlarge IO-opt
+======================================================================================================================
+Build:                          |  4.4.0.26167   |  4.4.0.26204   |  4.5.0.26268   |  4.5.0.26275   |
+Number of records:              |   100 M        |   100 M        |  97.6 M        |   100 M        |
+Peak:                           |  6074          |  5814          |  6037          |  6109          |
+Average over entire run:        |  3365          |  3262          |  3715          |  3327          |
+Time to load:                   |     8.25 hours |     8.52 hours |     7.30 hours |     8.35 hours |
+Records in dead-letter queue:   |     0          |     0          |     17         |      0         |
+Unresolved (orphans):           |     40         |     30         |     17         |      0         |
+Silent orphans (no log/DLQ):    |     30         |     26         |      0         |      0         |
+Total Billed read RW IOPS:      |   33,226,016   |   40,413,738   |   38,293,933   |   40,000,015   |
+Total Billed read RO IOPS:      |       n/a      |       n/a      |       n/a      |       n/a      |
+Total Billed write IOPS:        |  419,688,438   |  446,299,279   |  431,127,842   |  443,294,484   |
+Max loader tasks:               |    165         |    169         |    188         |    175         |
+Max redoer tasks:               |    157         |    106         |    116         |    122         |
+Notes:                          | single DB inst | single DB inst | single DB inst | single DB inst |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge| db.r6i.24xlarge|
+                                |    IO opt      |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | w/o RO conn.   | w/o RO conn.   | w/o RO conn.   | w/o RO conn.   |
+                                | small consumers| small consumers| small consumers| small consumers|
+                                | advisory lock  | adv + FEATURES | advisory lock  | advisory lock  |
+                                |                |                | mid-fill start | full pre-load  |
+======================================================================================================================
+0 orphans: validate.sql q1/q2 = 0 rows; obs_ent = res_ent_okey = 99,998,927; dsrc_record = 100,000,000. 0 guard livelocks
+(26268: 13,126 hits), 0 SENZ0010, 0 DLQ. The GDEV-4734 fix fired 18x ("AMBIGUOUS-BRIDGE ORPHAN HEALED") plus 6x #2087
+"RES_ENT_OKEY ORPHAN REPAIRED"; the DB confirms all 24 have an OKEY. 6 of the 18 are records that orphaned on 26268 (incl. Jae's
+reproduced 568258238), healed this time. 1 "ABANDONING a redo" (entity 42343700, ENT_STATE left 1, record resolved).
+CORRUPTION_FOUND 203 (26268: 172), INFINITE 28 (10), db.deadlocks 830 (621), res_ent_active 311 (262): up vs 26268, partly
+because of 100M vs 97.6M. Clean load: full pre-load verified by SQS NumberOfMessagesSent = 100,000,000; producer watchdog, no
+restarts needed. First create rolled back on 24xlarge capacity in us-east-2; the retry 13 min later succeeded in the same region.
+  Full detail: results/20261005-100M-provisioned-r6i-24xlarge-single-senzing-4.5.0.26275/.
+
+
 20260929  --  4.5.0.26268 100M (97.6M loaded) OKEY-orphan test vs the 4.4 / 4.3.3 100M runs; db.r6i.24xlarge IO-opt
 ======================================================================================================================
 Build:                          |  4.4.0.26167   |  4.4.0.26204   |  4.3.3         |  4.5.0.26268   |
