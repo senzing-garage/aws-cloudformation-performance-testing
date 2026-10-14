@@ -1,3 +1,38 @@
+20261013  --  4.4.3.26285 100M CLUSTERED (HYBRID CORE/RES/LIBFEAT) + FEATURES + advisory (GDEV-4738) vs single-DB 100M runs
+======================================================================================================================
+Build:                          |  4.4.0.26204   |  4.5.0.26275   |  4.4.3.26285   |
+Number of records:              |   100 M        |   100 M        |   100 M        |
+Peak:                           |  5814          |  6109          |  10418         |
+Average over entire run:        |  3262          |  3327          |  6483          |
+Time to load:                   |     8.52 hours |     8.35 hours |     4.29 hours |
+Records in dead-letter queue:   |     0          |      0         |   1891         |
+Unresolved (orphans):           |     30         |      0         |   1804         |
+Silent orphans (no log/DLQ):    |     26         |      0         |      0         |
+Total Billed read RW IOPS:      |   40,413,738   |   40,000,015   |   4,125,186*  |
+Total Billed read RO IOPS:      |       n/a      |       n/a      |       n/a      |
+Total Billed write IOPS:        |  446,299,279   |  443,294,484   |  482,581,886* |
+Max loader tasks:               |    169         |    175         |    200         |
+Max redoer tasks:               |    106         |    122         |     86         |
+Notes:                          | single DB inst | single DB inst | 3 DB clusters  |
+                                | db.r6i.24xlarge| db.r6i.24xlarge| 3x r6i.24xlarge|
+                                |    IO opt      |    IO opt      |    IO opt      |
+                                | 25% CPU loader | 25% CPU loader | 25% CPU loader |
+                                | w/o RO conn.   | w/o RO conn.   | w/o RO conn.   |
+                                | small consumers| small consumers| small consumers|
+                                | adv + FEATURES | advisory lock  | adv + FEATURES |
+                                |                | full pre-load  | full pre-load  |
+======================================================================================================================
+* IOPS summed over the 3 writers: CORE 4,122,283 / 116,846,202, RES 2,898 / 265,756,995, LIBFEAT 5 / 99,978,689 (read / write).
+GDEV-4738: 0 SENZ1019 / "does not exist" with RES_FEAT_EKEY dropped from CORE; resEntFeaturesServedFromBlob 43,965,776 vs FromEKey
+933,782 (97.9% blob); RES_ENT.FEATURES on 61,213,285 / 61,213,765. Delete+reevaluate verification pending. Throughput ~2x single DB
+(LIB_FEAT inserts 6.4 ms vs 50 ms). BUT 1,804 orphans (1,797 logged SENZ0010, 1,795 dead-lettered; 7 in hung add_record calls; 0 silent),
+DLQ 1,891, CORRUPTION_FOUND 3,576, db.deadlocks 1,239, 55P03 8,931. RES writer restarted twice unplanned (23:08, 23:51; 400 consumers
+died with SENZ1001). Hung add_record calls (up to 344 min, no DB session) + sz_sqs_consumer's 12 h visibility limit / blocking shutdown
+gave a ~16 h tail. Hot updates are much slower under HYBRID (RES_FEAT_STAT += 152 ms vs 1.7 ms, RES_ENT ENT_STATE 352 ms vs 0.3 ms on
+single-DB 4.5). Clustering vs build not separable; a single-DB 4.4.3 run is the control. SYS_VARS must stay on every node.
+  Full detail: results/20261013-100M-provisioned-r6i-24xlarge-clustered-senzing-4.4.3.26285-features-advisory/.
+
+
 20261005  --  4.5.0.26275 100M (GDEV-4734 fix validation) vs the 4.5.0.26268 / 4.4 100M runs; db.r6i.24xlarge IO-opt
 ======================================================================================================================
 Build:                          |  4.4.0.26167   |  4.4.0.26204   |  4.5.0.26268   |  4.5.0.26275   |
