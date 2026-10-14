@@ -72,8 +72,8 @@ def main():
         lt = aws("ecs", "list-tasks", "--cluster", C, "--family", fam, "--desired-status", "RUNNING")
         if lt is None: time.sleep(a.interval); continue
         arns = lt.get("taskArns", [])
-        q = aws("sqs", "get-queue-attributes", "--queue-url",
-                f"https://sqs.us-east-2.amazonaws.com/511635769224/{S}-sqs-input", "--attribute-names", "ApproximateNumberOfMessages")
+        qurl = (aws("sqs", "get-queue-url", "--queue-name", f"{S}-sqs-input") or {}).get("QueueUrl")   # region from AWS_REGION
+        q = aws("sqs", "get-queue-attributes", "--queue-url", qurl, "--attribute-names", "ApproximateNumberOfMessages") if qurl else None
         depth = (q or {}).get("Attributes", {}).get("ApproximateNumberOfMessages", "?")
         print(f"{now()} producers={len(arns)} queue={depth}", flush=True)
         if not arns:
