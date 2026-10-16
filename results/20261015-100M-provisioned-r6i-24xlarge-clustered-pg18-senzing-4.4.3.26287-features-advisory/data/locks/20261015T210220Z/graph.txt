@@ -1,0 +1,24 @@
+== per node: waiter -> blocker; blocker state; service mix
+ core: blocked sessions 956; distinct blocker pids 749; waiter services {'redoer': 136, 'consumer': 813, '?': 7}
+     blocker states {'active / blocked': 1705, 'idle in transaction': 264}; blocker services {'consumer': 1713, 'redoer': 217, '?': 39}
+     top blocker pid 10762 (consumer 10.0.11.155) blocks 15; state=active; xact_start=19:51:13; tuple locks held=[('res_ent', '13633395', '2')]; last query=UPDATE RES_ENT SET ENT_STATE=COALESCE(ENT_STATE,0)|$1 WHERE RES_ENT_ID
+     top blocker pid 6446 (consumer 10.0.10.178) blocks 14; state=active; xact_start=19:51:49; tuple locks held=[]; last query=UPDATE RES_ENT SET FEATURES=$1 WHERE RES_ENT_ID=$2
+     top blocker pid 7457 (consumer 10.0.11.104) blocks 13; state=active; xact_start=19:51:58; tuple locks held=[]; last query=UPDATE RES_ENT SET ENT_STATE=COALESCE(ENT_STATE,0)|$1 WHERE RES_ENT_ID
+     top blocker pid 8538 (? 10.0.8.146) blocks 13; state=active; xact_start=16:48:02; tuple locks held=[('res_ent', '10530209', '5')]; last query=UPDATE RES_ENT SET LOCKING_ID=LOCKING_ID+1,LOCK_DSRC_ACTION=$1 WHERE R
+     top blocker pid 12882 (? 10.0.8.24) blocks 12; state=active; xact_start=16:50:55; tuple locks held=[('res_ent', '10904667', '2')]; last query=UPDATE RES_ENT SET ENT_STATE=COALESCE(ENT_STATE,0)|$1 WHERE RES_ENT_ID
+ res: blocked sessions 1949; distinct blocker pids 1832; waiter services {'?': 33, 'consumer': 1912, 'redoer': 4}
+     blocker states {'active / blocked': 157854, 'idle in transaction': 34}; blocker services {'consumer': 155495, '?': 1626, 'redoer': 767}
+     top blocker pid 10735 (consumer 10.0.10.181) blocks 414; state=active; xact_start=19:39:36; tuple locks held=[('res_feat_stat', '7478736', '63')]; last query=UPDATE RES_FEAT_STAT SET FTYPE_ID=$1,NUM_RES_ENT=NUM_RES_ENT+$2,NUM_RE
+     top blocker pid 7993 (consumer 10.0.11.153) blocks 413; state=active; xact_start=19:39:52; tuple locks held=[]; last query=UPDATE RES_FEAT_STAT SET FTYPE_ID=$1,NUM_RES_ENT=NUM_RES_ENT+$2,NUM_RE
+     top blocker pid 26945 (consumer 10.0.10.134) blocks 412; state=active; xact_start=19:39:54; tuple locks held=[]; last query=UPDATE RES_FEAT_STAT SET FTYPE_ID=$1,NUM_RES_ENT=NUM_RES_ENT+$2,NUM_RE
+     top blocker pid 8717 (consumer 10.0.9.192) blocks 411; state=active; xact_start=19:40:02; tuple locks held=[]; last query=UPDATE RES_FEAT_STAT SET FTYPE_ID=$1,NUM_RES_ENT=NUM_RES_ENT+$2,NUM_RE
+     top blocker pid 12221 (consumer 10.0.10.4) blocks 410; state=active; xact_start=19:40:04; tuple locks held=[]; last query=UPDATE RES_FEAT_STAT SET FTYPE_ID=$1,NUM_RES_ENT=NUM_RES_ENT+$2,NUM_RE
+== hot rows (waiting tuple locks)
+ core: distinct rows 439; top: [(('res_ent', '13633395', '2'), 16), (('res_ent', '10904667', '2'), 13), (('res_ent', '15690102', '10'), 11), (('res_ent', '14954597', '9'), 11), (('res_ent', '1624472', '9'), 11)]
+ res: distinct rows 104; top: [(('res_feat_stat', '7478736', '63'), 415), (('res_feat_stat', '7073134', '156'), 210), (('res_feat_stat', '7142369', '63'), 173), (('res_feat_stat', '8748270', '101'), 126), (('res_feat_stat', '6461792', '140'), 123)]
+== cross-node: idle-in-txn blockers whose task is waiting on the other node
+ blockers on core that are idle-in-txn: 96 task IPs; of those, 96 also have sessions WAITING on res
+ blockers on res that are idle-in-txn: 18 task IPs; of those, 18 also have sessions WAITING on core
+== IP-level wait-for graph (edges from both nodes): strongly connected components
+ nodes 283; non-trivial SCCs 1; sizes [268]
+  SCC size 268: internal edges by node {'core': 1911, 'res': 38071}; services {'redoer': 48, '?': 20, 'consumer': 200}

@@ -1,0 +1,11 @@
+snapshot 20261015T231059Z
+== CORE: non-idle sessions by state / wait
+       2  active                       Timeout:VacuumDelay
+       2  active                       IO:DataFileRead
+       1  active                       -:-
+   blocked sessions: 0; distinct client IPs among them: 0
+== RES: non-idle sessions by state / wait
+       1  active                       IO:AuroraStorageLogAllocate
+   blocked sessions: 0; distinct client IPs among them: 0
+== LIBFEAT: non-idle sessions by state / wait
+   blocked sessions: 0; distinct client IPs among them: 0

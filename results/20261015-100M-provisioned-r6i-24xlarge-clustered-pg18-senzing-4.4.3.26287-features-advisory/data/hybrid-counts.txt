@@ -1,0 +1,61 @@
+ res_ent  | features_not_null 
+----------+-------------------
+ 61113124 |          61110728
+(1 row)
+
+       t       |   count    
+---------------+------------
+ res_feat_ekey | 1769159252
+ res_feat_stat | 1379341793
+(2 rows)
+
+    t     |   count    
+----------+------------
+ lib_feat | 1379371780
+(1 row)
+
+== CORE
+    relname     |   total    
+----------------+------------
+ res_ent        | 209 GB
+ res_relate     | 119 GB
+ obs_ent        | 113 GB
+ dsrc_record    | 65 GB
+ res_ent_okey   | 16 GB
+ sys_eval_queue | 15 GB
+ res_rel_ekey   | 14 GB
+ sys_sequence   | 920 kB
+ sys_cfg        | 128 kB
+ sys_codes_used | 72 kB
+ sys_vars       | 56 kB
+ sys_hw_check   | 24 kB
+ sys_status     | 8192 bytes
+(13 rows)
+
+== RES
+    relname     |   total    
+----------------+------------
+ res_feat_ekey  | 284 GB
+ res_feat_stat  | 132 GB
+ sys_vars       | 56 kB
+ sys_sequence   | 56 kB
+ sys_hw_check   | 24 kB
+ sys_eval_queue | 24 kB
+ sys_cfg        | 16 kB
+ sys_codes_used | 16 kB
+ sys_status     | 8192 bytes
+(9 rows)
+
+== LIBFEAT
+    relname     |   total    
+----------------+------------
+ lib_feat       | 390 GB
+ sys_hw_check   | 24 kB
+ sys_sequence   | 24 kB
+ sys_eval_queue | 24 kB
+ sys_vars       | 24 kB
+ sys_cfg        | 16 kB
+ sys_codes_used | 16 kB
+ sys_status     | 8192 bytes
+(8 rows)
+

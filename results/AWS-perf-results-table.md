@@ -1,3 +1,39 @@
+20261015  --  4.4.3.26287 100M CLUSTERED (HYBRID) on Aurora PostgreSQL 18.6 + FEATURES + advisory: wedged by a cross-node lock deadlock
+======================================================================================================================
+Build:                          |  4.4.0.26204   |  4.4.3.26285   |  4.4.3.26287   |
+Number of records:              |   100 M        |   100 M        |   100 M (*)    |
+Peak:                           |  5814          |  10418         |  11119         |
+Average over entire run:        |  3262          |  6483          |  4890 (*)      |
+Time to load:                   |     8.52 hours |     4.29 hours |     5.68 hours |
+Records in dead-letter queue:   |     0          |   1891         |   4537         |
+Unresolved (orphans):           |     30         |   1804         |   5186 (*)     |
+Silent orphans (no log/DLQ):    |     26         |      0         |    340 (*)     |
+Total Billed read RW IOPS:      |   40,413,738   |   4,125,186+   |     227,964+   |
+Total Billed read RO IOPS:      |       n/a      |       n/a      |       n/a      |
+Total Billed write IOPS:        |  446,299,279   |  482,581,886+  |  450,070,024+  |
+Max loader tasks:               |    169         |    200         |    200         |
+Max redoer tasks:               |    106         |     86         |     59         |
+Notes:                          | single DB inst | 3 DB clusters  | 3 DB clusters  |
+                                | db.r6i.24xlarge| 3x r6i.24xlarge| 3x r6i.24xlarge|
+                                |    IO opt      |    IO opt      |    IO opt      |
+                                | PG 17          | PG 17.5        | PG 18.6        |
+                                | adv + FEATURES | adv + FEATURES | adv + FEATURES |
+                                |                | full pre-load  | full pre-load  |
+======================================================================================================================
++ summed over the 3 writers.  (*) NOT a valid perf / integrity measurement: the load stalled ~2 h (17:05-19:15 UTC) and the tail
+wedged from ~21:00; a mid-run DB parameter change (idle_in_transaction_session_timeout 5 min, client_connection_check_interval 10 s,
+21:17 UTC) had no effect on the stuck sessions; 3,063 sessions were killed by hand (~23:05) and the run was stopped at 23:10 with the
+redo backlog undrained (sys_eval_queue 16.6M, res_ent_active 16.2M). Averages include the stall; orphan counts reflect a half-resolved
+state (340 "silent" = no SENZ0010/DLQ log line, likely in-flight work of killed tasks whose stdout was lost).
+Root cause, from live pg_locks/pg_stat_activity on all 3 nodes: an AB-BA lock-order inversion ACROSS nodes. Transactions holding RES_ENT
+rows on CORE wait on RES at UPDATE RES_FEAT_STAT ... NUM_RES_ENT+=; transactions holding those RES_FEAT_STAT rows wait on CORE at
+UPDATE RES_ENT SET ENT_STATE/FEATURES/LOCKING_ID. Neither Postgres sees the cycle, so nothing detects or times it out; hot counter rows
+(one RES_FEAT_STAT row had 415 waiters) amplify it. Unchanged for ~2 h; only cleared when tasks or sessions were killed.
+PG 18.6 itself worked. 0 SENZ1019; FEATURES 98.9% from the blob. GDEV-4734 messages 0. App bug: sz_simple_redoer crashes (KeyError
+'DATA_SOURCE') when a REPAIR_ENTITY redo hits SENZ0010 (171x). No DB writer restarts.
+  Full detail: results/20261015-100M-provisioned-r6i-24xlarge-clustered-pg18-senzing-4.4.3.26287-features-advisory/.
+
+
 20261013  --  4.4.3.26285 100M CLUSTERED (HYBRID CORE/RES/LIBFEAT) + FEATURES + advisory (GDEV-4738) vs single-DB 100M runs
 ======================================================================================================================
 Build:                          |  4.4.0.26204   |  4.5.0.26275   |  4.4.3.26285   |

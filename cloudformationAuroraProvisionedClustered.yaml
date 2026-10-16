@@ -43,10 +43,19 @@ Metadata:
           - EnableReadOnlyConnection
           - ReadOnlyConnections
       - Label:
+          default: 'Database engine'
+        Parameters:
+          - AuroraPostgresVersion
+          - EnhancedMonitoringInterval
+      - Label:
           default: 'Optional: Entity lock mode (Senzing ER ENTITY_LOCK_MODE)'
         Parameters:
           - EnableEntityLockModeAdvisory
     ParameterLabels:
+      EnhancedMonitoringInterval:
+        default: 'RDS Enhanced Monitoring interval in seconds (0 = off; 5 recommended for HYBRID runs).'
+      AuroraPostgresVersion:
+        default: 'Aurora PostgreSQL engine version for all three clusters (17.5 or 18.6).'
       CidrInbound:
         default: 'Optional: Provide the permitted IP address block allowed to connect using CIDR notation.'
       CognitoAdminEmail:
@@ -91,6 +100,26 @@ Parameters:
     Default: '_'
     Description: 'Help: https://hub.senzing.com/aws-cloudformation-ecs/aws-cloudformation-ecs-staging-simple-100M/#cognitoadminemail'
     Type: String
+
+  AuroraPostgresVersion:
+    AllowedValues:
+      - '17.5'
+      - '18.6'
+    Default: '17.5'
+    Description: >-
+      Aurora PostgreSQL engine version for all three HYBRID clusters (CORE / RES / LIBFEAT). The parameter-group
+      family follows the major version (aurora-postgresql17 / aurora-postgresql18). 17.5 matches the 20261013 run.
+    Type: String
+
+  EnhancedMonitoringInterval:
+    AllowedValues: [0, 1, 5, 10, 15, 30, 60]
+    Default: 0
+    Description: >-
+      RDS Enhanced Monitoring interval in seconds for every DB instance (0 = off). Non-zero creates an
+      rds-monitoring IAM role and streams per-process OS metrics to the RDSOSMetrics log group (CloudWatch
+      Logs cost). Added after the 20261013 run, where the RES writer froze twice for ~5 min and Aurora
+      restarted it; process-level data is the only customer-visible view into such a stall.
+    Type: Number
 
   EnableEntityLockModeAdvisory:
     AllowedValues:
@@ -256,13 +285,15 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       # init-database is pinned by DIGEST (":latest" is mutable). This digest bundles 4.4.1.26255;
-      # its schema SQL is byte-identical to 4.5.0.26268, 4.5.0.26275 and 4.4.3.26285, and its default config differs only in
-      # the CONFIG_BASE_VERSION stamp (verified 2026-09-28, 2026-10-05, 2026-10-13). Re-verify when the engine version changes.
+      # its schema SQL is byte-identical to 4.5.0.26268, 4.5.0.26275, 4.4.3.26285 and 4.4.3.26287, and its default config differs only in
+      # the CONFIG_BASE_VERSION stamp (verified 2026-09-28, 2026-10-05, 2026-10-13, 2026-10-15). Re-verify when the engine version changes.
       InitPostgresql: docker.io/senzing/init-database@sha256:a68062d23dc958eba404a3fbba3a5800e2770f6e9bbed2ad94413c54da7635af
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4:4.4.3-26285
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools:4.4.3-26285
-      Sshd: public.ecr.aws/senzing/sshd:4.4.3-26285
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4:4.4.3-26285
+      # 4.4.3.26287 images pinned by DIGEST: the 4.4.3-26287 tag was rebuilt several times on 2026-10-14 and ECR
+      # tags are mutable. These are BUILD_NUMBER 2026_10_14__23_16 (verified from szBuildVersion.json, 2026-10-15).
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4@sha256:a3665b18ec21f499e73cd70d358f74ff634fbfbc551e2114137dfbac71f80679
+      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools@sha256:2e542dff9a20ff9e7bbf96fdb019cf35ce66bc87584e4c1cdaa816fd11210186
+      Sshd: public.ecr.aws/senzing/sshd@sha256:2cb6574e0bd96c34dbedc16ae2963f04b6aa78e180ba54924cc462a433e00225
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4@sha256:f5d2b29b74ed341d18df4b78f5717984c9de493492cfda9cab404c9c3f296dc9
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
 
@@ -300,6 +331,13 @@ Mappings:
 # -----------------------------------------------------------------------------
 
 Conditions:
+  IfEnhancedMonitoring: !Not
+    - !Equals [!Ref EnhancedMonitoringInterval, '0']
+
+  IfAuroraPg18: !Equals
+    - !Select [0, !Split ['.', !Ref AuroraPostgresVersion]]
+    - '18'
+
   IfEnableReadOnlyConnection: !Equals
     - !Ref EnableReadOnlyConnection
     - 'true'
@@ -493,6 +531,23 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub '${AWS::StackName}-iam-role-sshd'
+    Type: AWS::IAM::Role
+
+  IamRoleRdsMonitoring:
+    Condition: IfEnhancedMonitoring
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: monitoring.rds.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole
+      Tags:
+        - Key: Name
+          Value: !Sub '${AWS::StackName}-iam-role-rds-monitoring'
     Type: AWS::IAM::Role
 
   IamRoleStreamLoader:
@@ -1300,7 +1355,7 @@ Resources:
   RdsDbClusterParameterGroup:
     Properties:
       Description: !Sub '${AWS::StackName}-rds-db-cluster-parameter-group-description'
-      Family: aurora-postgresql17
+      Family: !If [IfAuroraPg18, aurora-postgresql18, aurora-postgresql17]
       Parameters:
         # shared_preload_libraries is a cluster-level static parameter on Aurora.
         # Belongs here, not on the instance parameter group, or pg_stat_statements
@@ -1318,7 +1373,7 @@ Resources:
   RdsDbParameterGroup:
     Properties:
       Description: !Sub '${AWS::StackName}-rds-db-parameter-group-description'
-      Family: aurora-postgresql17
+      Family: !If [IfAuroraPg18, aurora-postgresql18, aurora-postgresql17]
       Parameters:
         track_io_timing: 1
         # Raise above the Aurora default (~5,000 on r6i.24xlarge). At 100M the
@@ -1371,7 +1426,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: '17.5'
+      EngineVersion: !Ref AuroraPostgresVersion
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
@@ -1415,7 +1470,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: '17.5'
+      EngineVersion: !Ref AuroraPostgresVersion
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
@@ -1459,7 +1514,7 @@ Resources:
       EnableHttpEndpoint: true
       Engine: aurora-postgresql
       EngineMode: provisioned
-      EngineVersion: '17.5'
+      EngineVersion: !Ref AuroraPostgresVersion
       MasterUsername: !FindInMap [Constants, Database, Username]
       MasterUserPassword: !GetAtt LambdaRunnerDbPassword.RandomString
       Port: 5432
@@ -1496,6 +1551,8 @@ Resources:
       # DBInstanceClass: db.r7g.16xlarge
       # DBInstanceClass: db.r6i.4xlarge
       DBInstanceClass: db.r6i.24xlarge
+      MonitoringInterval: !Ref EnhancedMonitoringInterval
+      MonitoringRoleArn: !If [IfEnhancedMonitoring, !GetAtt IamRoleRdsMonitoring.Arn, !Ref AWS::NoValue]
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
       # DBInstanceClass: db.r6i.24xlarge
@@ -1526,6 +1583,8 @@ Resources:
       # DBInstanceClass: db.r7g.16xlarge
       # DBInstanceClass: db.r6i.4xlarge
       DBInstanceClass: db.r6i.24xlarge
+      MonitoringInterval: !Ref EnhancedMonitoringInterval
+      MonitoringRoleArn: !If [IfEnhancedMonitoring, !GetAtt IamRoleRdsMonitoring.Arn, !Ref AWS::NoValue]
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
       # DBInstanceClass: db.r6i.24xlarge
@@ -1556,6 +1615,8 @@ Resources:
       # DBInstanceClass: db.r7g.16xlarge
       # DBInstanceClass: db.r6i.4xlarge
       DBInstanceClass: db.r6i.24xlarge
+      MonitoringInterval: !Ref EnhancedMonitoringInterval
+      MonitoringRoleArn: !If [IfEnhancedMonitoring, !GetAtt IamRoleRdsMonitoring.Arn, !Ref AWS::NoValue]
       # DBInstanceClass: db.r6i.12xlarge
       # DBInstanceClass: db.r6i.16xlarge
       # DBInstanceClass: db.r6i.24xlarge
@@ -1586,6 +1647,8 @@ Resources:
       # read-offload reads and makes the A/B vs. writer-only baseline fair.
       AvailabilityZone: !GetAtt Ec2SubnetPrivate1.AvailabilityZone
       DBInstanceClass: db.r6i.24xlarge
+      MonitoringInterval: !Ref EnhancedMonitoringInterval
+      MonitoringRoleArn: !If [IfEnhancedMonitoring, !GetAtt IamRoleRdsMonitoring.Arn, !Ref AWS::NoValue]
     Type: AWS::RDS::DBInstance
 
   # -- Queue --------------------------------------------------------------------

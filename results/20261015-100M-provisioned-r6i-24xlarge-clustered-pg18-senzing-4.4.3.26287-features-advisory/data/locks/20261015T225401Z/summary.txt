@@ -1,0 +1,16 @@
+snapshot 20261015T225401Z
+== CORE: non-idle sessions by state / wait
+    1174  idle in transaction          Client:ClientRead
+     342  active                       Lock:Tuple
+     315  active                       Lock:Transactionid
+       2  active                       Lock:Advisory
+   blocked sessions: 659; distinct client IPs among them: 255
+== RES: non-idle sessions by state / wait
+    1521  active                       Lock:Tuple
+     470  idle in transaction          Client:ClientRead
+     253  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1774; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1644  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
