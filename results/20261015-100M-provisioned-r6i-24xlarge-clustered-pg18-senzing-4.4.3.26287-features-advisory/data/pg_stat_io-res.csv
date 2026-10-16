@@ -1,0 +1,6 @@
+backend_type,object,context,reads,read_bytes,read_time,writes,write_bytes,write_time,writebacks,writeback_time,extends,extend_bytes,extend_time,hits,evictions,reuses,fsyncs,fsync_time,stats_reset
+client backend,relation,bulkread,763,6250496,606.465,0,0,0,,,,,,217,0,0,,,2026-10-15 13:15:13.195469+00
+client backend,relation,bulkwrite,0,0,0,966,7913472,4.523,,,966,7913472,1.441,0,0,0,,,2026-10-15 13:15:13.195469+00
+client backend,relation,normal,1703,13950976,1500.7160000000001,0,0,0,,,1373440,446148878336,422020.262,84098946908,0,,,,2026-10-15 13:15:13.195469+00
+autovacuum worker,relation,normal,1543,12640256,3562.647,0,0,0,,,958,7979008,1394.6390000000001,1499342990,0,,,,2026-10-15 13:15:13.195469+00
+autovacuum worker,relation,vacuum,117,958464,300.036,0,0,0,,,0,0,0,1589749154,0,0,,,2026-10-15 13:15:13.195469+00

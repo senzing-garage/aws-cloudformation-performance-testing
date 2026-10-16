@@ -1,0 +1,666 @@
+nohup: ignoring input
+watching CORE RES LIBFEAT every 30s; snapshot when any node has >= 40 lock waiters (min gap 300s) -> /tmp/locks
+21:02:45 lock waiters: CORE=956 RES=1949 LIBFEAT=0
+snapshot 20261015T210245Z
+== CORE: non-idle sessions by state / wait
+    1912  idle in transaction          Client:ClientRead
+     517  active                       Lock:Tuple
+     439  active                       Lock:Transactionid
+   blocked sessions: 956; distinct client IPs among them: 258
+== RES: non-idle sessions by state / wait
+    1792  active                       Lock:Tuple
+     941  idle in transaction          Client:ClientRead
+     157  active                       Lock:Transactionid
+       1  active                       Timeout:VacuumDelay
+       1  active                       -:-
+   blocked sessions: 1949; distinct client IPs among them: 226
+== LIBFEAT: non-idle sessions by state / wait
+    2853  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:03:16 lock waiters: CORE=956 RES=1949 LIBFEAT=0
+21:03:46 lock waiters: CORE=956 RES=1949 LIBFEAT=0
+21:04:17 lock waiters: CORE=956 RES=1949 LIBFEAT=0
+21:04:47 lock waiters: CORE=956 RES=1949 LIBFEAT=0
+21:05:17 lock waiters: CORE=956 RES=1949 LIBFEAT=0
+21:05:48 lock waiters: CORE=783 RES=1696 LIBFEAT=0
+21:06:18 lock waiters: CORE=783 RES=1696 LIBFEAT=0
+21:06:48 lock waiters: CORE=785 RES=1696 LIBFEAT=0
+21:07:18 lock waiters: CORE=786 RES=1696 LIBFEAT=0
+21:07:49 lock waiters: CORE=786 RES=1696 LIBFEAT=0
+snapshot 20261015T210749Z
+== CORE: non-idle sessions by state / wait
+    1583  idle in transaction          Client:ClientRead
+     414  active                       Lock:Tuple
+     370  active                       Lock:Transactionid
+       2  active                       Lock:Advisory
+       1  active                       Client:ClientRead
+   blocked sessions: 786; distinct client IPs among them: 255
+== RES: non-idle sessions by state / wait
+    1569  active                       Lock:Tuple
+     749  idle in transaction          Client:ClientRead
+     127  active                       Lock:Transactionid
+       2  active                       -:-
+       1  active                       Client:ClientRead
+   blocked sessions: 1696; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2331  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:08:20 lock waiters: CORE=786 RES=1696 LIBFEAT=0
+21:08:50 lock waiters: CORE=788 RES=1696 LIBFEAT=0
+21:09:20 lock waiters: CORE=788 RES=1696 LIBFEAT=0
+21:09:50 lock waiters: CORE=789 RES=1696 LIBFEAT=0
+21:10:21 lock waiters: CORE=791 RES=1696 LIBFEAT=0
+21:10:51 lock waiters: CORE=791 RES=1696 LIBFEAT=0
+21:11:21 lock waiters: CORE=791 RES=1696 LIBFEAT=0
+21:11:52 lock waiters: CORE=789 RES=1696 LIBFEAT=0
+21:12:22 lock waiters: CORE=791 RES=1696 LIBFEAT=0
+21:12:52 lock waiters: CORE=792 RES=1696 LIBFEAT=0
+snapshot 20261015T211252Z
+== CORE: non-idle sessions by state / wait
+    1581  idle in transaction          Client:ClientRead
+     416  active                       Lock:Tuple
+     371  active                       Lock:Transactionid
+       5  active                       Lock:Advisory
+       3  active                       Client:ClientRead
+   blocked sessions: 792; distinct client IPs among them: 257
+== RES: non-idle sessions by state / wait
+    1569  active                       Lock:Tuple
+     752  idle in transaction          Client:ClientRead
+     127  active                       Lock:Transactionid
+       1  active                       -:-
+       1  active                       Timeout:VacuumDelay
+   blocked sessions: 1696; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2332  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:13:23 lock waiters: CORE=792 RES=1696 LIBFEAT=0
+21:13:53 lock waiters: CORE=791 RES=1696 LIBFEAT=0
+21:14:24 lock waiters: CORE=790 RES=1696 LIBFEAT=0
+21:14:54 lock waiters: CORE=790 RES=1696 LIBFEAT=0
+21:15:24 lock waiters: CORE=789 RES=1696 LIBFEAT=0
+21:15:55 lock waiters: CORE=789 RES=1696 LIBFEAT=0
+21:16:25 lock waiters: CORE=789 RES=1696 LIBFEAT=0
+21:16:55 lock waiters: CORE=789 RES=1696 LIBFEAT=0
+21:17:26 lock waiters: CORE=788 RES=1696 LIBFEAT=0
+21:17:56 lock waiters: CORE=787 RES=1696 LIBFEAT=0
+snapshot 20261015T211756Z
+== CORE: non-idle sessions by state / wait
+    1580  idle in transaction          Client:ClientRead
+     416  active                       Lock:Tuple
+     371  active                       Lock:Transactionid
+   blocked sessions: 787; distinct client IPs among them: 257
+== RES: non-idle sessions by state / wait
+    1569  active                       Lock:Tuple
+     750  idle in transaction          Client:ClientRead
+     127  active                       Lock:Transactionid
+       1  active                       -:-
+       1  active                       Timeout:VacuumDelay
+   blocked sessions: 1696; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2330  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:18:27 lock waiters: CORE=787 RES=1696 LIBFEAT=0
+21:18:57 lock waiters: CORE=787 RES=1696 LIBFEAT=0
+21:19:27 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:19:58 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:20:28 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:20:58 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:21:29 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:21:59 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:22:29 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:22:59 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+snapshot 20261015T212259Z
+== CORE: non-idle sessions by state / wait
+    1581  idle in transaction          Client:ClientRead
+     416  active                       Lock:Tuple
+     371  active                       Lock:Transactionid
+   blocked sessions: 787; distinct client IPs among them: 257
+== RES: non-idle sessions by state / wait
+    1570  active                       Lock:Tuple
+     750  idle in transaction          Client:ClientRead
+     127  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1697; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2331  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:23:30 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:24:00 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:24:31 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:25:01 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:25:31 lock waiters: CORE=787 RES=1697 LIBFEAT=0
+21:26:02 lock waiters: CORE=787 RES=1698 LIBFEAT=0
+21:26:32 lock waiters: CORE=787 RES=1698 LIBFEAT=0
+21:27:02 lock waiters: CORE=765 RES=1698 LIBFEAT=0
+21:27:33 lock waiters: CORE=765 RES=1698 LIBFEAT=0
+21:28:03 lock waiters: CORE=765 RES=1698 LIBFEAT=0
+snapshot 20261015T212803Z
+== CORE: non-idle sessions by state / wait
+    1506  idle in transaction          Client:ClientRead
+     406  active                       Lock:Tuple
+     359  active                       Lock:Transactionid
+   blocked sessions: 765; distinct client IPs among them: 256
+== RES: non-idle sessions by state / wait
+    1570  active                       Lock:Tuple
+     684  idle in transaction          Client:ClientRead
+     128  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1698; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2190  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:28:34 lock waiters: CORE=765 RES=1699 LIBFEAT=0
+21:29:04 lock waiters: CORE=765 RES=1699 LIBFEAT=0
+21:29:34 lock waiters: CORE=765 RES=1699 LIBFEAT=0
+21:30:05 lock waiters: CORE=765 RES=1700 LIBFEAT=0
+21:30:35 lock waiters: CORE=765 RES=1700 LIBFEAT=0
+21:31:05 lock waiters: CORE=765 RES=1702 LIBFEAT=0
+21:31:36 lock waiters: CORE=765 RES=1702 LIBFEAT=0
+21:32:06 lock waiters: CORE=765 RES=1702 LIBFEAT=0
+21:32:36 lock waiters: CORE=767 RES=1706 LIBFEAT=0
+21:33:06 lock waiters: CORE=767 RES=1706 LIBFEAT=0
+snapshot 20261015T213306Z
+== CORE: non-idle sessions by state / wait
+    1514  idle in transaction          Client:ClientRead
+     406  active                       Lock:Tuple
+     361  active                       Lock:Transactionid
+       1  active                       Client:ClientRead
+       1  idle in transaction          IO:DataFileRead
+   blocked sessions: 767; distinct client IPs among them: 257
+== RES: non-idle sessions by state / wait
+    1571  active                       Lock:Tuple
+     685  idle in transaction          Client:ClientRead
+     135  active                       Lock:Transactionid
+       2  active                       Timeout:VacuumDelay
+   blocked sessions: 1706; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2197  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:33:37 lock waiters: CORE=767 RES=1707 LIBFEAT=0
+21:34:08 lock waiters: CORE=767 RES=1707 LIBFEAT=0
+21:34:38 lock waiters: CORE=767 RES=1707 LIBFEAT=0
+21:35:08 lock waiters: CORE=769 RES=1708 LIBFEAT=0
+21:35:38 lock waiters: CORE=769 RES=1708 LIBFEAT=0
+21:36:09 lock waiters: CORE=769 RES=1708 LIBFEAT=0
+21:36:39 lock waiters: CORE=769 RES=1708 LIBFEAT=0
+21:37:09 lock waiters: CORE=769 RES=1708 LIBFEAT=0
+21:37:40 lock waiters: CORE=771 RES=1712 LIBFEAT=0
+21:38:10 lock waiters: CORE=771 RES=1712 LIBFEAT=0
+snapshot 20261015T213810Z
+== CORE: non-idle sessions by state / wait
+    1512  idle in transaction          Client:ClientRead
+     407  active                       Lock:Tuple
+     364  active                       Lock:Transactionid
+   blocked sessions: 771; distinct client IPs among them: 258
+== RES: non-idle sessions by state / wait
+    1571  active                       Lock:Tuple
+     685  idle in transaction          Client:ClientRead
+     141  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1712; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2196  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:38:41 lock waiters: CORE=772 RES=1714 LIBFEAT=0
+21:39:11 lock waiters: CORE=772 RES=1714 LIBFEAT=0
+21:39:41 lock waiters: CORE=772 RES=1714 LIBFEAT=0
+21:40:12 lock waiters: CORE=773 RES=1717 LIBFEAT=0
+21:40:42 lock waiters: CORE=774 RES=1717 LIBFEAT=0
+21:41:12 lock waiters: CORE=774 RES=1719 LIBFEAT=0
+21:41:43 lock waiters: CORE=774 RES=1719 LIBFEAT=0
+21:42:13 lock waiters: CORE=774 RES=1720 LIBFEAT=0
+21:42:43 lock waiters: CORE=775 RES=1723 LIBFEAT=0
+21:43:13 lock waiters: CORE=775 RES=1723 LIBFEAT=0
+snapshot 20261015T214313Z
+== CORE: non-idle sessions by state / wait
+    1520  idle in transaction          Client:ClientRead
+     408  active                       Lock:Tuple
+     364  active                       Lock:Transactionid
+       3  active                       Lock:Advisory
+   blocked sessions: 775; distinct client IPs among them: 258
+== RES: non-idle sessions by state / wait
+    1572  active                       Lock:Tuple
+     690  idle in transaction          Client:ClientRead
+     151  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1723; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2203  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:43:44 lock waiters: CORE=774 RES=1723 LIBFEAT=0
+21:44:15 lock waiters: CORE=774 RES=1723 LIBFEAT=0
+21:44:45 lock waiters: CORE=774 RES=1723 LIBFEAT=0
+21:45:15 lock waiters: CORE=773 RES=1724 LIBFEAT=0
+21:45:45 lock waiters: CORE=772 RES=1725 LIBFEAT=0
+21:46:16 lock waiters: CORE=773 RES=1725 LIBFEAT=0
+21:46:46 lock waiters: CORE=773 RES=1726 LIBFEAT=0
+21:47:16 lock waiters: CORE=774 RES=1729 LIBFEAT=0
+21:47:47 lock waiters: CORE=747 RES=1715 LIBFEAT=0
+21:48:17 lock waiters: CORE=746 RES=1713 LIBFEAT=0
+snapshot 20261015T214817Z
+== CORE: non-idle sessions by state / wait
+    1416  idle in transaction          Client:ClientRead
+     402  active                       Lock:Tuple
+     344  active                       Lock:Transactionid
+   blocked sessions: 746; distinct client IPs among them: 257
+== RES: non-idle sessions by state / wait
+    1566  active                       Lock:Tuple
+     637  idle in transaction          Client:ClientRead
+     147  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1713; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2053  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:48:48 lock waiters: CORE=746 RES=1715 LIBFEAT=0
+21:49:18 lock waiters: CORE=747 RES=1715 LIBFEAT=0
+21:49:48 lock waiters: CORE=747 RES=1718 LIBFEAT=0
+21:50:19 lock waiters: CORE=748 RES=1719 LIBFEAT=0
+21:50:49 lock waiters: CORE=749 RES=1720 LIBFEAT=0
+21:51:19 lock waiters: CORE=749 RES=1721 LIBFEAT=0
+21:51:49 lock waiters: CORE=749 RES=1721 LIBFEAT=0
+21:52:20 lock waiters: CORE=750 RES=1724 LIBFEAT=0
+21:52:50 lock waiters: CORE=750 RES=1725 LIBFEAT=0
+21:53:20 lock waiters: CORE=750 RES=1728 LIBFEAT=0
+snapshot 20261015T215320Z
+== CORE: non-idle sessions by state / wait
+    1425  idle in transaction          Client:ClientRead
+     402  active                       Lock:Tuple
+     346  active                       Lock:Transactionid
+       2  active                       Lock:Advisory
+   blocked sessions: 750; distinct client IPs among them: 258
+== RES: non-idle sessions by state / wait
+    1568  active                       Lock:Tuple
+     638  idle in transaction          Client:ClientRead
+     160  active                       Lock:Transactionid
+       1  active                       Timeout:VacuumDelay
+       1  active                       -:-
+   blocked sessions: 1728; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2061  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:53:51 lock waiters: CORE=750 RES=1728 LIBFEAT=0
+21:54:21 lock waiters: CORE=750 RES=1728 LIBFEAT=0
+21:54:52 lock waiters: CORE=750 RES=1732 LIBFEAT=0
+21:55:22 lock waiters: CORE=750 RES=1732 LIBFEAT=0
+21:55:52 lock waiters: CORE=750 RES=1732 LIBFEAT=0
+21:56:23 lock waiters: CORE=750 RES=1732 LIBFEAT=0
+21:56:53 lock waiters: CORE=750 RES=1732 LIBFEAT=0
+21:57:23 lock waiters: CORE=750 RES=1733 LIBFEAT=0
+21:57:54 lock waiters: CORE=751 RES=1734 LIBFEAT=0
+21:58:24 lock waiters: CORE=752 RES=1736 LIBFEAT=0
+snapshot 20261015T215824Z
+== CORE: non-idle sessions by state / wait
+    1419  idle in transaction          Client:ClientRead
+     402  active                       Lock:Tuple
+     347  active                       Lock:Transactionid
+       3  active                       Lock:Advisory
+   blocked sessions: 752; distinct client IPs among them: 258
+== RES: non-idle sessions by state / wait
+    1568  active                       Lock:Tuple
+     640  idle in transaction          Client:ClientRead
+     168  active                       Lock:Transactionid
+       2  active                       -:-
+       1  active                       Client:ClientRead
+   blocked sessions: 1736; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2058  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+21:58:55 lock waiters: CORE=752 RES=1737 LIBFEAT=0
+21:59:25 lock waiters: CORE=752 RES=1737 LIBFEAT=0
+21:59:55 lock waiters: CORE=754 RES=1739 LIBFEAT=0
+22:00:25 lock waiters: CORE=753 RES=1740 LIBFEAT=0
+22:00:56 lock waiters: CORE=753 RES=1742 LIBFEAT=0
+22:01:26 lock waiters: CORE=753 RES=1744 LIBFEAT=0
+22:01:56 lock waiters: CORE=753 RES=1744 LIBFEAT=0
+22:02:27 lock waiters: CORE=753 RES=1745 LIBFEAT=0
+22:02:57 lock waiters: CORE=752 RES=1745 LIBFEAT=0
+22:03:27 lock waiters: CORE=752 RES=1747 LIBFEAT=0
+snapshot 20261015T220327Z
+== CORE: non-idle sessions by state / wait
+    1421  idle in transaction          Client:ClientRead
+     402  active                       Lock:Tuple
+     348  active                       Lock:Transactionid
+       2  active                       Lock:Advisory
+   blocked sessions: 752; distinct client IPs among them: 258
+== RES: non-idle sessions by state / wait
+    1569  active                       Lock:Tuple
+     637  idle in transaction          Client:ClientRead
+     178  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1747; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2059  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:03:58 lock waiters: CORE=752 RES=1747 LIBFEAT=0
+22:04:28 lock waiters: CORE=752 RES=1747 LIBFEAT=0
+22:04:59 lock waiters: CORE=752 RES=1749 LIBFEAT=0
+22:05:29 lock waiters: CORE=752 RES=1750 LIBFEAT=0
+22:05:59 lock waiters: CORE=752 RES=1752 LIBFEAT=0
+22:06:29 lock waiters: CORE=752 RES=1753 LIBFEAT=0
+22:07:00 lock waiters: CORE=752 RES=1753 LIBFEAT=0
+22:07:30 lock waiters: CORE=751 RES=1756 LIBFEAT=0
+22:08:00 lock waiters: CORE=751 RES=1757 LIBFEAT=0
+22:08:31 lock waiters: CORE=752 RES=1757 LIBFEAT=0
+snapshot 20261015T220831Z
+== CORE: non-idle sessions by state / wait
+    1420  idle in transaction          Client:ClientRead
+     402  active                       Lock:Tuple
+     349  active                       Lock:Transactionid
+       1  active                       Lock:Advisory
+   blocked sessions: 752; distinct client IPs among them: 258
+== RES: non-idle sessions by state / wait
+    1569  active                       Lock:Tuple
+     634  idle in transaction          Client:ClientRead
+     188  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1757; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    2055  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:09:01 lock waiters: CORE=661 RES=1675 LIBFEAT=0
+22:09:32 lock waiters: CORE=661 RES=1675 LIBFEAT=0
+22:10:02 lock waiters: CORE=661 RES=1677 LIBFEAT=0
+22:10:32 lock waiters: CORE=662 RES=1677 LIBFEAT=0
+22:11:03 lock waiters: CORE=662 RES=1678 LIBFEAT=0
+22:11:33 lock waiters: CORE=663 RES=1678 LIBFEAT=0
+22:12:03 lock waiters: CORE=666 RES=1679 LIBFEAT=0
+22:12:34 lock waiters: CORE=667 RES=1682 LIBFEAT=0
+22:13:04 lock waiters: CORE=668 RES=1685 LIBFEAT=0
+22:13:34 lock waiters: CORE=668 RES=1688 LIBFEAT=0
+snapshot 20261015T221334Z
+== CORE: non-idle sessions by state / wait
+    1302  idle in transaction          Client:ClientRead
+     350  active                       Lock:Tuple
+     314  active                       Lock:Transactionid
+       4  active                       Lock:Advisory
+       2  active                       Client:ClientRead
+   blocked sessions: 668; distinct client IPs among them: 255
+== RES: non-idle sessions by state / wait
+    1519  active                       Lock:Tuple
+     543  idle in transaction          Client:ClientRead
+     169  active                       Lock:Transactionid
+       1  active                       Timeout:VacuumDelay
+       1  active                       -:-
+   blocked sessions: 1688; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    1851  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:14:05 lock waiters: CORE=669 RES=1689 LIBFEAT=0
+22:14:35 lock waiters: CORE=671 RES=1689 LIBFEAT=0
+22:15:05 lock waiters: CORE=671 RES=1690 LIBFEAT=0
+22:15:36 lock waiters: CORE=671 RES=1691 LIBFEAT=0
+22:16:06 lock waiters: CORE=671 RES=1692 LIBFEAT=0
+22:16:36 lock waiters: CORE=673 RES=1693 LIBFEAT=0
+22:17:07 lock waiters: CORE=672 RES=1693 LIBFEAT=0
+22:17:37 lock waiters: CORE=672 RES=1699 LIBFEAT=0
+22:18:07 lock waiters: CORE=675 RES=1701 LIBFEAT=0
+22:18:38 lock waiters: CORE=677 RES=1703 LIBFEAT=0
+snapshot 20261015T221838Z
+== CORE: non-idle sessions by state / wait
+    1306  idle in transaction          Client:ClientRead
+     354  active                       Lock:Tuple
+     318  active                       Lock:Transactionid
+       5  active                       Lock:Advisory
+       1  active                       Client:ClientRead
+   blocked sessions: 677; distinct client IPs among them: 255
+== RES: non-idle sessions by state / wait
+    1520  active                       Lock:Tuple
+     546  idle in transaction          Client:ClientRead
+     183  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1703; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    1849  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:19:08 lock waiters: CORE=678 RES=1704 LIBFEAT=0
+22:19:39 lock waiters: CORE=678 RES=1705 LIBFEAT=0
+22:20:09 lock waiters: CORE=677 RES=1707 LIBFEAT=0
+22:20:39 lock waiters: CORE=680 RES=1709 LIBFEAT=0
+22:21:09 lock waiters: CORE=681 RES=1710 LIBFEAT=0
+22:21:40 lock waiters: CORE=681 RES=1710 LIBFEAT=0
+22:22:10 lock waiters: CORE=683 RES=1710 LIBFEAT=0
+22:22:40 lock waiters: CORE=683 RES=1711 LIBFEAT=0
+22:23:11 lock waiters: CORE=683 RES=1713 LIBFEAT=0
+22:23:41 lock waiters: CORE=684 RES=1713 LIBFEAT=0
+snapshot 20261015T222341Z
+== CORE: non-idle sessions by state / wait
+    1301  idle in transaction          Client:ClientRead
+     357  active                       Lock:Tuple
+     322  active                       Lock:Transactionid
+       5  active                       Lock:Advisory
+       1  active                       Client:ClientRead
+   blocked sessions: 684; distinct client IPs among them: 256
+== RES: non-idle sessions by state / wait
+    1520  active                       Lock:Tuple
+     544  idle in transaction          Client:ClientRead
+     193  active                       Lock:Transactionid
+       1  active                       -:-
+       1  active                       Timeout:VacuumDelay
+   blocked sessions: 1713; distinct client IPs among them: 219
+== LIBFEAT: non-idle sessions by state / wait
+    1844  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:24:12 lock waiters: CORE=684 RES=1713 LIBFEAT=0
+22:24:42 lock waiters: CORE=685 RES=1713 LIBFEAT=0
+22:25:12 lock waiters: CORE=685 RES=1715 LIBFEAT=0
+22:25:43 lock waiters: CORE=684 RES=1719 LIBFEAT=0
+22:26:13 lock waiters: CORE=683 RES=1720 LIBFEAT=0
+22:26:43 lock waiters: CORE=683 RES=1721 LIBFEAT=0
+22:27:13 lock waiters: CORE=683 RES=1721 LIBFEAT=0
+22:27:44 lock waiters: CORE=683 RES=1721 LIBFEAT=0
+22:28:14 lock waiters: CORE=685 RES=1725 LIBFEAT=0
+22:28:44 lock waiters: CORE=685 RES=1726 LIBFEAT=0
+snapshot 20261015T222844Z
+== CORE: non-idle sessions by state / wait
+    1301  idle in transaction          Client:ClientRead
+     357  active                       Lock:Tuple
+     325  active                       Lock:Transactionid
+       3  active                       Lock:Advisory
+       2  active                       Client:ClientRead
+   blocked sessions: 685; distinct client IPs among them: 256
+== RES: non-idle sessions by state / wait
+    1521  active                       Lock:Tuple
+     538  idle in transaction          Client:ClientRead
+     205  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1726; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1840  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:29:15 lock waiters: CORE=685 RES=1729 LIBFEAT=0
+22:29:45 lock waiters: CORE=677 RES=1726 LIBFEAT=0
+22:30:16 lock waiters: CORE=678 RES=1726 LIBFEAT=0
+22:30:46 lock waiters: CORE=679 RES=1733 LIBFEAT=0
+22:31:16 lock waiters: CORE=679 RES=1733 LIBFEAT=0
+22:31:47 lock waiters: CORE=680 RES=1733 LIBFEAT=0
+22:32:17 lock waiters: CORE=679 RES=1734 LIBFEAT=0
+22:32:47 lock waiters: CORE=679 RES=1735 LIBFEAT=0
+22:33:17 lock waiters: CORE=679 RES=1736 LIBFEAT=0
+22:33:48 lock waiters: CORE=680 RES=1736 LIBFEAT=0
+snapshot 20261015T223348Z
+== CORE: non-idle sessions by state / wait
+    1241  idle in transaction          Client:ClientRead
+     354  active                       Lock:Tuple
+     322  active                       Lock:Transactionid
+       4  active                       Lock:Advisory
+   blocked sessions: 680; distinct client IPs among them: 256
+== RES: non-idle sessions by state / wait
+    1520  active                       Lock:Tuple
+     512  idle in transaction          Client:ClientRead
+     216  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1736; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1751  idle in transaction          Client:ClientRead
+       1  active                       Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:34:18 lock waiters: CORE=680 RES=1736 LIBFEAT=0
+22:34:49 lock waiters: CORE=679 RES=1738 LIBFEAT=0
+22:35:19 lock waiters: CORE=679 RES=1738 LIBFEAT=0
+22:35:49 lock waiters: CORE=680 RES=1740 LIBFEAT=0
+22:36:20 lock waiters: CORE=680 RES=1740 LIBFEAT=0
+22:36:50 lock waiters: CORE=680 RES=1742 LIBFEAT=0
+22:37:20 lock waiters: CORE=680 RES=1743 LIBFEAT=0
+22:37:50 lock waiters: CORE=681 RES=1745 LIBFEAT=0
+22:38:21 lock waiters: CORE=681 RES=1745 LIBFEAT=0
+22:38:51 lock waiters: CORE=680 RES=1745 LIBFEAT=0
+snapshot 20261015T223851Z
+== CORE: non-idle sessions by state / wait
+    1235  idle in transaction          Client:ClientRead
+     354  active                       Lock:Tuple
+     325  active                       Lock:Transactionid
+       1  active                       Lock:Advisory
+   blocked sessions: 680; distinct client IPs among them: 256
+== RES: non-idle sessions by state / wait
+    1520  active                       Lock:Tuple
+     509  idle in transaction          Client:ClientRead
+     225  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1745; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1744  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:39:22 lock waiters: CORE=680 RES=1746 LIBFEAT=0
+22:39:52 lock waiters: CORE=681 RES=1746 LIBFEAT=0
+22:40:22 lock waiters: CORE=681 RES=1746 LIBFEAT=0
+22:40:53 lock waiters: CORE=681 RES=1747 LIBFEAT=0
+22:41:23 lock waiters: CORE=681 RES=1748 LIBFEAT=0
+22:41:53 lock waiters: CORE=681 RES=1748 LIBFEAT=0
+22:42:24 lock waiters: CORE=681 RES=1748 LIBFEAT=0
+22:42:54 lock waiters: CORE=681 RES=1751 LIBFEAT=0
+22:43:24 lock waiters: CORE=683 RES=1753 LIBFEAT=0
+22:43:54 lock waiters: CORE=683 RES=1753 LIBFEAT=0
+snapshot 20261015T224354Z
+== CORE: non-idle sessions by state / wait
+    1234  idle in transaction          Client:ClientRead
+     354  active                       Lock:Tuple
+     327  active                       Lock:Transactionid
+       2  active                       Lock:Advisory
+   blocked sessions: 683; distinct client IPs among them: 256
+== RES: non-idle sessions by state / wait
+    1521  active                       Lock:Tuple
+     508  idle in transaction          Client:ClientRead
+     232  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1753; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1742  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:44:25 lock waiters: CORE=683 RES=1754 LIBFEAT=0
+22:44:55 lock waiters: CORE=684 RES=1754 LIBFEAT=0
+22:45:26 lock waiters: CORE=684 RES=1755 LIBFEAT=0
+22:45:56 lock waiters: CORE=684 RES=1756 LIBFEAT=0
+22:46:26 lock waiters: CORE=684 RES=1756 LIBFEAT=0
+22:46:57 lock waiters: CORE=684 RES=1757 LIBFEAT=0
+22:47:27 lock waiters: CORE=683 RES=1757 LIBFEAT=0
+22:47:57 lock waiters: CORE=683 RES=1764 LIBFEAT=0
+22:48:27 lock waiters: CORE=683 RES=1766 LIBFEAT=0
+22:48:58 lock waiters: CORE=683 RES=1766 LIBFEAT=0
+snapshot 20261015T224858Z
+== CORE: non-idle sessions by state / wait
+    1238  idle in transaction          Client:ClientRead
+     353  active                       Lock:Tuple
+     329  active                       Lock:Transactionid
+       1  active                       Lock:Advisory
+   blocked sessions: 683; distinct client IPs among them: 256
+== RES: non-idle sessions by state / wait
+    1521  active                       Lock:Tuple
+     506  idle in transaction          Client:ClientRead
+     245  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1766; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1744  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:49:28 lock waiters: CORE=683 RES=1766 LIBFEAT=0
+22:49:59 lock waiters: CORE=683 RES=1766 LIBFEAT=0
+22:50:29 lock waiters: CORE=683 RES=1767 LIBFEAT=0
+22:50:59 lock waiters: CORE=657 RES=1767 LIBFEAT=0
+22:51:30 lock waiters: CORE=657 RES=1768 LIBFEAT=0
+22:52:00 lock waiters: CORE=657 RES=1768 LIBFEAT=0
+22:52:30 lock waiters: CORE=657 RES=1768 LIBFEAT=0
+22:53:00 lock waiters: CORE=659 RES=1768 LIBFEAT=0
+22:53:31 lock waiters: CORE=659 RES=1771 LIBFEAT=0
+22:54:01 lock waiters: CORE=659 RES=1774 LIBFEAT=0
+snapshot 20261015T225401Z
+== CORE: non-idle sessions by state / wait
+    1174  idle in transaction          Client:ClientRead
+     342  active                       Lock:Tuple
+     315  active                       Lock:Transactionid
+       2  active                       Lock:Advisory
+   blocked sessions: 659; distinct client IPs among them: 255
+== RES: non-idle sessions by state / wait
+    1521  active                       Lock:Tuple
+     470  idle in transaction          Client:ClientRead
+     253  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1774; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1644  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:54:32 lock waiters: CORE=659 RES=1774 LIBFEAT=0
+22:55:02 lock waiters: CORE=659 RES=1774 LIBFEAT=0
+22:55:32 lock waiters: CORE=660 RES=1775 LIBFEAT=0
+22:56:03 lock waiters: CORE=660 RES=1777 LIBFEAT=0
+22:56:33 lock waiters: CORE=660 RES=1777 LIBFEAT=0
+22:57:03 lock waiters: CORE=660 RES=1777 LIBFEAT=0
+22:57:34 lock waiters: CORE=660 RES=1777 LIBFEAT=0
+22:58:04 lock waiters: CORE=658 RES=1779 LIBFEAT=0
+22:58:34 lock waiters: CORE=659 RES=1779 LIBFEAT=0
+22:59:04 lock waiters: CORE=660 RES=1782 LIBFEAT=0
+snapshot 20261015T225904Z
+== CORE: non-idle sessions by state / wait
+    1173  idle in transaction          Client:ClientRead
+     342  active                       Lock:Tuple
+     315  active                       Lock:Transactionid
+       3  active                       Lock:Advisory
+   blocked sessions: 660; distinct client IPs among them: 255
+== RES: non-idle sessions by state / wait
+    1521  active                       Lock:Tuple
+     470  idle in transaction          Client:ClientRead
+     261  active                       Lock:Transactionid
+       1  active                       -:-
+       1  active                       Timeout:VacuumDelay
+   blocked sessions: 1782; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1643  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+22:59:35 lock waiters: CORE=661 RES=1783 LIBFEAT=0
+23:00:05 lock waiters: CORE=661 RES=1783 LIBFEAT=0
+23:00:36 lock waiters: CORE=660 RES=1786 LIBFEAT=0
+23:01:06 lock waiters: CORE=660 RES=1788 LIBFEAT=0
+23:01:36 lock waiters: CORE=660 RES=1788 LIBFEAT=0
+23:02:07 lock waiters: CORE=662 RES=1789 LIBFEAT=0
+23:02:37 lock waiters: CORE=662 RES=1790 LIBFEAT=0
+23:03:07 lock waiters: CORE=662 RES=1792 LIBFEAT=0
+23:03:37 lock waiters: CORE=661 RES=1795 LIBFEAT=0
+23:04:08 lock waiters: CORE=660 RES=1796 LIBFEAT=0
+snapshot 20261015T230408Z
+== CORE: non-idle sessions by state / wait
+    1179  idle in transaction          Client:ClientRead
+     342  active                       Lock:Tuple
+     316  active                       Lock:Transactionid
+       2  active                       Lock:Advisory
+   blocked sessions: 660; distinct client IPs among them: 255
+== RES: non-idle sessions by state / wait
+    1521  active                       Lock:Tuple
+     470  idle in transaction          Client:ClientRead
+     275  active                       Lock:Transactionid
+       2  active                       -:-
+   blocked sessions: 1796; distinct client IPs among them: 220
+== LIBFEAT: non-idle sessions by state / wait
+    1649  idle in transaction          Client:ClientRead
+   blocked sessions: 0; distinct client IPs among them: 0
+23:04:38 lock waiters: CORE=660 RES=1797 LIBFEAT=0
+23:05:09 lock waiters: CORE=660 RES=1797 LIBFEAT=0
+23:05:39 lock waiters: CORE=660 RES=1799 LIBFEAT=0
+23:06:09 lock waiters: CORE=8 RES=275 LIBFEAT=0
+23:06:39 lock waiters: CORE=0 RES=0 LIBFEAT=0
+23:07:10 lock waiters: CORE=0 RES=0 LIBFEAT=0
+23:07:40 lock waiters: CORE=0 RES=0 LIBFEAT=0
+23:08:10 lock waiters: CORE=0 RES=0 LIBFEAT=0
+23:08:41 lock waiters: CORE=0 RES=0 LIBFEAT=0
+23:09:11 lock waiters: CORE=0 RES=0 LIBFEAT=0
+23:09:41 lock waiters: CORE=0 RES=0 LIBFEAT=0
+23:10:12 lock waiters: CORE=0 RES=0 LIBFEAT=0
