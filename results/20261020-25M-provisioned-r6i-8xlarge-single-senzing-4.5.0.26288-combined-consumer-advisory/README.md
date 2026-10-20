@@ -19,7 +19,8 @@
 >   same pool also did redo (effective share 0.19).
 > - **20 % redo share was too small for the second half of the load:** the backlog stayed flat (≤ 1.8k) until ~20:10, then grew to a peak of
 >   **1,179,144** at 22:35. When the queue drained, all 52–54 tasks switched to redo and cleared it at ~1,650/s in ~11 min. A higher share
->   (Brian: raise `SENZING_REDO_PERCENT` until `SYS_EVAL_QUEUE` stays flat) should shrink the tail further; ~30–35 % is the next thing to try.
+>   (Brian: raise `SENZING_REDO_PERCENT` until `SYS_EVAL_QUEUE` stays flat) should shrink the tail further.
+>   **Decision (2026-10-20): future combined runs use `CombinedRedoPercent` 30–35; no re-run just for that.**
 > - **Integrity clean:** `validate` 0 / 0, `obs_ent` = `res_ent_okey` = 24,999,937; DLQ 0, 0 rejected, 0 redo dropped, 0 errors
 >   (driver totals: 25,000,000 adds, 6,669,490 redo records). SENZ0010 0, lock timeouts 0.
 > - ⚠️ **Higher than the baseline, not explained by this run alone (build differs):** `db.deadlocks` 909 (baseline 106, all detected and
