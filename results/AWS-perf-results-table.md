@@ -1,3 +1,30 @@
+20261020  --  25M single DB with the COMBINED load+redo driver (sz_queue_combined_consumer v0.5.0, 20% redo) vs the split baseline
+======================================================================================================================
+Build:                          |  4.5.0.26268   |  4.5.0.26288   |
+Driver:                         | split cons+redo| combined       |
+Number of records:              |    25 M        |    25 M        |
+Peak:                           |  2573          |  2423          |
+Average over entire run:        |  1994          |  1848 (*)      |
+Time to load:                   |     3.48 hours |     3.76 hours |
+Redo tail after input empty:    |    ~63 min     |    ~12 min     |
+Total (start -> redo empty):    |    ~4.60 hours |    ~3.97 hours |
+Records in dead-letter queue:   |     1          |     0          |
+Unresolved (orphans):           |     1          |     0          |
+Total Billed read RW IOPS:      |   2,833,836    |   2,060,554    |
+Total Billed write IOPS:        |  113,925,340   |  114,814,424   |
+Max loader / redoer tasks:      |   61 / 47      |   54 combined  |
+Notes:                          | db.r6i.8xlarge | db.r6i.8xlarge |
+                                | advisory lock  | advisory lock  |
+======================================================================================================================
+(*) the combined pool also ran redo during the load (effective share 0.19), so its add rate is lower and its load phase longer.
+The redo backlog stayed flat until ~20:10 UTC, then grew to 1,179,144 by the time the queue drained: 20% redo is too small for the
+second half of a 25M load. With every worker on redo after the drain, it cleared in ~11 min (~1,650/s). validate 0/0, 0 rejected,
+0 redo dropped, 0 errors. Higher than the baseline (build differs, not explained yet): db.deadlocks 909 vs 106, res_ent_active 3,775
+vs 57. FUTURE COMBINED RUNS: use CombinedRedoPercent 30-35 (20% let the redo backlog grow in the second half of a 25M load).
+No re-run planned just for that; a same-build split run would isolate the driver if needed.
+  Full detail: results/20261020-25M-provisioned-r6i-8xlarge-single-senzing-4.5.0.26288-combined-consumer-advisory/.
+
+
 20261019  --  4.4.3.26292 100M CLUSTERED (HYBRID) on Aurora PG 18.6 + FEATURES + advisory: cross-node deadlock FIXED
 ======================================================================================================================
 Build:                          |  4.4.3.26285   |  4.4.3.26287   |  4.4.3.26292   |

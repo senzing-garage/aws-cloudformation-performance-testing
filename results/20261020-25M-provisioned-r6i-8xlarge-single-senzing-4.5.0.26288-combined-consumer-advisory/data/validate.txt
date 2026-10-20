@@ -1,0 +1,11 @@
+Timing is on.
+ record_id | obs_ent_id | res_ent_id 
+-----------+------------+------------
+(0 rows)
+
+Time: 90947.096 ms (01:30.947)
+ record_id | obs_ent_id | res_ent_id 
+-----------+------------+------------
+(0 rows)
+
+Time: 29872.066 ms (00:29.872)
