@@ -3,8 +3,9 @@
 Run watcher for a perf stack (load + redo phase). Every --interval s prints input/inflight/DLQ and consumer/redoer counts
 (with maxima); every --scan-every intervals runs CloudWatch Logs Insights over the run window:
   * term counts: SENZ1019 / "does not exist" (GDEV-4738), OKEY guard / SENZ0010 / deadletter (GDEV-4734), CORRUPTION_FOUND,
-    INFINITE loops, 55P03, deadlocks, the GDEV-4734 guard/heal/repair/abandon lines, and the 4.4.3.26287
-    REPAIR_ENTITY re-drive and SENZ0010 'observed entity locklist' lines
+    INFINITE loops, 55P03, deadlocks, the GDEV-4734 guard/heal/repair/abandon lines, the 4.4.3.26287
+    REPAIR_ENTITY re-drive and SENZ0010 'observed entity locklist' lines, and the combined driver's 'REJECTING:'
+    dead-letter marker (it has no 'Sending to deadletter' line)
   * GDEV-4738 FEATURES blob effectiveness: resEntFeaturesServedFromBlob / ...FromEKey (cumulative per process -> max per
     stream, summed)
   * a catch-all of OKEY / repair / heal message shapes
@@ -35,6 +36,7 @@ def now(): return datetime.now(timezone.utc).strftime("%H:%M")
 
 TERMS = {"senz1019": "SENZ1019", "not_exist": "does not exist",
          "guard": "OKEY FLUSH ASSERTION FAILED", "senz10": "SENZ0010", "dlq_log": "Sending to deadletter",
+         "rejecting": "REJECTING:",
          "healed": "AMBIGUOUS-BRIDGE ORPHAN HEALED", "repaired": "RES_ENT_OKEY ORPHAN REPAIRED", "abandon": "ABANDONING a redo",
          "okey44": "OKEY ORPHAN PREVENTED", "redrive": "hit a retryable failure; re-driving",
          "obs_lock": "observed entity locklist", "corrupt": "CORRUPTION_FOUND", "loop": "INFINITE RESOLUTION LOOP",
@@ -84,7 +86,10 @@ while True:
     vis, inf = qattr(f"{S}-sqs-input"); dlq, _ = qattr(f"{S}-sqs-dead-letter")
     sv = aws("ecs", "describe-services", "--cluster", C, "--services", "consumer", "redoer")
     cnt = {s["serviceName"]: s["runningCount"] for s in (sv or {}).get("services", [])}
-    cc, rr = cnt.get("consumer"), cnt.get("redoer")
+    # The combined-consumer template has no redoer service: a service ECS reports as missing counts as 0.
+    missing = {f.get("arn", "").rsplit("/", 1)[-1] for f in (sv or {}).get("failures", []) if f.get("reason") == "MISSING"}
+    cc = cnt.get("consumer", 0 if "consumer" in missing else None)
+    rr = cnt.get("redoer", 0 if "redoer" in missing else None)
     maxc = max(maxc, cc or 0); maxr = max(maxr, rr or 0)
     print(f"{now()} input={vis} inflight={inf} dlq={dlq} consumers={cc} redoers={rr} (max {maxc}/{maxr})", flush=True)
     if i % a.scan_every == 0: scan()

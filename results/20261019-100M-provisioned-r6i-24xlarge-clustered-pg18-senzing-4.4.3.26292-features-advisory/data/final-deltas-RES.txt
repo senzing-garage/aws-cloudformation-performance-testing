@@ -1,0 +1,85 @@
+DELETE 0
+DELETE 0
+DELETE 0
+psql:/tmp/20-final.sql:15: NOTICE:  pg_stat_wal unavailable (e.g. Aurora) — skipping WAL metrics: Function pg_stat_get_wal() is currently not supported for Aurora
+ snapshot 
+----------
+ 
+(1 row)
+
+
+=================== RUN WINDOW ===================
+          baseline_at          |           final_at            |     elapsed     
+-------------------------------+-------------------------------+-----------------
+ 2026-10-19 22:25:19.953762+00 | 2026-10-20 14:27:06.870208+00 | 16:01:46.916446
+(1 row)
+
+
+=================== FACT REPORT HEADLINE (eviction-immune) ===================
+ logical_block_reads | physical_block_reads | wal_bytes | xact_commit | tup_inserted | tup_updated | tup_deleted 
+---------------------+----------------------+-----------+-------------+--------------+-------------+-------------
+         79358580914 |                  266 |           |  1234653770 |   3252920211 |  1100189027 |   105835827
+(1 row)
+
+
+=================== ALL SCALAR DELTAS ===================
+        metric        |    delta    
+----------------------+-------------
+ db.blk_read_time_ms  |     340.180
+ db.blks_hit          | 79358580648
+ db.blks_read         |         266
+ db.blk_write_time_ms |  396162.196
+ db.deadlocks         |           0
+ db.temp_bytes        |           0
+ db.temp_files        |           0
+ db.tup_deleted       |   105835827
+ db.tup_fetched       | 18265477702
+ db.tup_inserted      |  3252920211
+ db.tup_returned      | 18516635859
+ db.tup_updated       |  1100189027
+ db.xact_commit       |  1234653770
+ db.xact_rollback     |          40
+(14 rows)
+
+
+=========== PER-STATEMENT DELTAS (top 25 by exec-time; EVICTION-LOSSY, top-N only) ===========
+   calls   |    rows     |  total_ms  | blks_read | blks_written | blks_dirtied | wal_bytes |                                      query                                       
+-----------+-------------+------------+-----------+--------------+--------------+-----------+----------------------------------------------------------------------------------
+ 109357690 |  1312290560 | 3088933907 |         0 |     22067255 |            0 |         0 | INSERT INTO RES_FEAT_EKEY(RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,
+ 288161373 |   288161357 |  581940257 |         0 |      1789926 |            0 |         0 | UPDATE RES_FEAT_STAT SET FTYPE_ID=$1,NUM_RES_ENT=NUM_RES_ENT+$2,NUM_RES_ENT_OOM=
+ 486129648 | 10567792312 |  358573163 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,NUM_RES_ENT,NUM_RES_ENT_OOM,CANDIDATE_CAP_REACHED,SCORING_CAP
+   7143330 |   107149705 |  325920784 |         0 |      1059642 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   7188992 |   100645679 |  306842777 |         0 |       973848 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   6354391 |   101670059 |  300392763 |         0 |       982272 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   5990756 |   101842647 |  294958473 |         0 |       956861 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   7115087 |    92495926 |  291008998 |         0 |       911364 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   6947960 |    83375328 |  269956097 |         0 |       856038 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   4280545 |   107013400 |  268233976 |         0 |       893746 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   4871486 |    87686518 |  246945063 |         0 |       788578 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   6389627 |    70285759 |  234088535 |         0 |       743117 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   4184358 |    79502636 |  219107893 |         0 |       709244 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   5843058 |    58430436 |  201082703 |         0 |       665486 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   3219322 |    64386279 |  173281152 |         1 |       588014 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   5281858 |    47536630 |  170032545 |         0 |       578988 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   8166661 |    89833215 |  165589851 |         0 |      1182788 |            0 |         0 | INSERT INTO RES_FEAT_EKEY(RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,
+   8391751 |    83917469 |  151723044 |         0 |      1068898 |            0 |         0 | INSERT INTO RES_FEAT_EKEY(RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,
+   2649955 |    55648939 |  146210447 |         0 |       475505 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   8812582 |    79313211 |  144327722 |         0 |      1020618 |            0 |         0 | INSERT INTO RES_FEAT_EKEY(RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,
+   4584539 |    36676229 |  135910528 |         0 |       467674 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   8679244 |    69433847 |  126926219 |         0 |       885239 |            0 |         0 | INSERT INTO RES_FEAT_EKEY(RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,
+   9260043 |    64820252 |  119023766 |         0 |       821297 |            0 |         0 | INSERT INTO RES_FEAT_EKEY(RES_ENT_ID,LIB_FEAT_ID,FTYPE_ID,UTYPE_CODE,SUPPRESSED,
+   1959287 |    43104206 |  112060615 |         0 |       375244 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+   3952981 |    27670802 |  107713434 |         0 |       356845 |            0 |         0 | INSERT INTO RES_FEAT_STAT(LIB_FEAT_ID,FTYPE_ID,NUM_RES_ENT,NUM_RES_ENT_OOM) VALU
+(25 rows)
+
+
+=================== PER-TABLE DELTAS (tables touched by the run) ===================
+    relname     |    ins     |    upd    |    del    |  hot_upd  | seq_scan |  idx_scan  | heap_read |  heap_hit  | idx_read 
+----------------+------------+-----------+-----------+-----------+----------+------------+-----------+------------+----------
+ res_feat_ekey  | 1873578246 | 805205702 | 105835765 | 586419416 |        0 | 3571623434 |         0 | 9415856545 |        2
+ res_feat_stat  | 1379341855 | 294981654 |        62 | 225182472 |        0 | 5946508717 |         0 | 8947084069 |        1
+ snap_statement |         52 |         0 |         0 |         0 |        0 |          0 |         0 |         62 |        0
+ snap_scalar    |         14 |         0 |         0 |         0 |        0 |          0 |         0 |         18 |        0
+ snap_table     |         12 |         0 |         0 |         0 |        0 |          0 |         0 |         16 |        0
+(5 rows)
+

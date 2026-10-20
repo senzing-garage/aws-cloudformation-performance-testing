@@ -14,7 +14,8 @@
 #   env: INTERVAL=30 THRESHOLD=40 MIN_GAP=300 OUT=/tmp/locks
 #
 # Output per snapshot (OUT/<UTC ts>/): <node>-activity.csv (non-idle sessions, with pg_blocking_pids) and
-# <node>-locks.csv (every lock held or awaited by those sessions, advisory keys included), plus summary.txt.
+# <node>-locks.csv (every lock held or awaited by those sessions, advisory keys included), <node>-hotrows-<table>.csv (the
+# tuple-locked RES_FEAT_STAT / RES_ENT rows resolved to their keys at snapshot time; a ctid is only valid then), plus summary.txt.
 # client_addr + client_port identify the ECS task (one IP per task) so waits can be matched across nodes.
 # Passwords are never printed. Only IDs and SQL text (bind parameters are $n placeholders); no record content.
 set -euo pipefail
@@ -53,6 +54,19 @@ SELECT now() AS ts, '%NODE%' AS node, l.pid, l.locktype, l.relation::regclass AS
 FROM pg_locks l JOIN s USING (pid)
 WHERE l.locktype <> 'virtualxid' OR NOT l.granted"
 
+HOT_REL_COLS="res_feat_stat:lib_feat_id,ftype_id,num_res_ent,num_res_ent_oom,candidate_cap_reached,scoring_cap_reached res_ent:res_ent_id,ent_state,locking_id"
+hot_rows() {  # hot_rows NODE DIR - resolve the tuple-locked rows to their keys NOW (a ctid is only valid at snapshot time)
+  local n=$1 dir=$2 spec rel cols tids
+  for spec in $HOT_REL_COLS; do
+    rel=${spec%%:*}; cols=${spec#*:}
+    [ "$(psql_node "$n" -At -c "SELECT to_regclass('$rel') IS NOT NULL")" = t ] || continue
+    tids=$(psql_node "$n" -At -c "SELECT string_agg(format('''(%s,%s)''', page, tuple), ',') FROM (SELECT DISTINCT page, tuple FROM pg_locks WHERE locktype = 'tuple' AND relation = '$rel'::regclass) t")
+    [ -n "$tids" ] || continue
+    # Two steps (ctid list, then an ARRAY constant) so the lookup is a TID scan, never a scan of a billion-row table.
+    psql_node "$n" -c "\\copy (SELECT now() AS ts, '$n' AS node, '$rel' AS relation, ctid, $cols FROM $rel WHERE ctid = ANY(ARRAY[$tids]::tid[])) TO '$dir/${n,,}-hotrows-$rel.csv' WITH CSV HEADER"
+  done
+}
+
 waiting_count() {  # sessions waiting on a heavyweight lock on NODE
   psql_node "$1" -At -c "SELECT count(*) FROM pg_stat_activity WHERE datname = current_database() AND wait_event_type = 'Lock'"
 }
@@ -65,6 +79,7 @@ snapshot() {
     (
       psql_node "$n" -c "\\copy (${ACTIVITY_SQL//%NODE%/$n}) TO '$dir/${n,,}-activity.csv' WITH CSV HEADER"
       psql_node "$n" -c "\\copy (${LOCKS_SQL//%NODE%/$n}) TO '$dir/${n,,}-locks.csv' WITH CSV HEADER"
+      hot_rows "$n" "$dir"
     ) &
   done
   wait

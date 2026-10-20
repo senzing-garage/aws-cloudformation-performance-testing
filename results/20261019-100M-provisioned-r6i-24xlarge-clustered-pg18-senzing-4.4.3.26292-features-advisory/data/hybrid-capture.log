@@ -1,0 +1,127 @@
+
+=== 14:27:05 lock watcher: stop + final snapshot
+snapshot 20261020T142705Z
+== CORE: non-idle sessions by state / wait
+   blocked sessions: 0; distinct client IPs among them: 0
+== RES: non-idle sessions by state / wait
+   blocked sessions: 0; distinct client IPs among them: 0
+== LIBFEAT: non-idle sessions by state / wait
+   blocked sessions: 0; distinct client IPs among them: 0
+
+=== 14:27:06 drain-check (CORE)
+Timing is on.
+              at               |    relname     |  cum_ins  | cum_del  | est_net_depth | est_live_tup | est_dead_tup 
+-------------------------------+----------------+-----------+----------+---------------+--------------+--------------
+ 2026-10-20 14:27:06.607586+00 | dsrc_record    | 100000000 |        0 |     100000000 |    100010218 |      7372720
+ 2026-10-20 14:27:06.607586+00 | sys_eval_queue |  41067711 | 41067711 |             0 |            0 |            7
+(2 rows)
+
+Time: 8.730 ms
+ active_client_backends 
+------------------------
+                      0
+(1 row)
+
+Time: 9.602 ms
+ sys_eval_queue_has_rows 
+-------------------------
+ f
+(1 row)
+
+Time: 1.231 ms
+
+=== 14:27:06 20-final (all nodes)
+CORE -> /tmp/final-deltas-CORE.txt (92 lines)
+RES -> /tmp/final-deltas-RES.txt (85 lines)
+LIBFEAT -> /tmp/final-deltas-LIBFEAT.txt (84 lines)
+
+=== 14:27:07 validate (CORE) - q1 = loaded but unresolved (orphans), q2 = dangling keys; slow
+(0 rows)
+(0 rows)
+
+=== 14:37:31 exports (CORE full set + per-node pg_stat files)
+COPY 197
+COPY 1107
+COPY 3915
+COPY 5
+COPY 4864
+Exports written to /tmp/*.csv on this host. scp them back to results/<run>/data.
+COPY 5
+COPY 4964
+COPY 5
+COPY 4821
+
+=== 14:38:30 final-capture (CORE; VACUUMs first)
+RESET
+Time: 0.975 ms
+RESET
+Time: 0.875 ms
+RESET
+Time: 0.869 ms
+RESET
+Time: 0.864 ms
+
+=== 14:42:58 FEATURES, per-node row counts and sizes
+ res_ent  | features_not_null 
+----------+-------------------
+ 61207044 |          61207042
+(1 row)
+
+       t       |   count    
+---------------+------------
+ res_feat_ekey | 1767741851
+ res_feat_stat | 1379341793
+(2 rows)
+
+    t     |   count    
+----------+------------
+ lib_feat | 1379371780
+(1 row)
+
+== CORE
+    relname     |   total    
+----------------+------------
+ dsrc_record    | 60 GB
+ obs_ent        | 58 GB
+ res_ent        | 48 GB
+ res_relate     | 41 GB
+ res_ent_okey   | 14 GB
+ res_rel_ekey   | 8900 MB
+ sys_eval_queue | 1426 MB
+ sys_cfg        | 128 kB
+ sys_codes_used | 72 kB
+ sys_sequence   | 56 kB
+ sys_vars       | 56 kB
+ sys_hw_check   | 24 kB
+ sys_status     | 8192 bytes
+(13 rows)
+
+== RES
+    relname     |   total    
+----------------+------------
+ res_feat_ekey  | 227 GB
+ res_feat_stat  | 119 GB
+ sys_vars       | 56 kB
+ sys_sequence   | 56 kB
+ sys_hw_check   | 24 kB
+ sys_eval_queue | 24 kB
+ sys_cfg        | 16 kB
+ sys_codes_used | 16 kB
+ sys_status     | 8192 bytes
+(9 rows)
+
+== LIBFEAT
+    relname     |   total    
+----------------+------------
+ lib_feat       | 391 GB
+ sys_hw_check   | 24 kB
+ sys_sequence   | 24 kB
+ sys_eval_queue | 24 kB
+ sys_vars       | 24 kB
+ sys_cfg        | 16 kB
+ sys_codes_used | 16 kB
+ sys_status     | 8192 bytes
+(8 rows)
+
+
+=== 14:54:54 done; files in /tmp: final-deltas-*.txt validate.txt final-capture.txt hybrid-counts.txt *.csv locks/

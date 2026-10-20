@@ -1,3 +1,41 @@
+20261019  --  4.4.3.26292 100M CLUSTERED (HYBRID) on Aurora PG 18.6 + FEATURES + advisory: cross-node deadlock FIXED
+======================================================================================================================
+Build:                          |  4.4.3.26285   |  4.4.3.26287   |  4.4.3.26292   |
+Number of records:              |   100 M        |   100 M (*)    |   100 M        |
+Peak:                           |  10418         |  11119         |  11042         |
+Average over entire run:        |  6483          |  4890 (*)      |  8484          |
+Time to load:                   |     4.29 hours |     5.68 hours |     3.27 hours |
+Records in dead-letter queue:   |   1891         |   4537         |      0         |
+Unresolved (orphans):           |   1804         |   5186 (*)     |      0         |
+Silent orphans (no log/DLQ):    |      0         |    340 (*)     |      0         |
+Total Billed read RW IOPS:      |   4,125,186+   |     227,964+   |          62+   |
+Total Billed read RO IOPS:      |       n/a      |       n/a      |       n/a      |
+Total Billed write IOPS:        |  482,581,886+  |  450,070,024+  |  475,394,018+  |
+Max loader tasks:               |    200         |    200         |    200         |
+Max redoer tasks:               |     86         |     59         |    200         |
+Notes:                          | 3 DB clusters  | 3 DB clusters  | 3 DB clusters  |
+                                | 3x r6i.24xlarge| 3x r6i.24xlarge| 3x r6i.24xlarge|
+                                |    IO opt      |    IO opt      |    IO opt      |
+                                | PG 17.5        | PG 18.6        | PG 18.6        |
+                                | adv + FEATURES | adv + FEATURES | adv + FEATURES |
+                                | full pre-load  | full pre-load  | full pre-load  |
+======================================================================================================================
++ summed over the 3 writers.  (*) 20261015 was not a valid measurement (deadlock stall, manual session kills, redo undrained).
+Same parameters as 20261015; only the build changed. No stall and no wedge: input drained ~01:57 UTC with 0 in flight, redo done ~03:00
+(sys_eval_queue 0, res_ent_active 36). Lock watcher on from before the first consumer: 1,894 checks, >= 40 heavyweight-lock waiters on only
+10 single 30-second checks; the 9 snapshots taken then show 0 blocked sessions (2 once) and 0% persistence (20261015: ~100% for ~2 h).
+validate q1/q2 = 0/0 (obs_ent = res_ent_okey = 99,998,927); DLQ 0, SENZ0010 0, 55P03 0, stuck records 0, redoer KeyError 0, SENZ1019 0.
+Hot-row updates back to single-DB speed: RES_FEAT_STAT += 2.0 ms (was 150), RES_ENT ENT_STATE 0.6 ms (was 263). Still: 736 detected-and-
+retried deadlocks, CORRUPTION_FOUND 414, INFINITE 16, ABANDONING 56; GDEV-4734 lines 0. FEATURES 98.7% from the blob. No DB restarts.
+  Full detail: results/20261019-100M-provisioned-r6i-24xlarge-clustered-pg18-senzing-4.4.3.26292-features-advisory/.
+
+20261019  --  Combined load+redo driver validation (sz_queue_combined_consumer v0.5.0, SQS), 4.5.0.26288, 5M, single db.r6i.8xlarge
+  Functional check, not a perf comparison: 5,000,000 loaded in 43 m 49 s (avg 1,902/s, peak 2,066/s) by up to 40 tasks (capped); redo ran
+  during load (share 0.19 of 0.20) and took over when the queue drained; validate 0/0, DLQ 0, 0 rejected, 0 errors; scale-to-zero stopped all
+  40 tasks cleanly in 14 s. Template: cloudformationAuroraProvisionedSingleDB-combined.yaml.
+  Full detail: results/20261019-5M-provisioned-r6i-8xlarge-single-senzing-4.5.0.26288-combined-consumer-validation/.
+
+
 20261015  --  4.4.3.26287 100M CLUSTERED (HYBRID) on Aurora PostgreSQL 18.6 + FEATURES + advisory: wedged by a cross-node lock deadlock
 ======================================================================================================================
 Build:                          |  4.4.0.26204   |  4.4.3.26285   |  4.4.3.26287   |
