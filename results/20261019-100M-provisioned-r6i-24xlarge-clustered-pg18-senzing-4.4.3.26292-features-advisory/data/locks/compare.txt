@@ -1,0 +1,34 @@
+snapshots: 20261019T223710Z, 20261019T224924Z, 20261019T230950Z, 20261019T231832Z, 20261019T234840Z, 20261020T001415Z, 20261020T002227Z, 20261020T002807Z, 20261020T012929Z, 20261020T142626Z, 20261020T142705Z
+== core
+  20261019T223710Z -> 20261019T224924Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 174 -> same txn still idle 0 (0%); non-idle sessions 192 -> 2388
+  20261019T224924Z -> 20261019T230950Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 2313 -> same txn still idle 0 (0%); non-idle sessions 2388 -> 3575
+  20261019T230950Z -> 20261019T231832Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 278 -> same txn still idle 0 (0%); non-idle sessions 3575 -> 3820
+  20261019T231832Z -> 20261019T234840Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 3540 -> same txn still idle 0 (0%); non-idle sessions 3820 -> 3774
+  20261019T234840Z -> 20261020T001415Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 370 -> same txn still idle 0 (0%); non-idle sessions 3774 -> 3622
+  20261020T001415Z -> 20261020T002227Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 507 -> same txn still idle 0 (0%); non-idle sessions 3622 -> 3758
+  20261020T002227Z -> 20261020T002807Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 469 -> same txn still idle 0 (0%); non-idle sessions 3758 -> 4142
+  20261020T002807Z -> 20261020T012929Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 119 -> same txn still idle 0 (0%); non-idle sessions 4142 -> 4060
+  20261020T012929Z -> 20261020T142626Z: blocked 2 -> still blocked 0 (0%), same blockers 0; idle-in-txn 1800 -> same txn still idle 0 (0%); non-idle sessions 4060 -> 0
+  20261020T142626Z -> 20261020T142705Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 0 -> same txn still idle 0 (0%); non-idle sessions 0 -> 0
+== res
+  20261019T223710Z -> 20261019T224924Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 106 -> same txn still idle 0 (0%); non-idle sessions 122 -> 4511
+  20261019T224924Z -> 20261019T230950Z: blocked 30 -> still blocked 0 (0%), same blockers 0; idle-in-txn 23 -> same txn still idle 0 (0%); non-idle sessions 4511 -> 861
+  20261019T230950Z -> 20261019T231832Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 838 -> same txn still idle 0 (0%); non-idle sessions 861 -> 3413
+  20261019T231832Z -> 20261019T234840Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 54 -> same txn still idle 0 (0%); non-idle sessions 3413 -> 410
+  20261019T234840Z -> 20261020T001415Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 312 -> same txn still idle 0 (0%); non-idle sessions 410 -> 338
+  20261020T001415Z -> 20261020T002227Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 278 -> same txn still idle 0 (0%); non-idle sessions 338 -> 432
+  20261020T002227Z -> 20261020T002807Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 412 -> same txn still idle 0 (0%); non-idle sessions 432 -> 396
+  20261020T002807Z -> 20261020T012929Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 354 -> same txn still idle 0 (0%); non-idle sessions 396 -> 1591
+  20261020T012929Z -> 20261020T142626Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 87 -> same txn still idle 0 (0%); non-idle sessions 1591 -> 0
+  20261020T142626Z -> 20261020T142705Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 0 -> same txn still idle 0 (0%); non-idle sessions 0 -> 0
+== libfeat
+  20261019T223710Z -> 20261019T224924Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 137 -> same txn still idle 0 (0%); non-idle sessions 153 -> 2383
+  20261019T224924Z -> 20261019T230950Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 2376 -> same txn still idle 0 (0%); non-idle sessions 2383 -> 1868
+  20261019T230950Z -> 20261019T231832Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 1725 -> same txn still idle 0 (0%); non-idle sessions 1868 -> 3516
+  20261019T231832Z -> 20261019T234840Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 3442 -> same txn still idle 0 (0%); non-idle sessions 3516 -> 768
+  20261019T234840Z -> 20261020T001415Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 765 -> same txn still idle 0 (0%); non-idle sessions 768 -> 430
+  20261020T001415Z -> 20261020T002227Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 427 -> same txn still idle 0 (0%); non-idle sessions 430 -> 989
+  20261020T002227Z -> 20261020T002807Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 987 -> same txn still idle 0 (0%); non-idle sessions 989 -> 553
+  20261020T002807Z -> 20261020T012929Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 525 -> same txn still idle 0 (0%); non-idle sessions 553 -> 1552
+  20261020T012929Z -> 20261020T142626Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 1530 -> same txn still idle 0 (0%); non-idle sessions 1552 -> 0
+  20261020T142626Z -> 20261020T142705Z: blocked 0 -> still blocked 0 (0%), same blockers 0; idle-in-txn 0 -> same txn still idle 0 (0%); non-idle sessions 0 -> 0

@@ -1,0 +1,84 @@
+DELETE 0
+DELETE 0
+DELETE 0
+psql:/tmp/20-final.sql:15: NOTICE:  pg_stat_wal unavailable (e.g. Aurora) — skipping WAL metrics: Function pg_stat_get_wal() is currently not supported for Aurora
+ snapshot 
+----------
+ 
+(1 row)
+
+
+=================== RUN WINDOW ===================
+          baseline_at          |           final_at            |     elapsed     
+-------------------------------+-------------------------------+-----------------
+ 2026-10-19 22:25:20.086777+00 | 2026-10-20 14:27:07.007258+00 | 16:01:46.920481
+(1 row)
+
+
+=================== FACT REPORT HEADLINE (eviction-immune) ===================
+ logical_block_reads | physical_block_reads | wal_bytes | xact_commit | tup_inserted | tup_updated | tup_deleted 
+---------------------+----------------------+-----------+-------------+--------------+-------------+-------------
+         61390417844 |                   29 |           |  1011225439 |   1379372731 |        3958 |         840
+(1 row)
+
+
+=================== ALL SCALAR DELTAS ===================
+        metric        |    delta    
+----------------------+-------------
+ db.blk_read_time_ms  |      32.128
+ db.blks_hit          | 61390417815
+ db.blks_read         |          29
+ db.blk_write_time_ms |   93317.672
+ db.deadlocks         |           0
+ db.temp_bytes        |     3313801
+ db.temp_files        |           1
+ db.tup_deleted       |         840
+ db.tup_fetched       | 10681779672
+ db.tup_inserted      |  1379372731
+ db.tup_returned      | 11077651887
+ db.tup_updated       |        3958
+ db.xact_commit       |  1011225439
+ db.xact_rollback     |          40
+(14 rows)
+
+
+=========== PER-STATEMENT DELTAS (top 25 by exec-time; EVICTION-LOSSY, top-N only) ===========
+   calls   |    rows    | total_ms  | blks_read | blks_written | blks_dirtied | wal_bytes |                                      query                                       
+-----------+------------+-----------+-----------+--------------+--------------+-----------+----------------------------------------------------------------------------------
+  52628552 |  736799728 | 460053114 |         0 |     27049067 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   7666702 |   99667126 |  59383406 |         0 |      3643870 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   7657922 |   91895064 |  55097784 |         0 |      3401757 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+ 352581073 | 9507251940 |  51521640 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+   7241275 |   79654025 |  47349327 |         0 |      3090733 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+  84925743 |  378604803 |  42363977 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+   6967993 |   69679930 |  41111734 |         0 |      2699593 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   6793876 |   61144884 |  35674640 |         0 |      2418683 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+ 123763242 |  530112228 |  32699350 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+   6445922 |   51567376 |  29661731 |         0 |      2063669 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+  28222185 |  181353989 |  28630430 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+   6500432 |   45503024 |  25549865 |         0 |      1753391 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   6362575 |   38175450 |  21335318 |         0 |      1480319 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   6656053 |   33280265 |  18114970 |         0 |      1240315 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   6664856 |   26659424 |  14466609 |         0 |       887061 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   7448881 |   22346643 |  12296123 |         0 |       712783 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   7419934 |   14839868 |   8656752 |         0 |       442811 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+   8162117 |    8162117 |   5988138 |         0 |       299670 |            0 |         0 | INSERT INTO LIB_FEAT(LIB_FEAT_ID,FTYPE_ID,FEAT_HASH,FEAT_DESC,FELEM_VALUES,ANONY
+    745324 |   10367345 |   1443107 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+   3501423 |    9146033 |    540429 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+  15374647 |   15372258 |    467505 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+  13297843 |   13297843 |    306767 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+   3471949 |    6936187 |    217162 |         0 |            0 |            0 |         0 | SELECT LIB_FEAT_ID,FEAT_DESC,FTYPE_ID,ANONYMIZED,FEAT_HASH,VERSION,FELEM_VALUES 
+      1894 |       1894 |     46610 |         0 |            0 |            0 |         0 | SELECT count(*) FROM pg_stat_activity WHERE datname = current_database() AND wai
+      9588 |          0 |       805 |         0 |            0 |            0 |         0 | SELECT $3 FROM information_schema.columns WHERE table_schema=current_schema() AN
+(25 rows)
+
+
+=================== PER-TABLE DELTAS (tables touched by the run) ===================
+    relname     |    ins     | upd  | del | hot_upd | seq_scan |  idx_scan  | heap_read |  heap_hit  | idx_read 
+----------------+------------+------+-----+---------+----------+------------+-----------+------------+----------
+ lib_feat       | 1379371838 | 3144 |  58 |    2337 |     8756 | 8959294051 |         0 | 8553923423 |        0
+ snap_statement |         54 |    0 |   0 |       0 |        0 |          0 |         0 |         56 |        0
+ snap_scalar    |         14 |    0 |   0 |       0 |        0 |          0 |         0 |         13 |        0
+ snap_table     |         11 |    0 |   0 |       0 |        0 |          0 |         0 |         10 |        0
+(4 rows)
+

@@ -1,0 +1,23 @@
+snapshot 20261020T001415Z
+== CORE: non-idle sessions by state / wait
+    2487  active                       IPC:ProcarrayGroupUpdate
+     579  active                       Client:ClientRead
+     329  idle in transaction          IPC:ProcarrayGroupUpdate
+     158  idle in transaction          Client:ClientRead
+      39  active                       -:-
+      18  idle in transaction          -:-
+       5  active                       LWLock:LockManager
+       2  active                       LWLock:BufferContent
+       2  active                       IO:AuroraStorageLogAllocate
+       1  idle in transaction          LWLock:BufferContent
+   blocked sessions: 0; distinct client IPs among them: 0
+== RES: non-idle sessions by state / wait
+     278  idle in transaction          Client:ClientRead
+      59  active                       Client:ClientRead
+       1  active                       IPC:ProcarrayGroupUpdate
+   blocked sessions: 0; distinct client IPs among them: 0
+== LIBFEAT: non-idle sessions by state / wait
+     426  idle in transaction          Client:ClientRead
+       3  active                       Client:ClientRead
+       1  idle in transaction          -:-
+   blocked sessions: 0; distinct client IPs among them: 0

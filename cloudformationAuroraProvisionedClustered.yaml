@@ -285,15 +285,15 @@ Mappings:
       ApiServer: public.ecr.aws/senzing/senzing-poc-server:staging
       # InitPostgresql: public.ecr.aws/senzing/init-postgresql:staging
       # init-database is pinned by DIGEST (":latest" is mutable). This digest bundles 4.4.1.26255;
-      # its schema SQL is byte-identical to 4.5.0.26268, 4.5.0.26275, 4.4.3.26285 and 4.4.3.26287, and its default config differs only in
-      # the CONFIG_BASE_VERSION stamp (verified 2026-09-28, 2026-10-05, 2026-10-13, 2026-10-15). Re-verify when the engine version changes.
+      # its schema SQL is byte-identical to 4.5.0.26268, 4.5.0.26275, 4.4.3.26285, 4.4.3.26287 and 4.4.3.26292, and its default config differs only in
+      # the CONFIG_BASE_VERSION stamp (verified 2026-09-28, 2026-10-05, 2026-10-13, 2026-10-15, 2026-10-19). Re-verify when the engine version changes.
       InitPostgresql: docker.io/senzing/init-database@sha256:a68062d23dc958eba404a3fbba3a5800e2770f6e9bbed2ad94413c54da7635af
-      # 4.4.3.26287 images pinned by DIGEST: the 4.4.3-26287 tag was rebuilt several times on 2026-10-14 and ECR
-      # tags are mutable. These are BUILD_NUMBER 2026_10_14__23_16 (verified from szBuildVersion.json, 2026-10-15).
-      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4@sha256:a3665b18ec21f499e73cd70d358f74ff634fbfbc551e2114137dfbac71f80679
-      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools@sha256:2e542dff9a20ff9e7bbf96fdb019cf35ce66bc87584e4c1cdaa816fd11210186
-      Sshd: public.ecr.aws/senzing/sshd@sha256:2cb6574e0bd96c34dbedc16ae2963f04b6aa78e180ba54924cc462a433e00225
-      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4@sha256:f5d2b29b74ed341d18df4b78f5717984c9de493492cfda9cab404c9c3f296dc9
+      # 4.4.3.26292 images pinned by DIGEST (ECR tags are mutable). BUILD_NUMBER 2026_10_19__16_25, verified from
+      # szBuildVersion.json 2026-10-19. (20261015 used 4.4.3.26287 / 2026_10_14__23_16.)
+      Redoer: public.ecr.aws/senzing/sz_simple_redoer-v4@sha256:599c44dd43c537340ae949cd6ff7140ce783193b1df2eb8c60427cfe3cbb2f8e
+      SenzingApiTools: public.ecr.aws/senzing/senzingsdk-tools@sha256:e5c7005ed36e7387e49cb2dbf3d4d94f72167e79fc6b016ea58706dec24d9446
+      Sshd: public.ecr.aws/senzing/sshd@sha256:58c9be81e2538d3d98144dbcfc7845b214c2f48518e065c6bff4993c315c01a5
+      StreamLoader: public.ecr.aws/senzing/sz_sqs_consumer-v4@sha256:72e57f1e44b158d45f6b4999b28d1bfd399b101d23076873a879e4af955984df
       StreamProducer: public.ecr.aws/senzing/stream-producer:1.8.7
       WebApp: public.ecr.aws/senzing/entity-search-web-app:2.8.0
 

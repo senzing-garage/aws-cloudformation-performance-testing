@@ -1,0 +1,7 @@
+snapshot 20261020T142626Z
+== CORE: non-idle sessions by state / wait
+   blocked sessions: 0; distinct client IPs among them: 0
+== RES: non-idle sessions by state / wait
+   blocked sessions: 0; distinct client IPs among them: 0
+== LIBFEAT: non-idle sessions by state / wait
+   blocked sessions: 0; distinct client IPs among them: 0
