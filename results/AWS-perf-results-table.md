@@ -17,11 +17,11 @@ Notes:                          | db.r6i.8xlarge | db.r6i.8xlarge |
                                 | advisory lock  | advisory lock  |
 ======================================================================================================================
 (*) the combined pool also ran redo during the load (effective share 0.19), so its add rate is lower and its load phase longer.
-The redo backlog stayed flat until ~20:10 UTC, then grew to 1,179,144 by the time the queue drained: 20% redo is too small for the
-second half of a 25M load. With every worker on redo after the drain, it cleared in ~11 min (~1,650/s). validate 0/0, 0 rejected,
+The redo backlog stayed flat until ~20:10 UTC, then grew to 1,179,144 by the time the queue drained. With every worker on redo after the drain, it cleared in ~11 min (~1,650/s). validate 0/0, 0 rejected,
 0 redo dropped, 0 errors. Higher than the baseline (build differs, not explained yet): db.deadlocks 909 vs 106, res_ent_active 3,775
-vs 57. FUTURE COMBINED RUNS: use CombinedRedoPercent 30-35 (20% let the redo backlog grow in the second half of a 25M load).
-No re-run planned just for that; a same-build split run would isolate the driver if needed.
+vs 57. COMBINED RUNS: keep CombinedRedoPercent at 20
+(2026-10-21, Brian; supersedes 30-35): a higher share only moves redo from the tail into the load phase. A same-build split run would
+isolate the driver if needed.
   Full detail: results/20261020-25M-provisioned-r6i-8xlarge-single-senzing-4.5.0.26288-combined-consumer-advisory/.
 
 

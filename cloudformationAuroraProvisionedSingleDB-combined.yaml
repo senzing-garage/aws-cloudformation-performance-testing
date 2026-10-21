@@ -112,11 +112,11 @@ Parameters:
     Type: String
 
   CombinedRedoPercent:
-    Default: 30
+    Default: 20
     Description: >-
       SENZING_REDO_PERCENT for the combined driver: the share of each task's workers that prefer redo while the input
-      queue is busy (0 = pure loader, 100 = pure redoer). When the queue drains, all workers switch to redo. 30 (use
-      30-35): at 20 the redo backlog grew to ~1.18M in the second half of a 25M load (20261020 run).
+      queue is busy (0 = pure loader, 100 = pure redoer). When the queue drains, all workers switch to redo. 20: a
+      higher share only moves redo work from the tail into the load phase (Brian; 25M at 20: ~11 min tail, 20261020).
     MinValue: 0
     MaxValue: 100
     Type: Number
