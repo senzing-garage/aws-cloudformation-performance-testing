@@ -1,0 +1,9 @@
+TRUNCATE TABLE
+ snapshot 
+----------
+ 
+(1 row)
+
+
+BASELINE captured. Run the workload (and nothing else against this DB),
+then run:  i 20-final.sql

@@ -1,3 +1,35 @@
+20261112  --  4.5.0.26316 100M CLUSTERED (HYBRID) with the COMBINED load+redo driver vs 4.4.3.26292 split (PG 18.6, FEATURES, advisory)
+======================================================================================================================
+Build:                          |  4.4.3.26292   |  4.5.0.26316   |
+Driver:                         | split cons+redo| combined (20%) |
+Number of records:              |   100 M        |   100 M        |
+Peak:                           |  11042         |  10797         |
+Average over entire run:        |  8484          |  7783 (*)      |
+Time to load:                   |     3.27 hours |     3.57 hours |
+Redo tail after input empty:    |   ~77 min      |    27 min      |
+Total (start -> redo empty):    |    ~4.57 hours |    ~3.89 hours |
+Records in dead-letter queue:   |      0         |      0         |
+Unresolved (orphans):           |      0         |      0         |
+Total Billed read RW IOPS:      |          62+   |          60+   |
+Total Billed write IOPS:        |  475,394,018+  |  466,624,119+  |
+Max loader / redoer tasks:      |   200 / 200    |  200 combined  |
+Notes:                          | 3 DB clusters  | 3 DB clusters  |
+                                | 3x r6i.24xlarge| 3x r6i.24xlarge|
+                                |    IO opt      |    IO opt      |
+                                | PG 18.6        | PG 18.6        |
+                                | adv + FEATURES | adv + FEATURES |
+                                | full pre-load  | full pre-load  |
+======================================================================================================================
++ summed over the 3 writers.  (*) the combined pool also ran redo during the load (4 of 20 threads per task), so its add rate is lower.
+Two changes vs 20261019: build line (4.4.3 -> 4.5.0) and driver (split -> combined); half the tasks (200 vs up to 200 + 200). The redo
+backlog grew through the whole load (~1,400/s from ~21:15 UTC) to 11,590,752 at the drain (00:09); with every thread on redo it cleared in
+27 min (~7,700/s). validate q1/q2 = 0/0 (obs_ent = res_ent_okey = 99,998,927); DLQ 0, SENZ0010 0, SENZ1019 0, 55P03 0, REJECTING 0,
+0 redo dropped, 0 errors; no DB restarts. Lock watcher 2,242 checks, >= 40 waiters on 11 single checks, 0% persistence. db.deadlocks 1,176
+(CORE) vs 736, higher with the combined driver again (25M: 909 vs 106); CORRUPTION_FOUND 100, INFINITE 8, ABANDONING 26; GDEV-4734 0.
+FEATURES 97.6% from the blob. Hot rows: RES_FEAT_STAT += 1.4 ms, RES_ENT ENT_STATE 1.4 ms (0.7 in 20261019).
+  Full detail: results/20261112-100M-provisioned-r6i-24xlarge-clustered-pg18-senzing-4.5.0.26316-features-advisory-combined/.
+
+
 20261020  --  25M single DB with the COMBINED load+redo driver (sz_queue_combined_consumer v0.5.0, 20% redo) vs the split baseline
 ======================================================================================================================
 Build:                          |  4.5.0.26268   |  4.5.0.26288   |
