@@ -1,0 +1,92 @@
+DELETE 0
+DELETE 0
+DELETE 0
+psql:/tmp/20-final.sql:15: NOTICE:  pg_stat_wal unavailable (e.g. Aurora) — skipping WAL metrics: Function pg_stat_get_wal() is currently not supported for Aurora
+ snapshot 
+----------
+ 
+(1 row)
+
+
+=================== RUN WINDOW ===================
+          baseline_at          |           final_at            |     elapsed     
+-------------------------------+-------------------------------+-----------------
+ 2026-11-12 20:41:50.222288+00 | 2026-11-13 15:38:00.978039+00 | 18:56:10.755751
+(1 row)
+
+
+=================== FACT REPORT HEADLINE (eviction-immune) ===================
+ logical_block_reads | physical_block_reads | wal_bytes | xact_commit | tup_inserted | tup_updated | tup_deleted 
+---------------------+----------------------+-----------+-------------+--------------+-------------+-------------
+         64822568508 |                  271 |           |  5339906925 |    636228738 |   878690165 |   169084045
+(1 row)
+
+
+=================== ALL SCALAR DELTAS ===================
+        metric        |    delta    
+----------------------+-------------
+ db.blk_read_time_ms  |    1080.347
+ db.blks_hit          | 64822568237
+ db.blks_read         |         271
+ db.blk_write_time_ms |   58167.673
+ db.deadlocks         |        1176
+ db.temp_bytes        |           0
+ db.temp_files        |           0
+ db.tup_deleted       |   169084045
+ db.tup_fetched       | 11608471818
+ db.tup_inserted      |   636228738
+ db.tup_returned      | 12917804209
+ db.tup_updated       |   878690165
+ db.xact_commit       |  5339906925
+ db.xact_rollback     |        1176
+(14 rows)
+
+
+=========== PER-STATEMENT DELTAS (top 25 by exec-time; EVICTION-LOSSY, top-N only) ===========
+   calls   |    rows    |  total_ms  | blks_read | blks_written | blks_dirtied | wal_bytes |                                      query                                       
+-----------+------------+------------+-----------+--------------+--------------+-----------+----------------------------------------------------------------------------------
+ 142978860 |  142978860 | 2911081177 |         0 |      2935244 |            0 |         0 | UPDATE OBS_ENT SET LOCKING_ID=LOCKING_ID+$3,LOCK_DSRC_ACTION=$1 WHERE OBS_ENT_ID
+ 104595833 |  104595833 | 2484686664 |         0 |      2399849 |            0 |         0 | UPDATE OBS_ENT SET FEATURES=$1 WHERE OBS_ENT_ID=$2
+ 144049362 |  144049362 |  845330215 |         0 |      3149893 |            0 |         0 | UPDATE RES_ENT SET FEATURES=$1 WHERE RES_ENT_ID=$2
+ 100004719 |   99998927 |  698187797 |         0 |      2009714 |            0 |         0 | INSERT INTO OBS_ENT(OBS_ENT_ID,DSRC_ID,ENT_SRC_KEY,LAST_TOUCH_DT,LOCKING_ID,LOCK
+ 100000000 |  100000000 |  580931805 |         0 |      6604791 |            0 |         0 | INSERT INTO DSRC_RECORD(DSRC_ID,RECORD_ID,ENT_SRC_KEY,JSON_DATA,CONFIG_ID,FIRST_
+ 119206138 |  119206138 |  354119013 |         0 |      1186087 |            0 |         0 | UPDATE RES_ENT SET LOCKING_ID=LOCKING_ID+$3,LOCK_DSRC_ACTION=$1 WHERE RES_ENT_ID
+  42980789 |   42980789 |  287894854 |         0 |       299912 |            0 |         0 | UPDATE OBS_ENT SET LOCK_DSRC_ACTION=$1 WHERE OBS_ENT_ID=$2
+  66132773 |   66122593 |  194337111 |         0 |       668816 |            0 |         0 | INSERT INTO RES_ENT(RES_ENT_ID,LAST_TOUCH_DT,LOCKING_ID,ENT_STATE) VALUES ($1,$2
+  42986568 |   42986568 |  149566098 |         0 |      1197168 |            0 |         0 | UPDATE DSRC_RECORD SET LAST_SEEN_DT=$1 WHERE DSRC_ID=$2 AND RECORD_ID=$3 AND ENT
+  23772722 |   60014818 |  117988351 |         0 |       570574 |            0 |         0 | UPDATE RES_ENT SET LOCKING_ID=LOCKING_ID+$1,LOCK_DSRC_ACTION=$2 WHERE RES_ENT_ID
+  42979937 |   42979937 |   82912321 |         0 |       422215 |            0 |         0 | UPDATE RES_ENT SET ENT_STATE=$1 WHERE RES_ENT_ID=$2
+  43838977 |   43617443 |   78858364 |         0 |            0 |            0 |         0 | DELETE FROM SYS_EVAL_QUEUE WHERE MSG_ID = (SELECT MSG_ID FROM SYS_EVAL_QUEUE WHE
+  99998928 |   99998928 |   60780291 |         0 |      1760599 |            0 |         0 | INSERT INTO RES_ENT_OKEY(OBS_ENT_ID,RES_ENT_ID,ERRULE_ID,MATCH_KEY) VALUES ($1,$
+  53089778 |   43382206 |   50206879 |         0 |       222232 |            0 |         0 | UPDATE RES_ENT SET ENT_STATE=COALESCE(ENT_STATE,$5)|$1 WHERE RES_ENT_ID=$2 AND (
+ 148390067 |  966687894 |   41193181 |         0 |            0 |            0 |         0 | SELECT RES_ENT_ID,ENT_STATE,LOCKING_ID FROM RES_ENT WHERE RES_ENT_ID IN ($1 /*, 
+ 375119844 |  375119472 |   40917929 |         0 |            0 |            0 |         0 | SELECT         $2 FROM RES_ENT_OKEY B JOIN OBS_ENT C ON C.OBS_ENT_ID=B.OBS_ENT_I
+ 637904438 | 1423765623 |   29712605 |         0 |            0 |            0 |         0 | SELECT OBS_ENT_ID,RES_ENT_ID FROM RES_ENT_OKEY WHERE RES_ENT_ID IN ($1)
+ 541503592 |  397140387 |   18933739 |         0 |            0 |            0 |         0 | SELECT RES_ENT_ID,ENT_STATE,LOCKING_ID FROM RES_ENT WHERE RES_ENT_ID IN ($1)
+   6188733 |    6188688 |   17322757 |         0 |        68413 |            0 |         0 | UPDATE RES_ENT SET LOCK_DSRC_ACTION=$1 WHERE RES_ENT_ID=$2
+ 127064859 |  908698735 |   15658569 |         0 |            0 |            0 |         0 | SELECT RES_ENT_ID,FEATURES FROM RES_ENT WHERE RES_ENT_ID IN ($1 /*, ... */)
+  18496604 |   18496472 |   14666015 |         1 |      1279234 |            0 |         0 | INSERT INTO RES_RELATE(RES_REL_ID,MIN_RES_ENT_ID,MAX_RES_ENT_ID,IS_DISCLOSED,IS_
+ 352311891 |  252307172 |   13415335 |         0 |            0 |            0 |         0 | SELECT OBS_ENT_ID,RES_ENT_ID FROM RES_ENT_OKEY WHERE OBS_ENT_ID IN ($1)
+  61091267 |   43617455 |   12747001 |         0 |       704748 |            0 |         0 | INSERT INTO SYS_EVAL_QUEUE(MSG_ID,DSRC_CODE,ENT_SRC_KEY,MSG) VALUES ($1,$2,$3,$4
+ 264625755 |  298110000 |   12629831 |         0 |            0 |            0 |         0 | SELECT RES_ENT_ID,REL_ENT_ID,RES_REL_ID FROM RES_REL_EKEY WHERE RES_ENT_ID IN ($
+ 304114892 |  304114892 |   12355646 |         0 |            0 |            0 |         0 | SELECT OBS_ENT_ID,DSRC_ID,ENT_SRC_KEY,LOCKING_ID,FEATURES FROM OBS_ENT WHERE OBS
+(25 rows)
+
+
+=================== PER-TABLE DELTAS (tables touched by the run) ===================
+    relname     |    ins    |    upd    |   del    |  hot_upd  | seq_scan |  idx_scan  | heap_read |  heap_hit  | idx_read 
+----------------+-----------+-----------+----------+-----------+----------+------------+-----------+------------+----------
+ res_ent        |  66122593 | 415821149 |  4868559 | 232043890 |        0 | 3522264634 |         0 | 6020267172 |        1
+ obs_ent        |  99998927 | 290555482 |        0 | 205318593 |        0 | 1746973572 |         0 | 4020385842 |        2
+ res_rel_ekey   | 150988024 |         0 | 80392960 |         0 |        0 |  643096899 |         0 | 1339219807 |        1
+ res_relate     |  75494001 |  88203368 | 40196480 |  40032652 |        0 |  534119976 |         0 | 1717110826 |        1
+ dsrc_record    | 100000000 |  42986568 |        0 |  21381548 |        0 |  969069288 |         0 | 2171543576 |        2
+ res_ent_okey   |  99998928 |  41093507 |        0 |  29388580 |        0 | 2030541706 |         0 | 4821547079 |        2
+ sys_eval_queue |  43617481 |         0 | 43617469 |         0 |        0 |  192991210 |         0 |  690705289 |        2
+ sys_sequence   |         0 |     17844 |        0 |     17840 |        0 |      37884 |         0 |      80998 |        0
+ snap_statement |        56 |         0 |        0 |         0 |        0 |          0 |         0 |         76 |        0
+ sys_codes_used |        22 |         0 |        0 |         0 |        0 |      90065 |         0 |      89972 |        0
+ snap_table     |        16 |         0 |        0 |         0 |        0 |          0 |         0 |         29 |        0
+ snap_scalar    |        14 |         0 |        0 |         0 |        0 |          0 |         0 |         27 |        0
+(12 rows)
+
